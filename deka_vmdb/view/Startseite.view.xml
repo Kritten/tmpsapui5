@@ -1,0 +1,45 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="ag.bpc.Deka.controller.Startseite" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page 
+		title="{i18n>STARTSEITE_TITLE}"
+		>
+		
+		<content>
+	
+	
+		<TileContainer>
+			
+			<tiles>
+				
+				<StandardTile
+				icon="sap-icon://accept"
+				title="{i18n>KOND_TILE}"
+				press= "onKondTilePress"/>
+				
+				<StandardTile
+				icon="sap-icon://accept"
+				title="{i18n>VERM_TILE}"
+				press= "onVermTilePress"/>
+				
+				<StandardTile
+				icon="sap-icon://accept"
+				title="{i18n>BUDS_TILE}"
+				press= "onBudsTilePress"/>
+				
+				<StandardTile
+				icon="sap-icon://accept"
+				title="{i18n>BERI_TILE}"
+				press= "onBeriTilePress"/>
+				
+				<StandardTile
+				icon="sap-icon://accept"
+				title="{i18n>SPER_TILE}"
+				press= "onSperTilePress"/>
+				
+			</tiles>
+
+		</TileContainer>
+	
+		</content>
+	</Page>
+</core:View>
