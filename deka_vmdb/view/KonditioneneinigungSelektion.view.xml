@@ -48,7 +48,7 @@
 									
 							</items>
 						</FacetFilterList>
-						<FacetFilterList title="Mietbeginn"
+						<FacetFilterList title="Mietbeginn Test"
 							multiselect="true" listClose="handleListClose" items="{kondSel>/data}">
 							<items>
 								<FacetFilterItem text="{
