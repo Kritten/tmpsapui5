@@ -10,7 +10,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 		onInit: function(oEvent){
             
             jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
-            
 			
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onInit");
 			
@@ -22,8 +21,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             // - Konditioneneinigung anlegen auf Basis eines Mietvertrags
             
             oRouter.getRoute("konditioneneinigungDetails").attachPatternMatched(this.onKonditioneneinigungAnzeigen, this);
-            // oRouter.getRoute("konditioneneinigungAnlegenWe").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit, this);
-            // oRouter.getRoute("konditioneneinigungAnlegenMv").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinesMietvertrags, this);
+            oRouter.getRoute("konditioneneinigungAnlegenWe").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit, this);
+            oRouter.getRoute("konditioneneinigungAnlegenMv").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinesMietvertrags, this);
 		},
 		        
         onKonditioneneinigungAnzeigen: function(oEvent){
@@ -107,11 +106,17 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         },
         
         onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
-            // form.modus = new
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit");
+            
+            this.onKonditioneneinigungAnzeigen(oEvent);
+            this.getView().getModel("form").setProperty("/modus", "new");
         },
         
         onKonditioneneinigungAnlegenAufBasisEinesMietvertrags: function(oEvent){
-            // form.modus = new
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinesMietvertrags");
+            
+            this.onKonditioneneinigungAnzeigen(oEvent);
+            this.getView().getModel("form").setProperty("/modus", "new");
         },
         
         

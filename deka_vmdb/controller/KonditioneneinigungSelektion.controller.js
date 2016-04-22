@@ -136,7 +136,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 				// Klick auf den Zurück-Pfeil
 				onBack : function(evt) {
 					// Ruft die Startseite auf
-					this.getOwnerComponent().getRouter().navTo("startseite", null, true);
+					this.getOwnerComponent().getRouter().navTo("startseite");
 				},
 				
 				// Auswahl der anzuzeigenden KEs
@@ -239,7 +239,12 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 							var weid = this.getView().getModel("we").getProperty(aContexts[0].getPath());
 							
 							// Ruft die Detailsseite auf (Anlegen)
-							this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenWe", { weId: weid.id } , true);
+							this.getOwnerComponent().getRouter().navTo(
+								"konditioneneinigungAnlegenWe", 
+								{
+									weId: weid.id 
+								}
+							);
 						break;
 						case 1:
 							console.log("Basis MV");
@@ -249,7 +254,12 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 							console.log(mvid);
 							
 							// Ruft die Detailsseite auf (Anlegen)
-							this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenMv", { mvId: mvid.id } , true);
+							this.getOwnerComponent().getRouter().navTo(
+								"konditioneneinigungAnlegenMv",
+								{
+									mvId: mvid.id
+								}
+							);
 						break;
 						}				
 						

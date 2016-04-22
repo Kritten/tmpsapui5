@@ -1,8 +1,7 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m" controllerName="ag.bpc.Deka.controller.KonditioneneinigungSelektion"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Konditioneneinigung (Selektion)" showNavButton="true"
-		navButtonPress="onBack">
+	<Page title="Konditioneneinigung (Selektion)" showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
 		<content>
 
 			<Panel class="sapUiDemoFlexBoxSizeAdjustments">

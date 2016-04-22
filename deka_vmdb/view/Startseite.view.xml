@@ -12,27 +12,27 @@
 			<tiles>
 				
 				<StandardTile
-				icon="sap-icon://accept"
+				icon="sap-icon://collections-insight"
 				title="{i18n>KOND_TILE}"
 				press= "onKondTilePress"/>
 				
 				<StandardTile
-				icon="sap-icon://accept"
+				icon="sap-icon://capital-projects"
 				title="{i18n>VERM_TILE}"
 				press= "onVermTilePress"/>
 				
 				<StandardTile
-				icon="sap-icon://accept"
+				icon="sap-icon://pause"
 				title="{i18n>BUDS_TILE}"
 				press= "onBudsTilePress"/>
 				
 				<StandardTile
-				icon="sap-icon://accept"
+				icon="sap-icon://business-objects-experience"
 				title="{i18n>BERI_TILE}"
 				press= "onBeriTilePress"/>
 				
 				<StandardTile
-				icon="sap-icon://accept"
+				icon="sap-icon://locked"
 				title="{i18n>SPER_TILE}"
 				press= "onSperTilePress"/>
 				
