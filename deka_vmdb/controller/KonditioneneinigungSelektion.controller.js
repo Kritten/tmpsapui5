@@ -143,18 +143,21 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 				onComboBoxChange : function(evt) {		
 					var selectedKey = evt.getSource().getSelectedKey();
 				
-					switch (selectedKey) {
-					case "all":
-						// Alle Filter löschen
-						this._oKondTab.filter([]);	
+					switch (selectedKey) 
+					{
+						case "all":
+							// Alle Filter löschen
+							this._oKondTab.filter([]);	
 						break;
-					case "work":
-						// Filter neu setzen
-						var oKEFilter = this._oKondTab.filter;	
-						oKEFilter = new Filter("anmerkung", sap.ui.model.FilterOperator.EQ, this._map[selectedKey]);;
-						this._oKondTab.filter([oKEFilter]);
+						
+						case "work":
+							// Filter neu setzen
+							var oKEFilter = this._oKondTab.filter;	
+							oKEFilter = new Filter("anmerkung", sap.ui.model.FilterOperator.EQ, this._map[selectedKey]);;
+							this._oKondTab.filter([oKEFilter]);
 						break;
-					default:
+						
+						default:
 						break;
 					}
 
@@ -165,7 +168,12 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					var kondid = this.getView().getModel("kondSel").getProperty(evt.getParameters("listItem").listItem.getBindingContext('kondSel').sPath);
 
 					// Ruft die Detailsseite auf (Anzeige)
-					this.getOwnerComponent().getRouter().navTo("konditioneneinigungDetails", { id: kondid.id } , true);
+					this.getOwnerComponent().getRouter().navTo(
+						"konditioneneinigungDetails", 
+						{
+							id: kondid.id
+						}
+					);
 				},
 				
 				// Select Dialog für die Auswahl der Wirtschaftseinheit

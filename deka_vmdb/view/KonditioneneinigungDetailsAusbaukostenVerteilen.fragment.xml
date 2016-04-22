@@ -1,0 +1,35 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    
+    <Dialog title="Ausbaukosten verteilen">
+    
+        <content>
+            
+            <f:SimpleForm>
+                <f:content>
+                    <Label text="Nutzungsart" />
+                    <Select selectedKey="{/nutzungsart}" items="{/nutzungsarten}">
+                        <items>
+                            <core:Item key="{key}" text="{text}" />
+                        </items>
+                    </Select>
+                    <Label text="Grundausbaukosten" />
+                    <Input value="{/grundausbaukosten}" type="Number" />
+                    <Label text="Mietausbaukosten" />
+                    <Input value="{/mietausbaukosten}" type="Number" />
+                </f:content>
+            </f:SimpleForm>
+            
+            
+        </content>
+        
+        <buttons>
+            <Button text="Akzeptieren" type="Accept" press="onAusbaukostenVerteilenFragmentAkzeptierenButtonPress" />
+            <Button text="Abbrechen" type="Reject" press="onAusbaukostenVerteilenFragmentAbbrechenButtonPress"/>
+        </buttons>
+        
+    </Dialog>
+    
+</core:FragmentDefinition>

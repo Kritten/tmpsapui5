@@ -56,14 +56,12 @@
 						"name" : "konditioneneinigungDetails",
 						"view" : "KonditioneneinigungDetails",
 						"targetAggregation" : "pages"
-						
 					},
 					{
 						"pattern": "KondSel/new/WE/{weId}",
 						"name" : "konditioneneinigungAnlegenWe",
 						"view" : "KonditioneneinigungDetails",
 						"targetAggregation" : "pages"
-						
 					},
 					{
 						"pattern": "KondSel/new/MV/{mvId}",

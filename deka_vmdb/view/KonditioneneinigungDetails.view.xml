@@ -1,10 +1,314 @@
-<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-		controllerName="ag.bpc.Deka.controller.KonditioneneinigungDetails" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Konditioneneinigung (Anzeigen/Anlegen/Ändern)" 
-		  showNavButton="true"
-		  navButtonPress="onBack">
+<mvc:View
+    controllerName="ag.bpc.Deka.controller.KonditioneneinigungDetails"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc">
+      
+	<Page title="Konditioneneinigung (Anzeigen / Bearbeiten)" class="sapUiFioriObjectPage" >
+    <!-- this CSS class add a standard spacing to all the page content -->
+    
+        <headerContent>
+			<Button icon="sap-icon://edit" text="Bearbeiten" visible="{= ${form>/modus} === 'show' }" press="onBearbeitenButtonPress" />
+		</headerContent>
+                
 		<content>
-	
+            
+			<ObjectHeader title="Konditioneneinigung" number="{keVaObjekt>/id}" >
+				<attributes>
+					<ObjectAttribute title="Buchungskreis" text="{keVaObjekt>/buchungskreis}" />
+					<ObjectAttribute title="Wirtschaftseinheit" text="{keVaObjekt>/wirtschaftseinheit}" />
+                    <ObjectAttribute title="Bezeichnung" text="{keVaObjekt>/bezeichnung}" />
+                    <ObjectAttribute title="Flächeneinheit" text="xxx" />
+                    <ObjectAttribute title="Währung" text="xxx" />
+				</attributes>
+			</ObjectHeader>
+            
+            <!--
+			<IconTabBar
+				expanded="{device>/isNoPhone}"
+				class="sapUiSmallMarginBottom sapUiResponsiveContentPadding">
+				<items>
+					<IconTabFilter text="Objektangaben">
+						<f:SimpleForm
+							minWidth="1024"
+							maxContainerCols="2"
+							layout="ResponsiveGridLayout" >
+							<Label text="Buchungskreis"/>
+							<Text text="Value"/>
+                            
+                            <Label text="Wirtschaftseinheit"/>
+                            <Text text="Value"/>
+                            
+                            <Label text="Bezeichnung"/>
+                            <Text text="Value"/>
+                            
+                            <Label text="Flächeneinheit"/>
+                            <ComboBox>
+                                <core:Item key="1" text="m²" />
+                                <core:Item key="2" text="dm²" />
+                            </ComboBox>
+                            
+                            <Label text="Währung"/>
+                            <ComboBox>
+                                <core:Item key="1" text="€" />
+                                <core:Item key="2" text="$" />
+                            </ComboBox>
+						</f:SimpleForm>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+            -->
+            
+            <!-- 
+            <ScrollContainer height="400px" class="sapUiSmallMargin" vertical="true" >
+            -->
+            
+            <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{ path: 'form>/konditioneneinigung/mietflaechenangaben' }">
+                
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="Mietflächen-Angaben" level="H2"/>
+                        <ToolbarSpacer />
+                        <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" />
+                    </Toolbar>
+                </headerToolbar>
+                
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Mietfläche" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Bezeichnung" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Nutzungsart" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) ? '*Nutzungsart (alternativ)' : 'Nutzungsart (alternativ)' }"   />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Hauptnutzfläche" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Mietfläche (alternativ)" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Nachhaltige Miete in Währung/FE" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Angebotsmiete in Währung/FE" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Grundausbaukosten in Währung/FE" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Mieterausbaukosten in Währung/FE" />
+                    </Column>
+                </columns>
+                
+                <items>
+                    <ColumnListItem vAlign="Middle">
+                        <cells>
+                            <Text text="{form>mietflaeche}" />
+                            <Text text="{form>bezeichnung}" />
+                            <Text text="{form>nutzungsart}" />
+                            <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                                <items>
+                                    <core:Item text="Lager" />
+                                </items>
+                            </Select>
+                            <Text text="{form>hauptnutzflaeche}" />
+                            <Input value="{form>mietflaecheAlternativ}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Text text="{form>nachhaltigeMiete}" />
+                            <Input value="{form>angebotsmiete}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>grundbaukosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>mieterausbaukosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                        </cells>
+                    </ColumnListItem>
+                    
+                </items>
+            </Table>
+            
+            <!-- 
+            </ScrollContainer>
+            -->
+                       
+            
+            <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+            
+                <items>
+                    <FlexBox>
+                        <items>
+                            <Button text="Mietflächen hinzufügen" icon="sap-icon://sys-add" press="onMietflaechenAngabeHinzufuegenButtonPress" class="sapUiSmallMarginEnd" />
+                            <Button text="Mietflächen entfernen" icon="sap-icon://sys-minus" press="onMietflaechenAngabenLoeschenButtonPress" />
+                        </items>
+                        <layoutData>
+							<FlexItemData growFactor="1" />
+						</layoutData>
+                    </FlexBox>
+                    
+                    <FlexBox justifyContent="End">
+                        <items>
+                            <Button text="Ausbaukosten verteilen" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
+                        </items>
+                        <layoutData>
+							<FlexItemData growFactor="1" />
+						</layoutData>
+                    </FlexBox>
+                
+                </items>
+            </FlexBox>
+                    
+            <f:SimpleForm
+                title="Gemeinsame Angaben"
+                minWidth="1024"
+                maxContainerCols="2"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanL="6"
+                labelSpanM="2"
+                emptySpanL="0"
+                emptySpanM="0"
+                columnsL="2"
+                columnsM="2" >
+
+                <f:content>
+                    <core:Title text="" />
+                    
+                    <Label text="Mietbeginn" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="dateMietbeginn" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    
+                    <Label text="Laufzeit bis 1st break option in Monaten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input value="60" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    
+                    <Label text="Gültigkeit Konditioneneinigung" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="dateGueltigkeitKonditioneneinigung" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    
+                    <core:Title text="" />
+                    
+                    <Label text="Mietfreie Zeiten in Monaten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input value="6" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    
+                    <Label text="Maklerkosten in Monatsmieten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input value="3" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    
+                    <Label text="Beratungskosten in Monatsmieten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input value="1" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    
+                </f:content>
+
+			</f:SimpleForm>
+
+            <f:SimpleForm
+                title="Sonstiges"
+                minWidth="1024"
+                maxContainerCols="2"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanL="3"
+                labelSpanM="3"
+                emptySpanL="0"
+                emptySpanM="0"
+                columnsL="1"
+                columnsM="1" >
+
+                <f:content>
+                    <core:Title text="" />
+                    
+                    <Label text="Status" />
+                    <Select width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <items>
+                            <core:Item text="Ausbauplanung - 40%" />
+                        </items>
+                    </Select>
+                    
+                    <Label text="Anmerkung" />
+                    <Select width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <items>
+                            <core:Item text="Mietfläche in Auswahlool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekt am Markt" />
+                        </items>
+                    </Select>
+                    
+                    <Label text="Bemerkung" />
+                    <TextArea value="Interessent kann sich noch nicht entscheiden" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    
+                </f:content>
+
+			</f:SimpleForm>
+
+            <Table>
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="Miete und Kosten" level="H2"/>
+                    </Toolbar>
+                </headerToolbar>
+                
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Bezeichnung" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+                        <Text text="Vermietungsaktivität" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+                        <Text text="Konditioneneinigung" />
+                    </Column>
+                </columns>
+                
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="Miete gesamt" />
+                            <Text text="113.880,00" />
+                            <Text text="105.095,10" />
+                        </cells>
+                    </ColumnListItem>
+                    
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="Kosten gesamt" />
+                            <Text text="1.813.999,00" />
+                            <Text text="1.760.151,00" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+
+
 		</content>
+        
+        <!--
+        <FlexBox justifyContent="End" class="sapUiSmallMargin">
+            <items>
+				<Button text="Speichern" type="Accept" icon="sap-icon://accept" class="sapUiSmallMarginEnd" />
+				<Button text="Zur Genehmigung vorlegen" class="sapUiSmallMarginEnd" />
+				<Button text="Genehmigen/Reaktivieren" class="sapUiSmallMarginEnd" />
+                <Button text="Genehmigung zurückziehen" class="sapUiSmallMarginEnd" />
+                <Button text="Drucken" icon="sap-icon://print" />
+            </items>
+        </FlexBox>
+        -->
+
+        <footer>
+			<OverflowToolbar>
+				<Button text="Zur Genehmigung vorlegen" icon="sap-icon://request" />
+				<Button text="Genehmigen/Reaktivieren" icon="sap-icon://accept" />
+                <Button text="Genehmigung zurückziehen" icon="sap-icon://undo" />
+                <Button text="Drucken" icon="sap-icon://print" />
+                <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="Speichern" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
+                    <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
+                </Button>
+                <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="Abbrechen" icon="sap-icon://decline" type="Reject" press="onAbbrechenButtonPress" >
+                    <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
+                </Button>
+			</OverflowToolbar>
+		</footer>
+
+        
 	</Page>
-</core:View>
+            
+</mvc:View>
+
