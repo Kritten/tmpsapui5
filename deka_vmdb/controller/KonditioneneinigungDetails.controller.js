@@ -6,7 +6,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
-                        
+        
 		onInit: function(oEvent){
             
             jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
@@ -108,6 +108,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit");
             
+            var wirtschaftseinheitId = oEvent.getParameter("arguments").weId;
+                        
             this.onKonditioneneinigungAnzeigen(oEvent);
             this.getView().getModel("form").setProperty("/modus", "new");
         },
@@ -169,22 +171,44 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             {
                 this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.None);   
                 this.getView().getModel("form").setProperty("/modus", "show");
-            }            
+            }
         },
         
         onAbbrechenButtonPress: function(evt){
             jQuery.sap.log.info(".. onAbbrechenButtonPress");          
             
-            // wenn modus == edit
-            // -> Änderungen Verwerfen
-            // -> modus = show
-            var oldFormData = JSON.parse(this._oldFormDataJSON);
-            var formModel = new sap.ui.model.json.JSONModel(oldFormData);
-            this.getView().setModel(formModel, "form");
-            this.getView().getModel("form").setProperty("/modus", "show");
+            var modus = this.getView().getModel("form").getProperty("/modus");           
             
-            // wenn modus == new
-            // -> Änderungen Verwerfen und Navigation zurück
+            if(modus === "new")
+            {
+                // wenn modus == new
+                // -> Änderungen Verwerfen und Navigation zurück
+                
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                
+                MessageBox.confirm("Wollen Sie den Vorgang wirklich abbrechen?", {
+                    title:"Hinweis",
+                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                    onClose: function(action){
+                        if(action === sap.m.MessageBox.Action.YES){
+                            window.history.go(-1);
+                        }
+                    }
+                });
+                
+            }
+            else if(modus === "edit")
+            {
+                // wenn modus == edit
+                // -> Änderungen Verwerfen
+                // -> modus = show
+                
+                var oldFormData = JSON.parse(this._oldFormDataJSON);
+                var formModel = new sap.ui.model.json.JSONModel(oldFormData);
+                this.getView().setModel(formModel, "form");
+                this.getView().getModel("form").setProperty("/modus", "show");
+            }            
+
         },
         
         onMietflaechenAngabenLoeschenButtonPress: function(oEvent){

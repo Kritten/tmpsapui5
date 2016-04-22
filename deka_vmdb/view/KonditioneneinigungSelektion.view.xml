@@ -37,35 +37,17 @@
 					</items>
 				</ComboBox>
 
-				<FacetFilter id="idFacetFilter" showPersonalization="true" reset="onhandleFacetFilterReset">
+				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" lists="{kondSel>/facetfilters}" >
 					<lists>
-						<FacetFilterList title="ID"
-							multiselect="true" listClose="handleListClose" items="{kondSel>/data}">
+						<FacetFilterList title="{kondSel>filterName}" items="{kondSel>values}" multiselect="true" listClose="onFacetFilterListClose" >
 							<items>
-								<FacetFilterItem text="{kondSel>id}" key="{kondSel>id}"
-									count="{data}" />
-									
-							</items>
-						</FacetFilterList>
-						<FacetFilterList title="Mietbeginn Test"
-							multiselect="true" listClose="handleListClose" items="{kondSel>/data}">
-							<items>
-								<FacetFilterItem text="{
-										path: 'kondSel>mietbegin',
-										type: 'sap.ui.model.type.Date',
-										formatOptions: {
-											style: 'short'
-										}
-								}" key="{kondSel>mietbegin}"
-									count="{data}" />
-									
+								<FacetFilterItem text="{kondSel>text}" key="{kondSel>key}" />
 							</items>
 						</FacetFilterList>
 					</lists>
 				</FacetFilter>
 
-				<Table id="idKondSelTable" inset="false" 
-				itemPress="onItemPress" items="{ path: 'kondSel>/data' }">
+				<Table id="idKondSelTable" inset="false" itemPress="onItemPress" items="{ path: 'kondSel>/data' }">
 					<headerToolbar>
 						<Toolbar>
 							<Title text="{i18n>KOND_SEL_TAB_TITLE}" level="H4" />

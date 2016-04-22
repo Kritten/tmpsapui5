@@ -68,7 +68,6 @@
 						"name" : "konditioneneinigungAnlegenMv",
 						"view" : "KonditioneneinigungDetails",
 						"targetAggregation" : "pages"
-						
 					}]
 				},
 				{

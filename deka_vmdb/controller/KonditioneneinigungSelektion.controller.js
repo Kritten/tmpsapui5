@@ -9,91 +9,103 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					"work": "In Bearbeitung"
 				},
 				
-				
 				onInit : function(evt) {
-					this.getView().setModel(sap.ui.getCore().getModel("i18n"),
-							"i18n");
+					this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
 
-					var kondsel = { data :[ {
-						favorit : true,
-						id : "KE_123456",
-						mietbegin : new Date("2014/01/01"),
-						laufzeit : 120,
-						gueltig_bis : new Date("2014/03/31"),
-						mietflaeche : "9-30/599/01010001",
-						bezeichnung : "MF Handel/Gastronomie",
-						nutzungsart : "Handel, Gastronomie",
-						hauptnutzfl : 4467,
-						angebotsmiete : 10,
-						grundausbau : 20,
-						mieterausbau : 20,
-						we : "0599",
-						we_descr : "20006 Washington, 1999 K Street",
-						status : "Konditioneneinigung",
-						anmerkung : "In Bearbeitung"
-					}, {
-						favorit : true,
-						id : "KE_123456",
-						mietbegin : new Date("2014/01/01"),
-						laufzeit : 120,
-						gueltig_bis : new Date("2014/03/31"),
-						mietflaeche : "9-30/599/01010002",
-						bezeichnung : "MF Büro 1. OG",
-						nutzungsart : "Büro",
-						hauptnutzfl : 4467,
-						angebotsmiete : 10,
-						grundausbau : 20,
-						mieterausbau : 20,
-						we : "0599",
-						we_descr : "20006 Washington, 1999 K Street",
-						status : "Konditioneneinigung",
-						anmerkung : "In Bearbeitung"
-					}, {
-						favorit : false,
-						id : "KE_258961",
-						mietbegin : new Date("2014/05/01"),
-						laufzeit : 96,
-						gueltig_bis : new Date("2014/09/30"),
-						mietflaeche : "9-30/599/01020001",
-						bezeichnung : "MF Büro 2. OG",
-						nutzungsart : "Büro",
-						hauptnutzfl : 5000,
-						angebotsmiete : 7,
-						grundausbau : 15,
-						mieterausbau : 15,
-						we : "0599",
-						we_descr : "20006 Washington, 1999 K Street",
-						status : "Ausbauplanung - 40%",
-						anmerkung : "Mietfläche in Auswahlpool mit Konkurrenzobjekten"
-					}, {
-						id : "KE_058961",
-						mietbegin : new Date("2014/05/01"),
-						laufzeit : 96,
-						gueltig_bis : new Date("2014/09/30"),
-						mietflaeche : "9-30/599/01020001",
-						bezeichnung : "MF Büro 5. OG",
-						nutzungsart : "Büro",
-						hauptnutzfl : 5000,
-						angebotsmiete : 7,
-						grundausbau : 15,
-						mieterausbau : 15,
-						we : "0599",
-						we_descr : "20006 Washington, 1999 K Street",
-						status : "Ausbauplanung - 40%",
-						anmerkung : "Mietfläche in Auswahlpool mit Konkurrenzobjekten"
-					}],
-					facetfilter : [{
-	               		title: "Liste ID",
-               			item: {id: "id"}
-               		}]
-					
+					var kondsel = { 
+
+						data: [{
+							favorit : true,
+							id : "KE_123456",
+							mietbegin : new Date("2014/01/01"),
+							laufzeit : 120,
+							gueltig_bis : new Date("2014/03/31"),
+							mietflaeche : "9-30/599/01010001",
+							bezeichnung : "MF Handel/Gastronomie",
+							nutzungsart : "Handel, Gastronomie",
+							hauptnutzfl : 4467,
+							angebotsmiete : 10,
+							grundausbau : 20,
+							mieterausbau : 20,
+							we : "0599",
+							we_descr : "20006 Washington, 1999 K Street",
+							status : "Konditioneneinigung",
+							anmerkung : "In Bearbeitung"
+						}, 
+						{
+							favorit : true,
+							id : "KE_123456",
+							mietbegin : new Date("2014/01/01"),
+							laufzeit : 120,
+							gueltig_bis : new Date("2014/03/31"),
+							mietflaeche : "9-30/599/01010002",
+							bezeichnung : "MF Büro 1. OG",
+							nutzungsart : "Büro",
+							hauptnutzfl : 4467,
+							angebotsmiete : 10,
+							grundausbau : 20,
+							mieterausbau : 20,
+							we : "0599",
+							we_descr : "20006 Washington, 1999 K Street",
+							status : "Konditioneneinigung",
+							anmerkung : "In Bearbeitung"
+						}, 
+						{
+							favorit : false,
+							id : "KE_258961",
+							mietbegin : new Date("2014/05/01"),
+							laufzeit : 96,
+							gueltig_bis : new Date("2014/09/30"),
+							mietflaeche : "9-30/599/01020001",
+							bezeichnung : "MF Büro 2. OG",
+							nutzungsart : "Büro",
+							hauptnutzfl : 5000,
+							angebotsmiete : 7,
+							grundausbau : 15,
+							mieterausbau : 15,
+							we : "0599",
+							we_descr : "20006 Washington, 1999 K Street",
+							status : "Ausbauplanung - 40%",
+							anmerkung : "Mietfläche in Auswahlpool mit Konkurrenzobjekten"
+						}, 
+						{
+							id : "KE_058961",
+							mietbegin : new Date("2014/05/01"),
+							laufzeit : 96,
+							gueltig_bis : new Date("2014/09/30"),
+							mietflaeche : "9-30/599/01020001",
+							bezeichnung : "MF Büro 5. OG",
+							nutzungsart : "Büro",
+							hauptnutzfl : 5000,
+							angebotsmiete : 7,
+							grundausbau : 15,
+							mieterausbau : 15,
+							we : "0599",
+							we_descr : "20006 Washington, 1999 K Street",
+							status : "Ausbauplanung - 40%",
+							anmerkung : "Mietfläche in Auswahlpool mit Konkurrenzobjekten"
+						}],
+						
+						facetfilters : [{
+							"filterName": "ID", 
+							"values": [
+								{"key": "KE_1", "text": "KE Eins"},
+								{"key": "KE_2", "text": "KE Zwei"},
+								{"key": "KE_2", "text": "KE Zwei"}
+							]
+						},
+						{
+							"filterName": "Mietbeginn", 
+							"values": [
+								{"key": "2015-01-01", "text": "2015-01-01"}, 
+								{"key": "2015-01-02", "text": "2015-01-02"}, 
+								{"key": "2015-01-03", "text": "2015-01-02"}
+							]
+						}]
 					};
 					
-					//					               
-	                //{id: "id", field: "id"},
-	                //{id: "mietbegin", field: "mietbegin"}
-					//
-
+					
+					
 					var kondModel = new sap.ui.model.json.JSONModel(kondsel);
 					this.getView().setModel(kondModel, "kondSel");
 					
@@ -140,27 +152,8 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 				},
 				
 				// Auswahl der anzuzeigenden KEs
-				onComboBoxChange : function(evt) {		
-					var selectedKey = evt.getSource().getSelectedKey();
-				
-					switch (selectedKey) 
-					{
-						case "all":
-							// Alle Filter löschen
-							this._oKondTab.filter([]);	
-						break;
-						
-						case "work":
-							// Filter neu setzen
-							var oKEFilter = this._oKondTab.filter;	
-							oKEFilter = new Filter("anmerkung", sap.ui.model.FilterOperator.EQ, this._map[selectedKey]);;
-							this._oKondTab.filter([oKEFilter]);
-						break;
-						
-						default:
-						break;
-					}
-
+				onComboBoxChange : function(evt) {
+					this.applyFilters();
 				},
 				
 				// Klick auf eine Zeile in der Tabelle
@@ -272,49 +265,46 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 				},
 				
 				// Facet Filter
-				onhandleFacetFilterReset : function(evt) {
+				onFacetFilterReset: function(oEvent) {
 					
+					var lists = oEvent.getSource().getLists();
+					
+					lists.forEach(function(list){
+						list.setSelectedKeys();
+					});
+					
+					this.applyFilters();
 				},
 				
-				_applyFilter: function(oFilter) {
-					// Get the table (last thing in the VBox) and apply the filter
-					var aVBoxItems = this.getView().byId("idKondSelTable").getItems();
-					var oTable = aVBoxItems[aVBoxItems.length-1];
-					oTable.getBinding("items").filter(oFilter);
+				onFacetFilterListClose: function(oEvent){
+					
+					this.applyFilters();
 				},
-		 
-				handleFacetFilterReset: function(oEvent) {
-					var oFacetFilter = sap.ui.getCore().byId(oEvent.getParameter("id"));
-					var aFacetFilterLists = oFacetFilter.getLists();
-					for(var i=0; i < aFacetFilterLists.length; i++) {
-						for(var i=0; i < aFacetFilterLists.length; i++) {
-							aFacetFilterLists[i].setSelectedKeys();
-						}
+				
+				applyFilters: function(){
+					
+					var table = this.getView().byId("idKondSelTable");
+					
+					var filtersToApply = [];
+					
+					var dropdownFilter = this.getView().byId("cb_work");
+					var selectedDropdownFilter = dropdownFilter.getSelectedKey();
+					
+					if(selectedDropdownFilter === "work")
+					{
+						var filter = new Filter("anmerkung", sap.ui.model.FilterOperator.EQ, "In Bearbeitung");
+						filtersToApply.push(filter);
 					}
-					this._applyFilter([]);
-				},
-		 
-				handleListClose: function(oEvent) {
-					// Get the Facet Filter lists and construct a (nested) filter for the binding
-					var oFacetFilter = oEvent.getSource().getParent();
-					var mFacetFilterLists = oFacetFilter.getLists().filter(function(oList) {
-							return oList.getActive() && oList.getSelectedItems().length;
-						});
-		 
-		 
-					// Build the nested filter with ORs between the values of each group and
-					// ANDs between each group
-					var oFilter = new Filter(mFacetFilterLists.map(function(oList) {
-						return new Filter(oList.getSelectedItems().map(function(oItem) {
-							return new Filter(oList.getTitle(), "EQ", oItem.getText());
-						}), false);
-					}), true);
-		 
-					this._applyFilter(oFilter);
+					
+					
+					var filterLists = this.getView().byId("idFacetFilter").getLists();
+					console.log(filterLists);
+					
+					// AND Filter auf listen
+					// OR Filter auf list-items
+					
+					table.getBinding("items").filter(filtersToApply);
 				}
-				
-				
-			
 
 			});
 });

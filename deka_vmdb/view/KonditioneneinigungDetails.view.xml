@@ -25,46 +25,6 @@
 				</attributes>
 			</ObjectHeader>
             
-            <!--
-			<IconTabBar
-				expanded="{device>/isNoPhone}"
-				class="sapUiSmallMarginBottom sapUiResponsiveContentPadding">
-				<items>
-					<IconTabFilter text="Objektangaben">
-						<f:SimpleForm
-							minWidth="1024"
-							maxContainerCols="2"
-							layout="ResponsiveGridLayout" >
-							<Label text="Buchungskreis"/>
-							<Text text="Value"/>
-                            
-                            <Label text="Wirtschaftseinheit"/>
-                            <Text text="Value"/>
-                            
-                            <Label text="Bezeichnung"/>
-                            <Text text="Value"/>
-                            
-                            <Label text="Flächeneinheit"/>
-                            <ComboBox>
-                                <core:Item key="1" text="m²" />
-                                <core:Item key="2" text="dm²" />
-                            </ComboBox>
-                            
-                            <Label text="Währung"/>
-                            <ComboBox>
-                                <core:Item key="1" text="€" />
-                                <core:Item key="2" text="$" />
-                            </ComboBox>
-						</f:SimpleForm>
-					</IconTabFilter>
-				</items>
-			</IconTabBar>
-            -->
-            
-            <!-- 
-            <ScrollContainer height="400px" class="sapUiSmallMargin" vertical="true" >
-            -->
-            
             <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{ path: 'form>/konditioneneinigung/mietflaechenangaben' }">
                 
                 <headerToolbar>
@@ -131,10 +91,6 @@
                 </items>
             </Table>
             
-            <!-- 
-            </ScrollContainer>
-            -->
-                       
             
             <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
             
@@ -276,21 +232,8 @@
                 </items>
             </Table>
 
-
 		</content>
         
-        <!--
-        <FlexBox justifyContent="End" class="sapUiSmallMargin">
-            <items>
-				<Button text="Speichern" type="Accept" icon="sap-icon://accept" class="sapUiSmallMarginEnd" />
-				<Button text="Zur Genehmigung vorlegen" class="sapUiSmallMarginEnd" />
-				<Button text="Genehmigen/Reaktivieren" class="sapUiSmallMarginEnd" />
-                <Button text="Genehmigung zurückziehen" class="sapUiSmallMarginEnd" />
-                <Button text="Drucken" icon="sap-icon://print" />
-            </items>
-        </FlexBox>
-        -->
-
         <footer>
 			<OverflowToolbar>
 				<Button text="Zur Genehmigung vorlegen" icon="sap-icon://request" />
