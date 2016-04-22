@@ -20,7 +20,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             // - Konditioneneinigung anzeigen
             // - Konditioneneinigung anlegen auf Basis einer Wirtschaftseinheit
             // - Konditioneneinigung anlegen auf Basis eines Mietvertrags
-            // Test
             
             oRouter.getRoute("konditioneneinigungDetails").attachPatternMatched(this.onKonditioneneinigungAnzeigen, this);
             // oRouter.getRoute("konditioneneinigungAnlegenWe").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit, this);
