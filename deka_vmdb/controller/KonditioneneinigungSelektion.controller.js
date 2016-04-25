@@ -104,6 +104,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 						}]
 					};
 					
+					/*
 					idFilterValues = [];
 					mietbeginFilterValues = [];
 					
@@ -111,7 +112,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					kondsel.data.forEach(function(konditioneneinigung){
 						idFilterValues.push(konditioneneinigung.id);
 					})
-					
+					*/
 					
 					var kondModel = new sap.ui.model.json.JSONModel(kondsel);
 					this.getView().setModel(kondModel, "kondSel");
