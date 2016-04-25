@@ -17,7 +17,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 						data: [{
 							favorit : true,
 							id : "KE_123456",
-							mietbegin : new Date("2014/01/01"),
+							mietbegin : "2014/01/01",
 							laufzeit : 120,
 							gueltig_bis : new Date("2014/03/31"),
 							mietflaeche : "9-30/599/01010001",
@@ -35,7 +35,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 						{
 							favorit : true,
 							id : "KE_123456",
-							mietbegin : new Date("2014/01/01"),
+							mietbegin : "2014/01/01",
 							laufzeit : 120,
 							gueltig_bis : new Date("2014/03/31"),
 							mietflaeche : "9-30/599/01010002",
@@ -53,7 +53,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 						{
 							favorit : false,
 							id : "KE_258961",
-							mietbegin : new Date("2014/05/01"),
+							mietbegin : "2014/05/01",
 							laufzeit : 96,
 							gueltig_bis : new Date("2014/09/30"),
 							mietflaeche : "9-30/599/01020001",
@@ -70,7 +70,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 						}, 
 						{
 							id : "KE_058961",
-							mietbegin : new Date("2014/05/01"),
+							mietbegin : "2014/05/01",
 							laufzeit : 96,
 							gueltig_bis : new Date("2014/09/30"),
 							mietflaeche : "9-30/599/01020001",
@@ -87,23 +87,30 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 						}],
 						
 						facetfilters : [{
-							"filterName": "ID", 
+							"filterName": "id", 
 							"values": [
-								{"key": "KE_1", "text": "KE Eins"},
-								{"key": "KE_2", "text": "KE Zwei"},
-								{"key": "KE_2", "text": "KE Zwei"}
+								{"key": "KE_123456", "text": "KE_123456"},
+								{"key": "KE_258961", "text": "KE_258961"},
+								{"key": "KE_058961", "text": "KE_058961"}
 							]
 						},
 						{
-							"filterName": "Mietbeginn", 
+							"filterName": "mietbegin", 
 							"values": [
-								{"key": "2015-01-01", "text": "2015-01-01"}, 
-								{"key": "2015-01-02", "text": "2015-01-02"}, 
-								{"key": "2015-01-03", "text": "2015-01-02"}
+								{"key": "2014/01/01", "text": "2014/01/01"}, 
+								{"key": "2014/05/01", "text": "2014/05/01"}, 
+								{"key": "2014/09/30", "text": "2014/09/30"}
 							]
 						}]
 					};
 					
+					idFilterValues = [];
+					mietbeginFilterValues = [];
+					
+					// TODO: array to set, set values into model
+					kondsel.data.forEach(function(konditioneneinigung){
+						idFilterValues.push(konditioneneinigung.id);
+					})
 					
 					
 					var kondModel = new sap.ui.model.json.JSONModel(kondsel);
@@ -135,14 +142,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					var mvModel = new sap.ui.model.json.JSONModel(mietvertraege);
 					this.getView().setModel(mvModel, "mv");		
 					
-					// Auswahl der vorbelegten ComboBox auslesen (hier wird kein Event erzeugt)
-					var comboBox = this.getView().byId("cb_work");
-					var selKey = comboBox.getSelectedKey();
-						
-					var oKEFilter = new Filter("anmerkung", sap.ui.model.FilterOperator.EQ, this._map[selKey]);
-					this._oKondTab = this.getView().byId("idKondSelTable").getBinding("items");					
-					this._oKondTab.filter([oKEFilter]);
-
+					this.applyFilters();
 				},
 
 				// Klick auf den Zurück-Pfeil
@@ -266,13 +266,13 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 				
 				// Facet Filter
 				onFacetFilterReset: function(oEvent) {
-					
+								
 					var lists = oEvent.getSource().getLists();
-					
+										
 					lists.forEach(function(list){
 						list.setSelectedKeys();
 					});
-					
+
 					this.applyFilters();
 				},
 				
@@ -296,14 +296,38 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 						filtersToApply.push(filter);
 					}
 					
+					var facetFilterLists = this.getView().byId("idFacetFilter").getLists();
+																		
+					facetFilterLists.forEach(function(list){
+						
+						if(list.getSelectedItems().length > 0){
+							
+							var itemFilters = [];
+																		
+							list.getSelectedItems().forEach(function(item){
+								
+								itemFilters.push( new Filter(list.getTitle(), sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							});
+							
+							var listFilter = new Filter(itemFilters, false);
+							filtersToApply.push(listFilter);
+						}
+						
+					});
 					
-					var filterLists = this.getView().byId("idFacetFilter").getLists();
-					console.log(filterLists);
+					console.log("filtersToApply.length = " + filtersToApply.length);
 					
-					// AND Filter auf listen
-					// OR Filter auf list-items
-					
-					table.getBinding("items").filter(filtersToApply);
+					if(filtersToApply.length > 0)
+					{
+						// Alle Filter mit AND verknüpfen
+						var combinedFilter = new Filter(filtersToApply, true);
+						table.getBinding("items").filter(combinedFilter);
+					}
+					else
+					{
+						table.getBinding("items").filter([]);
+					}
+
 				}
 
 			});

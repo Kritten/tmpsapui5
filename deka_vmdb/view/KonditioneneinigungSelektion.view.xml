@@ -37,7 +37,7 @@
 					</items>
 				</ComboBox>
 
-				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" lists="{kondSel>/facetfilters}" >
+				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" lists="{kondSel>/facetfilters}" type="Simple" >
 					<lists>
 						<FacetFilterList title="{kondSel>filterName}" items="{kondSel>values}" multiselect="true" listClose="onFacetFilterListClose" >
 							<items>
@@ -99,13 +99,7 @@
 								
 								
 								<Text text="{kondSel>id}" />
-								<Text text="{
-										path: 'kondSel>mietbegin',
-										type: 'sap.ui.model.type.Date',
-										formatOptions: {
-											style: 'short'
-										}
-								}" />
+								<Text text="{kondSel>mietbegin}" />
 								<Text text="{
 										path: 'kondSel>laufzeit',
 										type: 'sap.ui.model.type.Integer',
