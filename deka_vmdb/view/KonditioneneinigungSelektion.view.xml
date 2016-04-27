@@ -1,6 +1,10 @@
-<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.m" controllerName="ag.bpc.Deka.controller.KonditioneneinigungSelektion"
-	xmlns:html="http://www.w3.org/1999/xhtml">
+<core:View 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	controllerName="ag.bpc.Deka.controller.KonditioneneinigungSelektion">
+	
 	<Page title="Konditioneneinigung (Selektion)" showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
 		<content>
 
@@ -32,11 +36,11 @@
 
 				<ComboBox id = "cb_work" selectedKey = "work" selectionChange = "onComboBoxChange">
 					<items>
-						<core:Item key="all" text="{i18n>KOND_SEL_DD_ALL}" />
 						<core:Item key="work" text="{i18n>KOND_SEL_DD_WORK}" />
+						<core:Item key="all" text="{i18n>KOND_SEL_DD_ALL}" />
 					</items>
 				</ComboBox>
-
+				
 				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" lists="{kondSel>/facetfilters}" type="Simple" >
 					<lists>
 						<FacetFilterList title="{kondSel>filterName}" items="{kondSel>values}" multiselect="true" listClose="onFacetFilterListClose" >
@@ -46,7 +50,7 @@
 						</FacetFilterList>
 					</lists>
 				</FacetFilter>
-
+				
 				<Table id="idKondSelTable" inset="false" itemPress="onItemPress" items="{ path: 'kondSel>/data' }">
 					<headerToolbar>
 						<Toolbar>
@@ -54,10 +58,10 @@
 						</Toolbar>
 					</headerToolbar>
 					<columns>
-						<Column minScreenWidth="Tablet" mergeDuplicates="true" mergeFunctionName="getSrc">
+						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>KOND_SEL_TAB_FAV}" />
 						</Column>
-						<Column minScreenWidth="Tablet" mergeDuplicates="true">
+						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>KOND_SEL_TAB_ID}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
@@ -165,9 +169,6 @@
 						</ColumnListItem>
 					</items>
 				</Table>
-
-
-
 
 			</Panel>
 

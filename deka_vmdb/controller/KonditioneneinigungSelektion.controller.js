@@ -3,38 +3,45 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 	"use strict";
 	return Controller.extend(
 			"ag.bpc.Deka.controller.KonditioneneinigungSelektion", {
-	
-				_map: {
-					"all": undefined,
-					"work": "In Bearbeitung"
-				},
 				
 				onInit : function(evt) {
+					jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
+					jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onInit");
+					
+					var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+					oRouter.getRoute("konditioneneinigungSelektion").attachPatternMatched(this.onPatternMatched, this);
+				},
+
+				onPatternMatched: function(oEvent){
+					jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onPatternMatched");
+					
 					this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
 
 					var kondsel = { 
 
 						data: [{
-							favorit : true,
-							id : "KE_123456",
-							mietbegin : "2014/01/01",
-							laufzeit : 120,
-							gueltig_bis : new Date("2014/03/31"),
-							mietflaeche : "9-30/599/01010001",
-							bezeichnung : "MF Handel/Gastronomie",
-							nutzungsart : "Handel, Gastronomie",
-							hauptnutzfl : 4467,
-							angebotsmiete : 10,
-							grundausbau : 20,
-							mieterausbau : 20,
-							we : "0599",
-							we_descr : "20006 Washington, 1999 K Street",
-							status : "Konditioneneinigung",
-							anmerkung : "In Bearbeitung"
+							favorit: true,
+							id: "KE_123456",
+							buchungskreis: "9-30",
+							mietbegin: "2014/01/01",
+							laufzeit: 120,
+							gueltig_bis: new Date("2014/03/31"),
+							mietflaeche: "9-30/599/01010001",
+							bezeichnung: "MF Handel/Gastronomie",
+							nutzungsart: "Handel, Gastronomie",
+							hauptnutzfl: 4467,
+							angebotsmiete: 10,
+							grundausbau: 20,
+							mieterausbau: 20,
+							wirtschaftseinheit: "0599",
+							we_descr: "20006 Washington, 1999 K Street",
+							status: "Konditioneneinigung",
+							anmerkung: "In Bearbeitung"
 						}, 
 						{
 							favorit : true,
 							id : "KE_123456",
+							buchungskreis: "9-30",
 							mietbegin : "2014/01/01",
 							laufzeit : 120,
 							gueltig_bis : new Date("2014/03/31"),
@@ -45,7 +52,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 							angebotsmiete : 10,
 							grundausbau : 20,
 							mieterausbau : 20,
-							we : "0599",
+							wirtschaftseinheit: "0599",
 							we_descr : "20006 Washington, 1999 K Street",
 							status : "Konditioneneinigung",
 							anmerkung : "In Bearbeitung"
@@ -53,6 +60,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 						{
 							favorit : false,
 							id : "KE_258961",
+							buchungskreis: "9-30",
 							mietbegin : "2014/05/01",
 							laufzeit : 96,
 							gueltig_bis : new Date("2014/09/30"),
@@ -63,13 +71,15 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 							angebotsmiete : 7,
 							grundausbau : 15,
 							mieterausbau : 15,
-							we : "0599",
+							wirtschaftseinheit: "0599",
 							we_descr : "20006 Washington, 1999 K Street",
 							status : "Ausbauplanung - 40%",
 							anmerkung : "Mietfläche in Auswahlpool mit Konkurrenzobjekten"
 						}, 
 						{
+							favorit : false,
 							id : "KE_058961",
+							buchungskreis: "9-30",
 							mietbegin : "2014/05/01",
 							laufzeit : 96,
 							gueltig_bis : new Date("2014/09/30"),
@@ -80,39 +90,41 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 							angebotsmiete : 7,
 							grundausbau : 15,
 							mieterausbau : 15,
-							we : "0599",
+							wirtschaftseinheit : "0599",
 							we_descr : "20006 Washington, 1999 K Street",
 							status : "Ausbauplanung - 40%",
 							anmerkung : "Mietfläche in Auswahlpool mit Konkurrenzobjekten"
 						}],
 						
-						facetfilters : [{
-							"filterName": "id", 
-							"values": [
-								{"key": "KE_123456", "text": "KE_123456"},
-								{"key": "KE_258961", "text": "KE_258961"},
-								{"key": "KE_058961", "text": "KE_058961"}
-							]
-						},
-						{
-							"filterName": "mietbegin", 
-							"values": [
-								{"key": "2014/01/01", "text": "2014/01/01"}, 
-								{"key": "2014/05/01", "text": "2014/05/01"}, 
-								{"key": "2014/09/30", "text": "2014/09/30"}
-							]
-						}]
+						facetfilters: null,
+						
+						facetfiltersNew: null
 					};
 					
-					/*
-					idFilterValues = [];
-					mietbeginFilterValues = [];
+					var filterBuchungskreisValues = [];
+					var filterWirtschaftskreisValues = [];
 					
-					// TODO: array to set, set values into model
 					kondsel.data.forEach(function(konditioneneinigung){
-						idFilterValues.push(konditioneneinigung.id);
-					})
-					*/
+						filterBuchungskreisValues.push(konditioneneinigung.buchungskreis);
+						filterWirtschaftskreisValues.push(konditioneneinigung.wirtschaftseinheit);
+					});
+					
+					kondsel.facetfilters = [{
+						"filterName": "Favorit",
+						"values": [{"key": true, "text": "Ja"}, {"key": false, "text": "Nein"}]
+					},
+					{
+						"filterName": "Buchungskreis",
+						"values": Array.from(new Set(filterBuchungskreisValues)).map(function(buchungskreis){
+							return {"key": buchungskreis, "text": buchungskreis};
+						})
+					},
+					{
+						"filterName": "Wirtschaftseinheit",
+						"values": Array.from(new Set(filterWirtschaftskreisValues)).map(function(wirtschaftseinheit){
+							return {"key": wirtschaftseinheit, "text": wirtschaftseinheit}; 
+						})
+					}];
 					
 					var kondModel = new sap.ui.model.json.JSONModel(kondsel);
 					this.getView().setModel(kondModel, "kondSel");
@@ -279,6 +291,63 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 				
 				onFacetFilterListClose: function(oEvent){
 					
+					/*
+					
+					// Untereinander abhängige Filter -> etwas Buggy und kompliziert
+					
+					var data = this.getView().getModel("kondSel").getProperty("/data");
+					
+					var facetFilterLists = this.getView().byId("idFacetFilter").getLists();
+					
+					var selectedIds = [];
+					var selectedMietbegins = [];
+					
+					facetFilterLists.forEach(function(list){
+						
+						list.getSelectedItems().forEach(function(item){
+							
+							if(list.getTitle() === "id"){
+								selectedIds.push( item.getKey() );
+							}
+							
+							if(list.getTitle() === "mietbegin"){
+								selectedMietbegins.push( item.getKey() );
+							}
+							
+						});
+						
+					});
+					
+					console.log(selectedIds);
+					console.log(selectedMietbegins);
+					
+					var filterIdValues = [];
+					var filterMietbeginValues = [];
+					
+					data.forEach(function(konditioneneinigung){
+						
+						if( 
+							( ((selectedIds.length === 0) || selectedIds.includes(konditioneneinigung.id)) && ((selectedMietbegins.length === 0) || selectedMietbegins.includes(konditioneneinigung.mietbegin)) ) 
+						){
+							filterIdValues.push({"key": konditioneneinigung.id, "text": konditioneneinigung.id});
+							filterMietbeginValues.push({"key": konditioneneinigung.mietbegin, "text": konditioneneinigung.mietbegin});
+						}
+						
+					});
+					
+					console.log(filterIdValues);
+					console.log(filterMietbeginValues);
+					
+					this.getView().getModel("kondSel").setProperty("/facetfilters", [{
+						"filterName": "id",
+						"values": filterIdValues
+					},
+					{
+						"filterName": "mietbegin", 
+						"values": filterMietbeginValues
+					}]);
+					*/
+					
 					this.applyFilters();
 				},
 				
@@ -307,7 +376,25 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 																		
 							list.getSelectedItems().forEach(function(item){
 								
-								itemFilters.push( new Filter(list.getTitle(), sap.ui.model.FilterOperator.EQ, item.getKey()) );
+								switch(list.getTitle())
+								{
+									case "Favorit":
+										var boolValue = (item.getKey() === "true") ? true : false;
+										itemFilters.push( new Filter("favorit", sap.ui.model.FilterOperator.EQ, boolValue) );
+									break;
+									
+									case "Buchungskreis":
+										itemFilters.push( new Filter("buchungskreis", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+									break;
+									
+									case "Wirtschaftseinheit":
+										itemFilters.push( new Filter("wirtschaftseinheit", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+									break;
+																		
+									default:
+									break;
+								}
+								
 							});
 							
 							var listFilter = new Filter(itemFilters, false);

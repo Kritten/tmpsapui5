@@ -8,9 +8,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
         
 		onInit: function(oEvent){
-            
             jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
-			
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onInit");
 			
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -26,7 +24,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 		},
 		        
         onKonditioneneinigungAnzeigen: function(oEvent){
-                        
+            
             var form = {
                 "modus": "show", // show, new, edit
                 
