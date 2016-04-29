@@ -1,0 +1,38 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    
+    <TableSelectDialog
+        title="Mietflächen hinzufügen"
+        noDataText="Keine Daten"
+        multiSelect="true"
+        search="onMietflaechenSelektionDialogSearch"
+        confirm="onMietflaechenSelektionDialogConfirm"
+        cancel="onMietflaechenSelektionDialogCancel" 
+        items="{/mietflaechen}">
+            
+        <columns>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="Mietfläche" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="Bezeichnung" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="Nutzungsart" />
+            </Column>
+        </columns>
+            
+		<ColumnListItem>
+			<cells>
+				<Text text="{mietflaeche}" />
+                <Text text="{bezeichnung}" />
+                <Text text="{nutzungsart}" />
+			</cells>
+		</ColumnListItem>
+
+    </TableSelectDialog>
+    
+    
+</core:FragmentDefinition>
