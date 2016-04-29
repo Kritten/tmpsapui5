@@ -4,9 +4,8 @@
 	<SelectDialog
 		noDataText="No Products Found"
 		title="Select Product"
-		search="handleSearch"
-		confirm="handleClose"
-		close="handleClose"
+		search="onSelectDialogSearch"
+		confirm="onSelectDialogConfirm"
 		items="{
 			path: 'anlRbg>/data'
 		}" >

@@ -60,7 +60,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 						{
 							favorit : false,
 							id : "KE_258961",
-							buchungskreis: "9-30",
+							buchungskreis: "9-35",
 							mietbegin : "2014/05/01",
 							laufzeit : 96,
 							gueltig_bis : new Date("2014/09/30"),
@@ -130,10 +130,12 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					this.getView().setModel(kondModel, "kondSel");
 					
 					var wirtschaftseinheiten = { data :[ {
+						type: "we",
 						id : "0599",
 						descr : "20006 Washington, 1999 K Street",
 					},
 					{
+						type: "we",
 						id : "0699",
 						descr : "20006 Washington, 2500 K Street",
 					} ]
@@ -143,10 +145,12 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					this.getView().setModel(weModel, "we");
 					
 					var mietvertraege = { data :[ {
+						type: "mv",
 						id : "MV_123",
 						descr : "Mietvertrag 20006 Washington, 1999 K Street",
 					},
 					{
+						type: "mv",
 						id : "MV_234",
 						descr : "Mietvertrag 20006 Washington, 2500 K Street",
 					} ]
@@ -208,7 +212,6 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 						break;
 					}
 					
-		 
 					// clear the old search filter
 					this._oDialog.getBinding("items").filter([]);
 		 
@@ -217,67 +220,32 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					this._oDialog.open();
 				},
 		 
-				handleSearch : function(oEvent) {				
+				onSelectDialogSearch : function(oEvent) {				
 					var sValue = oEvent.getParameter("value");
 					var oFilter = new Filter("id", sap.ui.model.FilterOperator.Contains, sValue);
 					var oBinding = oEvent.getSource().getBinding("items");
 					oBinding.filter([oFilter]);
 				},
 		 
-				handleClose: function(oEvent) {
+				onSelectDialogConfirm: function(oEvent) {
+					jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onSelectDialogConfirm");
 					
-					console.log("handleClose");
+					var selectedObject = oEvent.getParameter("selectedItem").getBindingContext("anlRbg").getObject();
 					
-					var aContexts = oEvent.getParameter("selectedContexts");
-					
-					console.log(aContexts);
-					
-					if (aContexts.length) {
-						
-						// Holt über die ElementID die Radio Button Group
-						var oRBG = this.getView().byId("RBG_Anlage");
-						var idx = oRBG.getSelectedIndex();
-						
-						console.log(idx);
-
-						switch(idx) {
-						case 0:
-							var weid = this.getView().getModel("we").getProperty(aContexts[0].getPath());
-							
-							// Ruft die Detailsseite auf (Anlegen)
-							this.getOwnerComponent().getRouter().navTo(
-								"konditioneneinigungAnlegenWe", 
-								{
-									weId: weid.id 
-								}
-							);
+					switch(selectedObject.type)
+					{
+						case "we":
+							this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenWe", {weId: selectedObject.id});
 						break;
-						case 1:
-							console.log("Basis MV");
-							
-							var mvid = this.getView().getModel("mv").getProperty(aContexts[0].getPath());
-							
-							console.log(mvid);
-							
-							// Ruft die Detailsseite auf (Anlegen)
-							this.getOwnerComponent().getRouter().navTo(
-								"konditioneneinigungAnlegenMv",
-								{
-									mvId: mvid.id
-								}
-							);
-						break;
-						}				
 						
-						if (! this._oDialog) {						
-							this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungSelektionDialog", this);
-						}
-		
+						case "mv":
+							this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenMv", {mvId: selectedObject.id});
+						break;
 					}
-					oEvent.getSource().getBinding("items").filter([]);			
+	
 				},
 				
-				// Facet Filter
+
 				onFacetFilterReset: function(oEvent) {
 								
 					var lists = oEvent.getSource().getLists();
@@ -288,65 +256,9 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 
 					this.applyFilters();
 				},
+
 				
 				onFacetFilterListClose: function(oEvent){
-					
-					/*
-					
-					// Untereinander abhängige Filter -> etwas Buggy und kompliziert
-					
-					var data = this.getView().getModel("kondSel").getProperty("/data");
-					
-					var facetFilterLists = this.getView().byId("idFacetFilter").getLists();
-					
-					var selectedIds = [];
-					var selectedMietbegins = [];
-					
-					facetFilterLists.forEach(function(list){
-						
-						list.getSelectedItems().forEach(function(item){
-							
-							if(list.getTitle() === "id"){
-								selectedIds.push( item.getKey() );
-							}
-							
-							if(list.getTitle() === "mietbegin"){
-								selectedMietbegins.push( item.getKey() );
-							}
-							
-						});
-						
-					});
-					
-					console.log(selectedIds);
-					console.log(selectedMietbegins);
-					
-					var filterIdValues = [];
-					var filterMietbeginValues = [];
-					
-					data.forEach(function(konditioneneinigung){
-						
-						if( 
-							( ((selectedIds.length === 0) || selectedIds.includes(konditioneneinigung.id)) && ((selectedMietbegins.length === 0) || selectedMietbegins.includes(konditioneneinigung.mietbegin)) ) 
-						){
-							filterIdValues.push({"key": konditioneneinigung.id, "text": konditioneneinigung.id});
-							filterMietbeginValues.push({"key": konditioneneinigung.mietbegin, "text": konditioneneinigung.mietbegin});
-						}
-						
-					});
-					
-					console.log(filterIdValues);
-					console.log(filterMietbeginValues);
-					
-					this.getView().getModel("kondSel").setProperty("/facetfilters", [{
-						"filterName": "id",
-						"values": filterIdValues
-					},
-					{
-						"filterName": "mietbegin", 
-						"values": filterMietbeginValues
-					}]);
-					*/
 					
 					this.applyFilters();
 				},

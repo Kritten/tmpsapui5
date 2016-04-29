@@ -39,56 +39,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                         "mietbeginn": "2016-01-01"
                     },
                     
-                    "mietflaechenangaben": [
-                        {
-                            "mietflaeche": "9-30/599/01010002",
-                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                            "nutzungsart": "Handel, Gastronomie",
-                            "nutzungsartAlternativ": "Lager",
-                            "hauptnutzflaeche": 4467.00,
-                            "mietflaecheAlternativ": 2500.00,
-                            "nachhaltigeMiete": 9.140833,
-                            "angebotsmiete": 12.00,
-                            "grundbaukosten": 20.00,
-                            "mieterausbaukosten": 30.00
-                        },
-                        {
-                            "mietflaeche": "9-30/599/01010002",
-                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                            "nutzungsart": "Handel, Gastronomie",
-                            "nutzungsartAlternativ": "Lager",
-                            "hauptnutzflaeche": 4467.00,
-                            "mietflaecheAlternativ": 2500.00,
-                            "nachhaltigeMiete": 9.140833,
-                            "angebotsmiete": 12.00,
-                            "grundbaukosten": 20.00,
-                            "mieterausbaukosten": 30.00
-                        },
-                        {
-                            "mietflaeche": "9-30/599/01010002",
-                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                            "nutzungsart": "Handel, Gastronomie",
-                            "nutzungsartAlternativ": "Lager",
-                            "hauptnutzflaeche": 4467.00,
-                            "mietflaecheAlternativ": 2500.00,
-                            "nachhaltigeMiete": 9.140833,
-                            "angebotsmiete": 12.00,
-                            "grundbaukosten": 20.00,
-                            "mieterausbaukosten": 30.00
-                        },
-                        {
-                            "mietflaeche": "9-30/599/01010002",
-                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                            "nutzungsart": "Handel, Gastronomie",
-                            "nutzungsartAlternativ": "Lager",
-                            "hauptnutzflaeche": 4467.00,
-                            "mietflaecheAlternativ": 2500.00,
-                            "nachhaltigeMiete": 9.140833,
-                            "angebotsmiete": 12.00,
-                            "grundbaukosten": 20.00,
-                            "mieterausbaukosten": 30.00
-                        }
-                    ]
+                    "mietflaechenangaben": []
                 }
             };
             
@@ -222,6 +173,91 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             jQuery.sap.log.info(".. onMietflaechenAngabeHinzufuegenButtonPress");
             
             // Dialog öffnen
+            
+            if (! this._mietflaechenSelektionDialog) {
+                this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungDetailsMietflaechenSelektion", this);
+                
+                var mietflaechenSelektionDialogModel = new sap.ui.model.json.JSONModel({
+                    "mietflaechen": [
+                        {
+                            "mietflaeche": "9-30/599/01010002",
+                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
+                            "nutzungsart": "Handel, Gastronomie",
+                            "nutzungsartAlternativ": "Lager",
+                            "hauptnutzflaeche": 4467.00,
+                            "mietflaecheAlternativ": 2500.00,
+                            "nachhaltigeMiete": 9.140833,
+                            "angebotsmiete": 12.00,
+                            "grundbaukosten": 20.00,
+                            "mieterausbaukosten": 30.00
+                        },
+                        {
+                            "mietflaeche": "9-30/599/01010002",
+                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
+                            "nutzungsart": "Handel, Gastronomie",
+                            "nutzungsartAlternativ": "Lager",
+                            "hauptnutzflaeche": 4467.00,
+                            "mietflaecheAlternativ": 2500.00,
+                            "nachhaltigeMiete": 9.140833,
+                            "angebotsmiete": 12.00,
+                            "grundbaukosten": 20.00,
+                            "mieterausbaukosten": 30.00
+                        },
+                        {
+                            "mietflaeche": "9-30/599/01010002",
+                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
+                            "nutzungsart": "Handel, Gastronomie",
+                            "nutzungsartAlternativ": "Lager",
+                            "hauptnutzflaeche": 4467.00,
+                            "mietflaecheAlternativ": 2500.00,
+                            "nachhaltigeMiete": 9.140833,
+                            "angebotsmiete": 12.00,
+                            "grundbaukosten": 20.00,
+                            "mieterausbaukosten": 30.00
+                        },
+                        {
+                            "mietflaeche": "9-30/599/01010002",
+                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
+                            "nutzungsart": "Handel, Gastronomie",
+                            "nutzungsartAlternativ": "Lager",
+                            "hauptnutzflaeche": 4467.00,
+                            "mietflaecheAlternativ": 2500.00,
+                            "nachhaltigeMiete": 9.140833,
+                            "angebotsmiete": 12.00,
+                            "grundbaukosten": 20.00,
+                            "mieterausbaukosten": 30.00
+                        }
+                    ]
+                });
+                
+                this._mietflaechenSelektionDialog.setModel(mietflaechenSelektionDialogModel);
+            }
+            
+            this._mietflaechenSelektionDialog.open();
+        },
+        
+        onMietflaechenSelektionDialogConfirm: function(oEvent){
+            jQuery.sap.log.info(".. onMietflaechenSelektionDialogConfirm");
+            
+            let selectedItems = oEvent.getParameter("selectedItems");
+            
+            if(selectedItems.length > 0)
+            {
+                let mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/mietflaechenangaben");
+                
+                selectedItems.forEach(function(item){
+                    let mietflaechenangabe = item.getBindingContext().getObject();
+                    mietflaechenangaben.push(mietflaechenangabe);
+                });
+                
+                this.getView().getModel("form").setProperty("/konditioneneinigung/mietflaechenangaben", mietflaechenangaben);
+            }
+
+        },
+        
+        onMietflaechenSelektionDialogSearch: function(oEvent){
+            jQuery.sap.log.info(".. onMietflaechenSelektionDialogSearch");
+            
         },
         
         onAusbaukostenVerteilenButtonPress: function(oEvent){
