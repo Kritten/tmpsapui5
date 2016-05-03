@@ -156,7 +156,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 var formModel = new sap.ui.model.json.JSONModel(oldFormData);
                 this.getView().setModel(formModel, "form");
                 this.getView().getModel("form").setProperty("/modus", "show");
-            }            
+            }
 
         },
         
@@ -165,8 +165,30 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             var selectedItems = mietflaechenangabenTable.getSelectedItems();
+                                    
+            let mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/mietflaechenangaben");
+
+            console.log(mietflaechenangaben);
+            
+            // ES6 Zukunftstechnologie - eventuell überarbeiten
+            let objectsToRemove = selectedItems.map(item => item.getBindingContext("form").getObject() );
+            mietflaechenangaben = mietflaechenangaben.filter(ma => objectsToRemove.indexOf(ma) === -1  );
+            
+            console.log(mietflaechenangaben);
+            
+            /*
             
             // über selectedItems iterieren und löschen            
+            selectedItems.forEach(function(item){
+                var mietflaechenangabe = item.getBindingContext("form").getObject();
+                var removeIndex = mietflaechenangaben.indexOf(mietflaechenangabe);
+                
+                console.log("removing item: " + removeIndex);
+                mietflaechenangaben.splice(removeIndex, 1);
+            });
+            */
+                        
+            this.getView().getModel("form").setProperty("/konditioneneinigung/mietflaechenangaben", mietflaechenangaben);
         },
         
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
@@ -176,62 +198,62 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             
             if (! this._mietflaechenSelektionDialog) {
                 this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungDetailsMietflaechenSelektion", this);
-                
-                var mietflaechenSelektionDialogModel = new sap.ui.model.json.JSONModel({
-                    "mietflaechen": [
-                        {
-                            "mietflaeche": "9-30/599/01010002",
-                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                            "nutzungsart": "Handel, Gastronomie",
-                            "nutzungsartAlternativ": "Lager",
-                            "hauptnutzflaeche": 4467.00,
-                            "mietflaecheAlternativ": 2500.00,
-                            "nachhaltigeMiete": 9.140833,
-                            "angebotsmiete": 12.00,
-                            "grundbaukosten": 20.00,
-                            "mieterausbaukosten": 30.00
-                        },
-                        {
-                            "mietflaeche": "9-30/599/01010002",
-                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                            "nutzungsart": "Handel, Gastronomie",
-                            "nutzungsartAlternativ": "Lager",
-                            "hauptnutzflaeche": 4467.00,
-                            "mietflaecheAlternativ": 2500.00,
-                            "nachhaltigeMiete": 9.140833,
-                            "angebotsmiete": 12.00,
-                            "grundbaukosten": 20.00,
-                            "mieterausbaukosten": 30.00
-                        },
-                        {
-                            "mietflaeche": "9-30/599/01010002",
-                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                            "nutzungsart": "Handel, Gastronomie",
-                            "nutzungsartAlternativ": "Lager",
-                            "hauptnutzflaeche": 4467.00,
-                            "mietflaecheAlternativ": 2500.00,
-                            "nachhaltigeMiete": 9.140833,
-                            "angebotsmiete": 12.00,
-                            "grundbaukosten": 20.00,
-                            "mieterausbaukosten": 30.00
-                        },
-                        {
-                            "mietflaeche": "9-30/599/01010002",
-                            "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                            "nutzungsart": "Handel, Gastronomie",
-                            "nutzungsartAlternativ": "Lager",
-                            "hauptnutzflaeche": 4467.00,
-                            "mietflaecheAlternativ": 2500.00,
-                            "nachhaltigeMiete": 9.140833,
-                            "angebotsmiete": 12.00,
-                            "grundbaukosten": 20.00,
-                            "mieterausbaukosten": 30.00
-                        }
-                    ]
-                });
-                
-                this._mietflaechenSelektionDialog.setModel(mietflaechenSelektionDialogModel);
             }
+            
+            var mietflaechenSelektionDialogModel = new sap.ui.model.json.JSONModel({
+                "mietflaechen": [
+                    {
+                        "mietflaeche": "9-30/599/01010002",
+                        "bezeichnung": "MF Handel/Gastronomie 1.OG",
+                        "nutzungsart": "Handel, Gastronomie",
+                        "nutzungsartAlternativ": "Lager",
+                        "hauptnutzflaeche": 4467.00,
+                        "mietflaecheAlternativ": 2500.00,
+                        "nachhaltigeMiete": 9.140833,
+                        "angebotsmiete": 12.00,
+                        "grundbaukosten": 20.00,
+                        "mieterausbaukosten": 30.00
+                    },
+                    {
+                        "mietflaeche": "9-30/599/01010002",
+                        "bezeichnung": "MF Handel/Gastronomie 1.OG",
+                        "nutzungsart": "Handel, Gastronomie",
+                        "nutzungsartAlternativ": "Lager",
+                        "hauptnutzflaeche": 4467.00,
+                        "mietflaecheAlternativ": 2500.00,
+                        "nachhaltigeMiete": 9.140833,
+                        "angebotsmiete": 12.00,
+                        "grundbaukosten": 20.00,
+                        "mieterausbaukosten": 30.00
+                    },
+                    {
+                        "mietflaeche": "9-30/599/01010002",
+                        "bezeichnung": "MF Handel/Gastronomie 1.OG",
+                        "nutzungsart": "Handel, Gastronomie",
+                        "nutzungsartAlternativ": "Lager",
+                        "hauptnutzflaeche": 4467.00,
+                        "mietflaecheAlternativ": 2500.00,
+                        "nachhaltigeMiete": 9.140833,
+                        "angebotsmiete": 12.00,
+                        "grundbaukosten": 20.00,
+                        "mieterausbaukosten": 30.00
+                    },
+                    {
+                        "mietflaeche": "9-30/599/01010002",
+                        "bezeichnung": "MF Handel/Gastronomie 1.OG",
+                        "nutzungsart": "Handel, Gastronomie",
+                        "nutzungsartAlternativ": "Lager",
+                        "hauptnutzflaeche": 4467.00,
+                        "mietflaecheAlternativ": 2500.00,
+                        "nachhaltigeMiete": 9.140833,
+                        "angebotsmiete": 12.00,
+                        "grundbaukosten": 20.00,
+                        "mieterausbaukosten": 30.00
+                    }
+                ]
+            });
+            
+            this._mietflaechenSelektionDialog.setModel(mietflaechenSelektionDialogModel);
             
             this._mietflaechenSelektionDialog.open();
         },
