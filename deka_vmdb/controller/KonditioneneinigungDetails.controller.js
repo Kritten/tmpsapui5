@@ -204,6 +204,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         
         clearValidationState: function(){
             this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
         },
         
         onAbbrechenButtonPress: function(evt){
