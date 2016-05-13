@@ -137,7 +137,7 @@
                     <DatePicker id="dateMietbeginn" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="Laufzeit bis 1st break option in Monaten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input value="60" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="laufzeitBis1stBreak" value="60" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="Gültigkeit Konditioneneinigung" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <DatePicker id="dateGueltigkeitKonditioneneinigung" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -145,13 +145,13 @@
                     <core:Title text="" />
                     
                     <Label text="Mietfreie Zeiten in Monaten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input value="6" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="mietfreieZeitenInMonaten" value="6" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="Maklerkosten in Monatsmieten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input value="3" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="maklerkostenInMonatsmieten" value="3" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="Beratungskosten in Monatsmieten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input value="1" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="beratungskostenInMonatsmieten" value="1" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                 </f:content>
 
