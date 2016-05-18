@@ -1,10 +1,14 @@
-<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-		controllerName="ag.bpc.Deka.controller.VermietungsaktivitaetDetails" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="VermietungsaktivitaetDetails (Anzeigen/Anlegen/Ändern)" 
-		  showNavButton="true"
-		  navButtonPress="onBack">
+<core:View 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	controllerName="ag.bpc.Deka.controller.VermietungsaktivitaetDetails" >
+	
+	<Page title="{i18n>VERM_DET_TITLE}" showNavButton="true" navButtonPress="onBack">
 		<content>
 	
 		</content>
 	</Page>
+	
 </core:View>

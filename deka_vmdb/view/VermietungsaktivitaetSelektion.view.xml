@@ -1,10 +1,181 @@
-<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-		controllerName="ag.bpc.Deka.controller.VermietungsaktivitaetSelektion" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Vermietungsaktivität (Selektion)" 
-		  showNavButton="true"
-		  navButtonPress="onBack">
-		<content>
+<core:View 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	controllerName="ag.bpc.Deka.controller.VermietungsaktivitaetSelektion" >
 	
+	<Page title="{i18n>VERM_SEL_TITLE}"  showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
+		<content>
+		
+			<Panel class="sapUiDemoFlexBoxSizeAdjustments">
+				<headerToolbar>
+					<Toolbar>
+						<Title level="H3" text="{i18n>VERM_SEL_PANEL_TITLE_ANL}" />
+					</Toolbar>
+				</headerToolbar>
+				<FlexBox alignItems="Start" justifyContent="Start">
+					<items>
+						<RadioButtonGroup id = "RBG_Anlage">
+							<buttons>
+								<RadioButton text="{i18n>VERM_SEL_RBG_O1}" />
+								<RadioButton text="{i18n>VERM_SEL_RBG_O2}" />
+								<RadioButton text="{i18n>VERM_SEL_RBG_O3}" />
+							</buttons>
+						</RadioButtonGroup>
+						<Button text="{i18n>VERM_SEL_BTN_ANL}" press="onAnlegenPress" />
+					</items>
+				</FlexBox>
+			</Panel>
+		
+
+			<Panel class="sapUiDemoFlexBoxSizeAdjustments">
+				<headerToolbar>
+					<Toolbar>
+						<Title level="H3" text="{i18n>VERM_SEL_PANEL_TITLE_AUS}" />
+					</Toolbar>
+				</headerToolbar>
+
+				<ComboBox id="cb_work" selectedKey="work" selectionChange="onComboBoxChange">
+					<items>
+						<core:Item key="work" text="{i18n>VERM_SEL_DD_WORK}" />
+						<core:Item key="all" text="{i18n>VERM_SEL_DD_ALL}" />
+					</items>
+				</ComboBox>
+				
+				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" lists="{vermSel>/facetfilters}" type="Simple" >
+					<lists>
+						<FacetFilterList title="{vermSel>filterName}" items="{vermSel>values}" multiselect="true" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem text="{vermSel>text}" key="{vermSel>key}" />
+							</items>
+						</FacetFilterList>
+					</lists>
+				</FacetFilter>
+				
+				<Table id="idVermSelTable" inset="false" itemPress="onItemPress" items="{vermSel>/data}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="{i18n>VERM_SEL_TAB_TITLE}" level="H4" />
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_FAV}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_ID}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_MB}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_LZ}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_GB}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_MF}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_BZ}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_NA}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_HF}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_AM}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_GA}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_TAB_MA}" />
+						</Column>
+					</columns>
+
+					<items>
+						<ColumnListItem type="Navigation">
+							<cells>
+								<core:Icon src="{= (${vermSel>favorit} === true) ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" />
+								
+								<Text text="{vermSel>id}" />
+								<Text text="{vermSel>mietbegin}" />
+								<Text text="{
+										path: 'vermSel>laufzeit',
+										type: 'sap.ui.model.type.Integer',
+										formatOptions: {
+											maxIntegerDigits: 5
+										}
+								}" />	
+								<Text text="{
+										path: 'vermSel>gueltig_bis',
+										type: 'sap.ui.model.type.Date',
+										formatOptions: {
+											style: 'short'
+										}
+								}" />
+								<Text text="{vermSel>mietflaeche}" />
+								<Text text="{vermSel>bezeichnung}" />
+								<Text text="{vermSel>nutzungsart}" />
+								<Text text="{
+										path: 'vermSel>hauptnutzfl',
+										type: 'sap.ui.model.type.Float',
+										formatOptions: {
+											minIntegerDigits : 2, 
+											minFractionDigits : 2, 
+											groupingEnabled : true, 
+											groupingSeparator : '.', 
+											decimalSeparator : ',' 
+										}
+								}" />
+								<Text text="{
+										path: 'vermSel>angebotsmiete',
+										type: 'sap.ui.model.type.Float',
+										formatOptions: {
+											minIntegerDigits : 2, 
+											minFractionDigits : 2, 
+											groupingEnabled : true, 
+											groupingSeparator : '.', 
+											decimalSeparator : ',' 
+										}
+								}" />
+								<Text text="{
+										path: 'vermSel>grundausbau',
+										type: 'sap.ui.model.type.Float',
+										formatOptions: {
+											minIntegerDigits : 2, 
+											minFractionDigits : 2, 
+											groupingEnabled : true, 
+											groupingSeparator : '.', 
+											decimalSeparator : ',' 
+										}
+								}" />
+								<Text text="{
+										path: 'vermSel>mieterausbau',
+										type: 'sap.ui.model.type.Float',
+										formatOptions: {
+											minIntegerDigits : 2, 
+											minFractionDigits : 2, 
+											groupingEnabled : true, 
+											groupingSeparator : '.', 
+											decimalSeparator : ',' 
+										}
+								}" />
+								
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+
+			</Panel>
+
+		
+		
 		</content>
 	</Page>
 </core:View>

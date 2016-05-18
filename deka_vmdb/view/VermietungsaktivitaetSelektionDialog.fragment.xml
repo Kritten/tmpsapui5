@@ -1,0 +1,32 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<TableSelectDialog
+		noDataText="Keine Daten vorhanden"
+		title="Auswählen"
+		search="onSelectDialogSearch"
+		confirm="onSelectDialogConfirm"
+		items="{selektionsModel>/data}" >
+		
+		<columns>
+			<Column>
+				<header>
+					<Text text="ID" />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="Beschreibung" />
+				</header>
+			</Column>
+		</columns>
+		
+		<ColumnListItem>
+			<cells>
+				<Text text="{selektionsModel>id}" />
+				<Text text="{selektionsModel>descr}" />
+			</cells>
+		</ColumnListItem>
+
+	</TableSelectDialog>
+</core:FragmentDefinition>

@@ -96,9 +96,7 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 							anmerkung : "Mietfläche in Auswahlpool mit Konkurrenzobjekten"
 						}],
 						
-						facetfilters: null,
-						
-						facetfiltersNew: null
+						facetfilters: null
 					};
 					
 					var filterBuchungskreisValues = [];
@@ -129,18 +127,18 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					var kondModel = new sap.ui.model.json.JSONModel(kondsel);
 					this.getView().setModel(kondModel, "kondSel");
 					
-					var wirtschaftseinheiten = { data :[ {
-						type: "we",
-						id: "0599",
-						descr: "20006 Washington, 1999 K Street",
-						nachhaltigeMiete: 123.49
-					},
-					{
-						type: "we",
-						id: "0699",
-						descr: "20006 Washington, 2500 K Street",
-						nachhaltigeMiete: 123.49
-					} ]
+					var wirtschaftseinheiten = {
+						data :[{
+							type: "we",
+							id: "0599",
+							descr: "20006 Washington, 1999 K Street",
+							nachhaltigeMiete: 123.49
+						}, {
+							type: "we",
+							id: "0699",
+							descr: "20006 Washington, 2500 K Street",
+							nachhaltigeMiete: 123.49
+						}]
 					};
 					
 					var weModel = new sap.ui.model.json.JSONModel(wirtschaftseinheiten);
@@ -188,13 +186,6 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 							id: kondid.id
 						}
 					);
-				},
-				
-				// Select Dialog für die Auswahl der Wirtschaftseinheit
-				onExit : function () {
-					if (this._oDialog) {
-						this._oDialog.destroy();
-					}
 				},
 		 
 				onAnlegenPress : function (oEvent) {

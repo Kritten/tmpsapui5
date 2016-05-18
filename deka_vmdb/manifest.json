@@ -82,6 +82,24 @@
 						"view" : "VermietungsaktivitaetDetails",
 						"targetAggregation" : "pages"
 						
+					},
+					{
+						"pattern": "VermSel/new/WE/{weId}",
+						"name" : "vermietungsaktivitaetAnlegenWe",
+						"view" : "VermietungsaktivitaetDetails",
+						"targetAggregation" : "pages"
+					},
+					{
+						"pattern": "VermSel/new/MV/{mvId}",
+						"name" : "vermietungsaktivitaetAnlegenMv",
+						"view" : "VermietungsaktivitaetDetails",
+						"targetAggregation" : "pages"
+					},
+					{
+						"pattern": "VermSel/new/KE/{keId}",
+						"name" : "vermietungsaktivitaetAnlegenKe",
+						"view" : "VermietungsaktivitaetDetails",
+						"targetAggregation" : "pages"
 					}]
 				},
 				{
