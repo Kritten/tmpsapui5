@@ -131,29 +131,33 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					
 					var wirtschaftseinheiten = { data :[ {
 						type: "we",
-						id : "0599",
-						descr : "20006 Washington, 1999 K Street",
+						id: "0599",
+						descr: "20006 Washington, 1999 K Street",
+						nachhaltigeMiete: 123.49
 					},
 					{
 						type: "we",
-						id : "0699",
-						descr : "20006 Washington, 2500 K Street",
+						id: "0699",
+						descr: "20006 Washington, 2500 K Street",
+						nachhaltigeMiete: 123.49
 					} ]
 					};
 					
 					var weModel = new sap.ui.model.json.JSONModel(wirtschaftseinheiten);
 					this.getView().setModel(weModel, "we");
 					
-					var mietvertraege = { data :[ {
-						type: "mv",
-						id : "MV_123",
-						descr : "Mietvertrag 20006 Washington, 1999 K Street",
-					},
-					{
-						type: "mv",
-						id : "MV_234",
-						descr : "Mietvertrag 20006 Washington, 2500 K Street",
-					} ]
+					var mietvertraege = {
+						data :[{
+							type: "mv",
+							id: "MV_123",
+							descr: "Mietvertrag 20006 Washington, 1999 K Street",
+							nachhaltigeMiete: 123.49
+						}, {
+							type: "mv",
+							id: "MV_234",
+							descr: "Mietvertrag 20006 Washington, 2500 K Street",
+							nachhaltigeMiete: 123.49
+						}]
 					};
 					
 					var mvModel = new sap.ui.model.json.JSONModel(mietvertraege);

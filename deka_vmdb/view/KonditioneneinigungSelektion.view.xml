@@ -165,6 +165,7 @@
 											decimalSeparator : ',' 
 										}
 								}" />
+								
 							</cells>
 						</ColumnListItem>
 					</items>

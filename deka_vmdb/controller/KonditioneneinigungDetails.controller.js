@@ -26,25 +26,30 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         onKonditioneneinigungAnzeigen: function(oEvent){
             
             var form = {
-                "modus": "show", // show, new, edit
+                modus: "show", // show, new, edit
                 
-                "konditioneneinigung": {
-                    "id": "KE_123456",
-                    "gueltigeKonditioneneinigung": "2014-08-01",
-                    "buchungskreis": "9-30",
-                    "wirtschaftseinheit": "0599",
-                    "bezeichnung": "20006 Washington, 1999 K Street",
+                konditioneneinigung: {
+                    id: "KE_123456",
+                    gueltigeKonditioneneinigung: "2014-08-01",
+                    buchungskreis: "9-30",
+                    wirtschaftseinheit: "0599",
+                    bezeichnung: "20006 Washington, 1999 K Street",
                     
-                    "gemeinsameAngaben":{
-                        "mietbeginn": "2016-01-01"
+                    gemeinsameAngaben:{
+                        mietbeginn: "2016-01-01"
                     },
                     
-                    "mietflaechenangaben": []
+                    mietflaechenangaben: [],
+                    
+                    mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                    kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                    
+                    arbeitsvorrat: null
                 }
             };
             
             var user = {
-                "rolle": "FM" // FM, AM 
+                rolle: "FM" // FM, AM 
             };
             
             var formModel = new sap.ui.model.json.JSONModel(form);
@@ -54,6 +59,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 			this.getView().setModel(formModel, "form");
             
             this.clearValidationState();
+            this.berechneMieteUndKosten();
         },
         
         onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
@@ -122,13 +128,47 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             }
             else
             {
-                MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
+                //MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
+                
+                var _this = this;
+                
+                var dialog = new sap.m.Dialog({
+                    title: "Warnung",
+                    type: "Message",
+                    state: "Warning",
+                    content: new sap.m.Text({
+                        text: "Validierung fehlgeschlagen. Sie können die Konditioneneinigung zunächst im Arbeitsvorrat speichern oder Ihre Eingaben überprüfen."
+                    }),
+                    beginButton: new sap.m.Button({
+                        text: 'Im Arbeitsvorrat speichern',
+                        press: function () {
+                            // Backend aufrufen
+                            // Im Arbeitsvorrat speichern
+                            _this.getView().getModel("form").setProperty("/konditioneneinigung/arbeitsvorrat", true);                            
+                            dialog.close();
+                        }
+                    }),
+                    endButton: new sap.m.Button({
+                        text: 'Abbrechen',
+                        press: function () {
+                            dialog.close();
+                        }
+                    }),
+                    afterClose: function() {
+                        dialog.destroy();
+                    }
+                });
+                
+                dialog.open();
             }
         },
         
         validateForm: function(){
             
             var validationResult = true;
+            
+            // vorhandene States zurücksetzen
+            this.clearValidationState();
             
             if(this.getView().byId("dateMietbeginn").getDateValue() === null)
             {
@@ -142,13 +182,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 this.getView().byId("dateMietbeginn").setValueStateText("Das Datum des Mietbeginns muss in der Zukunft liegen.");
                 validationResult = false;
             }
-                        
+            
+            
             if(this.getView().byId("laufzeitBis1stBreak").getValue() === "")
             {
                 this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.Error);
                 this.getView().byId("laufzeitBis1stBreak").setValueStateText("Bitte geben Sie einen Wert ein.");
                 validationResult = false;
             }
+            else if(this.getView().byId("laufzeitBis1stBreak").getValue() < 0)
+            {
+                this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("laufzeitBis1stBreak").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                validationResult = false;
+            }
+            
             
             if(this.getView().byId("dateGueltigkeitKonditioneneinigung").getDateValue() === null)
             {
@@ -156,6 +204,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueStateText("Bitte geben Sie einen Wert ein.");
                 validationResult = false;
             }
+            else if(this.getView().byId("dateGueltigkeitKonditioneneinigung").getDateValue() < Date.now())
+            {
+                this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueStateText("Das Datum der Gültigkeit muss in der Zukunft liegen.");
+                validationResult = false;
+            }
+            
             
             if(this.getView().byId("mietfreieZeitenInMonaten").getValue() === "")
             {
@@ -163,6 +218,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 this.getView().byId("mietfreieZeitenInMonaten").setValueStateText("Bitte geben Sie einen Wert ein.");
                 validationResult = false;
             }
+            else if(this.getView().byId("mietfreieZeitenInMonaten").getValue() < 0)
+            {
+                this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("mietfreieZeitenInMonaten").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                validationResult = false;
+            }
+            
             
             if(this.getView().byId("maklerkostenInMonatsmieten").getValue() === "")
             {
@@ -170,6 +232,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 this.getView().byId("maklerkostenInMonatsmieten").setValueStateText("Bitte geben Sie einen Wert ein.");
                 validationResult = false;
             }
+            else if(this.getView().byId("maklerkostenInMonatsmieten").getValue() < 0)
+            {
+                this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("maklerkostenInMonatsmieten").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                validationResult = false;
+            }
+            
             
             if(this.getView().byId("beratungskostenInMonatsmieten").getValue() === "")
             {
@@ -177,27 +246,46 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 this.getView().byId("beratungskostenInMonatsmieten").setValueStateText("Bitte geben Sie einen Wert ein.");
                 validationResult = false;
             }
+            else if(this.getView().byId("beratungskostenInMonatsmieten").getValue() < 0)
+            {
+                this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("beratungskostenInMonatsmieten").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                validationResult = false;
+            }
             
-            // Mietflächenangaben
-            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/mietflaechenangaben");
+            var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
             
-            mietflaechenangaben.forEach(function(mietflaechenangabe){
-
-
-// TODO
-
-                if(mietflaechenangabe.angebotsmiete === "")
-                {
-                    
+            if(mietflaechenangabenItems.length === 0)
+            {
+                this.getView().byId("mietflaechenangabenErrorBox").setVisible(true);
+                this.getView().byId("mietflaechenangabenErrorBox").setText("Es muss mindestens eine Mietflächenangabe hinzugefügt werden.");
+                validationResult = false;
+            }
+            
+            mietflaechenangabenItems.forEach(function(item){
+                
+                var mietflaechenangabe = item.getBindingContext("form").getObject();
+                
+                if(mietflaechenangabe.angebotsmiete < 0 || mietflaechenangabe.angebotsmiete === ""){
+                    item.getCells()[5].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[5].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    validationResult = false;
                 }
                 
-                // nutzungsart
-                // mietflaecheAlternativ
-                // angebotsmiete
-                // grundbaukosten
-                // mieterausbaukosten
+                if(mietflaechenangabe.grundbaukosten < 0 || mietflaechenangabe.grundbaukosten === ""){
+                    item.getCells()[6].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[6].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    validationResult = false;
+                }
                 
-            });
+                if(mietflaechenangabe.mieterausbaukosten < 0 || mietflaechenangabe.mieterausbaukosten === ""){
+                    item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[7].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    validationResult = false;
+                }
+                
+            });        
+            
             
             return validationResult;
         },
@@ -209,10 +297,40 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("mietflaechenangabenErrorBox").setVisible(false);
+            
+            var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
+            
+            mietflaechenangabenItems.forEach(function(item){
+                item.getCells()[5].setValueState(sap.ui.core.ValueState.None);
+                item.getCells()[6].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[7].setValueState(sap.ui.core.ValueState.None);  
+            });   
+        },
+        
+        berechneMieteUndKosten: function(){
+            
+            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/mietflaechenangaben");
+            
+            var mieteGesamtKE = 0;
+            var kostenGesamtKE = 0;
+            
+            mietflaechenangaben.forEach(function(mietflaechenangabe){
+                mieteGesamtKE += mietflaechenangabe.hauptnutzflaeche * mietflaechenangabe.nachhaltigeMiete;
+                kostenGesamtKE += mietflaechenangabe.hauptnutzflaeche + (mietflaechenangabe.grundbaukosten + mietflaechenangabe.mieterausbaukosten);
+            });
+                      
+            this.getView().getModel("form").setProperty("/konditioneneinigung/mieteGesamt/vermietungsaktivitaet", "-"); 
+            this.getView().getModel("form").setProperty("/konditioneneinigung/mieteGesamt/konditioneneinigung", mieteGesamtKE); 
+            
+            this.getView().getModel("form").setProperty("/konditioneneinigung/kostenGesamt/vermietungsaktivitaet", "-"); 
+            this.getView().getModel("form").setProperty("/konditioneneinigung/kostenGesamt/konditioneneinigung", kostenGesamtKE); 
         },
         
         onAbbrechenButtonPress: function(evt){
             jQuery.sap.log.info(".. onAbbrechenButtonPress");          
+            
+            this.clearValidationState();
             
             var modus = this.getView().getModel("form").getProperty("/modus");           
             
@@ -365,6 +483,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 this.getView().getModel("form").setProperty("/konditioneneinigung/mietflaechenangaben", mietflaechenangaben);
             }
 
+// TODO: berechnung an Change Event hängen
+            this.berechneMieteUndKosten();
         },
         
         onMietflaechenSelektionDialogSearch: function(oEvent){
@@ -398,7 +518,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             
             var dialogModel = new sap.ui.model.json.JSONModel({
                 "nutzungsarten": vorhandeneNutzungsarten,
-                "nutzungsart": "0",
+                "nutzungsart": null,
                 "grundausbaukosten": "25",
                 "mietausbaukosten": "50"
             });

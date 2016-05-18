@@ -15,17 +15,15 @@
                 
 		<content>
             
-			<ObjectHeader title="Konditioneneinigung" number="{keVaObjekt>/id}" >
+			<ObjectHeader title="Konditioneneinigung" number="{form>/konditioneneinigung/id}" >
 				<attributes>
-					<ObjectAttribute title="Buchungskreis" text="{keVaObjekt>/buchungskreis}" />
-					<ObjectAttribute title="Wirtschaftseinheit" text="{keVaObjekt>/wirtschaftseinheit}" />
-                    <ObjectAttribute title="Bezeichnung" text="{keVaObjekt>/bezeichnung}" />
-                    <ObjectAttribute title="Flächeneinheit" text="xxx" />
-                    <ObjectAttribute title="Währung" text="xxx" />
+					<ObjectAttribute title="Buchungskreis" text="{form>/konditioneneinigung/buchungskreis}" />
+					<ObjectAttribute title="Wirtschaftseinheit" text="{form>/konditioneneinigung/wirtschaftseinheit}" />
+                    <ObjectAttribute title="Bezeichnung" text="{form>/konditioneneinigung/bezeichnung}" />
 				</attributes>
 			</ObjectHeader>
             
-            <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{ path: 'form>/konditioneneinigung/mietflaechenangaben' }">
+            <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{form>/konditioneneinigung/mietflaechenangaben}">
                 
                 <headerToolbar>
                     <Toolbar>
@@ -46,13 +44,7 @@
                         <Text text="Nutzungsart" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) ? '*Nutzungsart (alternativ)' : 'Nutzungsart (alternativ)' }"   />
-                    </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="Hauptnutzfläche" />
-                    </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Mietfläche (alternativ)" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="Nachhaltige Miete in Währung/FE" />
@@ -74,13 +66,7 @@
                             <Text text="{form>mietflaeche}" />
                             <Text text="{form>bezeichnung}" />
                             <Text text="{form>nutzungsart}" />
-                            <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
-                                <items>
-                                    <core:Item text="Lager" />
-                                </items>
-                            </Select>
                             <Text text="{form>hauptnutzflaeche}" />
-                            <Input value="{form>mietflaecheAlternativ}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Text text="{form>nachhaltigeMiete}" />
                             <Input value="{form>angebotsmiete}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>grundbaukosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -91,7 +77,8 @@
                 </items>
             </Table>
             
-            
+            <MessageStrip id="mietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
+                
             <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
             
                 <items>
@@ -174,14 +161,14 @@
                     <core:Title text="" />
                     
                     <Label text="Status" />
-                    <Select width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Select width="100%" enabled="false" >
                         <items>
-                            <core:Item text="Ausbauplanung - 40%" />
+                            <core:Item text="Konditioneneinigung" />
                         </items>
                     </Select>
                     
                     <Label text="Anmerkung" />
-                    <Select width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Select width="100%" enabled="false" >
                         <items>
                             <core:Item text="Mietfläche in Auswahlool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekt am Markt" />
                         </items>
@@ -217,16 +204,16 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="Miete gesamt" />
-                            <Text text="113.880,00" />
-                            <Text text="105.095,10" />
+                            <Text text="{form>/konditioneneinigung/mieteGesamt/vermietungsaktivitaet}" />
+                            <Text text="{form>/konditioneneinigung/mieteGesamt/konditioneneinigung}" />
                         </cells>
                     </ColumnListItem>
                     
                     <ColumnListItem>
                         <cells>
                             <Text text="Kosten gesamt" />
-                            <Text text="1.813.999,00" />
-                            <Text text="1.760.151,00" />
+                            <Text text="{form>/konditioneneinigung/kostenGesamt/vermietungsaktivitaet}" />
+                            <Text text="{form>/konditioneneinigung/kostenGesamt/konditioneneinigung}" />
                         </cells>
                     </ColumnListItem>
                 </items>

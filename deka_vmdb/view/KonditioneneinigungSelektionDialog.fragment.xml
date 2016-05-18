@@ -1,20 +1,38 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<SelectDialog
-		noDataText="No Products Found"
-		title="Select Product"
+	<TableSelectDialog
+		noDataText="Keine Daten vorhanden"
+		title="Auswählen"
 		search="onSelectDialogSearch"
 		confirm="onSelectDialogConfirm"
-		items="{
-			path: 'anlRbg>/data'
-		}" >
-		<StandardListItem
-			title="{anlRbg>id}"
-			description="{anlRbg>descr}"
-			icon="{ProductPicUrl}"
-			iconDensityAware="false"
-			iconInset="false"
-			type="Active" />
-	</SelectDialog>
+		items="{anlRbg>/data}" >
+		
+		<columns>
+			<Column>
+				<header>
+					<Text text="ID" />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="Beschreibung" />
+				</header>
+			</Column>
+			<Column visible="true">
+				<header>
+					<Text text="Nachhaltige Miete" />
+				</header>
+			</Column>
+		</columns>
+		
+		<ColumnListItem>
+			<cells>
+				<Text text="{anlRbg>id}" />
+				<Text text="{anlRbg>descr}" />
+				<Text text="{anlRbg>nachhaltigeMiete}" />
+			</cells>
+		</ColumnListItem>
+
+	</TableSelectDialog>
 </core:FragmentDefinition>
