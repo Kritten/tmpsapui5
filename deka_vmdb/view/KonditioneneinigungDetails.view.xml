@@ -222,6 +222,7 @@
         
         <footer>
 			<OverflowToolbar>
+                <Button text="{i18n>ZU_FAVORITEN_HINZUFUEGEN}" icon="sap-icon://favorite" />
 				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" icon="sap-icon://request" />
 				<Button text="{i18n>GENEHMIGEN_REAKTIVIEREN}" icon="sap-icon://accept" />
                 <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" />

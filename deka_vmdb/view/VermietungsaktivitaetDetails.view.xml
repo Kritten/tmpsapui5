@@ -186,18 +186,30 @@
                 columnsL="1"
                 columnsM="1" >
 
-                <f:content>
-                    <core:Title text="" />
+                <f:content>                    
+                    <Label text="Debitorennummer" />
+                    <FlexBox>
+                        <items>
+                            <Input id="debitorennummer" value="" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Button text="Debitor auswählen" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                        </items>
+                        <layoutData>
+							<FlexItemData growFactor="1" />
+						</layoutData>
+                    </FlexBox>
                     
-                    <Label text="{i18n>STATUS}" />
-                    <Select width="100%" enabled="false" >
+                    <Label text="{i18n>MIETERNAME}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="mietername" value="{form>/vermietungsaktivitaet/sonstigeAngaben/mietername}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    
+                    <Label text="{i18n>STATUS}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Select width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <items>
                             <core:Item text="Konditioneneinigung" />
                         </items>
                     </Select>
                     
-                    <Label text="{i18n>ANMERKUNG}" />
-                    <Select width="100%" enabled="false" >
+                    <Label text="{i18n>ANMERKUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Select width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <items>
                             <core:Item text="Mietfläche in Auswahlool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekt am Markt" />
                         </items>

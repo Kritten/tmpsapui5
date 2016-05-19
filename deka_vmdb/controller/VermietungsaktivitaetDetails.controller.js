@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Controller, MessageBox) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
@@ -44,7 +44,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
                         maklerkosten: null,
                         beratungskosten: null
                     },
-                                        
+					
+					sonstigeAngaben: {
+						mietername: null
+					},
+					
                     mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
                     kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
                     
@@ -140,6 +144,282 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
             this._oldFormDataJSON = this.getView().getModel("form").getJSON();
                         
             this.getView().getModel("form").setProperty("/modus", "edit");
+        },
+		
+
+        onSpeichernButtonPress: function(evt){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onSpeichernButtonPress");
+            
+            // Eingaben validieren
+            // Daten ins Backend schicken
+            // Neues Modell auf Basis der Backenddaten anbinden
+
+            var validationSuccess = this.validateForm();
+            
+            if(validationSuccess)
+            {
+                this.getView().getModel("form").setProperty("/modus", "show");
+            }
+            else
+            {              
+                var _this = this;
+                
+                var dialog = new sap.m.Dialog({
+                    title: "Warnung",
+                    type: "Message",
+                    state: "Warning",
+                    content: new sap.m.Text({
+                        text: "Validierung fehlgeschlagen. Sie können die Vermietungsaktivität zunächst im Arbeitsvorrat speichern oder Ihre Eingaben überprüfen."
+                    }),
+                    beginButton: new sap.m.Button({
+                        text: 'Im Arbeitsvorrat speichern',
+                        press: function () {
+                            // Backend aufrufen
+                            // Im Arbeitsvorrat speichern
+                            _this.getView().getModel("form").setProperty("/Vermietungsaktivität/arbeitsvorrat", true);                            
+                            dialog.close();
+                        }
+                    }),
+                    endButton: new sap.m.Button({
+                        text: 'Abbrechen',
+                        press: function () {
+                            dialog.close();
+                        }
+                    }),
+                    afterClose: function() {
+                        dialog.destroy();
+                    }
+                });
+                
+                dialog.open();
+            }
+        },
+		
+        validateForm: function(){
+            
+            var validationResult = true;
+            
+            // vorhandene States zurücksetzen
+            this.clearValidationState();
+            
+            if(this.getView().byId("dateMietbeginn").getDateValue() === null)
+            {
+                this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("dateMietbeginn").setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+            else if(this.getView().byId("dateMietbeginn").getDateValue() < Date.now())
+            {
+                this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("dateMietbeginn").setValueStateText("Das Datum des Mietbeginns muss in der Zukunft liegen.");
+                validationResult = false;
+            }
+            
+            
+            if(this.getView().byId("laufzeitBis1stBreak").getValue() === "")
+            {
+                this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("laufzeitBis1stBreak").setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+            else if(this.getView().byId("laufzeitBis1stBreak").getValue() < 0)
+            {
+                this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("laufzeitBis1stBreak").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                validationResult = false;
+            }
+            
+            
+            if(this.getView().byId("dateGueltigkeitKonditioneneinigung").getDateValue() === null)
+            {
+                this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+            else if(this.getView().byId("dateGueltigkeitKonditioneneinigung").getDateValue() < Date.now())
+            {
+                this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueStateText("Das Datum der Gültigkeit muss in der Zukunft liegen.");
+                validationResult = false;
+            }
+            
+            
+            if(this.getView().byId("mietfreieZeitenInMonaten").getValue() === "")
+            {
+                this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("mietfreieZeitenInMonaten").setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+            else if(this.getView().byId("mietfreieZeitenInMonaten").getValue() < 0)
+            {
+                this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("mietfreieZeitenInMonaten").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                validationResult = false;
+            }
+            
+            
+            if(this.getView().byId("maklerkostenInMonatsmieten").getValue() === "")
+            {
+                this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("maklerkostenInMonatsmieten").setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+            else if(this.getView().byId("maklerkostenInMonatsmieten").getValue() < 0)
+            {
+                this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("maklerkostenInMonatsmieten").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                validationResult = false;
+            }
+            
+            
+            if(this.getView().byId("beratungskostenInMonatsmieten").getValue() === "")
+            {
+                this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("beratungskostenInMonatsmieten").setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+            else if(this.getView().byId("beratungskostenInMonatsmieten").getValue() < 0)
+            {
+                this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("beratungskostenInMonatsmieten").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                validationResult = false;
+            }
+			
+			
+            if(this.getView().byId("poenale").getValue() === "")
+            {
+                this.getView().byId("poenale").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("poenale").setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+            else if(this.getView().byId("poenale").getValue() < 0)
+            {
+                this.getView().byId("poenale").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("poenale").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                validationResult = false;
+            }
+			
+			
+            if(this.getView().byId("indexweitergabe").getValue() === "")
+            {
+                this.getView().byId("indexweitergabe").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("indexweitergabe").setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+            else if(this.getView().byId("indexweitergabe").getValue() < 0)
+            {
+                this.getView().byId("indexweitergabe").setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId("indexweitergabe").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                validationResult = false;
+            }
+			
+            
+            var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
+            
+            if(mietflaechenangabenItems.length === 0)
+            {
+                this.getView().byId("mietflaechenangabenErrorBox").setVisible(true);
+                this.getView().byId("mietflaechenangabenErrorBox").setText("Es muss mindestens eine Mietflächenangabe hinzugefügt werden.");
+                validationResult = false;
+            }
+            
+            mietflaechenangabenItems.forEach(function(item){
+                
+                var mietflaechenangabe = item.getBindingContext("form").getObject();
+                
+				if(mietflaechenangabe.mietflaecheAlternativ !== null && mietflaechenangabe.mietflaecheAlternativ !== "")
+				{					
+					if(parseInt(mietflaechenangabe.mietflaecheAlternativ) > (mietflaechenangabe.hauptnutzflaeche * 1.1)){
+						item.getCells()[5].setValueState(sap.ui.core.ValueState.Error);
+						item.getCells()[5].setValueStateText("Die alternative Mietfläche darf maximal 10% größer sein als die Hauptnutzfläche.");
+						validationResult = false;
+					}
+				}
+				
+                if(mietflaechenangabe.angebotsmiete < 0 || mietflaechenangabe.angebotsmiete === ""){
+                    item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[7].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    validationResult = false;
+                }
+                
+                if(mietflaechenangabe.grundbaukosten < 0 || mietflaechenangabe.grundbaukosten === ""){
+                    item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[8].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    validationResult = false;
+                }
+                
+                if(mietflaechenangabe.mieterausbaukosten < 0 || mietflaechenangabe.mieterausbaukosten === ""){
+                    item.getCells()[9].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[9].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    validationResult = false;
+                }
+                
+            });        
+            
+            
+            return validationResult;
+        },
+		
+		
+		clearValidationState: function(){
+            this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
+			this.getView().byId("poenale").setValueState(sap.ui.core.ValueState.None);
+			this.getView().byId("indexweitergabe").setValueState(sap.ui.core.ValueState.None);
+			
+            this.getView().byId("mietflaechenangabenErrorBox").setVisible(false);
+			
+            var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
+            
+            mietflaechenangabenItems.forEach(function(item){
+                item.getCells()[5].setValueState(sap.ui.core.ValueState.None);
+                item.getCells()[7].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[8].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[9].setValueState(sap.ui.core.ValueState.None);  
+            });   
+		},
+		
+        onAbbrechenButtonPress: function(evt){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onAbbrechenButtonPress");          
+            
+            this.clearValidationState();
+            
+            var modus = this.getView().getModel("form").getProperty("/modus");           
+            
+            if(modus === "new")
+            {
+                // wenn modus == new
+                // -> Änderungen Verwerfen und Navigation zurück
+                
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                
+                MessageBox.confirm("{i18n>ABBRUCH_HINWEIS}", {
+                    title:"{i18n>HINWEIS}",
+                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                    onClose: function(action){
+                        if(action === sap.m.MessageBox.Action.YES){
+                            window.history.go(-1);
+                        }
+                    }
+                });
+                
+            }
+            else if(modus === "edit")
+            {
+                // wenn modus == edit
+                // -> Änderungen Verwerfen
+                // -> modus = show
+                
+                var oldFormData = JSON.parse(this._oldFormDataJSON);
+                var formModel = new sap.ui.model.json.JSONModel(oldFormData);
+                this.getView().setModel(formModel, "form");
+                this.getView().getModel("form").setProperty("/modus", "show");
+            }
+
         },
 		
         onMietflaechenAngabenLoeschenButtonPress: function(oEvent){

@@ -122,19 +122,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             // Eingaben validieren
             // Daten ins Backend schicken
             // Neues Modell auf Basis der Backenddaten anbinden
-            
 
             var validationSuccess = this.validateForm();
             
             if(validationSuccess)
             {
-                this.clearValidationState();
                 this.getView().getModel("form").setProperty("/modus", "show");
             }
             else
-            {
-                //MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
-                
+            {              
                 var _this = this;
                 
                 var dialog = new sap.m.Dialog({
