@@ -385,17 +385,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             var objectsToRemove = selectedItems.map(item => item.getBindingContext("form").getObject() );
             mietflaechenangaben = mietflaechenangaben.filter(ma => objectsToRemove.indexOf(ma) === -1  );
             
-            /*
-            // über selectedItems iterieren und löschen
-            selectedItems.forEach(function(item){
-                var mietflaechenangabe = item.getBindingContext("form").getObject();
-                var removeIndex = mietflaechenangaben.indexOf(mietflaechenangabe);
-                
-                console.log("removing item: " + removeIndex);
-                mietflaechenangaben.splice(removeIndex, 1);
-            });
-            */
-            
             console.log(mietflaechenangaben);
             
             this.getView().getModel("form").setProperty("/konditioneneinigung/mietflaechenangaben", mietflaechenangaben);
@@ -410,7 +399,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             // Dialog öffnen
             
             if (! this._mietflaechenSelektionDialog) {
-                this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungDetailsMietflaechenSelektion", this);
+                this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenSelektion", this);
             }
             
             var mietflaechenSelektionDialogModel = new sap.ui.model.json.JSONModel({
@@ -419,9 +408,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                         "mietflaeche": "9-30/599/01010002",
                         "bezeichnung": "MF Handel/Gastronomie 1.OG",
                         "nutzungsart": "Handel, Gastronomie",
-                        "nutzungsartAlternativ": "Lager",
                         "hauptnutzflaeche": 9000.00,
-                        "mietflaecheAlternativ": 2500.00,
                         "nachhaltigeMiete": 9.140833,
                         "angebotsmiete": 12.00,
                         "grundbaukosten": 20.00,
@@ -431,9 +418,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                         "mietflaeche": "9-30/599/01010002",
                         "bezeichnung": "MF Handel/Gastronomie 1.OG",
                         "nutzungsart": "Handel, Gastronomie",
-                        "nutzungsartAlternativ": "Lager",
                         "hauptnutzflaeche": 1000.00,
-                        "mietflaecheAlternativ": 2500.00,
                         "nachhaltigeMiete": 9.140833,
                         "angebotsmiete": 12.00,
                         "grundbaukosten": 20.00,
@@ -443,9 +428,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                         "mietflaeche": "9-30/599/01010002",
                         "bezeichnung": "MF Handel/Wertstoffe 1.OG",
                         "nutzungsart": "Handel, Wertstoffe",
-                        "nutzungsartAlternativ": "Lager",
                         "hauptnutzflaeche": 4467.00,
-                        "mietflaecheAlternativ": 2500.00,
                         "nachhaltigeMiete": 9.140833,
                         "angebotsmiete": 12.00,
                         "grundbaukosten": 20.00,
@@ -455,9 +438,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                         "mietflaeche": "9-30/599/01010002",
                         "bezeichnung": "MF Handel/Gastronomie 1.OG",
                         "nutzungsart": "Handel, Gastronomie",
-                        "nutzungsartAlternativ": "Lager",
                         "hauptnutzflaeche": 4467.00,
-                        "mietflaecheAlternativ": 2500.00,
                         "nachhaltigeMiete": 9.140833,
                         "angebotsmiete": 12.00,
                         "grundbaukosten": 20.00,
@@ -501,19 +482,23 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             jQuery.sap.log.info(".. onAusbaukostenVerteilenButtonPress");
             
             if (!this._ausbaukostenVerteilenDialog) {
-                this._ausbaukostenVerteilenDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungDetailsAusbaukostenVerteilen", this);
+                this._ausbaukostenVerteilenDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.AusbaukostenVerteilen", this);
                 this.getView().addDependent(this._ausbaukostenVerteilenDialog);
             }
             
-            
             // über Einträge iterieren und Nutzungsarten sammeln
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/mietflaechenangaben");
+            
+			if(mietflaechenangaben.length === 0){
+// TODO: Fehlermeldung
+				return;
+			}
             
             var vorhandeneNutzungsarten = {};
             
             mietflaechenangaben.forEach(function(mietflaechenangabe){
                 // key - value .. in dem Fall beides gleich
-                vorhandeneNutzungsarten[mietflaechenangabe.nutzungsart] = {"key": mietflaechenangabe.nutzungsart, "text": mietflaechenangabe.nutzungsart};
+                vorhandeneNutzungsarten[mietflaechenangabe.nutzungsart] = {key: mietflaechenangabe.nutzungsart, text: mietflaechenangabe.nutzungsart};
             });
             
             // Object-Properties to Array
@@ -522,11 +507,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             });
             
             var dialogModel = new sap.ui.model.json.JSONModel({
-                "nutzungsarten": vorhandeneNutzungsarten,
-                "nutzungsart": null,
-                "grundausbaukosten": "25",
-                "mietausbaukosten": "50"
+                nutzungsarten: vorhandeneNutzungsarten,
+                nutzungsart: vorhandeneNutzungsarten[0].key, // Vorbelegung auf gültigen Wert notwendig - sonst Buggy
+                grundausbaukosten: 25,
+                mietausbaukosten: 50
             });
+            
             this._ausbaukostenVerteilenDialog.setModel(dialogModel);
  
 			this._ausbaukostenVerteilenDialog.open();
@@ -544,6 +530,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 grundausbaukosten: dialogModel.getProperty("/grundausbaukosten"),
                 mietausbaukosten: dialogModel.getProperty("/mietausbaukosten")
             }
+
+            console.log(verteilung);
 
             // Logik zur Verteilung der Ausbaukosten
         

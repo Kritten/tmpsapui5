@@ -4,8 +4,8 @@
     xmlns:f="sap.ui.layout.form">
     
     <TableSelectDialog
-        title="Mietflächen hinzufügen"
-        noDataText="Keine Daten"
+        title="{i18n>MIETFLAECHE_HINZUFUEGEN}"
+        noDataText="{i18n>KEINE_DATEN_VORHANDEN}"
         multiSelect="true"
         search="onMietflaechenSelektionDialogSearch"
         confirm="onMietflaechenSelektionDialogConfirm"
@@ -14,13 +14,13 @@
             
         <columns>
             <Column minScreenWidth="Tablet" demandPopin="true">
-                <Text text="Mietfläche" />
+                <Text text="{i18n>MIETFLAECHE}" />
             </Column>
             <Column minScreenWidth="Tablet" demandPopin="true">
-                <Text text="Bezeichnung" />
+                <Text text="{i18n>BEZEICHNUNG}" />
             </Column>
             <Column minScreenWidth="Tablet" demandPopin="true">
-                <Text text="Nutzungsart" />
+                <Text text="{i18n>NUTZUNGSART}" />
             </Column>
         </columns>
             
