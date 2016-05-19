@@ -8,6 +8,8 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
 					jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onInit");
 					
+					this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
+					
 					var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 					oRouter.getRoute("konditioneneinigungSelektion").attachPatternMatched(this.onPatternMatched, this);
 				},
@@ -15,8 +17,6 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 				onPatternMatched: function(oEvent){
 					jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onPatternMatched");
 					
-					this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
-
 					var kondsel = { 
 
 						data: [{

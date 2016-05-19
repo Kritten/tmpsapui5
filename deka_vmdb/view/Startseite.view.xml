@@ -1,7 +1,7 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
 		controllerName="ag.bpc.Deka.controller.Startseite" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page 
-		title="{i18n>STARTSEITE_TITLE}"
+		title="{i18n>STARTSEITE}"
 		>
 		
 		<content>
@@ -13,27 +13,27 @@
 				
 				<StandardTile
 				icon="sap-icon://collections-insight"
-				title="{i18n>KOND_TILE}"
+				title="{i18n>KONDITIONENEINIGUNG}"
 				press= "onKondTilePress"/>
 				
 				<StandardTile
 				icon="sap-icon://capital-projects"
-				title="{i18n>VERM_TILE}"
+				title="{i18n>VERMIETUNGSAKTIVITAET}"
 				press= "onVermTilePress"/>
 				
 				<StandardTile
 				icon="sap-icon://pause"
-				title="{i18n>BUDS_TILE}"
+				title="{i18n>BUDGETSTOPP}"
 				press= "onBudsTilePress"/>
 				
 				<StandardTile
 				icon="sap-icon://business-objects-experience"
-				title="{i18n>BERI_TILE}"
+				title="{i18n>BERICHTE}"
 				press= "onBeriTilePress"/>
 				
 				<StandardTile
 				icon="sap-icon://locked"
-				title="{i18n>SPER_TILE}"
+				title="{i18n>SPERRE}"
 				press= "onSperTilePress"/>
 				
 			</tiles>

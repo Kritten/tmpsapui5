@@ -23,7 +23,7 @@
 								<RadioButton text="{i18n>VERM_SEL_RBG_O3}" />
 							</buttons>
 						</RadioButtonGroup>
-						<Button text="{i18n>VERM_SEL_BTN_ANL}" press="onAnlegenPress" />
+						<Button text="{i18n>ANLEGEN}" press="onAnlegenPress" />
 					</items>
 				</FlexBox>
 			</Panel>
@@ -38,8 +38,8 @@
 
 				<ComboBox id="cb_work" selectedKey="work" selectionChange="onComboBoxChange">
 					<items>
-						<core:Item key="work" text="{i18n>VERM_SEL_DD_WORK}" />
-						<core:Item key="all" text="{i18n>VERM_SEL_DD_ALL}" />
+						<core:Item key="work" text="{i18n>ARBEITSVORRAT}" />
+						<core:Item key="all" text="{i18n>ALL}" />
 					</items>
 				</ComboBox>
 				
@@ -56,45 +56,45 @@
 				<Table id="idVermSelTable" inset="false" itemPress="onItemPress" items="{vermSel>/data}">
 					<headerToolbar>
 						<Toolbar>
-							<Title text="{i18n>VERM_SEL_TAB_TITLE}" level="H4" />
+							<Title text="{i18n>VERMIETUNGSAKTIVITAETEN}" level="H4" />
 						</Toolbar>
 					</headerToolbar>
 					<columns>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_FAV}" />
+							<Text text="{i18n>FAVORIT}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_ID}" />
+							<Text text="{i18n>ID}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_MB}" />
+							<Text text="{i18n>MIETBEGINN}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_LZ}" />
+							<Text text="{i18n>LAUFZEIT}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_GB}" />
+							<Text text="{i18n>GUELTIG_BIS}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_MF}" />
+							<Text text="{i18n>MIETFLAECHE}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_BZ}" />
+							<Text text="{i18n>BEZEICHNUNG}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_NA}" />
+							<Text text="{i18n>NUTZUNGSART}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_HF}" />
+							<Text text="{i18n>HAUPTNUTZFLAECHE}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_AM}" />
+							<Text text="{i18n>ANGEBOTSMIETE}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_GA}" />
+							<Text text="{i18n>GRUNDAUSBAUKOSTEN}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>VERM_SEL_TAB_MA}" />
+							<Text text="{i18n>MIETERAUSBAUKOSTEN}" />
 						</Column>
 					</columns>
 

@@ -18,6 +18,43 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
         
 		onVermietungsaktivitaetAnzeigen: function(oEvent){
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnzeigen");
+			
+            var form = {
+                modus: "show", // show, new, edit
+                
+                vermietungsaktivitaet: {
+                    id: "VA_123456",
+                    buchungskreis: "9-30",
+                    wirtschaftseinheit: "0599",
+                    bezeichnung: "20006 Washington, 1999 K Street",
+                    
+                    mietflaechenangaben: [],
+                    
+                    gemeinsameAngaben: {
+                        mietbeginn: null,
+                        laufzeit1stBreak: null,
+                        gueltigkeitKonditioneneinigung: null,
+                        mietfreieZeit: null,
+                        maklerkosten: null,
+                        beratungskosten: null
+                    },
+                                        
+                    mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                    kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                    
+                    arbeitsvorrat: null
+                }
+            };
+            
+            var user = {
+                rolle: "FM" // FM, AM 
+            };
+            
+            var formModel = new sap.ui.model.json.JSONModel(form);
+            var userModel = new sap.ui.model.json.JSONModel(userModel);
+            
+            this.getView().setModel(userModel, "user");
+			this.getView().setModel(formModel, "form");
 		},
 		
 		onVermietungsaktivitaetAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){

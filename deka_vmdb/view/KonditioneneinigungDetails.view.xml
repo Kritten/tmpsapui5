@@ -6,20 +6,20 @@
     xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc">
       
-	<Page title="Konditioneneinigung (Anzeigen / Bearbeiten)" class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack">
+	<Page title="{i18n>KOND_DET_TITLE}" class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack">
     <!-- this CSS class add a standard spacing to all the page content -->
     
         <headerContent>
-			<Button icon="sap-icon://edit" text="Bearbeiten" visible="{= ${form>/modus} === 'show' }" press="onBearbeitenButtonPress" />
+			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" visible="{= ${form>/modus} === 'show' }" press="onBearbeitenButtonPress" />
 		</headerContent>
                 
 		<content>
             
-			<ObjectHeader title="Konditioneneinigung" number="{form>/konditioneneinigung/id}" >
+			<ObjectHeader title="{i18n>KONDITIONENEINIGUNG}" number="{form>/konditioneneinigung/id}" >
 				<attributes>
-					<ObjectAttribute title="Buchungskreis" text="{form>/konditioneneinigung/buchungskreis}" />
-					<ObjectAttribute title="Wirtschaftseinheit" text="{form>/konditioneneinigung/wirtschaftseinheit}" />
-                    <ObjectAttribute title="Bezeichnung" text="{form>/konditioneneinigung/bezeichnung}" />
+					<ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/konditioneneinigung/buchungskreis}" />
+					<ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/konditioneneinigung/wirtschaftseinheit}" />
+                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/konditioneneinigung/bezeichnung}" />
 				</attributes>
 			</ObjectHeader>
             
@@ -27,7 +27,7 @@
                 
                 <headerToolbar>
                     <Toolbar>
-                        <Title text="Mietflächen-Angaben" level="H2"/>
+                        <Title text="{i18n>MIETFLAECHENANGABEN}" level="H2"/>
                         <ToolbarSpacer />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" />
                     </Toolbar>
@@ -35,28 +35,28 @@
                 
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Mietfläche" />
+                        <Text text="{i18n>MIETFLAECHE}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Bezeichnung" />
+                        <Text text="{i18n>BEZEICHNUNG}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Nutzungsart" />
+                        <Text text="{i18n>NUTZUNGSART}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Hauptnutzfläche" />
+                        <Text text="{i18n>HAUPTNUTZFLAECHE}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Nachhaltige Miete in Währung/FE" />
+                        <Text text="{i18n>NACHHALTIGE_MIETE} {i18n>IN_WAEHRUNG_PRO_FLAECHENEINHEIT}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Angebotsmiete in Währung/FE" />
+                        <Text text="{i18n>ANGEBOTSMIETE} {i18n>IN_WAEHRUNG_PRO_FLAECHENEINHEIT}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Grundausbaukosten in Währung/FE" />
+                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} {i18n>IN_WAEHRUNG_PRO_FLAECHENEINHEIT}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Mieterausbaukosten in Währung/FE" />
+                        <Text text="{i18n>MIETERAUSBAUKOSTEN} {i18n>IN_WAEHRUNG_PRO_FLAECHENEINHEIT}" />
                     </Column>
                 </columns>
                 
@@ -84,8 +84,8 @@
                 <items>
                     <FlexBox>
                         <items>
-                            <Button text="Mietflächen hinzufügen" icon="sap-icon://sys-add" press="onMietflaechenAngabeHinzufuegenButtonPress" class="sapUiSmallMarginEnd" />
-                            <Button text="Mietflächen entfernen" icon="sap-icon://sys-minus" press="onMietflaechenAngabenLoeschenButtonPress" />
+                            <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onMietflaechenAngabeHinzufuegenButtonPress" class="sapUiSmallMarginEnd" />
+                            <Button text="{i18n>MIETFLAECHE_ENTFERNEN}" icon="sap-icon://sys-minus" press="onMietflaechenAngabenLoeschenButtonPress" />
                         </items>
                         <layoutData>
 							<FlexItemData growFactor="1" />
@@ -94,7 +94,7 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
-                            <Button text="Ausbaukosten verteilen" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
+                            <Button text="{i18n>AUSBAUKOSTEN_VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
                         </items>
                         <layoutData>
 							<FlexItemData growFactor="1" />
@@ -105,7 +105,7 @@
             </FlexBox>
                     
             <f:SimpleForm
-                title="Gemeinsame Angaben"
+                title="{i18n>GEMEINSAME_ANGABEN}"
                 minWidth="1024"
                 maxContainerCols="2"
                 editable="true"
@@ -120,32 +120,31 @@
                 <f:content>
                     <core:Title text="" />
                     
-                    <Label text="Mietbeginn" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <DatePicker id="dateMietbeginn" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Label text="{i18n>MIETBEGINN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="dateMietbeginn" value="{form>/konditioneneinigung/gemeinsameAngaben/mietbeginn}" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
-                    <Label text="Laufzeit bis 1st break option in Monaten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="laufzeitBis1stBreak" value="60" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Label text="{i18n>LAUFZEIT_BIS_1ST_BREAK} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="laufzeitBis1stBreak" value="{form>/konditioneneinigung/gemeinsameAngaben/laufzeit1stBreak}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
-                    <Label text="Gültigkeit Konditioneneinigung" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <DatePicker id="dateGueltigkeitKonditioneneinigung" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="dateGueltigkeitKonditioneneinigung" value="{form>/konditioneneinigung/gemeinsameAngaben/gueltigkeitKonditioneneinigung}" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <core:Title text="" />
                     
-                    <Label text="Mietfreie Zeiten in Monaten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="mietfreieZeitenInMonaten" value="6" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Label text="{i18n>MIETFREIE_ZEITEN} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="mietfreieZeitenInMonaten" value="{form>/konditioneneinigung/gemeinsameAngaben/mietfreieZeit}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
-                    <Label text="Maklerkosten in Monatsmieten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="maklerkostenInMonatsmieten" value="3" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Label text="{i18n>MAKLERKOSTEN} {i18n>IN_MONATSMIETEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="maklerkostenInMonatsmieten" value="{form>/konditioneneinigung/gemeinsameAngaben/maklerkosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
-                    <Label text="Beratungskosten in Monatsmieten" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="beratungskostenInMonatsmieten" value="1" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    
+                    <Label text="{i18n>BERATUNGSKOSTEN} {i18n>IN_MONATSMIETEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="beratungskostenInMonatsmieten" value="{form>/konditioneneinigung/gemeinsameAngaben/beratungskosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 </f:content>
 
 			</f:SimpleForm>
 
             <f:SimpleForm
-                title="Sonstiges"
+                title="{i18n>SONSTIGE_ANGABEN}"
                 minWidth="1024"
                 maxContainerCols="2"
                 editable="true"
@@ -160,21 +159,21 @@
                 <f:content>
                     <core:Title text="" />
                     
-                    <Label text="Status" />
+                    <Label text="{i18n>STATUS}" />
                     <Select width="100%" enabled="false" >
                         <items>
                             <core:Item text="Konditioneneinigung" />
                         </items>
                     </Select>
                     
-                    <Label text="Anmerkung" />
+                    <Label text="{i18n>ANMERKUNG}" />
                     <Select width="100%" enabled="false" >
                         <items>
                             <core:Item text="Mietfläche in Auswahlool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekt am Markt" />
                         </items>
                     </Select>
                     
-                    <Label text="Bemerkung" />
+                    <Label text="{i18n>BEMERKUNG}" />
                     <TextArea value="Interessent kann sich noch nicht entscheiden" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                 </f:content>
@@ -184,7 +183,7 @@
             <Table>
                 <headerToolbar>
                     <Toolbar>
-                        <Title text="Miete und Kosten" level="H2"/>
+                        <Title text="{i18n>MIETE_UND_KOSTEN}" level="H2"/>
                     </Toolbar>
                 </headerToolbar>
                 
@@ -223,15 +222,15 @@
         
         <footer>
 			<OverflowToolbar>
-				<Button text="Zur Genehmigung vorlegen" icon="sap-icon://request" />
-				<Button text="Genehmigen/Reaktivieren" icon="sap-icon://accept" />
-                <Button text="Genehmigung zurückziehen" icon="sap-icon://undo" />
-                <Button text="Drucken" icon="sap-icon://print" />
+				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" icon="sap-icon://request" />
+				<Button text="{i18n>GENEHMIGEN_REAKTIVIEREN}" icon="sap-icon://accept" />
+                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" />
+                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" />
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="Speichern" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
+                <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
-                <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="Abbrechen" icon="sap-icon://decline" type="Reject" press="onAbbrechenButtonPress" >
+                <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>ABBRECHEN}" icon="sap-icon://decline" type="Reject" press="onAbbrechenButtonPress" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
 			</OverflowToolbar>

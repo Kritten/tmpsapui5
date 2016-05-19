@@ -11,13 +11,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onInit");
             
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
             
             // Das View kann auf drei unterschiedliche Arten aufgerufen werden
             // - Konditioneneinigung anzeigen
             // - Konditioneneinigung anlegen auf Basis einer Wirtschaftseinheit
             // - Konditioneneinigung anlegen auf Basis eines Mietvertrags
             
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("konditioneneinigungDetails").attachPatternMatched(this.onKonditioneneinigungAnzeigen, this);
             oRouter.getRoute("konditioneneinigungAnlegenWe").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit, this);
             oRouter.getRoute("konditioneneinigungAnlegenMv").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinesMietvertrags, this);
@@ -30,17 +31,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 
                 konditioneneinigung: {
                     id: "KE_123456",
-                    gueltigeKonditioneneinigung: "2014-08-01",
                     buchungskreis: "9-30",
                     wirtschaftseinheit: "0599",
                     bezeichnung: "20006 Washington, 1999 K Street",
                     
-                    gemeinsameAngaben:{
-                        mietbeginn: "2016-01-01"
-                    },
-                    
                     mietflaechenangaben: [],
                     
+                    gemeinsameAngaben: {
+                        mietbeginn: null,
+                        laufzeit1stBreak: null,
+                        gueltigkeitKonditioneneinigung: null,
+                        mietfreieZeit: null,
+                        maklerkosten: null,
+                        beratungskosten: null
+                    },
+                                        
                     mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
                     kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
                     
