@@ -19,6 +19,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 		onVermietungsaktivitaetAnzeigen: function(oEvent){
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnzeigen");
 			
+            //sap.ui.core.BusyIndicator.show(0);
+            
+            //jQuery.sap.delayedCall(2000, this, function(){
+            //    sap.ui.core.BusyIndicator.hide();
+            //});
+            
             var form = {
                 modus: "show", // show, new, edit
                 
@@ -27,8 +33,42 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                     buchungskreis: "9-30",
                     wirtschaftseinheit: "0599",
                     bezeichnung: "20006 Washington, 1999 K Street",
+                    favorit: true,
                     
-                    mietflaechenangaben: [],
+                    mietflaechenangaben: [{
+                        mietflaeche: "9-30/599/01010002",
+                        bezeichnung: "MF Handel/Gastronomie 1.OG",
+                        nutzungsart: "Handel, Gastronomie",
+                        nutzungsartAlternativ: "",
+                        hauptnutzflaeche: 90.00,
+                        mietflaecheAlternativ: "",
+                        nachhaltigeMiete: 9.140833,
+                        angebotsmiete: 12.00,
+                        grundbaukosten: 20.00,
+                        mieterausbaukosten: 30.00
+                    }, {
+                        mietflaeche: "9-30/599/01010002",
+                        bezeichnung: "MF Handel/Gastronomie 1.OG",
+                        nutzungsart: "Handel, Werkstatt",
+                        nutzungsartAlternativ: "",
+                        hauptnutzflaeche: 50.00,
+                        mietflaecheAlternativ: "",
+                        nachhaltigeMiete: 9.140833,
+                        angebotsmiete: 12.00,
+                        grundbaukosten: 20.00,
+                        mieterausbaukosten: 30.00
+                    }, {
+                        mietflaeche: "9-30/599/01010002",
+                        bezeichnung: "MF Handel/Gastronomie 1.OG",
+                        nutzungsart: "Handel, Gastronomie",
+                        nutzungsartAlternativ: "",
+                        hauptnutzflaeche: 10.00,
+                        mietflaecheAlternativ: "",
+                        nachhaltigeMiete: 9.140833,
+                        angebotsmiete: 12.00,
+                        grundbaukosten: 20.00,
+                        mieterausbaukosten: 30.00
+                    }],
                     
                     gemeinsameAngaben: {
                         mietbeginn: null,
@@ -46,11 +86,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                     },
 					
 					sonstigeAngaben: {
-						mietername: null
+                        debitorennummer: null,
+						mietername: null,
+                        bonitaet: null
 					},
 					
-                    mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
-                    kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                    mieteGesamt: {vermietungsaktivitaet: 1250.5, konditioneneinigung: 1150.5, differenz: 100},
+                    kostenGesamt: {vermietungsaktivitaet: 880.95, konditioneneinigung: 815.50, differenz: 65.45},
                     
                     arbeitsvorrat: null
                 },
@@ -66,45 +108,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 					{key: "Anschlussvermietung", text: "Anschlussvermietung"},
 				]
             };
-			
-			// Dummy Objekt
-			form.vermietungsaktivitaet.mietflaechenangaben.push({
-				mietflaeche: "9-30/599/01010002",
-				bezeichnung: "MF Handel/Gastronomie 1.OG",
-				nutzungsart: "Handel, Gastronomie",
-				nutzungsartAlternativ: "",
-				hauptnutzflaeche: 90.00,
-				mietflaecheAlternativ: "",
-				nachhaltigeMiete: 9.140833,
-				angebotsmiete: 12.00,
-				grundbaukosten: 20.00,
-				mieterausbaukosten: 30.00
-			});
-			form.vermietungsaktivitaet.mietflaechenangaben.push({
-				mietflaeche: "9-30/599/01010002",
-				bezeichnung: "MF Handel/Gastronomie 1.OG",
-				nutzungsart: "Handel, Gastronomie",
-				nutzungsartAlternativ: "",
-				hauptnutzflaeche: 10.00,
-				mietflaecheAlternativ: "",
-				nachhaltigeMiete: 9.140833,
-				angebotsmiete: 12.00,
-				grundbaukosten: 20.00,
-				mieterausbaukosten: 30.00
-			});
-			form.vermietungsaktivitaet.mietflaechenangaben.push({
-				mietflaeche: "9-30/599/01010002",
-				bezeichnung: "MF Handel/Gastronomie 1.OG",
-				nutzungsart: "Handel, Werkstatt",
-				nutzungsartAlternativ: "",
-				hauptnutzflaeche: 50.00,
-				mietflaecheAlternativ: "",
-				nachhaltigeMiete: 9.140833,
-				angebotsmiete: 12.00,
-				grundbaukosten: 20.00,
-				mieterausbaukosten: 30.00
-			});
-			
+            
             var user = {
                 rolle: "FM" // FM, AM 
             };
@@ -114,27 +118,89 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             
             this.getView().setModel(userModel, "user");
 			this.getView().setModel(formModel, "form");
+            
+            this.clearValidationState();
 		},
 		
+        onVermietungsaktivitaetAnlegen: function(oEvent){         
+            
+            var form = {
+                modus: "new", // show, new, edit
+                
+                vermietungsaktivitaet: {
+                    id: null,
+                    buchungskreis: "9-30",
+                    wirtschaftseinheit: "0599",
+                    bezeichnung: "20006 Washington, 1999 K Street",
+                    favorit: false,
+                    
+                    mietflaechenangaben: [],
+                    
+                    gemeinsameAngaben: {
+                        mietbeginn: null,
+                        laufzeit1stBreak: null,
+                        gueltigkeitKonditioneneinigung: null,
+						
+						vermietungsart: null,
+						poenale: null,
+						indexweitergabe: null,
+						planungsrelevanz: true,						
+						
+                        mietfreieZeit: null,
+                        maklerkosten: null,
+                        beratungskosten: null
+                    },
+					
+					sonstigeAngaben: {
+                        debitorennummer: null,
+						mietername: null,
+                        bonitaet: null
+					},
+					
+                    mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null},
+                    kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null},
+                    
+                    arbeitsvorrat: null
+                },
+				
+				alternativeNutzungsarten: [
+					{key: "", text: ""},
+					{key: "Lager", text: "Lager"},
+					{key: "Wohnraum", text: "Wohnraum"}
+				],
+				
+				vermietungsarten: [
+					{key: "Neuvermietung", text: "Neuvermietung"},
+					{key: "Anschlussvermietung", text: "Anschlussvermietung"},
+				]
+            };
+            
+            var user = {
+                rolle: "FM" // FM, AM 
+            };
+            
+            var formModel = new sap.ui.model.json.JSONModel(form);
+            var userModel = new sap.ui.model.json.JSONModel(userModel);
+            
+            this.getView().setModel(userModel, "user");
+			this.getView().setModel(formModel, "form");
+            
+            this.clearValidationState();
+        },
+        
 		onVermietungsaktivitaetAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenAufBasisEinerWirtschaftseinheit");
-            
-			this.onVermietungsaktivitaetAnzeigen(oEvent);
-            this.getView().getModel("form").setProperty("/modus", "new");
+			this.onVermietungsaktivitaetAnlegen(oEvent);
 		},
 		
 		onVermietungsaktivitaetAnlegenAufBasisEinesMietvertrags: function(oEvent){
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenAufBasisEinesMietvertrags");
-			
-			this.onVermietungsaktivitaetAnzeigen(oEvent);
-            this.getView().getModel("form").setProperty("/modus", "new");
+			this.onVermietungsaktivitaetAnlegen(oEvent);
 		},
 		
 		onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung");
-		
-			this.onVermietungsaktivitaetAnzeigen(oEvent);
-            this.getView().getModel("form").setProperty("/modus", "new");
+		    this.onVermietungsaktivitaetAnlegen(oEvent);
 		},
 		
 		onBearbeitenButtonPress: function(evt){
@@ -146,7 +212,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             this.getView().getModel("form").setProperty("/modus", "edit");
         },
 		
-
+        onBack : function(oEvent) {
+            this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
+        },
+                
         onSpeichernButtonPress: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onSpeichernButtonPress");
             
@@ -176,7 +245,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                         press: function () {
                             // Backend aufrufen
                             // Im Arbeitsvorrat speichern
-                            _this.getView().getModel("form").setProperty("/Vermietungsaktivität/arbeitsvorrat", true);                            
+                            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/arbeitsvorrat", true);
+                            _this.getView().getModel("form").setProperty("/modus", "show");
+                            _this.clearValidationState();                        
                             dialog.close();
                         }
                     }),
@@ -292,10 +363,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 this.getView().byId("poenale").setValueStateText("Bitte geben Sie einen Wert ein.");
                 validationResult = false;
             }
-            else if(this.getView().byId("poenale").getValue() < 0)
+            else if((this.getView().byId("poenale").getValue() < 0) || (this.getView().byId("poenale").getValue() > 100))
             {
                 this.getView().byId("poenale").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("poenale").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                this.getView().byId("poenale").setValueStateText("Bitte geben Sie einen Wert zwischen 0 und 100 ein.");
                 validationResult = false;
             }
 			
@@ -397,7 +468,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 
-                MessageBox.confirm("{i18n>ABBRUCH_HINWEIS}", {
+                MessageBox.confirm("Wollen Sie den Vorgang wirklich abbrechen ?", {
                     title:"{i18n>HINWEIS}",
                     actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                     onClose: function(action){
@@ -507,9 +578,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 
                 this.getView().getModel("form").setProperty("/vermietungsaktivitaet/mietflaechenangaben", mietflaechenangaben);
             }
-
-// TODO: berechnung an Change Event hängen
-            this.berechneMieteUndKosten();
         },
         
         onMietflaechenSelektionDialogSearch: function(oEvent){
@@ -621,6 +689,66 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 		
 		onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(oEvent){
             this._ausbaukostenVerteilenDialog.close();
+        },
+        
+        onDruckenButtonPress: function(oEvent){
+            //window.print();
+        },
+        
+        onFavoritButtonPress: function(oEvent){
+            
+            var favorit = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/favorit");
+
+            if(favorit)
+            {
+                this.getView().getModel("form").setProperty("/vermietungsaktivitaet/favorit", false);
+                
+                MessageBox.information("Die Vermietungsaktivität wurde von den Favoriten entfernt.", {
+                    title:"{i18n>HINWEIS}"
+                });
+            }
+            else
+            {
+                this.getView().getModel("form").setProperty("/vermietungsaktivitaet/favorit", true);
+                
+                MessageBox.information("Die Vermietungsaktivität wurde zu den Favoriten hinzugefügt.", {
+                    title:"{i18n>HINWEIS}"
+                });
+            }
+        },
+        
+        onDebitorAuswahlButtonPress: function(oEvent){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onMietflaechenAngabeHinzufuegenButtonPress");
+            
+            // Dialog öffnen
+			
+            if (! this._debitorSelektionDialog) {
+                this._debitorSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.DebitorSelektion", this);
+            }
+            
+            var debitorSelektionDialogModel = new sap.ui.model.json.JSONModel({
+                debitoren: [{
+                    debitorennummer: "00000001",
+                    mietername: "Hans Müller", 
+                    bonitaet: "5"
+                }, {
+                    debitorennummer: "00000002",
+                    mietername: "Peter Schmidt", 
+                    bonitaet: "1"
+                }]
+            });
+            
+            this._debitorSelektionDialog.setModel(debitorSelektionDialogModel);
+            this._debitorSelektionDialog.open();
+        },
+        
+        onDebitorSelektionConfirm: function(oEvent){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onDebitorSelektion");
+
+			var debitor = oEvent.getParameter("selectedItem").getBindingContext().getObject();
+            this.getView().getModel("form").setProperty("/vermietungsaktivitaet/sonstigeAngaben/mietername", debitor.mietername);
+            this.getView().getModel("form").setProperty("/vermietungsaktivitaet/sonstigeAngaben/debitorennummer", debitor.debitorennummer);
+            this.getView().getModel("form").setProperty("/vermietungsaktivitaet/sonstigeAngaben/bonitaet", debitor.bonitaet);            
         }
         
 	});

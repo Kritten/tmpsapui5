@@ -39,7 +39,7 @@
 				<ComboBox id="cb_work" selectedKey="work" selectionChange="onComboBoxChange">
 					<items>
 						<core:Item key="work" text="{i18n>ARBEITSVORRAT}" />
-						<core:Item key="all" text="{i18n>ALL}" />
+						<core:Item key="all" text="{i18n>ALLE}" />
 					</items>
 				</ComboBox>
 				

@@ -34,6 +34,51 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                     buchungskreis: "9-30",
                     wirtschaftseinheit: "0599",
                     bezeichnung: "20006 Washington, 1999 K Street",
+                    favorit: true,
+                    
+                    mietflaechenangaben: [],
+                    
+                    gemeinsameAngaben: {
+                        mietbeginn: null,
+                        laufzeit1stBreak: null,
+                        gueltigkeitKonditioneneinigung: null,
+                        mietfreieZeit: null,
+                        maklerkosten: null,
+                        beratungskosten: null
+                    },
+                                        
+                    mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                    kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                    
+                    arbeitsvorrat: null
+                }
+            };
+            
+            var user = {
+                rolle: "FM" // FM, AM 
+            };
+            
+            var formModel = new sap.ui.model.json.JSONModel(form);
+            var userModel = new sap.ui.model.json.JSONModel(userModel);
+            
+            this.getView().setModel(userModel, "user");
+			this.getView().setModel(formModel, "form");
+            
+            this.clearValidationState();
+            this.berechneMieteUndKosten();
+        },
+        
+        onKonditioneneinigungAnlegen: function(oEvent){
+            
+            var form = {
+                modus: "new", // show, new, edit
+                
+                konditioneneinigung: {
+                    id: null,
+                    buchungskreis: "9-30",
+                    wirtschaftseinheit: "0599",
+                    bezeichnung: "20006 Washington, 1999 K Street",
+                    favorit: false,
                     
                     mietflaechenangaben: [],
                     
@@ -70,23 +115,20 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit");
             
-            var wirtschaftseinheitId = oEvent.getParameter("arguments").weId;
-                        
-            this.onKonditioneneinigungAnzeigen(oEvent);
-            this.getView().getModel("form").setProperty("/modus", "new");
-            
-            this.clearValidationState();
+            this.onKonditioneneinigungAnlegen(oEvent);
+            var wirtschaftseinheitId = oEvent.getParameter("arguments").weId;          
         },
         
         onKonditioneneinigungAnlegenAufBasisEinesMietvertrags: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinesMietvertrags");
-            
-            this.onKonditioneneinigungAnzeigen(oEvent);
-            this.getView().getModel("form").setProperty("/modus", "new");
-            
-            this.clearValidationState();
+        
+            this.onKonditioneneinigungAnlegen(oEvent);
+            var mietvertragId = oEvent.getParameter("arguments").mvId;
         },
         
+        onBack : function(oEvent) {
+            this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+        },
         
         // --------
         
@@ -145,7 +187,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                         press: function () {
                             // Backend aufrufen
                             // Im Arbeitsvorrat speichern
-                            _this.getView().getModel("form").setProperty("/konditioneneinigung/arbeitsvorrat", true);                            
+                            _this.getView().getModel("form").setProperty("/konditioneneinigung/arbeitsvorrat", true);
+                            _this.getView().getModel("form").setProperty("/modus", "show");
+                            _this.clearValidationState();
                             dialog.close();
                         }
                     }),
@@ -343,7 +387,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 
                 MessageBox.confirm("Wollen Sie den Vorgang wirklich abbrechen?", {
-                    title:"Hinweis",
+                    title:"{i18n>HINWEIS}",
                     actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                     onClose: function(action){
                         if(action === sap.m.MessageBox.Action.YES){
@@ -557,6 +601,28 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         
         onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(oEvent){
             this._ausbaukostenVerteilenDialog.close();
+        },
+        
+        onFavoritButtonPress: function(oEvent){
+            
+            var favorit = this.getView().getModel("form").getProperty("/konditioneneinigung/favorit");
+
+            if(favorit)
+            {
+                this.getView().getModel("form").setProperty("/konditioneneinigung/favorit", false);
+                
+                MessageBox.information("Die Vermietungsaktivität wurde von den Favoriten entfernt.", {
+                    title:"{i18n>HINWEIS}"
+                });
+            }
+            else
+            {
+                this.getView().getModel("form").setProperty("/konditioneneinigung/favorit", true);
+                
+                MessageBox.information("Die Vermietungsaktivität wurde zu den Favoriten hinzugefügt.", {
+                    title:"{i18n>HINWEIS}"
+                });
+            }
         }
         
 	});

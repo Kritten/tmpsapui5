@@ -1,0 +1,36 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    
+    <TableSelectDialog
+        title="Debitor auswählen"
+        noDataText="{i18n>KEINE_DATEN_VORHANDEN}"
+        search="onDebitorSelektionSearch"
+        confirm="onDebitorSelektionConfirm"
+        cancel="onDebitorSelektionSearchCancel" 
+        items="{/debitoren}">
+            
+        <columns>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="Debitorennummer" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="Mietername" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="Bonität" />
+            </Column>
+        </columns>
+            
+		<ColumnListItem>
+			<cells>
+                <Text text="{debitorennummer}" />
+				<Text text="{mietername}" />
+                <Text text="{bonitaet}" />
+			</cells>
+		</ColumnListItem>
+
+    </TableSelectDialog>
+    
+</core:FragmentDefinition>

@@ -187,19 +187,19 @@
                 columnsM="1" >
 
                 <f:content>                    
-                    <Label text="Debitorennummer" />
-                    <FlexBox>
-                        <items>
-                            <Input id="debitorennummer" value="" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Button text="Debitor auswählen" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                        </items>
+                    <Label text="{i18n>DEBITORENNUMMER}" />
+                    <Input id="debitorennummer" value="{form>/vermietungsaktivitaet/sonstigeAngaben/debitorennummer}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Button text="{i18n>DEBITOR_AUSWAEHLEN}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" press="onDebitorAuswahlButtonPress" >
                         <layoutData>
-							<FlexItemData growFactor="1" />
-						</layoutData>
-                    </FlexBox>
-                    
+                            <l:GridData span="L3 M4 S4" />
+                        </layoutData>
+                    </Button>
+
                     <Label text="{i18n>MIETERNAME}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Input id="mietername" value="{form>/vermietungsaktivitaet/sonstigeAngaben/mietername}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    
+                    <Label text="{i18n>BONITAET}" />
+                    <Input value="{form>/vermietungsaktivitaet/sonstigeAngaben/bonitaet}" editable="false" />
                     
                     <Label text="{i18n>STATUS}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Select width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
@@ -239,6 +239,9 @@
                     <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
                         <Text text="{i18n>KONDITIONENEINIGUNG}" />
                     </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+                        <Text text="{i18n>DIFFERENZ}" />
+                    </Column>
                 </columns>
                 
                 <items>
@@ -247,6 +250,7 @@
                             <Text text="{i18n>MIETE_GESAMT}" />
                             <Text text="{form>/vermietungsaktivitaet/mieteGesamt/vermietungsaktivitaet}" />
                             <Text text="{form>/vermietungsaktivitaet/mieteGesamt/konditioneneinigung}" />
+                            <Text text="{form>/vermietungsaktivitaet/mieteGesamt/differenz}" />
                         </cells>
                     </ColumnListItem>
                     
@@ -255,6 +259,7 @@
                             <Text text="{i18n>KOSTEN_GESAMT}" />
                             <Text text="{form>/vermietungsaktivitaet/kostenGesamt/vermietungsaktivitaet}" />
                             <Text text="{form>/vermietungsaktivitaet/kostenGesamt/konditioneneinigung}" />
+                            <Text text="{form>/vermietungsaktivitaet/kostenGesamt/differenz}" />
                         </cells>
                     </ColumnListItem>
                 </items>
@@ -264,8 +269,8 @@
         
         <footer>
 			<OverflowToolbar>
-				<Button text="{i18n>ZU_FAVORITEN_HINZUFUEGEN}" icon="sap-icon://favorite" />
-                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" />
+				<Button text="{= ${form>/vermietungsaktivitaet/favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" icon="{= ${form>/vermietungsaktivitaet/favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" press="onFavoritButtonPress" visible="{= (${form>/modus} === 'show') }" />
+                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" press="onDruckenButtonPress" visible="{= (${form>/modus} === 'show') }" />
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>

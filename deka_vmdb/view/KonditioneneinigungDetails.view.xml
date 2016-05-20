@@ -222,11 +222,11 @@
         
         <footer>
 			<OverflowToolbar>
-                <Button text="{i18n>ZU_FAVORITEN_HINZUFUEGEN}" icon="sap-icon://favorite" />
-				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" icon="sap-icon://request" />
-				<Button text="{i18n>GENEHMIGEN_REAKTIVIEREN}" icon="sap-icon://accept" />
-                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" />
-                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" />
+				<Button text="{= ${form>/konditioneneinigung/favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" icon="{= ${form>/konditioneneinigung/favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" press="onFavoritButtonPress" visible="{= (${form>/modus} === 'show') }" />
+				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" icon="sap-icon://request" visible="{= (${form>/modus} === 'show') }" />
+				<Button text="{i18n>GENEHMIGEN_REAKTIVIEREN}" icon="sap-icon://accept" visible="{= (${form>/modus} === 'show') }" />
+                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" visible="{= (${form>/modus} === 'show') }" />
+                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" visible="{= (${form>/modus} === 'show') }" />
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
