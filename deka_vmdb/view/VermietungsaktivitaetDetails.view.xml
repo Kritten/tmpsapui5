@@ -140,7 +140,6 @@
                     <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <DatePicker id="dateGueltigkeitKonditioneneinigung" value="{form>/vermietungsaktivitaet/gemeinsameAngaben/gueltigkeitKonditioneneinigung}" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
-                    
                     <core:Title text="" />
                     
                     <Label text="{i18n>VERMIETUNGSART}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -202,16 +201,16 @@
                     <Input value="{form>/vermietungsaktivitaet/sonstigeAngaben/bonitaet}" editable="false" />
                     
                     <Label text="{i18n>STATUS}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Select width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Select id="selectStatus" selectedKey="{form>/vermietungsaktivitaet/sonstigeAngaben/status}" width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/statuswerte}" change="onStatusSelektionChange" >
                         <items>
-                            <core:Item text="Konditioneneinigung" />
+                            <core:Item key="{form>key}" text="{form>text}" />
                         </items>
                     </Select>
                     
                     <Label text="{i18n>ANMERKUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Select width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Select selectedKey="{form>/vermietungsaktivitaet/sonstigeAngaben/anmerkung}" width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/anmerkungen}" >
                         <items>
-                            <core:Item text="Mietfläche in Auswahlool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekt am Markt" />
+                            <core:Item key="{form>key}" text="{form>text}" />
                         </items>
                     </Select>
                     

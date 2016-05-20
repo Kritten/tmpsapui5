@@ -1,10 +1,69 @@
-<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-		controllerName="ag.bpc.Deka.controller.Budgetstopp" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Budgetstopp (Fonds-Genehmigung zurückziehen)" 
-		  showNavButton="true"
-		  navButtonPress="onBack">
+<core:View 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m"
+	controllerName="ag.bpc.Deka.controller.Budgetstopp" 
+	xmlns:html="http://www.w3.org/1999/xhtml">
+
+	<Page title="Budgetstopp (Fonds-Genehmigung zurückziehen)"  class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack">
+	
 		<content>
 	
+            <Table id="konditioneneinigungenTable" mode="MultiSelect" items="{form>/konditioneneinigungen}">
+                
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="{i18n>BETROFFENE_KONDITIONENEINIGUNGEN}" level="H2"/>
+                    </Toolbar>
+                </headerToolbar>
+                
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>ID}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>MIETBEGINN}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>LAUFZEIT}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>GUELTIG_BIS}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>BEZEICHNUNG}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>NUTZUNGSART}" />
+                    </Column>
+                </columns>
+                
+                <items>
+                    <ColumnListItem vAlign="Middle">
+                        <cells>
+                            <Text text="{form>id}" />
+                            <Text text="{form>mietbeginn}" />
+                            <Text text="{form>laufzeit}" />
+                            <Text text="{form>gueltigBis}" />
+                            <Text text="{form>bezeichnung}" />
+                            <Text text="{form>nutzungsart}" />
+                        </cells>
+                    </ColumnListItem>
+                    
+                </items>
+				
+            </Table>
+
+            <FlexBox class="sapUiSmallMargin" justifyContent="End" >
+                <items>
+					<Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" press="onGenehmigungZurueckziehenButtonPress" class="sapUiSmallMarginEnd" />
+					<Button text="{i18n>DRUCKEN}" icon="sap-icon://print" press="onDruckenButtonPress" />                
+                </items>
+            </FlexBox>
+
 		</content>
+	
 	</Page>
+	
+	
 </core:View>

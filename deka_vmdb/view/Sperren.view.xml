@@ -1,10 +1,69 @@
-<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-		controllerName="ag.bpc.Deka.controller.Sperren" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Sperren"
-	      showNavButton="true"
-		  navButtonPress="onBack">
+<core:View 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	controllerName="ag.bpc.Deka.controller.Sperren" >
+		
+	<Page title="Sperren" class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack">
+	
 		<content>
 	
+            <Table id="sperrenTable" mode="MultiSelect" items="{form>/sperren}">
+                
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="{i18n>EIGENE_SPERREN}" level="H2"/>
+                    </Toolbar>
+                </headerToolbar>
+                
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>AKTIVITAET}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>SPERROBJEKT}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>BENUTZER}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>DATUM}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>UHRZEIT}" />
+                    </Column>
+                </columns>
+                
+                <items>
+                    <ColumnListItem vAlign="Middle">
+                        <cells>
+                            <Text text="{form>aktivitaet}" />
+                            <Text text="{form>sperrobjekt}" />
+                            <Text text="{form>benutzer}" />
+                            <Text text="{
+								path: 'form>datum',
+								type: 'sap.ui.model.type.Date',
+								formatOptions: {
+									style: 'short'
+								}
+							}" />
+							<Text text="{form>uhrzeit}" />
+                        </cells>
+                    </ColumnListItem>
+                    
+                </items>
+				
+            </Table>
+
+            <FlexBox class="sapUiSmallMargin" justifyContent="End" >
+                <items>
+					<Button text="{i18n>SPERRE_AUFHEBEN}" icon="sap-icon://unlocked" press="onSperreAufhebenButtonPress" class="sapUiSmallMarginEnd" />
+					<Button text="{i18n>DRUCKEN}" icon="sap-icon://print" press="onDruckenButtonPress" />                
+                </items>
+            </FlexBox>
+
 		</content>
+	
 	</Page>
 </core:View>

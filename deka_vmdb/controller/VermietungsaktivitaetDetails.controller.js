@@ -88,7 +88,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 					sonstigeAngaben: {
                         debitorennummer: null,
 						mietername: null,
-                        bonitaet: null
+                        bonitaet: null,
+                        status: "a",
+                        anmerkung: "a0",
+                        bemerkung: null
 					},
 					
                     mieteGesamt: {vermietungsaktivitaet: 1250.5, konditioneneinigung: 1150.5, differenz: 100},
@@ -106,9 +109,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 				vermietungsarten: [
 					{key: "Neuvermietung", text: "Neuvermietung"},
 					{key: "Anschlussvermietung", text: "Anschlussvermietung"},
-				]
+				],
+                
+                statuswerte: [
+                    {key: "a", text: "Abgebrochen 0%"},
+                    {key: "b", text: "Ausbauplanung 50%"},
+                    {key: "c", text: "Mietvertragsentwurf erstellt - 70%"},
+                    {key: "d", text: "Mietvertrag abgeschlossen – 100%"}
+                ],
+                
+                anmerkungen: []
             };
-            
+                        
             var user = {
                 rolle: "FM" // FM, AM 
             };
@@ -118,11 +130,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             
             this.getView().setModel(userModel, "user");
 			this.getView().setModel(formModel, "form");
-            
+                        
             this.clearValidationState();
+            this.anmerkungSelektionInitialisieren();
 		},
 		
-        onVermietungsaktivitaetAnlegen: function(oEvent){         
+        onVermietungsaktivitaetAnlegen: function(oEvent){
             
             var form = {
                 modus: "new", // show, new, edit
@@ -154,7 +167,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 					sonstigeAngaben: {
                         debitorennummer: null,
 						mietername: null,
-                        bonitaet: null
+                        bonitaet: null,
+                        status: "a", // Vorbelegung Notwendig wegen Abhängiger Selektbox
+                        anmerkung: null,
+                        bemerkung: null
 					},
 					
                     mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null},
@@ -172,7 +188,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 				vermietungsarten: [
 					{key: "Neuvermietung", text: "Neuvermietung"},
 					{key: "Anschlussvermietung", text: "Anschlussvermietung"},
-				]
+				],
+                
+                statuswerte: [
+                    {key: "a", text: "Abgebrochen 0%"},
+                    {key: "b", text: "Ausbauplanung 50%"},
+                    {key: "c", text: "Mietvertragsentwurf erstellt - 70%"},
+                    {key: "d", text: "Mietvertrag abgeschlossen – 100%"}
+                ],
+                
+                anmerkungen: []
             };
             
             var user = {
@@ -186,6 +211,57 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 			this.getView().setModel(formModel, "form");
             
             this.clearValidationState();
+            this.anmerkungSelektionInitialisieren();
+        },
+        
+        onStatusSelektionChange: function(oEvent){
+            this.anmerkungSelektionInitialisieren();
+        },
+        
+        anmerkungSelektionInitialisieren: function(){
+
+            var statusKey = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/sonstigeAngaben/status");
+            console.log( statusKey );
+
+            var anmerkungen = null;
+
+            switch(statusKey)
+            {
+                case "a":
+                    anmerkungen = [
+                        {key:"a0", text: "Abgebrochen"}
+                    ];
+                break;
+                
+                case "b":
+                    anmerkungen = [
+                        {key: "b0", text: "Abstimmung der Mieteraus-bauplanung mit dem Mietinteressenten"},
+                        {key: "b1", text: "Wirtschaftliche Eckdaten in Verhandlung"},
+                        {key: "b2", text: "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt"}
+                    ];
+                break
+                
+                case "c":
+                    anmerkungen = [
+                        {key: "c0", text: "Mietvertragsverhandlungen in Vorbereitung"},
+                        {key: "c1", text: "Mietvertragsverhandlungen begonnen"},
+                        {key: "c2", text: "Vertragsverhandlungen dauern an"},
+                        {key: "c3", text: "Vertragsverhandlungen verzögern sich"},
+                        {key: "c4", text: "Genehmigtes MV-Eck liegt vor (Planungswahrschein-lichkeit 90%)"},
+                        {key: "c5", text: "Abschlusswahrscheinlichkeit binnen 8 Wochen erwartet (Planungswahrscheinlichkeit 90%)"}
+                    ];
+                break;
+                
+                case "d":
+                    anmerkungen = [
+                        {key: "d0", text: "Mietvertrag noch nicht in SAP erfasst"},
+                        {key: "d1", text: "Mietvertrag in SAP erfasst"}
+                    ];
+                break;
+            }
+            
+            this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
+            //this.getView().getModel("form").setProperty("/vermietungsaktivitaet/sonstigeAngaben/anmerkung", anmerkungen[0].key);
         },
         
 		onVermietungsaktivitaetAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
