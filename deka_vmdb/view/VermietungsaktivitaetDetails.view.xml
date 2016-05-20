@@ -215,7 +215,7 @@
                     </Select>
                     
                     <Label text="{i18n>BEMERKUNG}" />
-                    <TextArea value="Interessent kann sich noch nicht entscheiden" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <TextArea value="{form>/vermietungsaktivitaet/sonstigeAngaben/bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                 </f:content>
 

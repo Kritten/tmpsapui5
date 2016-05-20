@@ -86,12 +86,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                     },
 					
 					sonstigeAngaben: {
-                        debitorennummer: null,
-						mietername: null,
-                        bonitaet: null,
+                        debitorennummer: "00000001",
+						mietername: "Hans Müller",
+                        bonitaet: "5",
                         status: "a",
                         anmerkung: "a0",
-                        bemerkung: null
+                        bemerkung: "Interessent kann sich noch nicht entscheiden"
 					},
 					
                     mieteGesamt: {vermietungsaktivitaet: 1250.5, konditioneneinigung: 1150.5, differenz: 100},
