@@ -8,7 +8,17 @@
 	<Page title="Budgetstopp (Fonds-Genehmigung zurückziehen)"  class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack">
 	
 		<content>
-	
+            
+            <FlexBox class="sapUiSmallMargin">
+                <items>
+                    <Select id="fondSelektion" items="{form>/fonds}" change="onFondSelektionChange" selectedKey="{form>/selectedFond}" forceSelection="false" autoAdjustWidth="true">
+                        <items>
+                            <core:Item key="{form>key}" text="{form>text}" />
+                        </items>
+                    </Select>
+                </items>
+            </FlexBox>
+    
             <Table id="konditioneneinigungenTable" mode="MultiSelect" items="{form>/konditioneneinigungen}">
                 
                 <headerToolbar>
