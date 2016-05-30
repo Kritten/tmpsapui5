@@ -18,16 +18,12 @@
             <Column minScreenWidth="Tablet" demandPopin="true">
                 <Text text="Mietername" />
             </Column>
-            <Column minScreenWidth="Tablet" demandPopin="true">
-                <Text text="Bonität" />
-            </Column>
         </columns>
             
 		<ColumnListItem>
 			<cells>
                 <Text text="{debitorennummer}" />
 				<Text text="{mietername}" />
-                <Text text="{bonitaet}" />
 			</cells>
 		</ColumnListItem>
 

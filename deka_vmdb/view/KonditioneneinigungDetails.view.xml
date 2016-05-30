@@ -110,15 +110,15 @@
                 maxContainerCols="2"
                 editable="true"
                 layout="ResponsiveGridLayout"
-                labelSpanL="6"
-                labelSpanM="2"
+                labelSpanL="3"
+                labelSpanM="3"
                 emptySpanL="0"
                 emptySpanM="0"
-                columnsL="2"
-                columnsM="2" >
+                columnsL="1"
+                columnsM="1" >
 
                 <f:content>
-                    <core:Title text="" />
+                    <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>MIETBEGINN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <DatePicker id="dateMietbeginn" value="{form>/konditioneneinigung/gemeinsameAngaben/mietbeginn}" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -129,7 +129,7 @@
                     <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <DatePicker id="dateGueltigkeitKonditioneneinigung" value="{form>/konditioneneinigung/gemeinsameAngaben/gueltigkeitKonditioneneinigung}" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
-                    <core:Title text="" />
+                    <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>MIETFREIE_ZEITEN} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Input id="mietfreieZeitenInMonaten" value="{form>/konditioneneinigung/gemeinsameAngaben/mietfreieZeit}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -157,7 +157,7 @@
                 columnsM="1" >
 
                 <f:content>
-                    <core:Title text="" />
+                    <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>STATUS}" />
                     <Select width="100%" enabled="false" >

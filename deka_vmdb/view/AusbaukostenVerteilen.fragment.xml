@@ -26,7 +26,7 @@
         </content>
         
         <buttons>
-            <Button text="{i18n>AKZEPTIEREN}" type="Accept" press="onAusbaukostenVerteilenFragmentAkzeptierenButtonPress" />
+            <Button text="{i18n>VERTEILEN}" type="Accept" press="onAusbaukostenVerteilenFragmentAkzeptierenButtonPress" />
             <Button text="{i18n>ABBRECHEN}" type="Reject" press="onAusbaukostenVerteilenFragmentAbbrechenButtonPress"/>
         </buttons>
         

@@ -374,22 +374,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.Error);
                 this.getView().byId("laufzeitBis1stBreak").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
                 validationResult = false;
-            }
-            
-            
-            if(this.getView().byId("dateGueltigkeitKonditioneneinigung").getDateValue() === null)
-            {
-                this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueStateText("Bitte geben Sie einen Wert ein.");
-                validationResult = false;
-            }
-            else if(this.getView().byId("dateGueltigkeitKonditioneneinigung").getDateValue() < Date.now())
-            {
-                this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueStateText("Das Datum der Gültigkeit muss in der Zukunft liegen.");
-                validationResult = false;
-            }
-            
+            }            
             
             if(this.getView().byId("mietfreieZeitenInMonaten").getValue() === "")
             {
@@ -511,7 +496,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 		clearValidationState: function(){
             this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
@@ -768,7 +752,20 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         },
         
         onDruckenButtonPress: function(oEvent){
-            //window.print();
+            
+            var domTarget = this.getView().byId("idVADetailsPage").getDomRef();
+            
+            var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+            
+            //var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+            //var printString = JSON.stringify(va, null, 4);
+            //printString = printString.replace(/\n/g, '<br/>');
+                        
+            printWindow.document.write(domTarget.innerHTML);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
         },
         
         onFavoritButtonPress: function(oEvent){
@@ -805,12 +802,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             var debitorSelektionDialogModel = new sap.ui.model.json.JSONModel({
                 debitoren: [{
                     debitorennummer: "00000001",
-                    mietername: "Hans Müller", 
-                    bonitaet: "5"
+                    mietername: "Hans Müller"
                 }, {
                     debitorennummer: "00000002",
-                    mietername: "Peter Schmidt", 
-                    bonitaet: "1"
+                    mietername: "Peter Schmidt"
                 }]
             });
             
@@ -824,7 +819,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 			var debitor = oEvent.getParameter("selectedItem").getBindingContext().getObject();
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/sonstigeAngaben/mietername", debitor.mietername);
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/sonstigeAngaben/debitorennummer", debitor.debitorennummer);
-            this.getView().getModel("form").setProperty("/vermietungsaktivitaet/sonstigeAngaben/bonitaet", debitor.bonitaet);            
         }
         
 	});
