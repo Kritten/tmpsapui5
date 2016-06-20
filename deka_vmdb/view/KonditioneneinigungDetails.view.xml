@@ -224,7 +224,9 @@
 			<OverflowToolbar>
 				<Button text="{= ${form>/konditioneneinigung/favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" icon="{= ${form>/konditioneneinigung/favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" press="onFavoritButtonPress" visible="{= (${form>/modus} === 'show') }" />
 				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" icon="sap-icon://request" visible="{= (${form>/modus} === 'show') }" />
-				<Button text="{i18n>GENEHMIGEN_REAKTIVIEREN}" icon="sap-icon://accept" visible="{= (${form>/modus} === 'show') }" />
+				<Button text="{i18n>GENEHMIGEN}" icon="sap-icon://accept" visible="{= (${form>/modus} === 'show') }" />
+				<Button text="{i18n>NICHTGENEHMIGEN}" icon="sap-icon://decline" visible="{= (${form>/modus} === 'show') }" />
+				<Button text="{i18n>REAKTIVIEREN}" icon="sap-icon://repost" visible="{= (${form>/modus} === 'show') }" />
                 <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" visible="{= (${form>/modus} === 'show') }" />
                 <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" visible="{= (${form>/modus} === 'show') }" />
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
