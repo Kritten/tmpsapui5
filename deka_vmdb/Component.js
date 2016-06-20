@@ -12,13 +12,7 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 			// call the init function of the parent
 			console.log(".. init component");
 			UIComponent.prototype.init.apply(this, arguments);
-			
-			var jsonModel = new sap.ui.model.json.JSONModel({
-                
-			})
-			
-			sap.ui.getCore().setModel(jsonModel);
-			
+						
 			// Mehrsprachigkeit
 			var sLocale = sap.ui.getCore().getConfiguration().getLanguage(); // Anmeldesprache ermitteln		
 			console.log("locale: " + sLocale);
