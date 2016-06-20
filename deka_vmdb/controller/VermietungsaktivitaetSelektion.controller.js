@@ -102,6 +102,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 		},
 				
 		onAnlegenPress : function (oEvent) {
+			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onAnlegenPress");
+			var _this = this;
+
 			// Holt über die ElementID die Radio Button Group
 			var oRBG = this.getView().byId("RBG_Anlage");
 			var idx = oRBG.getSelectedIndex();
@@ -110,33 +113,37 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 				this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialog", this);
 			}
 			
-			var selektionsDaten = {
-				data: null
-			}
-			
+			var oDataModel = sap.ui.getCore().getModel("odata");
+
 			switch(idx)
 			{
-				case 0:
-					selektionsDaten.data =  [{type: "we", id: "WE_123", descr: "Wirtschaftseinheit 20006 Washington, 1999 K Street"}, {type: "we",id: "WE_234",descr: "Wirtschaftseinheit 20006 Washington, 2500 K Street"}];
-				break;
-				
-				case 1:
-					selektionsDaten.data =  [{type: "mv", id: "MV_123", descr: "Mietvertrag 20006 Washington, 1999 K Street"}, {type: "mv",id: "MV_234",descr: "Mietvertrag 20006 Washington, 2500 K Street"}];
-				break;
-				
-				case 2:
-					selektionsDaten.data =  [{type: "ke", id: "KE_123", descr: "Konditioneneinigung 20006 Washington, 1999 K Street"}, {type: "ke",id: "KE_234",descr: "Konditioneneinigung 20006 Washington, 2500 K Street"}];
+				case 0:					
+					oDataModel.read("/WirtschaftseinheitenSet", {
+						success: function(oData){
+							console.log(oData);
+
+							var jsonData = {
+								data: []
+							};
+
+							oData.results.forEach(function(wirtschaftseinheit){
+								jsonData.data.push({
+									type: "we",
+									id: wirtschaftseinheit.WeId,
+									descr: wirtschaftseinheit.Plz + " " + wirtschaftseinheit.Ort + ", " + wirtschaftseinheit.StrHnum
+								});
+							});
+							
+							_this._oDialog.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
+							
+							// clear the old search filter
+							_this._oDialog.getBinding("items").filter([]);
+							_this._oDialog.open();
+						}
+					});
 				break;
 			}
-			
-			var selektionsModel = new sap.ui.model.json.JSONModel(selektionsDaten);
-			
-			this._oDialog.setModel(selektionsModel, "selektionsModel");
-			
-			// clear the old search filter
-			this._oDialog.getBinding("items").filter([]);
-	
-			this._oDialog.open();
+
 		},
 		
 		

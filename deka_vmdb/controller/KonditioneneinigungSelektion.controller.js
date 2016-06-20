@@ -155,7 +155,6 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 									_this._oDialog.open();
 								}
 							});
-
 						break;
 
 						case 1:

@@ -25,47 +25,75 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 		},
         
         onKonditioneneinigungAnzeigen: function(oEvent){
-            
-            var form = {
-                modus: "show", // show, new, edit
-                
-                konditioneneinigung: {
-                    id: "KE_123456",
-                    buchungskreis: "9-30",
-                    wirtschaftseinheit: "0599",
-                    bezeichnung: "20006 Washington, 1999 K Street",
-                    favorit: true,
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnzeigen");
+            var _this = this;
+
+            var keId = oEvent.getParameter("arguments").id;
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/KonditioneneinigungSet('" + keId + "')", {
+                success: function(oData){
+                    console.log(oData);
+
+                    var form = {
+                        modus: "show", // show, new, edit
+                        
+                        konditioneneinigung: {                            
+                            id: oData.KeId,
+                            laufzeit: oData.LzFirstbreak,
+                            mietbegin: oData.Mietbeginn,
+                            maklerkosten: oData.MkMonate,
+                            beratungskosten: oData.BkMonatsmieten,
+                            anmerkung: oData.Anmerkung,
+                            status: oData.Status,
+                            // fehlende Felder
+                            favorit: (Math.random() < 0.5),
+                            buchungskreis: "9-30",
+                            bezeichnung: "MF Handel/Gastronomie",
+                            mietflaeche: "9-30/599/01010001",
+                            nutzungsart: "Handel, Gastronomie",
+                            hauptnutzfl: 1234,
+                            angebotsmiete: 10,
+                            grundausbau: 20,
+                            mieterausbau: 20,
+                            wirtschaftseinheit: "0599",
+                            we_descr: "20006 Washington, 1999 K Street",
+                            gueltig_bis: new Date("2014/03/31"),
+							
+                            mietflaechenangaben: [],
+                            
+                            gemeinsameAngaben: {
+                                mietbeginn: null,
+                                laufzeit1stBreak: null,
+                                gueltigkeitKonditioneneinigung: null,
+                                mietfreieZeit: null,
+                                maklerkosten: null,
+                                beratungskosten: null
+                            },
+                                                
+                            mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                            kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                            
+                            arbeitsvorrat: null
+                        }
+                    };
+
+                    var user = {
+                        rolle: "FM" // FM, AM 
+                    };
                     
-                    mietflaechenangaben: [],
+                    var formModel = new sap.ui.model.json.JSONModel(form);
+                    var userModel = new sap.ui.model.json.JSONModel(userModel);
                     
-                    gemeinsameAngaben: {
-                        mietbeginn: null,
-                        laufzeit1stBreak: null,
-                        gueltigkeitKonditioneneinigung: null,
-                        mietfreieZeit: null,
-                        maklerkosten: null,
-                        beratungskosten: null
-                    },
-                                        
-                    mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
-                    kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                    _this.getView().setModel(userModel, "user");
+                    _this.getView().setModel(formModel, "form");
                     
-                    arbeitsvorrat: null
+                    _this.clearValidationState();
+                    _this.berechneMieteUndKosten();
                 }
-            };
+            });
             
-            var user = {
-                rolle: "FM" // FM, AM 
-            };
-            
-            var formModel = new sap.ui.model.json.JSONModel(form);
-            var userModel = new sap.ui.model.json.JSONModel(userModel);
-            
-            this.getView().setModel(userModel, "user");
-			this.getView().setModel(formModel, "form");
-            
-            this.clearValidationState();
-            this.berechneMieteUndKosten();
         },
         
         onKonditioneneinigungAnlegen: function(oEvent){
