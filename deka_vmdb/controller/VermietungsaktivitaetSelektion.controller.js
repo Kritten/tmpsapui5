@@ -206,14 +206,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 			
 			var filtersToApply = [];
 			
-			var dropdownFilter = this.getView().byId("cb_work");
+/*			var dropdownFilter = this.getView().byId("cb_work");
 			var selectedDropdownFilter = dropdownFilter.getSelectedKey();
 			
 			if(selectedDropdownFilter === "work")
 			{
 				var filter = new Filter("anmerkung", sap.ui.model.FilterOperator.EQ, "In Bearbeitung");
 				filtersToApply.push(filter);
-			}
+			} */
 			
 			var facetFilterLists = this.getView().byId("idFacetFilter").getLists();
 																
