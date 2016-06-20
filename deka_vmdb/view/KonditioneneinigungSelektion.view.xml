@@ -103,14 +103,14 @@
 								
 								
 								<Text text="{kondSel>id}" />
-								<Text text="{kondSel>mietbegin}" />
 								<Text text="{
-										path: 'kondSel>laufzeit',
-										type: 'sap.ui.model.type.Integer',
+										path: 'kondSel>mietbegin',
+										type: 'sap.ui.model.type.Date',
 										formatOptions: {
-											maxIntegerDigits: 5
+											style: 'short'
 										}
-								}" />	
+								}" />
+								<Text text="{kondSel>laufzeit}" />	
 								<Text text="{
 										path: 'kondSel>gueltig_bis',
 										type: 'sap.ui.model.type.Date',
