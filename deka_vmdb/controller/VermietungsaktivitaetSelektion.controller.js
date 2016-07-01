@@ -20,87 +20,83 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 		},
 		
 		onPatternMatched: function(oEvent){
-			
-			var vermSel = {
+			var _this = this;
 
-				data: [{
-					favorit: true,
-					id: "VA_123456",
-					buchungskreis: "9-30",
-					mietbegin: "2014/01/01",
-					laufzeit: 120,
-					gueltig_bis: new Date("2014/03/31"),
-					mietflaeche: "9-30/599/01010001",
-					bezeichnung: "MF Handel/Gastronomie",
-					nutzungsart: "Handel, Gastronomie",
-					hauptnutzfl: 4467,
-					angebotsmiete: 10,
-					grundausbau: 20,
-					mieterausbau: 20,
-					wirtschaftseinheit: "0599",
-					we_descr: "20006 Washington, 1999 K Street",
-					status: "Vermietungsaktivität",
-					anmerkung: "In Bearbeitung"
-				}, 
-				{
-					favorit : false,
-					id : "VA_456789",
-					buchungskreis: "9-31",
-					mietbegin : "2014/01/01",
-					laufzeit : 120,
-					gueltig_bis : new Date("2014/03/31"),
-					mietflaeche : "9-30/599/01010002",
-					bezeichnung : "MF Büro 1. OG",
-					nutzungsart : "Büro",
-					hauptnutzfl : 4467,
-					angebotsmiete : 10,
-					grundausbau : 20,
-					mieterausbau : 20,
-					wirtschaftseinheit: "0599",
-					we_descr : "20006 Washington, 1999 K Street",
-					status : "Vermietungsaktivität",
-					anmerkung : "In Bearbeitung"
-				}],
-				
-				facetfilters: null
-			};
+			var oDataModel = sap.ui.getCore().getModel("odata");
+
+			oDataModel.read("/VermietungsaktivitaetSet", {
+				success: function(oData){
+					console.log(oData);
+
+					var jsonData = {
+						data: [],
+						facetfilters: null
+					};
+
+					oData.results.forEach(function(vermietungsaktivitaet){
+
+						// Backend JSON Struktur -> Frontend JSON Struktur
+						jsonData.data.push({
+							favorit: vermietungsaktivitaet.Favorit,
+							id: vermietungsaktivitaet.VaId,
+							buchungskreis: vermietungsaktivitaet.Bukrs,
+							mietbegin: vermietungsaktivitaet.Mietbeginn,
+							status: vermietungsaktivitaet.Status,
+							anmerkung: vermietungsaktivitaet.Anmerkung,
+							// fehlende Felder
+							laufzeit: 120,
+							gueltig_bis: new Date("2014/03/31"),
+							mietflaeche: "9-30/599/01010001",
+							bezeichnung: "MF Handel/Gastronomie",
+							nutzungsart: "Handel, Gastronomie",
+							hauptnutzfl: 4467,
+							angebotsmiete: 10,
+							grundausbau: 20,
+							mieterausbau: 20,
+							wirtschaftseinheit: "0599",
+							we_descr: "20006 Washington, 1999 K Street"
+						});
+					});
+
+					var filterBuchungskreisValues = [];
+					var filterWirtschaftskreisValues = [];
 					
-			var filterBuchungskreisValues = [];
-			var filterWirtschaftskreisValues = [];
-			
-			vermSel.data.forEach(function(vermietungsaktivitaet){
-				filterBuchungskreisValues.push(vermietungsaktivitaet.buchungskreis);
-				filterWirtschaftskreisValues.push(vermietungsaktivitaet.wirtschaftseinheit);
+					jsonData.data.forEach(function(vermietungsaktivitaet){
+						filterBuchungskreisValues.push(vermietungsaktivitaet.buchungskreis);
+						filterWirtschaftskreisValues.push(vermietungsaktivitaet.wirtschaftseinheit);
+					});
+					
+					jsonData.facetfilters = [{
+						"filterName": "Favorit",
+						"values": [{"key": true, "text": "Ja"}, {"key": false, "text": "Nein"}]
+					},
+					{
+						"filterName": "Buchungskreis",
+						"values": Array.from(new Set(filterBuchungskreisValues)).map(function(buchungskreis){
+							return {"key": buchungskreis, "text": buchungskreis};
+						})
+					},
+					{
+						"filterName": "Wirtschaftseinheit",
+						"values": Array.from(new Set(filterWirtschaftskreisValues)).map(function(wirtschaftseinheit){
+							return {"key": wirtschaftseinheit, "text": wirtschaftseinheit}; 
+						})
+					}];
+								
+					var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
+					_this.getView().setModel(jsonModel, "vermSel");
+					
+					_this.applyFilters();
+				}
 			});
-			
-			vermSel.facetfilters = [{
-				"filterName": "Favorit",
-				"values": [{"key": true, "text": "Ja"}, {"key": false, "text": "Nein"}]
-			},
-			{
-				"filterName": "Buchungskreis",
-				"values": Array.from(new Set(filterBuchungskreisValues)).map(function(buchungskreis){
-					return {"key": buchungskreis, "text": buchungskreis};
-				})
-			},
-			{
-				"filterName": "Wirtschaftseinheit",
-				"values": Array.from(new Set(filterWirtschaftskreisValues)).map(function(wirtschaftseinheit){
-					return {"key": wirtschaftseinheit, "text": wirtschaftseinheit}; 
-				})
-			}];
-						
-			var vermSelModel = new sap.ui.model.json.JSONModel(vermSel);
-			this.getView().setModel(vermSelModel, "vermSel");
-			
-			this.applyFilters();
+					
 		},
 				
 		// Auswahl der anzuzeigenden VAs
 		onComboBoxChange : function(evt) {
 			this.applyFilters();
 		},
-				
+
 		onAnlegenPress : function (oEvent) {
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onAnlegenPress");
 			var _this = this;

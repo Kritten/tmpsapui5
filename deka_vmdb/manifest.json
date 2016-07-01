@@ -52,7 +52,7 @@
 					"targetAggregation" : "pages",
 					"subroutes" : [
 					{
-						"pattern": "KondSel/{id}",
+						"pattern": "KondSel/KeId/{KeId}/Bukrs/{Bukrs}",
 						"name" : "konditioneneinigungDetails",
 						"view" : "KonditioneneinigungDetails",
 						"targetAggregation" : "pages"

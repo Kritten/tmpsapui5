@@ -26,9 +26,9 @@
             
 		<ColumnListItem>
 			<cells>
-				<Text text="{mietflaeche}" />
-                <Text text="{bezeichnung}" />
-                <Text text="{nutzungsart}" />
+				<Text text="{Bukrs}/{WeId}/{MoId}" />
+                <Text text="( Bezeichnung )" />
+                <Text text="{Nutzart}" />
 			</cells>
 		</ColumnListItem>
 

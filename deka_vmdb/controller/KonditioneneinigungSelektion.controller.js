@@ -21,6 +21,11 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					var oDataModel = sap.ui.getCore().getModel("odata");
 
 					oDataModel.read("/KonditioneneinigungSet", {
+
+						urlParameters:{
+							"$expand": "KeToOb"
+						},
+
 						success: function(oData){
 							console.log(oData);
 
@@ -31,38 +36,25 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 
 							oData.results.forEach(function(konditioneneinigung){
 
-								// Backend JSON Struktur -> Frontend JSON Struktur
-								jsonData.data.push({
-									id: konditioneneinigung.KeId,
-									laufzeit: konditioneneinigung.LzFirstbreak,
-									mietbegin: konditioneneinigung.Mietbeginn,
-									maklerkosten: konditioneneinigung.MkMonate,
-									beratungskosten: konditioneneinigung.BkMonatsmieten,
-									anmerkung: konditioneneinigung.Anmerkung,
-									status: konditioneneinigung.Status,
-									// fehlende Felder
-									favorit: (Math.random() < 0.5),
-									buchungskreis: "9-30",
-									bezeichnung: "MF Handel/Gastronomie",
-									mietflaeche: "9-30/599/01010001",
-									nutzungsart: "Handel, Gastronomie",
-									hauptnutzfl: 1234,
-									angebotsmiete: 10,
-									grundausbau: 20,
-									mieterausbau: 20,
-									wirtschaftseinheit: "0599",
-									we_descr: "20006 Washington, 1999 K Street",
-									gueltig_bis: new Date("2014/03/31")
+								konditioneneinigung.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
+
+								// Pro Objekt einen separaten Eintrag
+								konditioneneinigung.KeToOb.results.forEach(function(objekt){
+									var _konditioneneinigung = jQuery.extend(true, {}, konditioneneinigung);
+									_konditioneneinigung.KeToOb = objekt;
+									jsonData.data.push(_konditioneneinigung);
 								});
+
 							});
 
-
 							var filterBuchungskreisValues = [];
-							var filterWirtschaftskreisValues = [];
+							var filterWirtschaftseinheitValues = [];
+							var filterAnmerkung = [];
 							
 							jsonData.data.forEach(function(konditioneneinigung){
-								filterBuchungskreisValues.push(konditioneneinigung.buchungskreis);
-								filterWirtschaftskreisValues.push(konditioneneinigung.wirtschaftseinheit);
+								filterBuchungskreisValues.push(konditioneneinigung.Bukrs);
+								filterWirtschaftseinheitValues.push(konditioneneinigung.WeId);
+								filterAnmerkung.push(konditioneneinigung.Anmerkung);
 							});
 							
 							jsonData.facetfilters = [{
@@ -77,8 +69,14 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 							},
 							{
 								filterName: "Wirtschaftseinheit",
-								values: Array.from(new Set(filterWirtschaftskreisValues)).map(function(wirtschaftseinheit){
+								values: Array.from(new Set(filterWirtschaftseinheitValues)).map(function(wirtschaftseinheit){
 									return {key: wirtschaftseinheit, text: wirtschaftseinheit}; 
+								})
+							},
+							{
+								filterName: "Anmerkung",
+								values: Array.from(new Set(filterAnmerkung)).map(function(anmerkung){
+									return {key: anmerkung, text: anmerkung}; 
 								})
 							}];
 
@@ -103,14 +101,16 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 				},
 				
 				// Klick auf eine Zeile in der Tabelle
-				onItemPress : function(evt) {
-					var kondid = this.getView().getModel("kondSel").getProperty(evt.getParameters("listItem").listItem.getBindingContext('kondSel').sPath);
+				onItemPress : function(oEvent) {
+
+					var konditioneneinigung = oEvent.getParameter("listItem").getBindingContext('kondSel').getObject();
 
 					// Ruft die Detailsseite auf (Anzeige)
 					this.getOwnerComponent().getRouter().navTo(
 						"konditioneneinigungDetails", 
 						{
-							id: kondid.id
+							KeId: konditioneneinigung.KeId,
+							Bukrs: konditioneneinigung.Bukrs
 						}
 					);
 				},
@@ -240,12 +240,13 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					
 					var filtersToApply = [];
 					
-/*					var dropdownFilter = this.getView().byId("cb_work");
+					/*
+					var dropdownFilter = this.getView().byId("cb_work");
 					var selectedDropdownFilter = dropdownFilter.getSelectedKey();
 					
 					if(selectedDropdownFilter === "work")
 					{
-						var filter = new Filter("anmerkung", sap.ui.model.FilterOperator.EQ, "In Bearbeitung");
+						var filter = new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, "In Bearbeitung");
 						filtersToApply.push(filter);
 					}      */
 					
@@ -263,15 +264,19 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 								{
 									case "Favorit":
 										var boolValue = (item.getKey() === "true") ? true : false;
-										itemFilters.push( new Filter("favorit", sap.ui.model.FilterOperator.EQ, boolValue) );
+										itemFilters.push( new Filter("Favorit", sap.ui.model.FilterOperator.EQ, boolValue) );
 									break;
 									
 									case "Buchungskreis":
-										itemFilters.push( new Filter("buchungskreis", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+										itemFilters.push( new Filter("Bukrs", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 									break;
 									
 									case "Wirtschaftseinheit":
-										itemFilters.push( new Filter("wirtschaftseinheit", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+										itemFilters.push( new Filter("WeId", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+									break;
+									
+									case "Anmerkung":
+										itemFilters.push( new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 									break;
 																		
 									default:

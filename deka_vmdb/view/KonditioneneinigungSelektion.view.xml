@@ -46,7 +46,7 @@
 					</lists>
 				</FacetFilter>
 				
-				<Table id="idKondSelTable" inset="false" itemPress="onItemPress" items="{ path: 'kondSel>/data' }">
+				<Table id="idKondSelTable" inset="false" itemPress="onItemPress" items="{kondSel>/data}">
 					<headerToolbar>
 						<Toolbar>
 							<Title text="{i18n>KONDITIONENEINIGUNGEN}" level="H4" />
@@ -67,9 +67,6 @@
 						</Column>
 						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>GUELTIG_BIS}" />
-						</Column>
-						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>MIETFLAECHE}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>BEZEICHNUNG}" />
@@ -94,30 +91,22 @@
 					<items>
 						<ColumnListItem type="Navigation">
 							<cells>
-								<core:Icon src="{= (${kondSel>favorit} === true) ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" />
+								<core:Icon src="{= (${kondSel>Favorit} === true) ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" />
 								
-								
-								<Text text="{kondSel>id}" />
+								<Text text="{kondSel>KeId}" />
 								<Text text="{
-										path: 'kondSel>mietbegin',
+										path: 'kondSel>Mietbeginn',
 										type: 'sap.ui.model.type.Date',
 										formatOptions: {
 											style: 'short'
 										}
 								}" />
-								<Text text="{kondSel>laufzeit}" />	
+								<Text text="{kondSel>LzFirstbreak}" />	
+								<Text text="( Gültig Bis )" />
+								<Text text="( Bezeichnung )" />
+								<Text text="{kondSel>KeToOb/Nutzart}" />
 								<Text text="{
-										path: 'kondSel>gueltig_bis',
-										type: 'sap.ui.model.type.Date',
-										formatOptions: {
-											style: 'short'
-										}
-								}" />
-								<Text text="{kondSel>mietflaeche}" />
-								<Text text="{kondSel>bezeichnung}" />
-								<Text text="{kondSel>nutzungsart}" />
-								<Text text="{
-										path: 'kondSel>hauptnutzfl',
+										path: 'kondSel>KeToOb/Hnfl',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -128,7 +117,7 @@
 										}
 								}" />
 								<Text text="{
-										path: 'kondSel>angebotsmiete',
+										path: 'kondSel>KeToOb/AnMiete',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -139,7 +128,7 @@
 										}
 								}" />
 								<Text text="{
-										path: 'kondSel>grundausbau',
+										path: 'kondSel>KeToOb/GaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -150,7 +139,7 @@
 										}
 								}" />
 								<Text text="{
-										path: 'kondSel>mieterausbau',
+										path: 'kondSel>KeToOb/MaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 

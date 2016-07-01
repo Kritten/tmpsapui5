@@ -28,55 +28,37 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnzeigen");
             var _this = this;
 
-            var keId = oEvent.getParameter("arguments").id;
+            var Bukrs = oEvent.getParameter("arguments").Bukrs;
+            var KeId = oEvent.getParameter("arguments").KeId;
 
             var oDataModel = sap.ui.getCore().getModel("odata");
 
-            oDataModel.read("/KonditioneneinigungSet('" + keId + "')", {
+            oDataModel.read("/KonditioneneinigungSet(" 
+                + "Bukrs=" + "'" + Bukrs + "'" 
+                + ","
+                + "KeId=" + "'" + KeId + "'"
+                + ")",
+            {
+
+                urlParameters:{
+                    "$expand": "KeToOb"
+                },
+
                 success: function(oData){
                     console.log(oData);
 
+                    // Struktur aufbereiten für UI5 Binding
+                    oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
+                    oData.KeToOb = oData.KeToOb.results;
+
+                    // Zusätzliche Felder
+                    oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
+                    oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
+                    oData.arbeitsvorrat = null;
+
                     var form = {
                         modus: "show", // show, new, edit
-                        
-                        konditioneneinigung: {                            
-                            id: oData.KeId,
-                            laufzeit: oData.LzFirstbreak,
-                            mietbegin: oData.Mietbeginn,
-                            maklerkosten: oData.MkMonate,
-                            beratungskosten: oData.BkMonatsmieten,
-                            anmerkung: oData.Anmerkung,
-                            status: oData.Status,
-                            // fehlende Felder
-                            favorit: (Math.random() < 0.5),
-                            buchungskreis: "9-30",
-                            bezeichnung: "MF Handel/Gastronomie",
-                            mietflaeche: "9-30/599/01010001",
-                            nutzungsart: "Handel, Gastronomie",
-                            hauptnutzfl: 1234,
-                            angebotsmiete: 10,
-                            grundausbau: 20,
-                            mieterausbau: 20,
-                            wirtschaftseinheit: "0599",
-                            we_descr: "20006 Washington, 1999 K Street",
-                            gueltig_bis: new Date("2014/03/31"),
-							
-                            mietflaechenangaben: [],
-                            
-                            gemeinsameAngaben: {
-                                mietbeginn: null,
-                                laufzeit1stBreak: null,
-                                gueltigkeitKonditioneneinigung: null,
-                                mietfreieZeit: null,
-                                maklerkosten: null,
-                                beratungskosten: null
-                            },
-                                                
-                            mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
-                            kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
-                            
-                            arbeitsvorrat: null
-                        }
+                        konditioneneinigung: oData,
                     };
 
                     var user = {
@@ -90,7 +72,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                     _this.getView().setModel(formModel, "form");
                     
                     _this.clearValidationState();
-                    _this.berechneMieteUndKosten();
                 }
             });
             
@@ -102,22 +83,36 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 modus: "new", // show, new, edit
                 
                 konditioneneinigung: {
-                    id: null,
-                    buchungskreis: "9-30",
-                    wirtschaftseinheit: "0599",
-                    bezeichnung: "20006 Washington, 1999 K Street",
-                    favorit: false,
-                    
-                    mietflaechenangaben: [],
-                    
-                    gemeinsameAngaben: {
-                        mietbeginn: null,
-                        laufzeit1stBreak: null,
-                        gueltigkeitKonditioneneinigung: null,
-                        mietfreieZeit: null,
-                        maklerkosten: null,
-                        beratungskosten: null
-                    },
+
+                    KeId: "",
+                    Bukrs: "",
+                    MfSplit: "",
+                    AuthUser: "",
+                    Favorit: "",
+                    LzFirstbreak: "",
+                    WeId: "",
+                    MzMonate: "",
+                    Status: "",
+                    Anmerkung: "",
+                    Aktiv: "",
+                    Mietbeginn: "",
+                    Bemerkung: "",
+                    GnStufe: "",
+                    BkMonatsmieten: "",
+                    GnFm: "",
+                    GnFmDurch: "",
+                    GnGl: "",
+                    GnGlDurch: "",
+                    MkMonate: "",
+                    Currency: "",
+                    GnAl: "",
+                    GnAlDurch: "",
+                    Unit: "",
+                    GnGf: "",
+                    GnGfDurch: "",
+
+                    KeToOb: [],
+                    KeToWe: [],
                                         
                     mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
                     kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
@@ -137,7 +132,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 			this.getView().setModel(formModel, "form");
             
             this.clearValidationState();
-            this.berechneMieteUndKosten();
         },
         
         onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
@@ -383,14 +377,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         
         berechneMieteUndKosten: function(){
             
-            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/mietflaechenangaben");
+            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             
             var mieteGesamtKE = 0;
             var kostenGesamtKE = 0;
             
             mietflaechenangaben.forEach(function(mietflaechenangabe){
-                mieteGesamtKE += mietflaechenangabe.hauptnutzflaeche * mietflaechenangabe.nachhaltigeMiete;
-                kostenGesamtKE += mietflaechenangabe.hauptnutzflaeche + (mietflaechenangabe.grundbaukosten + mietflaechenangabe.mieterausbaukosten);
+                mieteGesamtKE += mietflaechenangabe.Hnfl * mietflaechenangabe.NhMiete;
+                kostenGesamtKE += mietflaechenangabe.Hnfl + (mietflaechenangabe.GaKosten + mietflaechenangabe.MaKosten);
             });
                       
             this.getView().getModel("form").setProperty("/konditioneneinigung/mieteGesamt/vermietungsaktivitaet", "-"); 
@@ -445,7 +439,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             var selectedItems = mietflaechenangabenTable.getSelectedItems();
                                     
-            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/mietflaechenangaben");
+            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
 
             console.log(mietflaechenangaben);
             
@@ -455,7 +449,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             
             console.log(mietflaechenangaben);
             
-            this.getView().getModel("form").setProperty("/konditioneneinigung/mietflaechenangaben", mietflaechenangaben);
+            this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
 
             // Selektion aufheben nach dem Löschen
             mietflaechenangabenTable.removeSelections(true);
@@ -471,46 +465,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             }
             
             var mietflaechenSelektionDialogModel = new sap.ui.model.json.JSONModel({
-                "mietflaechen": [
+                mietflaechen: [
                     {
-                        "mietflaeche": "9-30/599/01010002",
-                        "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                        "nutzungsart": "Handel, Gastronomie",
-                        "hauptnutzflaeche": 9000.00,
-                        "nachhaltigeMiete": 9.140833,
-                        "angebotsmiete": 12.00,
-                        "grundbaukosten": 20.00,
-                        "mieterausbaukosten": 30.00
-                    },
-                    {
-                        "mietflaeche": "9-30/599/01010002",
-                        "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                        "nutzungsart": "Handel, Gastronomie",
-                        "hauptnutzflaeche": 1000.00,
-                        "nachhaltigeMiete": 9.140833,
-                        "angebotsmiete": 12.00,
-                        "grundbaukosten": 20.00,
-                        "mieterausbaukosten": 30.00
-                    },
-                    {
-                        "mietflaeche": "9-30/599/01010002",
-                        "bezeichnung": "MF Handel/Wertstoffe 1.OG",
-                        "nutzungsart": "Handel, Wertstoffe",
-                        "hauptnutzflaeche": 4467.00,
-                        "nachhaltigeMiete": 9.140833,
-                        "angebotsmiete": 12.00,
-                        "grundbaukosten": 20.00,
-                        "mieterausbaukosten": 30.00
-                    },
-                    {
-                        "mietflaeche": "9-30/599/01010002",
-                        "bezeichnung": "MF Handel/Gastronomie 1.OG",
-                        "nutzungsart": "Handel, Gastronomie",
-                        "hauptnutzflaeche": 4467.00,
-                        "nachhaltigeMiete": 9.140833,
-                        "angebotsmiete": 12.00,
-                        "grundbaukosten": 20.00,
-                        "mieterausbaukosten": 30.00
+                        KeId: "",
+                        VaId: "",
+                        MoId: "01010002",
+                        WeId: "599",
+                        Bukrs: "9-30",
+                        Nutzart: "Handel, Gastronomie",
+                        Whrung: "EUR",
+                        Hnfl: 9000.00,
+                        HnflAlt: 9000.00,
+                        MaKosten: 30.00,
+                        NhMiete: 9.140833,
+                        AnMiete: 12.00,
+                        GaKosten: 20.00
                     }
                 ]
             });
@@ -527,18 +496,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             
             if(selectedItems.length > 0)
             {
-                var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/mietflaechenangaben");
+                var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
                 
                 selectedItems.forEach(function(item){
                     var mietflaechenangabe = item.getBindingContext().getObject();
                     mietflaechenangaben.push(mietflaechenangabe);
                 });
                 
-                this.getView().getModel("form").setProperty("/konditioneneinigung/mietflaechenangaben", mietflaechenangaben);
+                this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
             }
-
-// TODO: berechnung an Change Event hängen
-            this.berechneMieteUndKosten();
         },
         
         onMietflaechenSelektionDialogSearch: function(oEvent){
@@ -555,7 +521,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             }
             
             // über Einträge iterieren und Nutzungsarten sammeln
-            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/mietflaechenangaben");
+            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             
 			if(mietflaechenangaben.length === 0){
 // TODO: Fehlermeldung
@@ -566,7 +532,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             
             mietflaechenangaben.forEach(function(mietflaechenangabe){
                 // key - value .. in dem Fall beides gleich
-                vorhandeneNutzungsarten[mietflaechenangabe.nutzungsart] = {key: mietflaechenangabe.nutzungsart, text: mietflaechenangabe.nutzungsart};
+                vorhandeneNutzungsarten[mietflaechenangabe.Nutzart] = {key: mietflaechenangabe.Nutzart, text: mietflaechenangabe.Nutzart};
             });
             
             // Object-Properties to Array
@@ -603,28 +569,28 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 
             // Logik zur Verteilung der Ausbaukosten
         
-            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/mietflaechenangaben");
+            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             
             var sumHauptnutzflaeche = 0;
             
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
-                if(mietflaechenangabe.nutzungsart === verteilung.nutzungsart)
+                if(mietflaechenangabe.Nutzart === verteilung.nutzungsart)
                 {
-                    sumHauptnutzflaeche += mietflaechenangabe.hauptnutzflaeche;
+                    sumHauptnutzflaeche += mietflaechenangabe.Hnfl;
                 }
             });
             
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
-                if(mietflaechenangabe.nutzungsart === verteilung.nutzungsart)
+                if(mietflaechenangabe.Nutzart === verteilung.nutzungsart)
                 {
-                    mietflaechenangabe.grundbaukosten = (mietflaechenangabe.hauptnutzflaeche / sumHauptnutzflaeche) * verteilung.grundausbaukosten;
-                    mietflaechenangabe.mieterausbaukosten = (mietflaechenangabe.hauptnutzflaeche / sumHauptnutzflaeche) * verteilung.mietausbaukosten;
+                    mietflaechenangabe.GaKosten = (mietflaechenangabe.Hnfl / sumHauptnutzflaeche) * verteilung.grundausbaukosten;
+                    mietflaechenangabe.MaKosten = (mietflaechenangabe.Hnfl / sumHauptnutzflaeche) * verteilung.mietausbaukosten;
                 }
             });
             
-            this.getView().getModel("form").setProperty("/konditioneneinigung/mietflaechenangaben", mietflaechenangaben);
+            this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
         },
         
         onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(oEvent){
@@ -633,11 +599,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         
         onFavoritButtonPress: function(oEvent){
             
-            var favorit = this.getView().getModel("form").getProperty("/konditioneneinigung/favorit");
+            var favorit = this.getView().getModel("form").getProperty("/konditioneneinigung/Favorit");
 
             if(favorit)
             {
-                this.getView().getModel("form").setProperty("/konditioneneinigung/favorit", false);
+                this.getView().getModel("form").setProperty("/konditioneneinigung/Favorit", false);
                 
                 MessageBox.information("Die Vermietungsaktivität wurde von den Favoriten entfernt.", {
                     title:"{i18n>HINWEIS}"
@@ -645,7 +611,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             }
             else
             {
-                this.getView().getModel("form").setProperty("/konditioneneinigung/favorit", true);
+                this.getView().getModel("form").setProperty("/konditioneneinigung/Favorit", true);
                 
                 MessageBox.information("Die Vermietungsaktivität wurde zu den Favoriten hinzugefügt.", {
                     title:"{i18n>HINWEIS}"

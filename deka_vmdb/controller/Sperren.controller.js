@@ -18,26 +18,29 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
 		},
 		
 		onPatternMatched: function(oEvent){
+			var _this = this;
 
-            var form = {
-                
-                sperren: [{
-					aktivitaet: "Aktivität A",
-					sperrobjekt: "Objekt X",
-					benutzer: "USER1",
-					datum: new Date(),
-					uhrzeit: (new Date()).toLocaleTimeString()
-				}, {
-					aktivitaet: "Aktivität B",
-					sperrobjekt: "Objekt Y",
-					benutzer: "USER1",
-					datum: new Date(),
-					uhrzeit: (new Date()).toLocaleTimeString()
-				}]
-            };
-			
-            var formModel = new sap.ui.model.json.JSONModel(form);
-			this.getView().setModel(formModel, "form");
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/SperreSet", {
+                success: function(oData){
+                    console.log(oData);
+
+					var form = {
+						sperren: oData.results
+					};
+
+					form.sperren.forEach(function(sperre){
+						sperre.Uhrzeit = new Date(sperre.Uhrzeit.ms);
+					});
+
+					var formModel = new sap.ui.model.json.JSONModel(form);
+					_this.getView().setModel(formModel, "form");
+                }
+            });
+
+
+
 		},
 		
 		onSperreAufhebenButtonPress: function(oEvent){
