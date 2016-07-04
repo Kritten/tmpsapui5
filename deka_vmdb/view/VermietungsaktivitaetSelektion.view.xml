@@ -69,9 +69,6 @@
 							<Text text="{i18n>GUELTIG_BIS}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>MIETFLAECHE}" />
-						</Column>
-						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>BEZEICHNUNG}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
@@ -94,35 +91,28 @@
 					<items>
 						<ColumnListItem type="Navigation">
 							<cells>
-								<core:Icon src="{= (${vermSel>favorit} === true) ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" />
+								<core:Icon src="{= (${vermSel>Favorit} === true) ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" />
 								
-								<Text text="{vermSel>id}" />
+								<Text text="{vermSel>VaId}" />
 								<Text text="{
-										path: 'vermSel>mietbegin',
+										path: 'vermSel>Mietbeginn',
 										type: 'sap.ui.model.type.Date',
 										formatOptions: {
 											style: 'short'
 										}
 								}" />
 								<Text text="{
-										path: 'vermSel>laufzeit',
+										path: 'vermSel>LzFirstbreak',
 										type: 'sap.ui.model.type.Integer',
 										formatOptions: {
 											maxIntegerDigits: 5
 										}
 								}" />	
+								<Text text="( Gültig bis )" />
+								<Text text="( Bezeichnung )" />
+								<Text text="{vermSel>VaToOb/Nutzart}" />
 								<Text text="{
-										path: 'vermSel>gueltig_bis',
-										type: 'sap.ui.model.type.Date',
-										formatOptions: {
-											style: 'short'
-										}
-								}" />
-								<Text text="{vermSel>mietflaeche}" />
-								<Text text="{vermSel>bezeichnung}" />
-								<Text text="{vermSel>nutzungsart}" />
-								<Text text="{
-										path: 'vermSel>hauptnutzfl',
+										path: 'vermSel>VaToOb/Hnfl',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -133,7 +123,7 @@
 										}
 								}" />
 								<Text text="{
-										path: 'vermSel>angebotsmiete',
+										path: 'vermSel>VaToOb/AnMiete',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -144,7 +134,7 @@
 										}
 								}" />
 								<Text text="{
-										path: 'vermSel>grundausbau',
+										path: 'vermSel>VaToOb/GaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -155,7 +145,7 @@
 										}
 								}" />
 								<Text text="{
-										path: 'vermSel>mieterausbau',
+										path: 'vermSel>VaToOb/MaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 

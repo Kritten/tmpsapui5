@@ -121,13 +121,13 @@
                     <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>MIETBEGINN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <DatePicker id="dateMietbeginn" value="{form>/konditioneneinigung/Mietbeginn}" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="dateMietbeginn" dateValue="{form>/konditioneneinigung/Mietbeginn}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>LAUFZEIT_BIS_1ST_BREAK} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Input id="laufzeitBis1stBreak" value="{form>/konditioneneinigung/LzFirstbreak}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <DatePicker id="dateGueltigkeitKonditioneneinigung" value="" placeholder="( Gültigkeit KE )" valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="" placeholder="( Gültigkeit KE )" displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <!-- <core:Title text="" /> -->
                     

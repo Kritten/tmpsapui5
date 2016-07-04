@@ -77,7 +77,7 @@
 					"targetAggregation" : "pages",
 					"subroutes" : [
 					{
-						"pattern": "VermSel/{id}",
+						"pattern": "VermSel/VaId/{VaId}/Bukrs/{Bukrs}",
 						"name" : "vermietungsaktivitaetDetails",
 						"view" : "VermietungsaktivitaetDetails",
 						"targetAggregation" : "pages"

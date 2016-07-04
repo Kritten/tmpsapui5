@@ -4,7 +4,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 	return Controller.extend("ag.bpc.Deka.controller.Budgetstopp", {
 		
 		onInit: function(oEvent){
-            jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.Budgetstopp .. onInit");
             
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");          

@@ -22,8 +22,8 @@
             
 		<ColumnListItem>
 			<cells>
-                <Text text="{debitorennummer}" />
-				<Text text="{mietername}" />
+                <Text text="{KdNr}" />
+				<Text text="{Name}" />
 			</cells>
 		</ColumnListItem>
 

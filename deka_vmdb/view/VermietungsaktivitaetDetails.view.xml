@@ -14,15 +14,15 @@
                 
 		<content>
             
-			<ObjectHeader title="{i18n>VERMIETUNGSAKTIVITAET}" number="{form>/vermietungsaktivitaet/id}" >
+			<ObjectHeader title="{i18n>VERMIETUNGSAKTIVITAET}" number="{form>/vermietungsaktivitaet/VaId}" >
 				<attributes>
-					<ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/buchungskreis}" />
-					<ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/vermietungsaktivitaet/wirtschaftseinheit}" />
-                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/vermietungsaktivitaet/bezeichnung}" />
+					<ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/Bukrs}" />
+					<ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="( Wirtschaftseinheit ID )" />
+                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="( Bezeichnung )" />
 				</attributes>
 			</ObjectHeader>
             
-            <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{form>/vermietungsaktivitaet/mietflaechenangaben}">
+            <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{form>/vermietungsaktivitaet/VaToOb}">
                 
                 <headerToolbar>
                     <Toolbar>
@@ -68,20 +68,20 @@
                 <items>
                     <ColumnListItem vAlign="Middle">
                         <cells>
-                            <Text text="{form>mietflaeche}" />
-                            <Text text="{form>bezeichnung}" />
-                            <Text text="{form>nutzungsart}" />
-                            <Select selectedKey="{form>nutzungsartAlternativ}" items="{form>/alternativeNutzungsarten}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                            <Text text="{form>Bukrs}/{form>VaId}/{form>MoId}" />
+                            <Text text="( Bezeichnung )" />
+                            <Text text="{form>Nutzart}" />
+                            <Select selectedKey="{form>NutzartAlt}" items="{form>/alternativeNutzungsarten}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                                 <items>
                                     <core:Item key="{form>key}" text="{form>text}" />
                                 </items>
                             </Select>
-                            <Text text="{form>hauptnutzflaeche}" />
-                            <Input value="{form>mietflaecheAlternativ}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{form>nachhaltigeMiete}" />
-                            <Input value="{form>angebotsmiete}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>grundbaukosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>mieterausbaukosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Text text="{form>Hnfl}" />
+                            <Input value="{form>HnflAlt}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Text text="{form>NhMiete}" />
+                            <Input value="{form>AnMiete}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>GaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>MaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                         </cells>
                     </ColumnListItem>
                     
@@ -105,7 +105,7 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
-                            <Button text="{i18n>AUSBAUKOSTEN_VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
+                            <Button text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
                         </items>
                         <layoutData>
 							<FlexItemData growFactor="1" />
@@ -132,42 +132,42 @@
                     <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>MIETBEGINN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <DatePicker id="dateMietbeginn" value="{form>/vermietungsaktivitaet/gemeinsameAngaben/mietbeginn}" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="dateMietbeginn" dateValue="{form>/vermietungsaktivitaet/Mietbeginn}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                     <Label text="{i18n>LAUFZEIT_BIS_1ST_BREAK} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="laufzeitBis1stBreak" value="{form>/vermietungsaktivitaet/gemeinsameAngaben/laufzeit1stBreak}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="laufzeitBis1stBreak" value="{form>/vermietungsaktivitaet/LzFirstbreak}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" />
-                    <DatePicker id="dateGueltigkeitKonditioneneinigung" value="{form>/vermietungsaktivitaet/gemeinsameAngaben/gueltigkeitKonditioneneinigung}" placeholder=" " valueFormat="yyyy-MM-dd" displayFormat="long" editable="false" />
+                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="" placeholder="( Gültigkeit KE )" displayFormat="short" editable="false" />
                     
                     <!-- <core:Title text="" /> -->                  
                     
                     <Label text="{i18n>VERMIETUNGSART}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Select id="vermietungsart" selectedKey="{form>vermietungsart}" items="{form>/vermietungsarten}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                    <Select id="vermietungsart" selectedKey="{form>/vermietungsaktivitaet/Vermietungsart}" items="{form>/vermietungsarten}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <items>
                             <core:Item key="{form>key}" text="{form>text}" />
                         </items>
                     </Select>
                     
                     <Label text="{i18n>POENALE} {i18n>IN_WAEHRUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="poenale" value="{form>/vermietungsaktivitaet/gemeinsameAngaben/poenale}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="poenale" value="{form>/vermietungsaktivitaet/Poenale}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                     <Label text="{i18n>INDEXWEITERGABE} {i18n>IN_PROZENT}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="indexweitergabe" value="{form>/vermietungsaktivitaet/gemeinsameAngaben/indexweitergabe}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="indexweitergabe" value="{form>/vermietungsaktivitaet/IdxWeitergabe}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                     <Label text="{i18n>PLANUNGSRELEVANZ}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <CheckBox id="planungsrelevanz" selected="{form>/vermietungsaktivitaet/gemeinsameAngaben/planungsrelevanz}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <CheckBox id="planungsrelevanz" selected="{form>/vermietungsaktivitaet/PLRelevant}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>MIETFREIE_ZEITEN} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="mietfreieZeitenInMonaten" value="{form>/vermietungsaktivitaet/gemeinsameAngaben/mietfreieZeit}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="mietfreieZeitenInMonaten" value="{form>/vermietungsaktivitaet/MzMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>MAKLERKOSTEN} {i18n>IN_MONATSMIETEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="maklerkostenInMonatsmieten" value="{form>/vermietungsaktivitaet/gemeinsameAngaben/maklerkosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="maklerkostenInMonatsmieten" value="{form>/vermietungsaktivitaet/MkMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>BERATUNGSKOSTEN} {i18n>IN_MONATSMIETEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="beratungskostenInMonatsmieten" value="{form>/vermietungsaktivitaet/gemeinsameAngaben/beratungskosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="beratungskostenInMonatsmieten" value="{form>/vermietungsaktivitaet/BkMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 </f:content>
 
 			</f:SimpleForm>
@@ -187,7 +187,7 @@
 
                 <f:content>
                     <Label text="{i18n>DEBITORENNUMMER}" />
-                    <Input id="debitorennummer" value="{form>/vermietungsaktivitaet/sonstigeAngaben/debitorennummer}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="debitorennummer" value="{form>/vermietungsaktivitaet/Debitor}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Button text="{i18n>DEBITOR_AUSWAEHLEN}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" press="onDebitorAuswahlButtonPress" >
                         <layoutData>
                             <l:GridData span="L3 M4 S4" />
@@ -195,27 +195,27 @@
                     </Button>
 
                     <Label text="{i18n>MIETERNAME}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="mietername" value="{form>/vermietungsaktivitaet/sonstigeAngaben/mietername}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="mietername" value="{form>/vermietungsaktivitaet/Debitorname}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>BONITAET}" />
-                    <Input value="{form>/vermietungsaktivitaet/sonstigeAngaben/bonitaet}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input value="{form>/vermietungsaktivitaet/Bonitaet}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>STATUS}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Select id="selectStatus" selectedKey="{form>/vermietungsaktivitaet/sonstigeAngaben/status}" width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/statuswerte}" change="onStatusSelektionChange" >
+                    <Select id="selectStatus" selectedKey="{form>/vermietungsaktivitaet/Status}" width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/statuswerte}" change="onStatusSelektionChange" >
                         <items>
                             <core:Item key="{form>key}" text="{form>text}" />
                         </items>
                     </Select>
                     
                     <Label text="{i18n>ANMERKUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Select selectedKey="{form>/vermietungsaktivitaet/sonstigeAngaben/anmerkung}" width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/anmerkungen}" >
+                    <Select selectedKey="{form>/vermietungsaktivitaet/Anmerkung}" width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/anmerkungen}" >
                         <items>
                             <core:Item key="{form>key}" text="{form>text}" />
                         </items>
                     </Select>
                     
                     <Label text="{i18n>BEMERKUNG}" />
-                    <TextArea value="{form>/vermietungsaktivitaet/sonstigeAngaben/bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <TextArea value="{form>/vermietungsaktivitaet/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                 </f:content>
 
@@ -268,7 +268,7 @@
         
         <footer>
 			<OverflowToolbar>
-				<Button text="{= ${form>/vermietungsaktivitaet/favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" icon="{= ${form>/vermietungsaktivitaet/favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" press="onFavoritButtonPress" visible="{= (${form>/modus} === 'show') }" />
+				<Button text="{= ${form>/vermietungsaktivitaet/Favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" icon="{= ${form>/vermietungsaktivitaet/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" press="onFavoritButtonPress" visible="{= (${form>/modus} === 'show') }" />
                 <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" press="onDruckenButtonPress" visible="{= (${form>/modus} === 'show') }" />
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >

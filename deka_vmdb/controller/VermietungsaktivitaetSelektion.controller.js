@@ -4,7 +4,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
 		
 		onInit: function(evt){
-			jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onInit");
 			
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
@@ -25,6 +24,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 			var oDataModel = sap.ui.getCore().getModel("odata");
 
 			oDataModel.read("/VermietungsaktivitaetSet", {
+
+				urlParameters:{
+					"$expand": "VaToOb"
+				},
+
 				success: function(oData){
 					console.log(oData);
 
@@ -35,51 +39,55 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 
 					oData.results.forEach(function(vermietungsaktivitaet){
 
-						// Backend JSON Struktur -> Frontend JSON Struktur
-						jsonData.data.push({
-							favorit: vermietungsaktivitaet.Favorit,
-							id: vermietungsaktivitaet.VaId,
-							buchungskreis: vermietungsaktivitaet.Bukrs,
-							mietbegin: vermietungsaktivitaet.Mietbeginn,
-							status: vermietungsaktivitaet.Status,
-							anmerkung: vermietungsaktivitaet.Anmerkung,
-							// fehlende Felder
-							laufzeit: 120,
-							gueltig_bis: new Date("2014/03/31"),
-							mietflaeche: "9-30/599/01010001",
-							bezeichnung: "MF Handel/Gastronomie",
-							nutzungsart: "Handel, Gastronomie",
-							hauptnutzfl: 4467,
-							angebotsmiete: 10,
-							grundausbau: 20,
-							mieterausbau: 20,
-							wirtschaftseinheit: "0599",
-							we_descr: "20006 Washington, 1999 K Street"
+						vermietungsaktivitaet.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
+
+						// Pro Objekt einen separaten Eintrag
+						vermietungsaktivitaet.VaToOb.results.forEach(function(objekt){
+							var _vermietungsaktivitaet = jQuery.extend(true, {}, vermietungsaktivitaet);
+							_vermietungsaktivitaet.VaToOb = objekt;
+							jsonData.data.push(_vermietungsaktivitaet);
 						});
+						
 					});
 
 					var filterBuchungskreisValues = [];
-					var filterWirtschaftskreisValues = [];
+					var filterWirtschaftseinheitValues = [];
+					var filterAnmerkungValues = [];
+					var filterStatusValues = [];
 					
 					jsonData.data.forEach(function(vermietungsaktivitaet){
-						filterBuchungskreisValues.push(vermietungsaktivitaet.buchungskreis);
-						filterWirtschaftskreisValues.push(vermietungsaktivitaet.wirtschaftseinheit);
+						filterBuchungskreisValues.push(vermietungsaktivitaet.Bukrs);
+						filterWirtschaftseinheitValues.push(vermietungsaktivitaet.WeId);
+						filterAnmerkungValues.push(vermietungsaktivitaet.Anmerkung);
+						filterStatusValues.push(vermietungsaktivitaet.Status);
 					});
 					
 					jsonData.facetfilters = [{
-						"filterName": "Favorit",
-						"values": [{"key": true, "text": "Ja"}, {"key": false, "text": "Nein"}]
+						filterName: "Favorit",
+						values: [{"key": true, "text": "Ja"}, {"key": false, "text": "Nein"}]
 					},
 					{
-						"filterName": "Buchungskreis",
-						"values": Array.from(new Set(filterBuchungskreisValues)).map(function(buchungskreis){
+						filterName: "Buchungskreis",
+						values: Array.from(new Set(filterBuchungskreisValues)).map(function(buchungskreis){
 							return {"key": buchungskreis, "text": buchungskreis};
 						})
 					},
 					{
-						"filterName": "Wirtschaftseinheit",
-						"values": Array.from(new Set(filterWirtschaftskreisValues)).map(function(wirtschaftseinheit){
+						filterName: "Wirtschaftseinheit",
+						values: Array.from(new Set(filterWirtschaftseinheitValues)).map(function(wirtschaftseinheit){
 							return {"key": wirtschaftseinheit, "text": wirtschaftseinheit}; 
+						})
+					},
+					{
+						filterName: "Anmerkung",
+						values: Array.from(new Set(filterAnmerkungValues)).map(function(anmerkung){
+							return {key: anmerkung, text: anmerkung}; 
+						})
+					},
+					{
+						filterName: "Status",
+						values: Array.from(new Set(filterStatusValues)).map(function(status){
+							return {key: status, text: status}; 
 						})
 					}];
 								
@@ -173,16 +181,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 		},
 		
 		// Klick auf eine Zeile in der Tabelle
-		onItemPress : function(evt) {
+		onItemPress : function(oEvent) {
 			
-			var va = evt.getParameters().listItem.getBindingContext('vermSel').getObject();
+			var vermietungsaktivitaet = oEvent.getParameter("listItem").getBindingContext('vermSel').getObject();
 			
 			this.getOwnerComponent().getRouter().navTo(
 				"vermietungsaktivitaetDetails", 
 				{
-					id: va.id
+					VaId: vermietungsaktivitaet.VaId,
+					Bukrs: vermietungsaktivitaet.Bukrs
 				}
 			);
+
 		},
 		
 		
@@ -199,9 +209,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 
 		
 		onFacetFilterListClose: function(oEvent){
-			
 			this.applyFilters();
 		},
+
 		
 		applyFilters: function(){
 			
@@ -209,14 +219,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 			
 			var filtersToApply = [];
 			
-/*			var dropdownFilter = this.getView().byId("cb_work");
+			/*			
+			var dropdownFilter = this.getView().byId("cb_work");
 			var selectedDropdownFilter = dropdownFilter.getSelectedKey();
 			
 			if(selectedDropdownFilter === "work")
 			{
-				var filter = new Filter("anmerkung", sap.ui.model.FilterOperator.EQ, "In Bearbeitung");
+				var filter = new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, "In Bearbeitung");
 				filtersToApply.push(filter);
-			} */
+			} 
+			*/
 			
 			var facetFilterLists = this.getView().byId("idFacetFilter").getLists();
 																
@@ -232,15 +244,23 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 						{
 							case "Favorit":
 								var boolValue = (item.getKey() === "true") ? true : false;
-								itemFilters.push( new Filter("favorit", sap.ui.model.FilterOperator.EQ, boolValue) );
+								itemFilters.push( new Filter("Favorit", sap.ui.model.FilterOperator.EQ, boolValue) );
 							break;
 							
 							case "Buchungskreis":
-								itemFilters.push( new Filter("buchungskreis", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+								itemFilters.push( new Filter("Bukrs", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 							
 							case "Wirtschaftseinheit":
-								itemFilters.push( new Filter("wirtschaftseinheit", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+								itemFilters.push( new Filter("WeId", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+
+							case "Anmerkung":
+								itemFilters.push( new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+
+							case "Status":
+								itemFilters.push( new Filter("Status", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 																
 							default:
@@ -268,8 +288,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 				table.getBinding("items").filter([]);
 			}
 
-		}
-		
+		}		
 		        
 	});
 });

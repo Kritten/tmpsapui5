@@ -5,7 +5,6 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 			"ag.bpc.Deka.controller.KonditioneneinigungSelektion", {
 				
 				onInit : function(evt) {
-					jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
 					jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onInit");
 					
 					this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");

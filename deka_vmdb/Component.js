@@ -12,7 +12,9 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 			// call the init function of the parent
 			console.log(".. init component");
 			UIComponent.prototype.init.apply(this, arguments);
-						
+			
+            jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
+
 			// Mehrsprachigkeit
 			var sLocale = sap.ui.getCore().getConfiguration().getLanguage(); // Anmeldesprache ermitteln		
 			console.log("locale: " + sLocale);
@@ -26,7 +28,7 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 
 
 			// URL des OData Services auf dem Gateway
-			var serviceUrl = "https://xxx"; 
+			var serviceUrl = "https://xxx";
 			var useMockServer = true;
 
 			if(useMockServer)

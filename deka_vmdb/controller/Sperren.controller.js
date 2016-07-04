@@ -4,7 +4,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
 	return Controller.extend("ag.bpc.Deka.controller.Sperren", {
 
 		onInit: function(evt){
-            jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.Sperren .. onInit");
             
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");          

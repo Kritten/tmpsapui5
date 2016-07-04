@@ -8,7 +8,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
         
 		onInit: function(oEvent){
-            jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onInit");
             
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
@@ -40,7 +39,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 + ")",
             {
 
-                urlParameters:{
+                urlParameters: {
                     "$expand": "KeToOb"
                 },
 
@@ -95,7 +94,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                     Status: "",
                     Anmerkung: "",
                     Aktiv: "",
-                    Mietbeginn: "",
+                    Mietbeginn: new Date(),
                     Bemerkung: "",
                     GnStufe: "",
                     BkMonatsmieten: "",
@@ -113,10 +112,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
 
                     KeToOb: [],
                     KeToWe: [],
-                                        
+                    
+                    // keine OData Felder
                     mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
                     kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
-                    
                     arbeitsvorrat: null
                 }
             };
@@ -175,8 +174,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             jQuery.sap.log.info(".. onBearbeitenButtonPress");
             
             // Alten Zustand sichern für eventuelle Wiederherstellung
-            this._oldFormDataJSON = this.getView().getModel("form").getJSON();
-                        
+            var formData = this.getView().getModel("form").getData();
+            this._formDataBackup = jQuery.extend(true, {}, formData);
+
             this.getView().getModel("form").setProperty("/modus", "edit");
         },
         
@@ -425,9 +425,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
                 // -> Änderungen Verwerfen
                 // -> modus = show
                 
-                var oldFormData = JSON.parse(this._oldFormDataJSON);
-                var formModel = new sap.ui.model.json.JSONModel(oldFormData);
-                this.getView().setModel(formModel, "form");
+                this.getView().getModel("form").setData(this._formDataBackup);
                 this.getView().getModel("form").setProperty("/modus", "show");
             }
 

@@ -5,7 +5,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
 		
 		onInit: function(evt){
 			
-			this.getView().setModel(sap.ui.getCore().getModel());
 		}
 		
 	});
