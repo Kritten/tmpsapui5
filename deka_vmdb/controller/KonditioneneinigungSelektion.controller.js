@@ -143,7 +143,8 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 										jsonData.data.push({
 											type: "we",
 											id: wirtschaftseinheit.WeId,
-											descr: wirtschaftseinheit.Plz + " " + wirtschaftseinheit.Ort + ", " + wirtschaftseinheit.StrHnum
+											descr: wirtschaftseinheit.Plz + " " + wirtschaftseinheit.Ort + ", " + wirtschaftseinheit.StrHnum,
+											wirtschaftseinheit: wirtschaftseinheit
 										});
 									});
 									
@@ -169,7 +170,8 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 										jsonData.data.push({
 											type: "mv",
 											id: mietvertrag.MvId,
-											descr: mietvertrag.Vertart
+											descr: mietvertrag.Vertart,
+											mietvertrag: mietvertrag
 										});
 									});
 									
@@ -180,6 +182,10 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 									_this._oDialog.open();
 								}
 							});
+						break;
+
+						case 2:
+							// auf Basis einer Konditioneneinigung
 						break;
 					}
 
@@ -205,11 +211,17 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					switch(selectedObject.type)
 					{
 						case "we":
-							this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenWe", {weId: selectedObject.id});
+							this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenWe", {
+								WeId: selectedObject.wirtschaftseinheit.WeId,
+								Bukrs: selectedObject.wirtschaftseinheit.Bukrs
+							});
 						break;
 						
 						case "mv":
-							this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenMv", {mvId: selectedObject.id});
+							this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenMv", {
+								MvId: selectedObject.mietvertrag.MvId,
+								Bukrs: selectedObject.mietvertrag.Bukrs
+							});
 						break;
 					}
 	
@@ -234,7 +246,6 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 				},
 				
 				applyFilters: function(){
-					
 					var table = this.getView().byId("idKondSelTable");
 					
 					var filtersToApply = [];
@@ -247,7 +258,8 @@ sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(
 					{
 						var filter = new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, "In Bearbeitung");
 						filtersToApply.push(filter);
-					}      */
+					}      
+					*/
 					
 					var facetFilterLists = this.getView().byId("idFacetFilter").getLists();
 																		

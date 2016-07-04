@@ -7,38 +7,55 @@
 	
 	<Page title="{i18n>VERM_SEL_TITLE}"  showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
 		<content>
-		
-			<Panel class="sapUiDemoFlexBoxSizeAdjustments">
+				
+			<Panel>
 				<headerToolbar>
 					<Toolbar>
 						<Title level="H3" text="{i18n>VERM_SEL_PANEL_TITLE_ANL}" />
 					</Toolbar>
 				</headerToolbar>
-				<FlexBox alignItems="Start" justifyContent="Start">
+				<FlexBox>
 					<items>
-						<RadioButtonGroup id = "RBG_Anlage">
-							<buttons>
-								<RadioButton text="{i18n>VERM_SEL_RBG_O1}" />
-							</buttons>
-						</RadioButtonGroup>
-						<Button text="{i18n>ANLEGEN}" press="onAnlegenPress" />
+
+						<FlexBox justifyContent="Start">
+							<items>
+								<RadioButtonGroup id = "RBG_Anlage">
+									<buttons>
+										<RadioButton text="{i18n>VERM_SEL_RBG_O1}" />
+									</buttons>
+								</RadioButtonGroup>
+							</items>
+
+							<layoutData>
+								<FlexItemData growFactor="1" />
+							</layoutData>
+						</FlexBox>
+
+						<FlexBox justifyContent="End" alignItems="End">
+							<items>
+								<Button text="{i18n>ANLEGEN}" press="onAnlegenPress" />
+							</items>
+
+							<layoutData>
+								<FlexItemData growFactor="1" />
+							</layoutData>
+						</FlexBox>
+
 					</items>
 				</FlexBox>
 			</Panel>
-		
 
-			<Panel class="sapUiDemoFlexBoxSizeAdjustments">
+
+			<Panel>
 				<headerToolbar>
 					<Toolbar>
 						<Title level="H3" text="{i18n>VERM_SEL_PANEL_TITLE_AUS}" />
 					</Toolbar>
 				</headerToolbar>
-
-
 				
 				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" lists="{vermSel>/facetfilters}" type="Simple" >
 					<lists>
-						<FacetFilterList title="{vermSel>filterName}" items="{vermSel>values}" multiselect="true" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{vermSel>filterName}" items="{path: 'vermSel>values', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem text="{vermSel>text}" key="{vermSel>key}" />
 							</items>

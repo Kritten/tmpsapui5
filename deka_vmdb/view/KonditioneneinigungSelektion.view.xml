@@ -8,22 +8,41 @@
 	<Page title="Konditioneneinigung (Selektion)" showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
 		<content>
 
-			<Panel class="sapUiDemoFlexBoxSizeAdjustments">
+			<Panel>
 				<headerToolbar>
 					<Toolbar>
 						<Title level="H3" text="{i18n>KOND_SEL_PANEL_TITLE_ANL}" />
 					</Toolbar>
 				</headerToolbar>
-				<FlexBox alignItems="Start" justifyContent="Start">
+				<FlexBox>
 					<items>
-						<RadioButtonGroup id = "RBG_Anlage">
-							<buttons>
-								<RadioButton text="{i18n>KOND_SEL_RBG_O1}" />
-								<RadioButton text="{i18n>KOND_SEL_RBG_O2}" />
-								<RadioButton text="{i18n>KOND_SEL_RBG_O3}" />
-							</buttons>
-						</RadioButtonGroup>
-						<Button text="{i18n>ANLEGEN}" press="onAnlegenPress" />
+
+						<FlexBox justifyContent="Start">
+							<items>
+								<RadioButtonGroup id="RBG_Anlage" columns="3">
+									<buttons>
+										<RadioButton text="{i18n>KOND_SEL_RBG_O1}" />
+										<RadioButton text="{i18n>KOND_SEL_RBG_O2}" />
+										<RadioButton text="{i18n>KOND_SEL_RBG_O3}" />
+									</buttons>
+								</RadioButtonGroup>
+							</items>
+
+							<layoutData>
+								<FlexItemData growFactor="1" />
+							</layoutData>
+						</FlexBox>
+
+						<FlexBox justifyContent="End" alignItems="End">
+							<items>
+								<Button text="{i18n>ANLEGEN}" press="onAnlegenPress" />
+							</items>
+
+							<layoutData>
+								<FlexItemData growFactor="1" />
+							</layoutData>
+						</FlexBox>
+
 					</items>
 				</FlexBox>
 			</Panel>
@@ -38,14 +57,14 @@
 				
 				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" lists="{kondSel>/facetfilters}" type="Simple" >
 					<lists>
-						<FacetFilterList title="{kondSel>filterName}" items="{kondSel>values}" multiselect="true" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{kondSel>filterName}" items="{path: 'kondSel>values', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
-								<FacetFilterItem text="{kondSel>text}" key="{kondSel>key}" />
+								<FacetFilterItem key="{kondSel>key}" text="{kondSel>text}" />
 							</items>
 						</FacetFilterList>
 					</lists>
 				</FacetFilter>
-				
+
 				<Table id="idKondSelTable" inset="false" itemPress="onItemPress" items="{kondSel>/data}">
 					<headerToolbar>
 						<Toolbar>

@@ -58,14 +58,20 @@
 						"targetAggregation" : "pages"
 					},
 					{
-						"pattern": "KondSel/new/WE/{weId}",
+						"pattern": "KondSel/new/WeId/{WeId}/Bukrs/{Bukrs}",
 						"name" : "konditioneneinigungAnlegenWe",
 						"view" : "KonditioneneinigungDetails",
 						"targetAggregation" : "pages"
 					},
 					{
-						"pattern": "KondSel/new/MV/{mvId}",
+						"pattern": "KondSel/new/MvId/{MvId}/Bukrs/{Bukrs}",
 						"name" : "konditioneneinigungAnlegenMv",
+						"view" : "KonditioneneinigungDetails",
+						"targetAggregation" : "pages"
+					},
+					{
+						"pattern": "KondSel/new/KeId/{KeId}/Bukrs/{Bukrs}",
+						"name" : "konditioneneinigungAnlegenKe",
 						"view" : "KonditioneneinigungDetails",
 						"targetAggregation" : "pages"
 					}]

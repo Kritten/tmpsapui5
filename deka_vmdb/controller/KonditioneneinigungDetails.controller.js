@@ -21,6 +21,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             oRouter.getRoute("konditioneneinigungDetails").attachPatternMatched(this.onKonditioneneinigungAnzeigen, this);
             oRouter.getRoute("konditioneneinigungAnlegenWe").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit, this);
             oRouter.getRoute("konditioneneinigungAnlegenMv").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinesMietvertrags, this);
+            oRouter.getRoute("konditioneneinigungAnlegenKe").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung, this);
 		},
         
         onKonditioneneinigungAnzeigen: function(oEvent){
@@ -137,14 +138,24 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit");
             
             this.onKonditioneneinigungAnlegen(oEvent);
-            var wirtschaftseinheitId = oEvent.getParameter("arguments").weId;          
+            var WeId = oEvent.getParameter("arguments").WeId;
+            var Bukrs = oEvent.getParameter("arguments").Bukrs;
         },
         
         onKonditioneneinigungAnlegenAufBasisEinesMietvertrags: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinesMietvertrags");
         
             this.onKonditioneneinigungAnlegen(oEvent);
-            var mietvertragId = oEvent.getParameter("arguments").mvId;
+            var MvId = oEvent.getParameter("arguments").MvId;
+            var Bukrs = oEvent.getParameter("arguments").Bukrs;
+        },
+
+        onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung");
+
+            this.onKonditioneneinigungAnlegen(oEvent);
+            var KeId = oEvent.getParameter("arguments").KeId;
+            var Bukrs = oEvent.getParameter("arguments").Bukrs;
         },
         
         onBack : function(oEvent) {

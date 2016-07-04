@@ -7,17 +7,17 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 			manifest: "json"
 		},
 
-		init : function () {
+		init: function () {
 			
 			// call the init function of the parent
 			console.log(".. init component");
 			UIComponent.prototype.init.apply(this, arguments);
 			
+
             jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
 
 			// Mehrsprachigkeit
 			var sLocale = sap.ui.getCore().getConfiguration().getLanguage(); // Anmeldesprache ermitteln		
-			console.log("locale: " + sLocale);
 			
 			var oi18nModel = new ResourceModel({
 				bundleName: "ag.bpc.Deka.i18n.translation"
@@ -26,10 +26,9 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 
 			sap.ui.getCore().setModel(oi18nModel, "i18n");
 
-
 			// URL des OData Services auf dem Gateway
 			var serviceUrl = "https://xxx";
-			var useMockServer = true;
+			var useMockServer = true // (jQuery.sap.getUriParameters().get("mockserver") === "true");
 
 			if(useMockServer)
 			{
@@ -45,8 +44,8 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 			}
 
 			var oDataModel = new sap.ui.model.odata.v2.ODataModel(serviceUrl);
-			sap.ui.getCore().setModel(oDataModel, "odata");			
-			
+			sap.ui.getCore().setModel(oDataModel, "odata");
+
 			this.getRouter().initialize();
 		}
    });
