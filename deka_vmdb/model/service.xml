@@ -169,6 +169,7 @@
                 <Property Name="MzMonate" sap:filterable="false" sap:sortable="false" sap:label="Mietfreie Zeit in Mo" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
                 <Property Name="IdxWeitergabe" sap:filterable="false" sap:sortable="false" sap:label="Indexweitergabe" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
                 <Property Name="VaId" sap:filterable="false" sap:sortable="false" sap:label="Vermietungsaktivität" MaxLength="10" Nullable="false" Type="Edm.String"/>
+                <Property Name="WeId" sap:filterable="false" sap:sortable="false" sap:label="Wirtschaftseinheit" MaxLength="8" Nullable="false" Type="Edm.String"/>
                 <Property Name="Status" sap:sortable="false" sap:label="Status" MaxLength="2" Nullable="false" Type="Edm.String"/>
                 <Property Name="Anmerkung" sap:sortable="false" sap:label="Anmerkung" MaxLength="2" Nullable="false" Type="Edm.String"/>
                 <Property Name="Mietbeginn" sap:filterable="false" sap:sortable="false" sap:label="Mietbeginn" Nullable="false" Type="Edm.DateTime" Precision="7"/>

@@ -2,7 +2,7 @@
     Author: Christian Hoff
 */
 
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Controller, MessageBox) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/util/PrinterUtil"], function (Controller, MessageBox, PrinterUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
@@ -606,6 +606,19 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
             this._ausbaukostenVerteilenDialog.close();
         },
         
+        onDruckenButtonPress: function(oEvent){
+                        
+            var konditioneneinigung = this.getView().getModel("form").getProperty("/konditioneneinigung");
+            var printableHtml = PrinterUtil.generatePrintableHtmlForKonditioneneinigung(konditioneneinigung);
+
+            var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+            printWindow.document.write(printableHtml);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        },
+
         onFavoritButtonPress: function(oEvent){
             
             var favorit = this.getView().getModel("form").getProperty("/konditioneneinigung/Favorit");

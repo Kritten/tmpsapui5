@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Controller, MessageBox) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/util/PrinterUtil"], function (Controller, MessageBox, PrinterUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
@@ -681,16 +681,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         },
         
         onDruckenButtonPress: function(oEvent){
-            
-            var domTarget = this.getView().byId("idVADetailsPage").getDomRef();
-            
-            var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
-            
-            //var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
-            //var printString = JSON.stringify(va, null, 4);
-            //printString = printString.replace(/\n/g, '<br/>');
                         
-            printWindow.document.write(domTarget.innerHTML);
+            var vermietungsaktivitaet = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+            var printableHtml = PrinterUtil.generatePrintableHtmlForVermietungsaktivitaet(vermietungsaktivitaet);
+
+            var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+            printWindow.document.write(printableHtml);
             printWindow.document.close();
             printWindow.focus();
             printWindow.print();

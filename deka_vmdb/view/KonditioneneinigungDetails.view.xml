@@ -228,7 +228,7 @@
 				<Button text="{i18n>NICHTGENEHMIGEN}" icon="sap-icon://decline" visible="{= (${form>/modus} === 'show') }" />
 				<Button text="{i18n>REAKTIVIEREN}" icon="sap-icon://repost" visible="{= (${form>/modus} === 'show') }" />
                 <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" visible="{= (${form>/modus} === 'show') }" />
-                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" visible="{= (${form>/modus} === 'show') }" />
+                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" visible="{= (${form>/modus} === 'show') }" press="onDruckenButtonPress" />
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
