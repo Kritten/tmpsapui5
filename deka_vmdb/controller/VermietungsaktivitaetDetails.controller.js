@@ -10,8 +10,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 			
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("vermietungsaktivitaetDetails").attachPatternMatched(this.onVermietungsaktivitaetAnzeigen, this);
-            oRouter.getRoute("vermietungsaktivitaetAnlegenWe").attachPatternMatched(this.onVermietungsaktivitaetAnlegenAufBasisEinerWirtschaftseinheit, this);
-            oRouter.getRoute("vermietungsaktivitaetAnlegenMv").attachPatternMatched(this.onVermietungsaktivitaetAnlegenAufBasisEinesMietvertrags, this);
             oRouter.getRoute("vermietungsaktivitaetAnlegenKe").attachPatternMatched(this.onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung, this);
 		},
         
@@ -90,6 +88,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             });
 
 		},
+
+		onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
+			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung");
+            var _this = this;
+
+            var keIds = JSON.parse( oEvent.getParameter("arguments").KeIds );
+		    console.log(keIds);
+            
+            this.onVermietungsaktivitaetAnlegen(oEvent);
+		},
 		
         onVermietungsaktivitaetAnlegen: function(oEvent){
             
@@ -106,7 +114,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     VaId: "",
                     Status: "a",
                     Anmerkung: "",
-                    Mietbeginn: new Date(),
+                    Mietbeginn: null,
                     Bemerkung: "",
                     Vermietungsart: "",
                     Aktiv: false,
@@ -211,21 +219,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             
             this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
         },
-        
-		onVermietungsaktivitaetAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenAufBasisEinerWirtschaftseinheit");
-			this.onVermietungsaktivitaetAnlegen(oEvent);
-		},
-		
-		onVermietungsaktivitaetAnlegenAufBasisEinesMietvertrags: function(oEvent){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenAufBasisEinesMietvertrags");
-			this.onVermietungsaktivitaetAnlegen(oEvent);
-		},
-		
-		onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung");
-		    this.onVermietungsaktivitaetAnlegen(oEvent);
-		},
 		
 		onBearbeitenButtonPress: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onBearbeitenButtonPress");

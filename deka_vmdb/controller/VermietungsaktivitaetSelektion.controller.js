@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (Controller, Filter) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/MessageBox"], function (Controller, Filter, MessageBox) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
@@ -161,23 +161,20 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function (C
 		onSelectDialogConfirm: function(oEvent) {
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onSelectDialogConfirm");
 			
-			var selectedObject = oEvent.getParameter("selectedItem").getBindingContext("selektionsModel").getObject();
-			
-			switch(selectedObject.type)
-			{
-				case "we":
-					this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenWe", {weId: selectedObject.id});
-				break;
-				
-				case "mv":
-					this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenMv", {mvId: selectedObject.id});
-				break;
-				
-				case "ke":
-					this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenKe", {keId: selectedObject.id});
-				break;
-			}
+			var keIds = [];
 
+			var selectedItems = oEvent.getParameter("selectedItems");
+
+			if(selectedItems.length > 0)
+			{
+				selectedItems.forEach(function(item){
+					keIds.push( item.getBindingContext("selektionsModel").getObject().id );
+				});
+
+				this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenKe", {
+					KeIds: JSON.stringify( keIds )
+				});
+			}
 		},
 		
 		// Klick auf eine Zeile in der Tabelle

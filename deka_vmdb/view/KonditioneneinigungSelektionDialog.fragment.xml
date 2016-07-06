@@ -1,7 +1,7 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<TableSelectDialog
+	<TableSelectDialog 
 		noDataText="{i18n>KEINE_DATEN_VORHANDEN}"
 		title="{i18n>AUSWAEHLEN}"
 		search="onSelectDialogSearch"

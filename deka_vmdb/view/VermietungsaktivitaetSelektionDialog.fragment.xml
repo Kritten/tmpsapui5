@@ -6,7 +6,8 @@
 		title="{i18n>AUSWAEHLEN}"
 		search="onSelectDialogSearch"
 		confirm="onSelectDialogConfirm"
-		items="{selektionsModel>/data}" >
+		items="{selektionsModel>/data}"
+		multiSelect="true" >
 		
 		<columns>
 			<Column>

@@ -90,19 +90,7 @@
 						
 					},
 					{
-						"pattern": "VermSel/new/WE/{weId}",
-						"name" : "vermietungsaktivitaetAnlegenWe",
-						"view" : "VermietungsaktivitaetDetails",
-						"targetAggregation" : "pages"
-					},
-					{
-						"pattern": "VermSel/new/MV/{mvId}",
-						"name" : "vermietungsaktivitaetAnlegenMv",
-						"view" : "VermietungsaktivitaetDetails",
-						"targetAggregation" : "pages"
-					},
-					{
-						"pattern": "VermSel/new/KE/{keId}",
+						"pattern": "VermSel/new/KE/{KeIds}",
 						"name" : "vermietungsaktivitaetAnlegenKe",
 						"view" : "VermietungsaktivitaetDetails",
 						"targetAggregation" : "pages"

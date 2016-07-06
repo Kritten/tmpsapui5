@@ -95,7 +95,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     Status: "",
                     Anmerkung: "",
                     Aktiv: "",
-                    Mietbeginn: new Date(),
+                    Mietbeginn: null,
                     Bemerkung: "",
                     GnStufe: "",
                     BkMonatsmieten: "",
