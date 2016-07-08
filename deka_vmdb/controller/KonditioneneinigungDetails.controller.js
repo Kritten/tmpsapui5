@@ -1,17 +1,21 @@
-/* 
-    Author: Christian Hoff
-*/
-
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/util/PrinterUtil"], function (Controller, MessageBox, PrinterUtil) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/util/PrinterUtil", "sap/ui/model/Filter"], function (Controller, MessageBox, PrinterUtil, Filter) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
         
 		onInit: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onInit");
-            
+            var _this = this;
+
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
             
+            // View nach oben Scrollen, da die Scrollposition von vorherigen Anzeigen übernommen wird
+            this.getView().addEventDelegate({
+                onAfterShow: function(oEvent) {
+                    _this.getView().byId("idKonditioneneinigungDetails").scrollTo(0, 0);
+                }
+            });
+
             // Das View kann auf drei unterschiedliche Arten aufgerufen werden
             // - Konditioneneinigung anzeigen
             // - Konditioneneinigung anlegen auf Basis einer Wirtschaftseinheit
@@ -24,6 +28,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             oRouter.getRoute("konditioneneinigungAnlegenKe").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung, this);
 		},
         
+
         onKonditioneneinigungAnzeigen: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnzeigen");
             var _this = this;
@@ -78,6 +83,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         },
         
         onKonditioneneinigungAnlegen: function(oEvent){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegen");
+            var _this = this;
             
             var form = {
                 modus: "new", // show, new, edit
@@ -161,9 +168,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         onBack : function(oEvent) {
             this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
         },
-        
-        // --------
-        
+                
         
         handleTableSettingsButton: function(oEvent){
             
@@ -192,7 +197,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         },
         
         onSpeichernButtonPress: function(evt){
-            jQuery.sap.log.info(".. onSpeichernButtonPress");
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onSpeichernButtonPress");
             
             // Eingaben validieren
             // Daten ins Backend schicken
@@ -345,20 +350,20 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 var mietflaechenangabe = item.getBindingContext("form").getObject();
                 
                 if(mietflaechenangabe.angebotsmiete < 0 || mietflaechenangabe.angebotsmiete === ""){
-                    item.getCells()[5].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[5].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
-                    validationResult = false;
-                }
-                
-                if(mietflaechenangabe.grundbaukosten < 0 || mietflaechenangabe.grundbaukosten === ""){
                     item.getCells()[6].setValueState(sap.ui.core.ValueState.Error);
                     item.getCells()[6].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
                     validationResult = false;
                 }
                 
-                if(mietflaechenangabe.mieterausbaukosten < 0 || mietflaechenangabe.mieterausbaukosten === ""){
+                if(mietflaechenangabe.grundbaukosten < 0 || mietflaechenangabe.grundbaukosten === ""){
                     item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
                     item.getCells()[7].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    validationResult = false;
+                }
+                
+                if(mietflaechenangabe.mieterausbaukosten < 0 || mietflaechenangabe.mieterausbaukosten === ""){
+                    item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[8].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
                     validationResult = false;
                 }
                 
@@ -380,9 +385,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
             
             mietflaechenangabenItems.forEach(function(item){
-                item.getCells()[5].setValueState(sap.ui.core.ValueState.None);
-                item.getCells()[6].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[6].setValueState(sap.ui.core.ValueState.None);
                 item.getCells()[7].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[8].setValueState(sap.ui.core.ValueState.None);  
             });   
         },
         
@@ -406,7 +411,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         },
         
         onAbbrechenButtonPress: function(evt){
-            jQuery.sap.log.info(".. onAbbrechenButtonPress");          
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onAbbrechenButtonPress");
             
             this.clearValidationState();
             
@@ -443,7 +448,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         },
         
         onMietflaechenAngabenLoeschenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. onMietflaechenAngabenLoeschenButtonPress");
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenAngabenLoeschenButtonPress");
             
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             var selectedItems = mietflaechenangabenTable.getSelectedItems();
@@ -465,64 +470,111 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         },
         
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. onMietflaechenAngabeHinzufuegenButtonPress");
-            
-            // Dialog öffnen
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenAngabeHinzufuegenButtonPress");
+            var _this = this;
             
             if (! this._mietflaechenSelektionDialog) {
                 this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenSelektion", this);
             }
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            var aVorhandeneMoIds = [];
+            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             
-            var mietflaechenSelektionDialogModel = new sap.ui.model.json.JSONModel({
-                mietflaechen: [
-                    {
-                        KeId: "",
-                        VaId: "",
-                        MoId: "01010002",
-                        WeId: "599",
-                        Bukrs: "9-30",
-                        Nutzart: "Handel, Gastronomie",
-                        Whrung: "EUR",
-                        Hnfl: 9000.00,
-                        HnflAlt: 9000.00,
-                        MaKosten: 30.00,
-                        NhMiete: 9.140833,
-                        AnMiete: 12.00,
-                        GaKosten: 20.00
-                    }
-                ]
+            mietflaechenangaben.forEach(function(mietflaechenangabe){
+                aVorhandeneMoIds.push( mietflaechenangabe.MoId );
             });
-            
-            this._mietflaechenSelektionDialog.setModel(mietflaechenSelektionDialogModel);
-            
-            this._mietflaechenSelektionDialog.open();
+
+            oDataModel.read("/MietobjektSet", {
+
+                success: function(oData){
+                    console.log(oData);
+
+                    var jsonData = {
+                        mietflaechen: []
+                    }
+
+                    // nur Objekte Anzeigen, die noch nicht in der Liste sind
+                    oData.results.forEach(function(objekt){
+
+                        if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1){
+                            jsonData.mietflaechen.push( objekt );
+                        }
+                    });
+
+                    var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
+
+                    _this._mietflaechenSelektionDialog.setModel(jsonModel);
+                    _this._mietflaechenSelektionDialog.open();
+                }
+            });
+
         },
         
         onMietflaechenSelektionDialogConfirm: function(oEvent){
-            jQuery.sap.log.info(".. onMietflaechenSelektionDialogConfirm");
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenSelektionDialogConfirm");
             
             var selectedItems = oEvent.getParameter("selectedItems");
             
             if(selectedItems.length > 0)
             {
-                var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-                
+                var wirtschaftseinheitId = selectedItems[0].getBindingContext().getObject().WeId;
+                var auswahlValide = true;
+
+                // Prüfen ob alle ausgewählten Objekte zur selben Wirtschaftseinheit gehören
                 selectedItems.forEach(function(item){
                     var mietflaechenangabe = item.getBindingContext().getObject();
-                    mietflaechenangaben.push(mietflaechenangabe);
+
+                    if(mietflaechenangabe.WeId !== wirtschaftseinheitId){
+                        auswahlValide = false;
+                    }
                 });
-                
-                this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
+
+                var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
+
+                // Prüfen ob die hinzuzufügenden Mietflächen die selbe Wirtschaftseinheit haben wie eine etwaig vorhandene Mietfläche
+                if(mietflaechenangaben.length > 0)
+                {
+                    if(wirtschaftseinheitId !== mietflaechenangaben[0].WeId)
+                    {
+                        auswahlValide = false;
+                    }
+                }
+
+                if(auswahlValide)
+                {
+                    selectedItems.forEach(function(item){
+                        var mietflaechenangabe = item.getBindingContext().getObject();
+                        mietflaechenangaben.push(mietflaechenangabe);
+                    });
+                    
+                    this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
+                }
+                else
+                {
+                    MessageBox.error("Es können nur Mietflächen der selben Wirtschaftseinheit hinzugefügt werden.");
+                }
+
             }
         },
         
         onMietflaechenSelektionDialogSearch: function(oEvent){
-            jQuery.sap.log.info(".. onMietflaechenSelektionDialogSearch");
-            
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenSelektionDialogSearch");
+
+			var sValue = oEvent.getParameter("value");
+
+            var combinedOrFilter = new Filter([
+                new Filter("MoId", sap.ui.model.FilterOperator.Contains, sValue),
+                new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue)
+            ], false);
+
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([combinedOrFilter]);
         },
         
         onAusbaukostenVerteilenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. onAusbaukostenVerteilenButtonPress");
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onAusbaukostenVerteilenButtonPress");
             
             if (!this._ausbaukostenVerteilenDialog) {
                 this._ausbaukostenVerteilenDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.AusbaukostenVerteilen", this);
@@ -533,8 +585,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             
 			if(mietflaechenangaben.length === 0){
-// TODO: Fehlermeldung
-				return;
+                MessageBox.error("Eine Verteilung ohne Mietflächen ist nicht möglich.");
+                return;
 			}
             
             var vorhandeneNutzungsarten = {};
@@ -562,7 +614,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         },
         
         onAusbaukostenVerteilenFragmentAkzeptierenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. onAusbaukostenVerteilenFragmentAkzeptierenButtonPress");
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onAusbaukostenVerteilenFragmentAkzeptierenButtonPress");
             
             this._ausbaukostenVerteilenDialog.close();
             
@@ -573,8 +625,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 grundausbaukosten: dialogModel.getProperty("/grundausbaukosten"),
                 mietausbaukosten: dialogModel.getProperty("/mietausbaukosten")
             }
-
-            console.log(verteilung);
 
             // Logik zur Verteilung der Ausbaukosten
         

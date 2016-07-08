@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<edmx:Edmx
-    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
-    xmlns:sap="http://www.sap.com/Protocols/SAPData"
+<edmx:Edmx 
+    xmlns:sap="http://www.sap.com/Protocols/SAPData" 
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" 
     xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" Version="1.0">
     <edmx:DataServices m:DataServiceVersion="2.0">
-        <Schema xml:lang="de"
+        <Schema xml:lang="de" 
             xmlns="http://schemas.microsoft.com/ado/2008/09/edm" sap:schema-version="1" Namespace="ZIP_VMDB_SRV">
             <EntityType sap:content-version="1" Name="Mietobjekt">
                 <Key>
@@ -14,7 +14,6 @@
                     <PropertyRef Name="MoId"/>
                 </Key>
                 <Property Name="NutzartAlt" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Beschreibung mittel" MaxLength="40" Nullable="false" Type="Edm.String"/>
-                <Property Name="AuthUser" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Benutzername" MaxLength="12" Type="Edm.String"/>
                 <Property Name="HnflAlt" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Menge" Nullable="false" Type="Edm.Decimal" sap:unit="HnflUnit" Scale="3" Precision="17"/>
                 <Property Name="MvId" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Vertrag" MaxLength="13" Nullable="false" Type="Edm.String"/>
                 <Property Name="Bukrs" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Buchungskreis" MaxLength="4" Nullable="false" Type="Edm.String"/>
@@ -36,7 +35,6 @@
                     <PropertyRef Name="Bukrs"/>
                     <PropertyRef Name="MvId"/>
                 </Key>
-                <Property Name="AuthUser" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Benutzername" MaxLength="12" Type="Edm.String"/>
                 <Property Name="Bukrs" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Buchungskreis" MaxLength="4" Nullable="false" Type="Edm.String"/>
                 <Property Name="MvId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Vertrag" MaxLength="13" Nullable="false" Type="Edm.String"/>
                 <Property Name="Vertart" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Vertragsart" MaxLength="4" Nullable="false" Type="Edm.String"/>
@@ -50,12 +48,14 @@
                     <PropertyRef Name="Bukrs"/>
                     <PropertyRef Name="KeId"/>
                 </Key>
-                <Property Name="MfSplit" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Mietflächensplitt" MaxLength="1" Nullable="false" Type="Edm.String"/>
-                <Property Name="AuthUser" sap:sortable="false" sap:label="Benutzername" MaxLength="12" Type="Edm.String"/>
+                <Property Name="Confirmation" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Benutzerbestätigung" MaxLength="1" Type="Edm.String"/>
+                <Property Name="BtnFm" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Fondsmanagement (Fla" MaxLength="1" Type="Edm.String"/>
+                <Property Name="MfSplit" sap:filterable="false" sap:sortable="false" sap:label="Mietflächensplitt" MaxLength="1" Nullable="false" Type="Edm.String"/>
+                <Property Name="BtnAm" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Assets Management (F" MaxLength="1" Type="Edm.String"/>
                 <Property Name="Favorit" sap:filterable="false" sap:sortable="false" sap:label="Favorit (true/false)" MaxLength="1" Type="Edm.String"/>
-                <Property Name="LzFirstbreak" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Laufzeit bis 1st bre" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
+                <Property Name="LzFirstbreak" sap:filterable="false" sap:sortable="false" sap:label="Laufzeit bis 1st bre" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
+                <Property Name="MzMonate" sap:filterable="false" sap:sortable="false" sap:label="Mietfreie Zeit in Mo" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
                 <Property Name="WeId" sap:filterable="false" sap:sortable="false" sap:label="Wirtschaftseinheit" MaxLength="8" Type="Edm.String"/>
-                <Property Name="MzMonate" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Mietfreie Zeit in Mo" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
                 <Property Name="Bukrs" sap:filterable="false" sap:sortable="false" sap:label="Buchungskreis" MaxLength="4" Nullable="false" Type="Edm.String"/>
                 <Property Name="Status" sap:sortable="false" sap:label="Status" MaxLength="2" Type="Edm.String"/>
                 <Property Name="Anmerkung" sap:sortable="false" sap:label="Anmerkung" MaxLength="2" Type="Edm.String"/>
@@ -132,6 +132,7 @@
                     <PropertyRef Name="WeId"/>
                     <PropertyRef Name="Bukrs"/>
                 </Key>
+                <Property Name="Confirmation" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Benutzerbestätigung" MaxLength="1" Nullable="false" Type="Edm.String"/>
                 <Property Name="KeId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Konditioneneinigung" MaxLength="10" Nullable="false" Type="Edm.String"/>
                 <Property Name="VaId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Vermietungsaktivität" MaxLength="10" Nullable="false" Type="Edm.String"/>
                 <Property Name="MoId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Mietobjekt" MaxLength="8" Nullable="false" Type="Edm.String"/>
@@ -139,7 +140,7 @@
                 <Property Name="Bukrs" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Buchungskreis" MaxLength="4" Nullable="false" Type="Edm.String"/>
                 <Property Name="Switch" sap:filterable="false" sap:sortable="false" sap:label="Kennzeichnung VA KE" MaxLength="2" Nullable="false" Type="Edm.String"/>
                 <Property Name="Aktiv" sap:sortable="false" sap:label="aktiv" MaxLength="1" Nullable="false" Type="Edm.String"/>
-                <Property Name="NutzartAlt" sap:filterable="false" sap:sortable="false" sap:label="Nutzungsart (alterna" MaxLength="8" Nullable="false" Type="Edm.String"/>
+                <Property Name="NutzartAlt" sap:filterable="false" sap:sortable="false" sap:label="Nutzungsart (alterna" MaxLength="4" Nullable="false" Type="Edm.String"/>
                 <Property Name="MonatJahr" sap:filterable="false" sap:sortable="false" sap:label="Bezug Mietflächenang" MaxLength="1" Nullable="false" Type="Edm.String"/>
                 <Property Name="Nutzart" sap:filterable="false" sap:sortable="false" sap:label="Nutzungsart einer ME" MaxLength="4" Nullable="false" Type="Edm.String"/>
                 <Property Name="Whrung" sap:filterable="false" sap:sortable="false" sap:label="Währung" MaxLength="5" Nullable="false" Type="Edm.String" sap:semantics="currency-code"/>
@@ -164,12 +165,15 @@
                     <PropertyRef Name="VaId"/>
                 </Key>
                 <Property Name="Bukrs" sap:filterable="false" sap:sortable="false" sap:label="Buchungskreis" MaxLength="4" Nullable="false" Type="Edm.String"/>
+                <Property Name="Confirmation" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Benutzerbestätigung" MaxLength="1" Type="Edm.String"/>
+                <Property Name="WeId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Wirtschaftseinheit" MaxLength="8" Nullable="false" Type="Edm.String"/>
+                <Property Name="BtnFm" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Fondsmanagement (Fla" MaxLength="1" Nullable="false" Type="Edm.String"/>
                 <Property Name="LzFirstbreak" sap:filterable="false" sap:sortable="false" sap:label="Laufzeit bis 1st bre" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
+                <Property Name="BtnAm" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Assets Management (F" MaxLength="1" Nullable="false" Type="Edm.String"/>
                 <Property Name="Debitorname" sap:filterable="false" sap:sortable="false" sap:label="Mietername" MaxLength="60" Nullable="false" Type="Edm.String"/>
                 <Property Name="MzMonate" sap:filterable="false" sap:sortable="false" sap:label="Mietfreie Zeit in Mo" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
                 <Property Name="IdxWeitergabe" sap:filterable="false" sap:sortable="false" sap:label="Indexweitergabe" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
                 <Property Name="VaId" sap:filterable="false" sap:sortable="false" sap:label="Vermietungsaktivität" MaxLength="10" Nullable="false" Type="Edm.String"/>
-                <Property Name="WeId" sap:filterable="false" sap:sortable="false" sap:label="Wirtschaftseinheit" MaxLength="8" Nullable="false" Type="Edm.String"/>
                 <Property Name="Status" sap:sortable="false" sap:label="Status" MaxLength="2" Nullable="false" Type="Edm.String"/>
                 <Property Name="Anmerkung" sap:sortable="false" sap:label="Anmerkung" MaxLength="2" Nullable="false" Type="Edm.String"/>
                 <Property Name="Mietbeginn" sap:filterable="false" sap:sortable="false" sap:label="Mietbeginn" Nullable="false" Type="Edm.DateTime" Precision="7"/>
@@ -184,9 +188,17 @@
                 <Property Name="Poenale" sap:filterable="false" sap:sortable="false" sap:label="Pönale" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
                 <Property Name="Currency" sap:filterable="false" sap:sortable="false" sap:label="Währung" MaxLength="5" Nullable="false" Type="Edm.String" sap:semantics="currency-code"/>
                 <Property Name="Unit" sap:filterable="false" sap:sortable="false" sap:label="Mengeneinheit" MaxLength="3" Nullable="false" Type="Edm.String" sap:semantics="unit-of-measure"/>
-                <Property Name="AuthUser" sap:filterable="false" sap:sortable="false" sap:label="Benutzername" MaxLength="12" Nullable="false" Type="Edm.String"/>
                 <Property Name="Favorit" sap:filterable="false" sap:sortable="false" sap:label="Favorit (true/false)" MaxLength="1" Nullable="false" Type="Edm.String"/>
                 <NavigationProperty Name="VaToOb" ToRole="ToRole_VermietungsaktivitaetToObjekt" FromRole="FromRole_VermietungsaktivitaetToObjekt" Relationship="ZIP_VMDB_SRV.VermietungsaktivitaetToObjekt"/>
+            </EntityType>
+            <EntityType sap:content-version="1" Name="Nutzungsart">
+                <Key>
+                    <PropertyRef Name="NaId"/>
+                    <PropertyRef Name="langu"/>
+                </Key>
+                <Property Name="NaId" sap:updatable="false" sap:creatable="false" sap:label="Nutzungsart" MaxLength="4" Nullable="false" Type="Edm.String"/>
+                <Property Name="langu" sap:updatable="false" sap:creatable="false" sap:label="Sprachschlüssel" MaxLength="1" Nullable="false" Type="Edm.String"/>
+                <Property Name="TextSh" sap:filterable="false" sap:updatable="false" sap:creatable="false" sap:label="Beschreibung kurz" MaxLength="20" Nullable="false" Type="Edm.String"/>
             </EntityType>
             <Association sap:content-version="1" Name="MietvertragToWirtschaftseinheit">
                 <End Type="ZIP_VMDB_SRV.Mietvertrag" Role="FromRole_MietvertragToWirtschaftseinheit" Multiplicity="1"/>
@@ -273,6 +285,7 @@
                 <EntitySet sap:content-version="1" Name="ObjektSet" sap:updatable="false" sap:creatable="false" sap:pageable="false" sap:deletable="false" EntityType="ZIP_VMDB_SRV.Objekt"/>
                 <EntitySet sap:content-version="1" Name="DebitorSet" sap:updatable="false" sap:creatable="false" sap:pageable="false" sap:deletable="false" EntityType="ZIP_VMDB_SRV.Debitor"/>
                 <EntitySet sap:content-version="1" Name="VermietungsaktivitaetSet" sap:updatable="false" sap:creatable="false" sap:pageable="false" sap:deletable="false" EntityType="ZIP_VMDB_SRV.Vermietungsaktivitaet"/>
+                <EntitySet sap:content-version="1" Name="NutzungsartSet" sap:updatable="false" sap:creatable="false" sap:requires-filter="true" sap:pageable="false" sap:deletable="false" EntityType="ZIP_VMDB_SRV.Nutzungsart"/>
                 <AssociationSet sap:content-version="1" Name="MietvertragToMietobjektSet" sap:updatable="false" sap:creatable="false" sap:deletable="false" Association="ZIP_VMDB_SRV.MietvertragToMietobjekt">
                     <End Role="FromRole_MietvertragToMietobjekt" EntitySet="MietvertragSet"/>
                     <End Role="ToRole_MietvertragToMietobjekt" EntitySet="MietobjektSet"/>
@@ -298,10 +311,10 @@
                     <End Role="ToRole_MietvertragToWirtschaftseinheit" EntitySet="WirtschaftseinheitenSet"/>
                 </AssociationSet>
             </EntityContainer>
-            <atom:link rel="self" href="http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/$metadata"
-                xmlns:atom="http://www.w3.org/2005/Atom"/>
-                <atom:link rel="latest-version" href="http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/$metadata"
-                    xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link 
+                xmlns:atom="http://www.w3.org/2005/Atom" href="http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/$metadata" rel="self"/>
+            <atom:link 
+                xmlns:atom="http://www.w3.org/2005/Atom" href="http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/$metadata" rel="latest-version"/>
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

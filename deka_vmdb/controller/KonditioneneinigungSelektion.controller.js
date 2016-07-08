@@ -1,4 +1,4 @@
-sap.ui.define([ "sap/ui/core/mvc/Controller", "sap/ui/model/Filter" ], function(Controller, Filter) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function(Controller, Filter) {
 
 	"use strict";
 	return Controller.extend(

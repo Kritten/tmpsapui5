@@ -6,7 +6,7 @@
     xmlns:mvc="sap.ui.core.mvc"
 	controllerName="ag.bpc.Deka.controller.VermietungsaktivitaetDetails" >
 	
-	<Page title="{i18n>VERM_DET_TITLE}" class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack" id="idVADetailsPage">
+	<Page id="idVermietungsaktivitaetDetails" title="{i18n>VERM_DET_TITLE}" class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack" >
 
         <headerContent>
 			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" visible="{= ${form>/modus} === 'show' }" press="onBearbeitenButtonPress" />

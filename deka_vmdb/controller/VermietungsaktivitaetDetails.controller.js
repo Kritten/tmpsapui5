@@ -5,9 +5,17 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 		
 		onInit: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onInit");
+            var _this = this;
             
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
 			
+            // View nach oben Scrollen, da die Scrollposition von vorherigen Anzeigen übernommen wird
+            this.getView().addEventDelegate({
+                onAfterShow: function(oEvent) {
+                    _this.getView().byId("idVermietungsaktivitaetDetails").scrollTo(0, 0);
+                }
+            });
+
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("vermietungsaktivitaetDetails").attachPatternMatched(this.onVermietungsaktivitaetAnzeigen, this);
             oRouter.getRoute("vermietungsaktivitaetAnlegenKe").attachPatternMatched(this.onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung, this);

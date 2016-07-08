@@ -11,13 +11,13 @@
         confirm="onMietflaechenSelektionDialogConfirm"
         cancel="onMietflaechenSelektionDialogCancel" 
         items="{/mietflaechen}">
-            
+
         <columns>
             <Column minScreenWidth="Tablet" demandPopin="true">
                 <Text text="{i18n>MIETFLAECHE}" />
             </Column>
             <Column minScreenWidth="Tablet" demandPopin="true">
-                <Text text="{i18n>BEZEICHNUNG}" />
+                <Text text="{i18n>WIRTSCHAFTSEINHEIT} {Id}" />
             </Column>
             <Column minScreenWidth="Tablet" demandPopin="true">
                 <Text text="{i18n>NUTZUNGSART}" />
@@ -27,7 +27,7 @@
 		<ColumnListItem>
 			<cells>
 				<Text text="{Bukrs}/{WeId}/{MoId}" />
-                <Text text="( Bezeichnung )" />
+                <Text text="{WeId}" />
                 <Text text="{Nutzart}" />
 			</cells>
 		</ColumnListItem>
