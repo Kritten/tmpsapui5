@@ -123,7 +123,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function(Co
 					var idx = oRBG.getSelectedIndex();
 					
 					if (! this._oDialog) {
-						this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungSelektionDialog", this);
+						this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungSelektionAnlageDialog", this);
 					}
 					
 					var oDataModel = sap.ui.getCore().getModel("odata");

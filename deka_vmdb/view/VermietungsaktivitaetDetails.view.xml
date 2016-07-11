@@ -17,13 +17,13 @@
 			<ObjectHeader title="{i18n>VERMIETUNGSAKTIVITAET}" number="{form>/vermietungsaktivitaet/VaId}" >
 				<attributes>
 					<ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/Bukrs}" />
-					<ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="( Wirtschaftseinheit ID )" />
+					<ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/vermietungsaktivitaet/WeId}" />
                     <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="( Bezeichnung )" />
 				</attributes>
 			</ObjectHeader>
             
             <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{form>/vermietungsaktivitaet/VaToOb}">
-                
+
                 <headerToolbar>
                     <Toolbar>
                         <Title text="{i18n>MIETFLAECHENANGABEN}" level="H2"/>
@@ -68,7 +68,7 @@
                 <items>
                     <ColumnListItem vAlign="Middle">
                         <cells>
-                            <Text text="{form>Bukrs}/{form>VaId}/{form>MoId}" />
+                            <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="( Bezeichnung )" />
                             <Text text="{form>Nutzart}" />
                             <Select selectedKey="{form>NutzartAlt}" items="{form>/alternativeNutzungsarten}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
@@ -89,14 +89,14 @@
             </Table>
             
             <MessageStrip id="mietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
-                
+
             <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
             
                 <items>
                     <FlexBox>
                         <items>
                             <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onMietflaechenAngabeHinzufuegenButtonPress" class="sapUiSmallMarginEnd" />
-                            <Button text="{i18n>MIETFLAECHE_ENTFERNEN}" icon="sap-icon://sys-minus" press="onMietflaechenAngabenLoeschenButtonPress" />
+                            <Button text="{i18n>MIETFLAECHE_ENTFERNEN}" icon="sap-icon://sys-minus" press="onMietflaechenAngabenLoeschenButtonPress" class="sapUiSmallMarginEnd" />
                         </items>
                         <layoutData>
 							<FlexItemData growFactor="1" />
@@ -105,6 +105,8 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
+                            <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onKonditioneneinigungHinzufuegenButtonPress" class="sapUiSmallMarginEnd" />
+                            <Button text="{i18n>KONDITIONENEINIGUNG_ENTFERNEN}" icon="sap-icon://sys-minus" press="onKonditioneneinigungLoeschenButtonPress" class="sapUiSmallMarginEnd" />
                             <Button text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
                         </items>
                         <layoutData>

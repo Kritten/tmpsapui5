@@ -143,18 +143,51 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         
         onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit");
-            
-            this.onKonditioneneinigungAnlegen(oEvent);
+            var _this = this;
+
             var WeId = oEvent.getParameter("arguments").WeId;
             var Bukrs = oEvent.getParameter("arguments").Bukrs;
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/WirtschaftseinheitenSet(Bukrs='" + Bukrs + "',WeId='" + WeId + "')", {
+
+                success: function(oData){
+                    console.log(oData);
+
+                    _this.onKonditioneneinigungAnlegen(oEvent);
+
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.WeId); 
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.Bukrs); 
+                }
+            });
+
         },
         
         onKonditioneneinigungAnlegenAufBasisEinesMietvertrags: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinesMietvertrags");
-        
-            this.onKonditioneneinigungAnlegen(oEvent);
+            var _this = this;
+
             var MvId = oEvent.getParameter("arguments").MvId;
             var Bukrs = oEvent.getParameter("arguments").Bukrs;
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/MietvertragSet(Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
+
+                urlParameters: {
+                    "$expand": "MvToWe"
+                },
+
+                success: function(oData){
+                    console.log(oData);
+
+                    _this.onKonditioneneinigungAnlegen(oEvent);
+
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.MvToWe.WeId); 
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.MvToWe.Bukrs); 
+                }
+            });
         },
 
         onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
@@ -173,14 +206,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         handleTableSettingsButton: function(oEvent){
             
             // create popover
-			if (! this._oPopover) {
-				this._oPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungDetailsPopover", this);
-				this.getView().addDependent(this._oPopover);
+			if (! this._tableViewSettingsPopover) {
+				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungDetailsPopover", this);
+				this.getView().addDependent(this._tableViewSettingsPopover);
 			}
             
             var oButton = oEvent.getSource();
 			jQuery.sap.delayedCall(0, this, function () {
-				this._oPopover.openBy(oButton);
+				this._tableViewSettingsPopover.openBy(oButton);
 			});
             
         },
@@ -196,9 +229,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             this.getView().getModel("form").setProperty("/modus", "edit");
         },
         
-        onSpeichernButtonPress: function(evt){
+        onSpeichernButtonPress: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onSpeichernButtonPress");
-            
+            var _this = this;
+
             // Eingaben validieren
             // Daten ins Backend schicken
             // Neues Modell auf Basis der Backenddaten anbinden
@@ -210,9 +244,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 this.getView().getModel("form").setProperty("/modus", "show");
             }
             else
-            {              
-                var _this = this;
-                
+            {
                 var dialog = new sap.m.Dialog({
                     title: "Warnung",
                     type: "Message",
@@ -455,13 +487,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                                     
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
 
-            console.log(mietflaechenangaben);
-            
             // ES6 Zukunftstechnologie - eventuell überarbeiten
             var objectsToRemove = selectedItems.map(item => item.getBindingContext("form").getObject() );
             mietflaechenangaben = mietflaechenangaben.filter(ma => objectsToRemove.indexOf(ma) === -1  );
-            
-            console.log(mietflaechenangaben);
             
             this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
 
@@ -475,45 +503,40 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             
             if (! this._mietflaechenSelektionDialog) {
                 this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenSelektion", this);
+                this.getView().addDependent(this._mietflaechenSelektionDialog);
             }
 
             var oDataModel = sap.ui.getCore().getModel("odata");
-
-            var aVorhandeneMoIds = [];
-            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-            
-            mietflaechenangaben.forEach(function(mietflaechenangabe){
-                aVorhandeneMoIds.push( mietflaechenangabe.MoId );
-            });
 
             oDataModel.read("/MietobjektSet", {
 
                 success: function(oData){
                     console.log(oData);
 
+                    var aVorhandeneMoIds = [];
+                    var mietflaechenangaben = _this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
+                    
+                    mietflaechenangaben.forEach(function(mietflaechenangabe){
+                        aVorhandeneMoIds.push( mietflaechenangabe.MoId );
+                    });
+
+                    var wirtschaftseinheitId = _this.getView().getModel("form").getProperty("/konditioneneinigung/WeId");
+
                     var jsonData = {
                         mietflaechen: []
-                    }
+                    };
 
                     oData.results.forEach(function(objekt){
 
                         // nur Objekte Anzeigen, die noch nicht in der Liste sind
-                        if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1){
-                            
-                            // nur Objekte der selben Wirtschaftseinheit anzeigen
-                            if(mietflaechenangaben.length > 0)
-                            {
-                                if(objekt.WeId === mietflaechenangaben[0].WeId)
-                                {
-                                    jsonData.mietflaechen.push( objekt );
-                                }
-                            }
-                            else
+                        if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1)
+                        {
+                            // nur Mietflächen der selben Wirtschaftseinheit anzeigen
+                            if(objekt.WeId === wirtschaftseinheitId)
                             {
                                 jsonData.mietflaechen.push( objekt );
                             }
-
-                        }                        
+                        }
 
                     });
 
@@ -560,7 +583,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 {
                     MessageBox.error("Es können nur Mietflächen der selben Wirtschaftseinheit hinzugefügt werden.");
                 }
-
             }
         },
         

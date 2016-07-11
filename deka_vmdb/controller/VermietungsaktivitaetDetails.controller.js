@@ -104,7 +104,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             var keIds = JSON.parse( oEvent.getParameter("arguments").KeIds );
 		    console.log(keIds);
             
-            this.onVermietungsaktivitaetAnlegen(oEvent);
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            // TODO
+            // übergebene Konditioneneinigungen lesen und die WeId der VA setzen
+            // /KonditioneneinigungSet(Bukrs='',KeId='')
+            oDataModel.read("/KonditioneneinigungSet", {
+
+                success: function(oData){
+                    _this.onVermietungsaktivitaetAnlegen(oEvent);                   
+                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", oData.results[0].WeId);
+                }
+            });
 		},
 		
         onVermietungsaktivitaetAnlegen: function(oEvent){
@@ -120,6 +131,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     MzMonate: "",
                     IdxWeitergabe: "",
                     VaId: "",
+                    WeId: "",
                     Status: "a",
                     Anmerkung: "",
                     Mietbeginn: null,
@@ -520,47 +532,64 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 		
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onMietflaechenAngabeHinzufuegenButtonPress");
-            
-            // Dialog öffnen
+            var _this = this;
 			
             if (! this._mietflaechenSelektionDialog) {
                 this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenSelektion", this);
             }
-            
-            var mietflaechenSelektionDialogModel = new sap.ui.model.json.JSONModel({
-                mietflaechen: [
-                    {
-                        KeId: "",
-                        VaId: "",
-                        MoId: "01010002",
-                        WeId: "599",
-                        Bukrs: "9-30",
-                        Nutzart: "Handel, Gastronomie",
-                        Whrung: "EUR",
-                        Hnfl: 9000.00,
-                        HnflAlt: 9000.00,
-                        MaKosten: 30.00,
-                        NhMiete: 9.140833,
-                        AnMiete: 12.00,
-                        GaKosten: 20.00
-                    }
-                ]
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/MietobjektSet", {
+
+                success: function(oData){
+                    console.log(oData);
+
+                    var aVorhandeneMoIds = [];
+                    var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+                    
+                    mietflaechenangaben.forEach(function(mietflaechenangabe){
+                        aVorhandeneMoIds.push( mietflaechenangabe.MoId );
+                    });
+
+                    var wirtschaftseinheitId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId");
+
+                    var jsonData = {
+                        mietflaechen: []
+                    };
+
+                    oData.results.forEach(function(objekt){
+
+                        // nur Objekte Anzeigen, die noch nicht in der Liste sind
+                        if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1)
+                        {
+                            // nur Mietflächen der selben Wirtschaftseinheit anzeigen
+                            if(objekt.WeId === wirtschaftseinheitId)
+                            {
+                                jsonData.mietflaechen.push( objekt );
+                            }
+                        }
+
+                    });
+
+                    var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
+
+                    _this._mietflaechenSelektionDialog.setModel(jsonModel);
+                    _this._mietflaechenSelektionDialog.open();
+                }
             });
 
-            this._mietflaechenSelektionDialog.setModel(mietflaechenSelektionDialogModel);
-            
-            this._mietflaechenSelektionDialog.open();
         },
 		
         onMietflaechenSelektionDialogConfirm: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onMietflaechenSelektionDialogConfirm");
             
-            var selectedItems = oEvent.getParameter("selectedItems");
-            
+            var selectedItems = oEvent.getParameter("selectedItems");        
+
             if(selectedItems.length > 0)
             {
                 var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
-                
+
                 selectedItems.forEach(function(item){
                     var mietflaechenangabe = item.getBindingContext().getObject();
                     mietflaechenangaben.push(mietflaechenangabe);
@@ -575,6 +604,107 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             
         },
 		
+
+        onKonditioneneinigungHinzufuegenButtonPress: function(oEvent){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onKonditioneneinigungHinzufuegenButtonPress");
+            var _this = this;
+
+            if (!this._konditioneneinigungHinzufuegenDialog) {
+                this._konditioneneinigungHinzufuegenDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetDetailsKonditioneneinigungDialog", this);
+                this.getView().addDependent(this._konditioneneinigungHinzufuegenDialog);
+            }
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/KonditioneneinigungSet", {
+
+                urlParameters:{
+                    "$expand": "KeToOb"
+                },
+
+                success: function(oData){
+                    console.log(oData);
+
+                    var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+                    var aVorhandeneMoIds = [];
+                    
+                    mietflaechenangaben.forEach(function(mietflaechenangabe){
+                        aVorhandeneMoIds.push( mietflaechenangabe.MoId );
+                    });
+
+                    var jsonData = {
+                        konditioneneinigungen: []
+                    }
+
+                    var wirtschaftseinheitId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId");
+
+                    oData.results.forEach(function(konditioneneinigung){
+
+                        // Nur Konditioneneinigungen der selben Wirtschaftseinheit anzeigen
+                        if(konditioneneinigung.WeId === wirtschaftseinheitId){
+
+                            var mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden = true;
+
+                            // Prüfen ob die Konditioneneinigung Mietflächen enthält, die noch nicht in der Liste sind
+                            konditioneneinigung.KeToOb.results.forEach(function(objekt){
+                                if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1){
+                                    mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden = false;
+                                }
+                            });
+
+                            // Konditioneneinigung nur dann anzeigen, wenn sie Mietflächen enthält, die noch nicht in der Liste sind
+                            if(!mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden){
+                                jsonData.konditioneneinigungen.push( konditioneneinigung );
+                            }
+                        }
+
+                    });
+                    
+                    var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
+
+                    _this._konditioneneinigungHinzufuegenDialog.setModel(jsonModel);
+                    _this._konditioneneinigungHinzufuegenDialog.open();
+                }
+            });
+
+        },
+
+        onKonditioneneinigungDialogSearch: function(oEvent){
+
+        },
+
+        onKonditioneneinigungDialogConfirm: function(oEvent){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onKonditioneneinigungDialogConfirm");
+
+            var selectedItems = oEvent.getParameter("selectedItems");
+
+            if(selectedItems.length > 0)
+            {
+                var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+                var aVorhandeneMoIds = [];
+                
+                mietflaechenangaben.forEach(function(mietflaechenangabe){
+                    aVorhandeneMoIds.push( mietflaechenangabe.MoId );
+                });
+
+                selectedItems.forEach(function(item){
+
+                    var konditioneneinigung = item.getBindingContext().getObject();
+
+                    konditioneneinigung.KeToOb.results.forEach(function(mietflaechenangabe){
+                        
+                        // Nur die Mietflächen hinzufügen, die noch nicht vorhanden sind
+                        if(jQuery.inArray(mietflaechenangabe.MoId, aVorhandeneMoIds) === -1){
+                            mietflaechenangaben.push( mietflaechenangabe );
+                        }
+
+                    });
+                });
+                
+                this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
+            }
+
+        },
 		
         onAusbaukostenVerteilenButtonPress: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onAusbaukostenVerteilenButtonPress");
