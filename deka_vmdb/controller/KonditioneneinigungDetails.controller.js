@@ -495,12 +495,26 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                         mietflaechen: []
                     }
 
-                    // nur Objekte Anzeigen, die noch nicht in der Liste sind
                     oData.results.forEach(function(objekt){
 
+                        // nur Objekte Anzeigen, die noch nicht in der Liste sind
                         if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1){
-                            jsonData.mietflaechen.push( objekt );
-                        }
+                            
+                            // nur Objekte der selben Wirtschaftseinheit anzeigen
+                            if(mietflaechenangaben.length > 0)
+                            {
+                                if(objekt.WeId === mietflaechenangaben[0].WeId)
+                                {
+                                    jsonData.mietflaechen.push( objekt );
+                                }
+                            }
+                            else
+                            {
+                                jsonData.mietflaechen.push( objekt );
+                            }
+
+                        }                        
+
                     });
 
                     var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
@@ -531,19 +545,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     }
                 });
 
-                var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-
-                // Prüfen ob die hinzuzufügenden Mietflächen die selbe Wirtschaftseinheit haben wie eine etwaig vorhandene Mietfläche
-                if(mietflaechenangaben.length > 0)
-                {
-                    if(wirtschaftseinheitId !== mietflaechenangaben[0].WeId)
-                    {
-                        auswahlValide = false;
-                    }
-                }
-
                 if(auswahlValide)
                 {
+                    var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
+
                     selectedItems.forEach(function(item){
                         var mietflaechenangabe = item.getBindingContext().getObject();
                         mietflaechenangaben.push(mietflaechenangabe);
