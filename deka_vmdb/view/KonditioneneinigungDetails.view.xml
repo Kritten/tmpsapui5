@@ -67,14 +67,14 @@
                     <ColumnListItem vAlign="Middle">
                         <cells>
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
-                            <Text text="( Bezeichnung )" />
+                            <Text text="(Bezeichnung)" />
                             <Text text="{form>Nutzart}" />
-                            <Text text="{form>Hnfl}" />
-                            <Input value="{form>HnflAlt}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{form>NhMiete}" />
-                            <Input value="{form>AnMiete}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>GaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>MaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Text text="{ path: 'form>Hnfl', type: 'sap.ui.model.type.Float' }" />
+                            <Input value="{ path: 'form>HnflAlt', type: 'sap.ui.model.type.Float' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Text text="{ path: 'form>NhMiete', type: 'sap.ui.model.type.Float' }" />
+                            <Input value="{ path: 'form>AnMiete', type: 'sap.ui.model.type.Float' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{ path: 'form>GaKosten', type: 'sap.ui.model.type.Float' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{ path: 'form>MaKosten', type: 'sap.ui.model.type.Float' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                         </cells>
                     </ColumnListItem>
                     
@@ -128,10 +128,10 @@
                     <DatePicker id="dateMietbeginn" dateValue="{form>/konditioneneinigung/Mietbeginn}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>LAUFZEIT_BIS_1ST_BREAK} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="laufzeitBis1stBreak" value="{form>/konditioneneinigung/LzFirstbreak}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="laufzeitBis1stBreak" value="{ path: 'form>/konditioneneinigung/LzFirstbreak', type: 'sap.ui.model.type.Float' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="" placeholder="( Gültigkeit KE )" displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="" placeholder="(Gültigkeit KE)" displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <!-- <core:Title text="" /> -->
                     

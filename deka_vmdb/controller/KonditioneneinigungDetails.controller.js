@@ -56,6 +56,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
                     oData.KeToOb = oData.KeToOb.results;
 
+                    // Felder für Frontend Logik
+                    oData.KeToOb.forEach(function(objekt){
+                        objekt._Erstellt = false,
+                        objekt._Geloescht = false,
+                        objekt._Geaendert = false
+                    });
+
                     // Zusätzliche Felder
                     oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
                     oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
@@ -201,8 +208,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         onBack : function(oEvent) {
             this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
         },
-                
-        
+
+
         handleTableSettingsButton: function(oEvent){
             
             // create popover
@@ -236,12 +243,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             // Eingaben validieren
             // Daten ins Backend schicken
             // Neues Modell auf Basis der Backenddaten anbinden
-
+                      
             var validationSuccess = this.validateForm();
             
             if(validationSuccess)
             {
                 this.getView().getModel("form").setProperty("/modus", "show");
+
+                this.objekteSpeichern();
+                this.konditioneneinigungSpeichern();
             }
             else
             {
@@ -278,6 +288,177 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             }
         },
         
+
+        objektSpeichern: function(objekt, index, updateDeferred){
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+            
+            var objektPayload = {
+                Confirmation: objekt.Confirmation,
+                KeId: objekt.KeId,
+                VaId: objekt.VaId,
+                MoId: objekt.MoId,
+                WeId: objekt.WeId,
+                Bukrs: objekt.Bukrs,
+                Switch: objekt.Switch,
+                Aktiv: objekt.Aktiv,
+                NutzartAlt: objekt.NutzartAlt,
+                MonatJahr: objekt.MonatJahr,
+                Nutzart: objekt.Nutzart,
+                Whrung: objekt.Whrung,
+                HnflUnit: objekt.HnflUnit,
+                AnMiete: objekt.AnMiete,
+                GaKosten: objekt.GaKosten,
+                Hnfl: objekt.Hnfl,
+                HnflAlt: objekt.HnflAlt,
+                MaKosten: objekt.MaKosten,
+                NhMiete: objekt.NhMiete
+            };
+
+            oDataModel.update("/ObjektSet(KeId='"+objekt.KeId+"',VaId='"+objekt.VaId+"',MoId='"+objekt.MoId+"',WeId='"+objekt.WeId+"',Bukrs='"+objekt.Bukrs+"')", objektPayload, {
+                success: function(){
+                    console.log(".. Objekt update successful");
+                    updateDeferred.resolve();
+                },
+                error: function(oError){
+                    console.log(".. Objekt update failed");
+                    objekt.Confirmation = 'X';
+                    updateDeferred.resolve();
+                }
+            });
+            
+        },
+
+
+        /**
+         * Iteriert über alle Objekte der KE und vergleicht sie mit dem Stand bevor der Benutzer auf "Bearbeiten gedrückt hat".
+         * Unterscheidet sich ein Objekt vom alten Zustand wird ein Update ausgeführt. Es werden Deferreds benutzt, um
+         * auf mehrere Callbacks zu warten
+         */
+        objekteSpeichern: function(){
+
+            var objektUpdateDeferreds = [];
+
+            var keAlt = this._formDataBackup.konditioneneinigung;
+            var keNeu = this.getView().getModel("form").getData().konditioneneinigung;
+
+            for(var i=0; i<keNeu.KeToOb.length; i++)
+            {
+                var objektVonNeu = keNeu.KeToOb[i];
+
+                for(var j=0; j<keAlt.KeToOb.length; j++)
+                {
+                    var objektVonAlt = keAlt.KeToOb[j];
+
+                    if(objektVonNeu.MoId === objektVonAlt.MoId)
+                    {
+                        if( (objektVonNeu.HnflAlt !== objektVonAlt.HnflAlt) || (objektVonNeu.AnMiete !== objektVonAlt.AnMiete) || (objektVonNeu.GaKosten !== objektVonAlt.GaKosten) || (objektVonNeu.MaKosten !== objektVonAlt.MaKosten) )
+                        {
+                            console.log(objektVonAlt);
+                            console.log(objektVonNeu);
+
+                            var updateDeferred = $.Deferred();
+                            objektUpdateDeferreds.push(updateDeferred);
+                            this.objektSpeichern(objektVonNeu, i, updateDeferred);
+                        }
+
+                        break;
+                    }
+                }
+
+            }
+
+            if(objektUpdateDeferreds.length > 0){
+
+                $.when.apply($, objektUpdateDeferreds).then(function() {
+                    MessageBox.confirm("OK");
+                });
+
+            }
+
+
+            /*
+            console.log("keAlt");
+            console.log(keAlt);
+            console.log("keNeu");
+            console.log(keNeu);
+            */
+
+            /*
+
+            keNeu.KeToOb.forEach(function(objektVonNeu){
+
+                keAlt.KeToOb.forEach(function(objektVonAlt){
+
+                    if(objektVonNeu.MoId === objektVonAlt.MoId)
+                    {
+                        if( (objektVonNeu.HnflAlt !== objektVonAlt.HnflAlt) || (objektVonNeu.AnMiete !== objektVonAlt.AnMiete) || (objektVonNeu.GaKosten !== objektVonAlt.GaKosten) || (objektVonNeu.MaKosten !== objektVonAlt.MaKosten) )
+                        {
+                            var objektPayload = {
+                                Confirmation: objektVonNeu.Confirmation,
+                                KeId: objektVonNeu.KeId,
+                                VaId: objektVonNeu.VaId,
+                                MoId: objektVonNeu.MoId,
+                                WeId: objektVonNeu.WeId,
+                                Bukrs: objektVonNeu.Bukrs,
+                                Switch: objektVonNeu.Switch,
+                                Aktiv: objektVonNeu.Aktiv,
+                                NutzartAlt: objektVonNeu.NutzartAlt,
+                                MonatJahr: objektVonNeu.MonatJahr,
+                                Nutzart: objektVonNeu.Nutzart,
+                                Whrung: objektVonNeu.Whrung,
+                                HnflUnit: objektVonNeu.HnflUnit,
+                                AnMiete: objektVonNeu.AnMiete,
+                                GaKosten: objektVonNeu.GaKosten,
+                                Hnfl: objektVonNeu.Hnfl,
+                                HnflAlt: objektVonNeu.HnflAlt,
+                                MaKosten: objektVonNeu.MaKosten,
+                                NhMiete: objektVonNeu.NhMiete
+                            };
+
+                            oDataModel.update("/ObjektSet(KeId='"+objektVonNeu.KeId+"',VaId='"+objektVonNeu.VaId+"',MoId='"+objektVonNeu.MoId+"',WeId='"+objektVonNeu.WeId+"',Bukrs='"+objektVonNeu.Bukrs+"')", objektPayload, {
+                                success: function(){
+                                    console.log(".. Objekt update successful");
+                                },
+                                error: function(oError){
+                                    console.log(".. Objekt update failed");
+                                    objektVonNeu.Confirmation = 'X';
+                                }
+                            });
+                        }
+                    }
+
+                });
+
+            });
+
+            this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", keNeu.KeToOb); 
+
+            */
+
+        },
+
+        konditioneneinigungSpeichern: function(){
+
+        },
+
+        aenderungsstatusBeiKonditioneneinigungVormerken: function(){
+
+            var keAlt = this._formDataBackup.konditioneneinigung;
+            var keNeu = this.getView().getModel("form").getData().konditioneneinigung;           
+
+            var aenderungenVorhanden = false;
+
+            if(keNeu.LzFirstbreak !== keAlt.LzFirstbreak){
+                aenderungenVorhanden = true;
+            }
+
+            // ... weitere Felder überprüfen
+
+
+            return aenderungenVorhanden;
+        },
+
         validateForm: function(){
             
             var validationResult = true;
@@ -376,26 +557,29 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 this.getView().byId("mietflaechenangabenErrorBox").setText("Es muss mindestens eine Mietflächenangabe hinzugefügt werden.");
                 validationResult = false;
             }
+
             
             mietflaechenangabenItems.forEach(function(item){
                 
                 var mietflaechenangabe = item.getBindingContext("form").getObject();
                 
-                if(mietflaechenangabe.angebotsmiete < 0 || mietflaechenangabe.angebotsmiete === ""){
+                // TODO: Validierungslogik klären
+
+                if(mietflaechenangabe.AnMiete < 1){
                     item.getCells()[6].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[6].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    item.getCells()[6].setValueStateText("Bitte geben Sie einen positiven Wert größer 0 ein.");
                     validationResult = false;
                 }
                 
-                if(mietflaechenangabe.grundbaukosten < 0 || mietflaechenangabe.grundbaukosten === ""){
+                if(mietflaechenangabe.GaKosten < 1){
                     item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[7].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    item.getCells()[7].setValueStateText("Bitte geben Sie einen positiven Wert größer 0 ein.");
                     validationResult = false;
                 }
                 
-                if(mietflaechenangabe.mieterausbaukosten < 0 || mietflaechenangabe.mieterausbaukosten === ""){
+                if(mietflaechenangabe.MaKosten < 1){
                     item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[8].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    item.getCells()[8].setValueStateText("Bitte geben Sie einen positiven Wert größer 0 ein.");
                     validationResult = false;
                 }
                 
@@ -476,7 +660,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 this.getView().getModel("form").setData(this._formDataBackup);
                 this.getView().getModel("form").setProperty("/modus", "show");
             }
-
         },
         
         onMietflaechenAngabenLoeschenButtonPress: function(oEvent){

@@ -319,9 +319,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             }
             else if(this.getView().byId("dateMietbeginn").getDateValue() < Date.now())
             {
-                this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("dateMietbeginn").setValueStateText("Das Datum des Mietbeginns muss in der Zukunft liegen.");
-                validationResult = false;
+                var modus = this.getView().getModel("form").getProperty("/modus");           
+                
+                if(modus === "new")
+                {
+                    this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.Error);
+                    this.getView().byId("dateMietbeginn").setValueStateText("Das Datum des Mietbeginns muss in der Zukunft liegen.");
+                    validationResult = false;
+                }
             }
             
             

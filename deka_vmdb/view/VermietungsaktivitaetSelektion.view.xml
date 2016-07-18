@@ -125,8 +125,8 @@
 											maxIntegerDigits: 5
 										}
 								}" />	
-								<Text text="( Gültig bis )" />
-								<Text text="( Bezeichnung )" />
+								<Text text="(Gültig bis)" />
+								<Text text="(Bezeichnung)" />
 								<Text text="{vermSel>VaToOb/Nutzart}" />
 								<Text text="{
 										path: 'vermSel>VaToOb/Hnfl',

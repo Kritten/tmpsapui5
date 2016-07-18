@@ -121,8 +121,8 @@
 										}
 								}" />
 								<Text text="{kondSel>LzFirstbreak}" />	
-								<Text text="( Gültig Bis )" />
-								<Text text="( Bezeichnung )" />
+								<Text text="(Gültig bis)" />
+								<Text text="(Bezeichnung)" />
 								<Text text="{kondSel>KeToOb/Nutzart}" />
 								<Text text="{
 										path: 'kondSel>KeToOb/Hnfl',

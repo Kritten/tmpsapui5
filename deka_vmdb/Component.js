@@ -43,6 +43,7 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 				serviceUrl = "/destinations/mockserver/service.svc/";
 			}
 
+			//var oDataModel = new sap.ui.model.odata.ODataModel(serviceUrl);
 			var oDataModel = new sap.ui.model.odata.v2.ODataModel(serviceUrl);
 			sap.ui.getCore().setModel(oDataModel, "odata");
 

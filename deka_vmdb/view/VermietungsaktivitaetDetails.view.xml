@@ -140,7 +140,7 @@
                     <Input id="laufzeitBis1stBreak" value="{form>/vermietungsaktivitaet/LzFirstbreak}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" />
-                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="" placeholder="( Gültigkeit KE )" displayFormat="short" editable="false" />
+                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="" placeholder="(Gültigkeit KE)" displayFormat="short" editable="false" />
                     
                     <!-- <core:Title text="" /> -->                  
                     
