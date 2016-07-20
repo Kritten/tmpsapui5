@@ -31,11 +31,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
         onKonditioneneinigungAnzeigen: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnzeigen");
-            var _this = this;
 
             var Bukrs = oEvent.getParameter("arguments").Bukrs;
             var KeId = oEvent.getParameter("arguments").KeId;
 
+            this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
+        },
+
+        leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId){
+            var _this = this;
+            
             var oDataModel = sap.ui.getCore().getModel("odata");
 
             oDataModel.read("/KonditioneneinigungSet(" 
@@ -55,13 +60,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     // Struktur aufbereiten für UI5 Binding
                     oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
                     oData.KeToOb = oData.KeToOb.results;
-
-                    // Felder für Frontend Logik
-                    oData.KeToOb.forEach(function(objekt){
-                        objekt._Erstellt = false,
-                        objekt._Geloescht = false,
-                        objekt._Geaendert = false
-                    });
 
                     // Zusätzliche Felder
                     oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
@@ -86,7 +84,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     _this.clearValidationState();
                 }
             });
-            
+
         },
         
         onKonditioneneinigungAnlegen: function(oEvent){
@@ -240,6 +238,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onSpeichernButtonPress");
             var _this = this;
 
+            console.log( this.getView().getModel("form").getProperty("/konditioneneinigung") );
+
             // Eingaben validieren
             // Daten ins Backend schicken
             // Neues Modell auf Basis der Backenddaten anbinden
@@ -248,10 +248,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             
             if(validationSuccess)
             {
-                this.getView().getModel("form").setProperty("/modus", "show");
-
-                this.objekteSpeichern();
-                this.konditioneneinigungSpeichern();
+                this.speichern();
             }
             else
             {
@@ -288,57 +285,85 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             }
         },
         
+        /**
+         * Q Promise Funktion
+         */
+        konditioneneinigungSpeichern: function(){
 
-        objektSpeichern: function(objekt, index, updateDeferred){
+            return Q.Promise(function(resolve, reject, notify) {
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
-            
-            var objektPayload = {
-                Confirmation: objekt.Confirmation,
-                KeId: objekt.KeId,
-                VaId: objekt.VaId,
-                MoId: objekt.MoId,
-                WeId: objekt.WeId,
-                Bukrs: objekt.Bukrs,
-                Switch: objekt.Switch,
-                Aktiv: objekt.Aktiv,
-                NutzartAlt: objekt.NutzartAlt,
-                MonatJahr: objekt.MonatJahr,
-                Nutzart: objekt.Nutzart,
-                Whrung: objekt.Whrung,
-                HnflUnit: objekt.HnflUnit,
-                AnMiete: objekt.AnMiete,
-                GaKosten: objekt.GaKosten,
-                Hnfl: objekt.Hnfl,
-                HnflAlt: objekt.HnflAlt,
-                MaKosten: objekt.MaKosten,
-                NhMiete: objekt.NhMiete
-            };
-
-            oDataModel.update("/ObjektSet(KeId='"+objekt.KeId+"',VaId='"+objekt.VaId+"',MoId='"+objekt.MoId+"',WeId='"+objekt.WeId+"',Bukrs='"+objekt.Bukrs+"')", objektPayload, {
-                success: function(){
-                    console.log(".. Objekt update successful");
-                    updateDeferred.resolve();
-                },
-                error: function(oError){
-                    console.log(".. Objekt update failed");
-                    objekt.Confirmation = 'X';
-                    updateDeferred.resolve();
-                }
             });
-            
+
         },
 
+        /**
+         * Q Promise Funktion
+         */
+        objektSpeichern: function(objekt, objektIndex){
+            var _this = this;            
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
+                
+                var objektPayload = {
+                    Confirmation: objekt.Confirmation,
+                    KeId: objekt.KeId,
+                    VaId: objekt.VaId,
+                    MoId: objekt.MoId,
+                    WeId: objekt.WeId,
+                    Bukrs: objekt.Bukrs,
+                    Switch: objekt.Switch,
+                    Aktiv: objekt.Aktiv,
+                    NutzartAlt: objekt.NutzartAlt,
+                    MonatJahr: objekt.MonatJahr,
+                    Nutzart: objekt.Nutzart,
+                    Whrung: objekt.Whrung,
+                    HnflUnit: objekt.HnflUnit,
+                    AnMiete: objekt.AnMiete,
+                    GaKosten: objekt.GaKosten,
+                    Hnfl: objekt.Hnfl,
+                    HnflAlt: objekt.HnflAlt,
+                    MaKosten: objekt.MaKosten,
+                    NhMiete: objekt.NhMiete
+                };
+              
+                oDataModel.update("/ObjektSet(KeId='"+objekt.KeId+"',VaId='"+objekt.VaId+"',MoId='"+objekt.MoId+"',WeId='"+objekt.WeId+"',Bukrs='"+objekt.Bukrs+"')", objektPayload, {
+                    success: function(){
+                        if(objekt.Confirmation === "X"){
+                            resolve();
+                        }
+                        else {
+                            // Dummy Logik für Testzwecke
+                            // Bei success sollte immer ein resolve erfolgen
+                            reject({
+                                objekt: objekt,
+                                objektIndex: objektIndex
+                            });
+                        }
+                    },
+                    error: function(oError){
+                        reject({
+                            objekt: objekt,
+                            objektIndex: objektIndex
+                        });
+                    }
+                });
+
+            });
+
+        },
 
         /**
-         * Iteriert über alle Objekte der KE und vergleicht sie mit dem Stand bevor der Benutzer auf "Bearbeiten gedrückt hat".
-         * Unterscheidet sich ein Objekt vom alten Zustand wird ein Update ausgeführt. Es werden Deferreds benutzt, um
-         * auf mehrere Callbacks zu warten
+         * Führt Aufrufe ans Backend aus um die Konditioneneinigung und dessen Objekte zu speichern.
          */
-        objekteSpeichern: function(){
+        speichern: function(){
+            var _this = this;
 
-            var objektUpdateDeferreds = [];
+            var promises = [];
 
+            // Iteriert über alle Objekte der KE und vergleicht sie mit dem Stand bevor der Benutzer auf "Bearbeiten gedrückt hat".
+            // Unterscheidet sich ein Objekt vom alten Zustand wird ein Update ausgeführt.
             var keAlt = this._formDataBackup.konditioneneinigung;
             var keNeu = this.getView().getModel("form").getData().konditioneneinigung;
 
@@ -356,90 +381,75 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                         {
                             console.log(objektVonAlt);
                             console.log(objektVonNeu);
-
-                            var updateDeferred = $.Deferred();
-                            objektUpdateDeferreds.push(updateDeferred);
-                            this.objektSpeichern(objektVonNeu, i, updateDeferred);
+                            
+                            var promise = this.objektSpeichern(objektVonNeu, i);
+                            promises.push(promise);
                         }
 
                         break;
                     }
                 }
-
             }
 
-            if(objektUpdateDeferreds.length > 0){
+            if(promises.length > 0)
+            {
+                Q.allSettled(promises).then(function(results){
 
-                $.when.apply($, objektUpdateDeferreds).then(function() {
-                    MessageBox.confirm("OK");
-                });
+                    console.log("Q.allSettled");
+                    console.log(results);
 
-            }
+                    var objekteMitWarnungen = [];
 
+                    results.forEach(function(result){
 
-            /*
-            console.log("keAlt");
-            console.log(keAlt);
-            console.log("keNeu");
-            console.log(keNeu);
-            */
-
-            /*
-
-            keNeu.KeToOb.forEach(function(objektVonNeu){
-
-                keAlt.KeToOb.forEach(function(objektVonAlt){
-
-                    if(objektVonNeu.MoId === objektVonAlt.MoId)
-                    {
-                        if( (objektVonNeu.HnflAlt !== objektVonAlt.HnflAlt) || (objektVonNeu.AnMiete !== objektVonAlt.AnMiete) || (objektVonNeu.GaKosten !== objektVonAlt.GaKosten) || (objektVonNeu.MaKosten !== objektVonAlt.MaKosten) )
-                        {
-                            var objektPayload = {
-                                Confirmation: objektVonNeu.Confirmation,
-                                KeId: objektVonNeu.KeId,
-                                VaId: objektVonNeu.VaId,
-                                MoId: objektVonNeu.MoId,
-                                WeId: objektVonNeu.WeId,
-                                Bukrs: objektVonNeu.Bukrs,
-                                Switch: objektVonNeu.Switch,
-                                Aktiv: objektVonNeu.Aktiv,
-                                NutzartAlt: objektVonNeu.NutzartAlt,
-                                MonatJahr: objektVonNeu.MonatJahr,
-                                Nutzart: objektVonNeu.Nutzart,
-                                Whrung: objektVonNeu.Whrung,
-                                HnflUnit: objektVonNeu.HnflUnit,
-                                AnMiete: objektVonNeu.AnMiete,
-                                GaKosten: objektVonNeu.GaKosten,
-                                Hnfl: objektVonNeu.Hnfl,
-                                HnflAlt: objektVonNeu.HnflAlt,
-                                MaKosten: objektVonNeu.MaKosten,
-                                NhMiete: objektVonNeu.NhMiete
-                            };
-
-                            oDataModel.update("/ObjektSet(KeId='"+objektVonNeu.KeId+"',VaId='"+objektVonNeu.VaId+"',MoId='"+objektVonNeu.MoId+"',WeId='"+objektVonNeu.WeId+"',Bukrs='"+objektVonNeu.Bukrs+"')", objektPayload, {
-                                success: function(){
-                                    console.log(".. Objekt update successful");
-                                },
-                                error: function(oError){
-                                    console.log(".. Objekt update failed");
-                                    objektVonNeu.Confirmation = 'X';
-                                }
-                            });
+                        if(result.state === "rejected"){
+                            // result.reason ist das übergebene Objekt von reject()
+                            objekteMitWarnungen.push( result.reason );
                         }
+
+                    });
+
+                    // Wenn Objekte nicht direkt gespeichert werden konnten, hat der Benutzer trotzdem die Möglichkeit zu speichern
+                    // Das Speichern wird hierbei mit dem Confirmation Flag erneut ausgeführt
+                    if(objekteMitWarnungen.length > 0)
+                    {
+                        MessageBox.show("Objekte sind fehlerhaft. Drücken Sie erneut auf speichern um die Konditioneneinigung trotz fehlerhafter Objekte zu speichern.", {
+                            title: "Warnung",
+                            icon: sap.m.MessageBox.Icon.WARNING,
+                            actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.ABORT],
+                            onClose: function(action){
+
+                                // Warnung wurde ignoriert
+                                // Confirmation Flag bei den jeweiligen Objekten setzen
+                                if(action === sap.m.MessageBox.Action.OK)
+                                {
+                                    objekteMitWarnungen.forEach(function(objekt){
+                                        _this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb/" + objekt.objektIndex + "/Confirmation", "X");
+                                    });
+
+                                    _this.speichern();
+                                }
+                                else
+                                {
+                                    var Bukrs = this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
+                                    var KeId = this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
+
+                                    _this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
+                                    _this.getView().getModel("form").setProperty("/modus", "show");
+
+                                }
+
+                            }
+                        });
+                    }
+                    else
+                    {
+                        _this.getView().getModel("form").setProperty("/modus", "show");
                     }
 
-                });
-
-            });
-
-            this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", keNeu.KeToOb); 
-
-            */
-
-        },
-
-        konditioneneinigungSpeichern: function(){
-
+                }).done();
+            }
+            
         },
 
         aenderungsstatusBeiKonditioneneinigungVormerken: function(){
@@ -657,8 +667,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 // -> Änderungen Verwerfen
                 // -> modus = show
                 
-                this.getView().getModel("form").setData(this._formDataBackup);
-                this.getView().getModel("form").setProperty("/modus", "show");
+                var Bukrs = this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
+                var KeId = this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
+
+                this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
+
+                //this.getView().getModel("form").setData(this._formDataBackup);
+                //this.getView().getModel("form").setProperty("/modus", "show");
             }
         },
         
