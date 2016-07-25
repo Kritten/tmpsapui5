@@ -61,6 +61,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
                     oData.KeToOb = oData.KeToOb.results;
 
+                    // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
+                    oData.KeToOb.forEach(function(objekt){
+                        objekt.HnflAlt = objekt.HnflAlt.toString();
+                        objekt.AnMiete = objekt.AnMiete.toString();
+                        objekt.GaKosten = objekt.GaKosten.toString();
+                        objekt.MaKosten = objekt.MaKosten.toString();
+                    });
+
                     // Zusätzliche Felder
                     oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
                     oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
@@ -320,11 +328,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     Nutzart: objekt.Nutzart,
                     Whrung: objekt.Whrung,
                     HnflUnit: objekt.HnflUnit,
-                    AnMiete: objekt.AnMiete,
-                    GaKosten: objekt.GaKosten,
+                    AnMiete: parseFloat( objekt.AnMiete.replace(',', '.') ),
+                    GaKosten: parseFloat( objekt.GaKosten.replace(',', '.') ),
                     Hnfl: objekt.Hnfl,
-                    HnflAlt: objekt.HnflAlt,
-                    MaKosten: objekt.MaKosten,
+                    HnflAlt: parseFloat( objekt.HnflAlt.replace(',', '.') ),
+                    MaKosten: parseFloat( objekt.MaKosten.replace(',', '.') ),
                     NhMiete: objekt.NhMiete
                 };
               
@@ -431,12 +439,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                                 }
                                 else
                                 {
-                                    var Bukrs = this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
-                                    var KeId = this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
+                                    var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
+                                    var KeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
 
                                     _this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
                                     _this.getView().getModel("form").setProperty("/modus", "show");
-
                                 }
 
                             }
@@ -444,10 +451,19 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     }
                     else
                     {
+                        var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
+                        var KeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
+
+                        _this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
                         _this.getView().getModel("form").setProperty("/modus", "show");
                     }
 
                 }).done();
+            }
+            else
+            {
+                // Keine Änderungen getätigt
+                _this.getView().getModel("form").setProperty("/modus", "show");
             }
             
         },
@@ -575,22 +591,52 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 
                 // TODO: Validierungslogik klären
 
-                if(mietflaechenangabe.AnMiete < 1){
+                if(mietflaechenangabe.AnMiete.match(/^\d+((\.|,)\d\d?)?$/) === null)
+                {
                     item.getCells()[6].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[6].setValueStateText("Bitte geben Sie einen positiven Wert größer 0 ein.");
+                    item.getCells()[6].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
                     validationResult = false;
                 }
+                else
+                {
+                    var AnMiete = parseFloat( mietflaechenangabe.AnMiete.replace(",", ".") );
+                    if(AnMiete <= 0){
+                        item.getCells()[6].setValueState(sap.ui.core.ValueState.Error);
+                        item.getCells()[6].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
+                        validationResult = false;
+                    }
+                }
                 
-                if(mietflaechenangabe.GaKosten < 1){
+                if(mietflaechenangabe.GaKosten.match(/^\d+((\.|,)\d\d?)?$/) === null)
+                {
                     item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[7].setValueStateText("Bitte geben Sie einen positiven Wert größer 0 ein.");
+                    item.getCells()[7].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
                     validationResult = false;
                 }
-                
-                if(mietflaechenangabe.MaKosten < 1){
+                else
+                {
+                    var GaKosten = parseFloat( mietflaechenangabe.GaKosten.replace(",", ".") );
+                    if(GaKosten <= 0){
+                        item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
+                        item.getCells()[7].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
+                        validationResult = false;
+                    }
+                }
+
+                if(mietflaechenangabe.MaKosten.match(/^\d+((\.|,)\d\d?)?$/) === null)
+                {
                     item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[8].setValueStateText("Bitte geben Sie einen positiven Wert größer 0 ein.");
+                    item.getCells()[8].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
                     validationResult = false;
+                }
+                else
+                {
+                    var MaKosten = parseFloat( mietflaechenangabe.MaKosten.replace(",", ".") );
+                    if(MaKosten <= 0){
+                        item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
+                        item.getCells()[8].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
+                        validationResult = false;
+                    }
                 }
                 
             });        
