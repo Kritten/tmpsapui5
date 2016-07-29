@@ -101,23 +101,58 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung");
             var _this = this;
 
-            var keIds = JSON.parse( oEvent.getParameter("arguments").KeIds );
-		    console.log(keIds);
-            
-            var oDataModel = sap.ui.getCore().getModel("odata");
+            var konditioneneinigungen = JSON.parse( oEvent.getParameter("arguments").KEs );
+		    console.log(konditioneneinigungen);
+          
+            // Array für Promises der Konditioneneinigung-Requests
+            var promises = [];
 
-            // TODO
-            // übergebene Konditioneneinigungen lesen und die WeId der VA setzen
-            // /KonditioneneinigungSet(Bukrs='',KeId='')
-            oDataModel.read("/KonditioneneinigungSet", {
-
-                success: function(oData){
-                    _this.onVermietungsaktivitaetAnlegen(oEvent);                   
-                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", oData.results[0].WeId);
-                }
+            // Einzelnen Konditioneneinigungen laden
+            konditioneneinigungen.forEach(function(konditioneneinigung){
+                promises.push( _this.ladeKonditioneneinigung(konditioneneinigung.KeId, konditioneneinigung.Bukrs) );
             });
+
+            // Wenn alle Konditioneneinigungen erfolgreich geladen wurden
+            // Objekte der 
+            Q.all(promises).then(function(konditioneneinigungen){
+
+                _this.onVermietungsaktivitaetAnlegen(oEvent);
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", konditioneneinigungen[0].WeId);
+
+                var objekteAllerKEs = [];
+
+                konditioneneinigungen.forEach(function(konditioneneinigung){
+                    objekteAllerKEs.push.apply(objekteAllerKEs, konditioneneinigung.KeToOb.results);
+                });
+
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekteAllerKEs);
+            });
+
 		},
 		
+        ladeKonditioneneinigung: function(KeId, Bukrs){
+            var _this = this;
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+    	    return Q.Promise(function(resolve, reject, notify) {
+
+                // TODO: KonditioneneinigungSet(Bukrs='',KeId='')
+                oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
+
+                    urlParameters: {
+                        "$expand": "KeToOb"
+                    },
+
+                    success: function(oData){
+                        resolve(oData);
+                    }
+                });
+                
+            });
+        },
+
+
         onVermietungsaktivitaetAnlegen: function(oEvent){
             
             var form = {

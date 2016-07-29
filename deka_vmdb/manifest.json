@@ -90,7 +90,7 @@
 						
 					},
 					{
-						"pattern": "VermSel/new/KE/{KeIds}",
+						"pattern": "VermSel/new/KE/{KEs}",
 						"name" : "vermietungsaktivitaetAnlegenKe",
 						"view" : "VermietungsaktivitaetDetails",
 						"targetAggregation" : "pages"

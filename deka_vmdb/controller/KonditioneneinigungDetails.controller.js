@@ -43,12 +43,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             
             var oDataModel = sap.ui.getCore().getModel("odata");
 
-            oDataModel.read("/KonditioneneinigungSet(" 
-                + "Bukrs=" + "'" + Bukrs + "'" 
-                + ","
-                + "KeId=" + "'" + KeId + "'"
-                + ")",
-            {
+            oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
 
                 urlParameters: {
                     "$expand": "KeToOb"

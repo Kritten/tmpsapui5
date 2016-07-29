@@ -108,10 +108,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 		onAnlegenPress : function (oEvent) {
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onAnlegenPress");
 			var _this = this;
-
-			// Holt über die ElementID die Radio Button Group
-			var oRBG = this.getView().byId("RBG_Anlage");
-			var idx = oRBG.getSelectedIndex();
 			
 			if (! this._oDialog) {
 				this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialog", this);
@@ -119,37 +115,23 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 			
 			var oDataModel = sap.ui.getCore().getModel("odata");
 
-			switch(idx)
-			{
-				case 0:					
-					oDataModel.read("/WirtschaftseinheitenSet", {
-						success: function(oData){
-							console.log(oData);
+			oDataModel.read("/KonditioneneinigungSet", {
+				success: function(oData){
+					console.log(oData);
 
-							var jsonData = {
-								data: []
-							};
-
-							oData.results.forEach(function(wirtschaftseinheit){
-								jsonData.data.push({
-									type: "we",
-									id: wirtschaftseinheit.WeId,
-									descr: wirtschaftseinheit.Plz + " " + wirtschaftseinheit.Ort + ", " + wirtschaftseinheit.StrHnum
-								});
-							});
-							
-							_this._oDialog.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
-							
-							// clear the old search filter
-							_this._oDialog.getBinding("items").filter([]);
-							_this._oDialog.open();
-						}
-					});
-				break;
-			}
+					var jsonData = {
+						data: oData.results
+					};
+					
+					_this._oDialog.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
+					
+					// clear the old search filter
+					_this._oDialog.getBinding("items").filter([]);
+					_this._oDialog.open();
+				}
+			});
 
 		},
-		
 		
 		onSelectDialogSearch : function(oEvent) {				
 			var sValue = oEvent.getParameter("value");
@@ -161,18 +143,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 		onSelectDialogConfirm: function(oEvent) {
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onSelectDialogConfirm");
 			
-			var keIds = [];
+			var konditioneneinigungen = [];
 
 			var selectedItems = oEvent.getParameter("selectedItems");
 
 			if(selectedItems.length > 0)
 			{
 				selectedItems.forEach(function(item){
-					keIds.push( item.getBindingContext("selektionsModel").getObject().id );
+					konditioneneinigungen.push({
+						KeId: item.getBindingContext("selektionsModel").getObject().KeId,
+						Bukrs: item.getBindingContext("selektionsModel").getObject().Bukrs,
+					});
 				});
 
 				this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenKe", {
-					KeIds: JSON.stringify( keIds )
+					KEs: JSON.stringify( konditioneneinigungen )
 				});
 			}
 		},
