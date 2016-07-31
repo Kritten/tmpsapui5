@@ -28,7 +28,7 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 
 			// URL des OData Services auf dem Gateway
 			var serviceUrl = "https://xxx";
-			var useMockServer = true // (jQuery.sap.getUriParameters().get("mockserver") === "true");
+			var useMockServer = true;
 
 			if(useMockServer)
 			{
