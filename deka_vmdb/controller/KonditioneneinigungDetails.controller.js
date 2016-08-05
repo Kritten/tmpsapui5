@@ -71,8 +71,23 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
                     var form = {
                         modus: "show", // show, new, edit
+
                         konditioneneinigung: oData,
+
+                        waehrungen: [
+                            {key: "EUR", text: "Euro", symbol: "€"},
+                            {key: "USD", text: "US Dollar", symbol: "$"}
+                        ],
+
+                        anzeigeWaehrungKey: null,
+                        anzeigeWaehrung: null,
+                        anzeigeUmrechnungskurs: 1,
+                        anzeigeZeitspanne: {key: "MONAT", text: "Monatsmiete"},
                     };
+
+                    // Vorbelegte Auswahl
+                    form.anzeigeWaehrung = form.waehrungen[0];
+                    form.anzeigeWaehrungKey = form.waehrungen[0].key;
 
                     var user = {
                         rolle: "FM" // FM, AM 
@@ -90,6 +105,44 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
         },
         
+        onPopoverZeitspanneSelect: function(oEvent){
+
+            var item = oEvent.getParameter("selectedItem");
+
+            this.getView().getModel("form").setProperty("/anzeigeZeitspanne/key", item.getKey());
+            this.getView().getModel("form").setProperty("/anzeigeZeitspanne/text", item.getText());
+        },
+
+        onPopoverWaehrungSelect: function(oEvent){
+
+            var item = oEvent.getParameter("selectedItem");
+
+            var waehrung = item.getBindingContext("form").getObject();
+            this.getView().getModel("form").setProperty("/anzeigeWaehrung", waehrung);
+
+            // Mock
+            this.getView().getModel("form").setProperty("/anzeigeUmrechnungskurs", 1.12);
+
+            /*
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/WaehrungSet", {
+
+                urlParameters: {
+                    "$filter": "Von eq 'EUR' and Nach eq 'USD'"
+                },
+
+                success: function(oData){
+                    console.log(oData);
+                },
+
+                error: function(error){
+                    console.log(error);
+                }
+            });
+            */
+        },
+
         onKonditioneneinigungAnlegen: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegen");
             var _this = this;
@@ -125,6 +178,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     Unit: "",
                     GnGf: "",
                     GnGfDurch: "",
+                    Bonitaet: "",
+                    GueltigkKe: null,
 
                     KeToOb: [],
                     KeToWe: [],
@@ -218,6 +273,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungDetailsPopover", this);
 				this.getView().addDependent(this._tableViewSettingsPopover);
 			}
+
+            //this._tableViewSettingsPopover.setModel( this.getView().getModel("form") );
             
             var oButton = oEvent.getSource();
 			jQuery.sap.delayedCall(0, this, function () {

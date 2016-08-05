@@ -50,16 +50,16 @@
                         <Text text="{i18n>MIETFLAECHE} {i18n>ALTERNATIV}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>NACHHALTIGE_MIETE} {i18n>IN_WAEHRUNG_PRO_FLAECHENEINHEIT}" />
+                        <Text text="{i18n>NACHHALTIGE_MIETE} in {form>/anzeigeWaehrung/symbol}/FE" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>ANGEBOTSMIETE} {i18n>IN_WAEHRUNG_PRO_FLAECHENEINHEIT}" />
+                        <Text text="{i18n>ANGEBOTSMIETE} in {form>/anzeigeWaehrung/symbol}/FE" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} {i18n>IN_WAEHRUNG_PRO_FLAECHENEINHEIT}" />
+                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/anzeigeWaehrung/symbol}/FE" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>MIETERAUSBAUKOSTEN} {i18n>IN_WAEHRUNG_PRO_FLAECHENEINHEIT}" />
+                        <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/anzeigeWaehrung/symbol}/FE" />
                     </Column>
                 </columns>
                 
@@ -131,7 +131,7 @@
                     <Input id="laufzeitBis1stBreak" value="{form>/konditioneneinigung/LzFirstbreak}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="" placeholder="(Gültigkeit KE)" displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="{form>/konditioneneinigung/GueltigkKe}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <!-- <core:Title text="" /> -->
                     
@@ -163,6 +163,9 @@
                 <f:content>
                     <!-- <core:Title text="" /> -->
                     
+                    <Label text="{i18n>BONITAET}" />
+                    <Input value="{form>/konditioneneinigung/Bonitaet}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+
                     <Label text="{i18n>STATUS}" />
                     <Select width="100%" enabled="false" >
                         <items>

@@ -88,9 +88,6 @@
 							<Text text="{i18n>GUELTIG_BIS}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>BEZEICHNUNG}" />
-						</Column>
-						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>NUTZUNGSART}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
@@ -121,8 +118,13 @@
 										}
 								}" />
 								<Text text="{kondSel>LzFirstbreak}" />	
-								<Text text="(Gültig bis)" />
-								<Text text="(Bezeichnung)" />
+								<Text text="{
+										path: 'kondSel>GueltigkKe',
+										type: 'sap.ui.model.type.Date',
+										formatOptions: {
+											style: 'short'
+										}
+								}" />
 								<Text text="{kondSel>KeToOb/Nutzart}" />
 								<Text text="{
 										path: 'kondSel>KeToOb/Hnfl',

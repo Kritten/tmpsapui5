@@ -48,10 +48,14 @@
                     <PropertyRef Name="Bukrs"/>
                     <PropertyRef Name="KeId"/>
                 </Key>
-                <Property Name="Confirmation" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Benutzerbestätigung" MaxLength="1" Type="Edm.String"/>
-                <Property Name="BtnFm" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Fondsmanagement (Fla" MaxLength="1" Type="Edm.String"/>
+                <Property Name="Confirmation" sap:filterable="false" sap:sortable="false" sap:label="Benutzerbestätigung" MaxLength="1" Type="Edm.String"/>
+                <Property Name="Ersteller" sap:filterable="false" sap:sortable="false" sap:label="Angelegt von" MaxLength="12" Nullable="false" Type="Edm.String"/>
+                <Property Name="Editable" sap:filterable="false" sap:sortable="false" sap:label="Bearbeitbar" MaxLength="1" Nullable="false" Type="Edm.String"/>
+                <Property Name="GueltigkKe" sap:filterable="false" sap:sortable="false" sap:label="Gültigkeit der KE" Type="Edm.DateTime" Precision="7"/>
+                <Property Name="Bonitaet" sap:filterable="false" sap:sortable="false" sap:label="Bonität" MaxLength="4" Nullable="false" Type="Edm.String"/>
+                <Property Name="BtnFm" sap:filterable="false" sap:sortable="false" sap:label="Fondsmanagement (Fla" MaxLength="1" Type="Edm.String"/>
                 <Property Name="MfSplit" sap:filterable="false" sap:sortable="false" sap:label="Mietflächensplitt" MaxLength="1" Nullable="false" Type="Edm.String"/>
-                <Property Name="BtnAm" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Assets Management (F" MaxLength="1" Type="Edm.String"/>
+                <Property Name="BtnAm" sap:filterable="false" sap:sortable="false" sap:label="Assets Management (F" MaxLength="1" Type="Edm.String"/>
                 <Property Name="Favorit" sap:filterable="false" sap:sortable="false" sap:label="Favorit (true/false)" MaxLength="1" Type="Edm.String"/>
                 <Property Name="LzFirstbreak" sap:filterable="false" sap:sortable="false" sap:label="Laufzeit bis 1st bre" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
                 <Property Name="MzMonate" sap:filterable="false" sap:sortable="false" sap:label="Mietfreie Zeit in Mo" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
@@ -59,7 +63,7 @@
                 <Property Name="Bukrs" sap:filterable="false" sap:sortable="false" sap:label="Buchungskreis" MaxLength="4" Nullable="false" Type="Edm.String"/>
                 <Property Name="Status" sap:sortable="false" sap:label="Status" MaxLength="2" Type="Edm.String"/>
                 <Property Name="Anmerkung" sap:sortable="false" sap:label="Anmerkung" MaxLength="2" Type="Edm.String"/>
-                <Property Name="KeId" sap:filterable="false" sap:sortable="false" sap:label="Konditioneneinigung" MaxLength="10" Nullable="false" Type="Edm.String"/>
+                <Property Name="KeId" sap:filterable="false" sap:sortable="false" sap:label="Konditioneneinigung" MaxLength="12" Nullable="false" Type="Edm.String"/>
                 <Property Name="Aktiv" sap:sortable="false" sap:label="aktiv" MaxLength="1" Type="Edm.String"/>
                 <Property Name="Mietbeginn" sap:filterable="false" sap:sortable="false" sap:label="Mietbeginn" Type="Edm.DateTime" Precision="7"/>
                 <Property Name="Bemerkung" sap:filterable="false" sap:sortable="false" sap:label="Bemerkung" MaxLength="60" Type="Edm.String"/>
@@ -76,8 +80,8 @@
                 <Property Name="Unit" sap:filterable="false" sap:sortable="false" sap:label="Mengeneinheit" MaxLength="3" Type="Edm.String" sap:semantics="unit-of-measure"/>
                 <Property Name="GnGf" sap:filterable="false" sap:sortable="false" sap:label="Genehmigung GF" MaxLength="1" Type="Edm.String"/>
                 <Property Name="GnGfDurch" sap:filterable="false" sap:sortable="false" sap:label="Genehmigung GF durch" MaxLength="12" Type="Edm.String"/>
-                <NavigationProperty Name="KeToOb" ToRole="ToRole_KonditioneneinigungToObjekt" FromRole="FromRole_KonditioneneinigungToObjekt" Relationship="ZIP_VMDB_SRV.KonditioneneinigungToObjekt"/>
                 <NavigationProperty Name="KeToWe" ToRole="ToRole_KonditioneneinigungToWirtschaftseinheit" FromRole="FromRole_KonditioneneinigungToWirtschaftseinheit" Relationship="ZIP_VMDB_SRV.KonditioneneinigungToWirtschaftseinheit"/>
+                <NavigationProperty Name="KeToOb" ToRole="ToRole_KonditioneneinigungToObjekt" FromRole="FromRole_KonditioneneinigungToObjekt" Relationship="ZIP_VMDB_SRV.KonditioneneinigungToObjekt"/>
             </EntityType>
             <EntityType sap:content-version="1" Name="Waehrung">
                 <Key>
@@ -132,8 +136,9 @@
                     <PropertyRef Name="WeId"/>
                     <PropertyRef Name="Bukrs"/>
                 </Key>
-                <Property Name="Confirmation" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Benutzerbestätigung" MaxLength="1" Nullable="false" Type="Edm.String"/>
-                <Property Name="KeId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Konditioneneinigung" MaxLength="10" Nullable="false" Type="Edm.String"/>
+                <Property Name="Confirmation" sap:filterable="false" sap:sortable="false" sap:label="Benutzerbestätigung" MaxLength="1" Nullable="false" Type="Edm.String"/>
+                <Property Name="KeId" sap:filterable="false" sap:sortable="false" sap:label="Konditioneneinigung" MaxLength="10" Nullable="false" Type="Edm.String"/>
+                <Property Name="MfSplit" sap:filterable="false" sap:sortable="false" sap:label="Mietflächensplitt" MaxLength="1" Nullable="false" Type="Edm.String"/>
                 <Property Name="VaId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Vermietungsaktivität" MaxLength="10" Nullable="false" Type="Edm.String"/>
                 <Property Name="MoId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Mietobjekt" MaxLength="8" Nullable="false" Type="Edm.String"/>
                 <Property Name="WeId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Wirtschaftseinheit" MaxLength="8" Nullable="false" Type="Edm.String"/>
@@ -165,18 +170,20 @@
                     <PropertyRef Name="VaId"/>
                 </Key>
                 <Property Name="Bukrs" sap:filterable="false" sap:sortable="false" sap:label="Buchungskreis" MaxLength="4" Nullable="false" Type="Edm.String"/>
-                <Property Name="Confirmation" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Benutzerbestätigung" MaxLength="1" Type="Edm.String"/>
-                <Property Name="WeId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Wirtschaftseinheit" MaxLength="8" Nullable="false" Type="Edm.String"/>
-                <Property Name="BtnFm" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Fondsmanagement (Fla" MaxLength="1" Nullable="false" Type="Edm.String"/>
+                <Property Name="Ersteller" sap:filterable="false" sap:sortable="false" sap:label="Angelegt von" MaxLength="12" Nullable="false" Type="Edm.String"/>
+                <Property Name="Confirmation" sap:filterable="false" sap:sortable="false" sap:label="Benutzerbestätigung" MaxLength="1" Type="Edm.String"/>
+                <Property Name="Editable" sap:filterable="false" sap:sortable="false" sap:label="Bearbeitbar" MaxLength="1" Nullable="false" Type="Edm.String"/>
+                <Property Name="WeId" sap:filterable="false" sap:sortable="false" sap:label="Wirtschaftseinheit" MaxLength="8" Nullable="false" Type="Edm.String"/>
+                <Property Name="BtnFm" sap:filterable="false" sap:sortable="false" sap:label="Fondsmanagement (Fla" MaxLength="1" Type="Edm.String"/>
                 <Property Name="LzFirstbreak" sap:filterable="false" sap:sortable="false" sap:label="Laufzeit bis 1st bre" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
-                <Property Name="BtnAm" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Assets Management (F" MaxLength="1" Nullable="false" Type="Edm.String"/>
+                <Property Name="BtnAm" sap:filterable="false" sap:sortable="false" sap:label="Assets Management (F" MaxLength="1" Type="Edm.String"/>
                 <Property Name="Debitorname" sap:filterable="false" sap:sortable="false" sap:label="Mietername" MaxLength="60" Nullable="false" Type="Edm.String"/>
                 <Property Name="MzMonate" sap:filterable="false" sap:sortable="false" sap:label="Mietfreie Zeit in Mo" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
                 <Property Name="IdxWeitergabe" sap:filterable="false" sap:sortable="false" sap:label="Indexweitergabe" Nullable="false" Type="Edm.Decimal" Scale="3" Precision="17"/>
-                <Property Name="VaId" sap:filterable="false" sap:sortable="false" sap:label="Vermietungsaktivität" MaxLength="10" Nullable="false" Type="Edm.String"/>
+                <Property Name="VaId" sap:filterable="false" sap:sortable="false" sap:label="Vermietungsaktivität" MaxLength="12" Nullable="false" Type="Edm.String"/>
                 <Property Name="Status" sap:sortable="false" sap:label="Status" MaxLength="2" Nullable="false" Type="Edm.String"/>
                 <Property Name="Anmerkung" sap:sortable="false" sap:label="Anmerkung" MaxLength="2" Nullable="false" Type="Edm.String"/>
-                <Property Name="Mietbeginn" sap:filterable="false" sap:sortable="false" sap:label="Mietbeginn" Nullable="false" Type="Edm.DateTime" Precision="7"/>
+                <Property Name="Mietbeginn" sap:filterable="false" sap:sortable="false" sap:label="Mietbeginn" Type="Edm.DateTime" Precision="7"/>
                 <Property Name="Bemerkung" sap:filterable="false" sap:sortable="false" sap:label="Bemerkung" MaxLength="60" Nullable="false" Type="Edm.String"/>
                 <Property Name="Vermietungsart" sap:filterable="false" sap:sortable="false" sap:label="Vermietungsart" MaxLength="2" Nullable="false" Type="Edm.String"/>
                 <Property Name="Aktiv" sap:sortable="false" sap:label="aktiv" MaxLength="1" Nullable="false" Type="Edm.String"/>

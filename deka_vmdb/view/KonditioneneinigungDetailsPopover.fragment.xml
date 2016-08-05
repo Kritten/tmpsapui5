@@ -2,14 +2,44 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:l="sap.ui.layout">
-    <Popover title="Mietflächenangaben in" class="sapUiContentPadding" placement="Bottom">
 
-        <RadioButtonGroup>
-            <buttons>
-                <RadioButton groupName="groupA" text="Monatsmieten" selected="true" />
-                <RadioButton groupName="groupA" text="Jahresmieten" />
-            </buttons>
-        </RadioButtonGroup>
+    <!-- contentMinWidth since 1.36 -->
+    <Popover title="Anzeigeeinstellungen" placement="Bottom" class="sapUiContentPadding">
+
+    <content>
+
+        <FlexBox
+            direction="Column"
+            alignItems="Start"
+            class="sapUiSmallMarginBottom"
+            width="100%">
+            <items>
+                <Label text="Mietflächenangaben:" />
+                <Select change="onPopoverZeitspanneSelect">
+                    <core:Item key="JAHR" text="Jahresmieten" />
+                    <core:Item key="MONAT" text="Monatsmieten" />
+                </Select>           
+            </items>
+        </FlexBox>
+
+
+        <FlexBox
+            direction="Column"
+            alignItems="Start"
+            width="100%">
+            <items>
+                <Label text="Währung:" />
+                <Select selectedKey="{form>/anzeigeWaehrung/key}" items="{form>/waehrungen}" change="onPopoverWaehrungSelect">
+                    <core:Item key="{form>key}" text="{form>text}" />
+                </Select>
+            </items>
+        </FlexBox>
+
+    </content>
+
+
+
+
         
     </Popover>
 </core:FragmentDefinition>
