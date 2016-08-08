@@ -710,8 +710,30 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         },
 
         onKonditioneneinigungLoeschenButtonPress: function(oEvent){
-
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onKonditioneneinigungLoeschenButtonPress");
             
+            var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
+            var selectedItems = mietflaechenangabenTable.getSelectedItems();
+                                    
+            var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+
+            var konditioneneinigungenIds = new Set();
+
+            mietflaechenangaben.forEach(function(objekt){
+                konditioneneinigungenIds.add(objekt.KeId);
+            });
+
+            var i = mietflaechenangaben.length;
+            while(i--) {
+                if( konditioneneinigungenIds.has(mietflaechenangaben[i].KeId) ){
+                    mietflaechenangaben.splice(i, 1);
+                }
+            }
+            
+            this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
+
+            // Selektion aufheben nach dem Löschen
+            mietflaechenangabenTable.removeSelections(true);
         },
 
 

@@ -10,9 +10,9 @@
     <!-- this CSS class add a standard spacing to all the page content -->
     
         <headerContent>
-			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" visible="{= ${form>/modus} === 'show' }" press="onBearbeitenButtonPress" />
+			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" press="onBearbeitenButtonPress" />
 		</headerContent>
-                
+
 		<content>
             
 			<ObjectHeader title="{i18n>KONDITIONENEINIGUNG}" number="{form>/konditioneneinigung/KeId}" >
@@ -50,16 +50,16 @@
                         <Text text="{i18n>MIETFLAECHE} {i18n>ALTERNATIV}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>NACHHALTIGE_MIETE} in {form>/anzeigeWaehrung/symbol}/FE" />
+                        <Text text="{i18n>NACHHALTIGE_MIETE} in {form>/_waehrung/symbol}/FE" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>ANGEBOTSMIETE} in {form>/anzeigeWaehrung/symbol}/FE" />
+                        <Text text="{i18n>ANGEBOTSMIETE} in {form>/_waehrung/symbol}/FE" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/anzeigeWaehrung/symbol}/FE" />
+                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/_waehrung/symbol}/FE" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/anzeigeWaehrung/symbol}/FE" />
+                        <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/_waehrung/symbol}/FE" />
                     </Column>
                 </columns>
                 
@@ -71,7 +71,7 @@
                             <Text text="{form>Nutzart}" />
                             <Text text="{form>Hnfl}" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{form>NhMiete}" />
+                            <Text text="{= (${form>NhMiete} * ${form>/_umrechnungskurs}).toFixed(2) }" />
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -230,11 +230,11 @@
         <footer>
 			<OverflowToolbar>
 				<Button text="{= ${form>/konditioneneinigung/Favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" icon="{= ${form>/konditioneneinigung/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" press="onFavoritButtonPress" visible="{= (${form>/modus} === 'show') }" />
-				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" icon="sap-icon://request" visible="{= (${form>/modus} === 'show') }" />
-				<Button text="{i18n>GENEHMIGEN}" icon="sap-icon://accept" visible="{= (${form>/modus} === 'show') }" />
-				<Button text="{i18n>NICHTGENEHMIGEN}" icon="sap-icon://decline" visible="{= (${form>/modus} === 'show') }" />
-				<Button text="{i18n>REAKTIVIEREN}" icon="sap-icon://repost" visible="{= (${form>/modus} === 'show') }" />
-                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" visible="{= (${form>/modus} === 'show') }" />
+				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" icon="sap-icon://request" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
+				<Button text="{i18n>GENEHMIGEN}" icon="sap-icon://accept" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
+				<Button text="{i18n>NICHTGENEHMIGEN}" icon="sap-icon://decline" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
+				<Button text="{i18n>REAKTIVIEREN}" icon="sap-icon://repost" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
+                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
                 <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" visible="{= (${form>/modus} === 'show') }" press="onDruckenButtonPress" />
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >

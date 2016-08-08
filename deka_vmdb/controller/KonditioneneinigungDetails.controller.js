@@ -84,15 +84,26 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                             {key: "USD", text: "US Dollar", symbol: "$"}
                         ],
 
-                        anzeigeWaehrungKey: null,
-                        anzeigeWaehrung: null,
-                        anzeigeUmrechnungskurs: 1,
-                        anzeigeZeitspanne: {key: "MONAT", text: "Monatsmiete"},
+                        zeitspannen: [
+                            {key: "MONAT", text: "Monatsmiete"},
+                            {key: "JAHR", text: "Jahresmiete"}
+                        ],
+
+                        // Zusätzliche Felder für Frontend Logik
+                        _waehrung: null,                            // Ausgewählte Währung als Objekt
+                        _waehrungSelectedKey: null,                 // Key der aktuell ausgewählten Währung
+                        _umrechnungskurs: 1,                        // Umrechungskurs für Nachhaltige Miete
+
+                        _zeitspanne: null,                          // Ausgewählte Zeitspanne als Objekt
+                        _zeitspanneSelectedKey: null,               // Key der aktuell ausgewählten Zeitspanne
                     };
 
                     // Vorbelegte Auswahl
-                    form.anzeigeWaehrung = form.waehrungen[0];
-                    form.anzeigeWaehrungKey = form.waehrungen[0].key;
+                    form._waehrung = form.waehrungen[0];
+                    form._waehrungSelectedKey = form.waehrungen[0].key;
+
+                    form._zeitspanne = form.zeitspannen[0];
+                    form._zeitspanneSelectedKey = form.zeitspannen[0].key;
 
                     var user = {
                         rolle: "FM" // FM, AM 
@@ -113,20 +124,29 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         onPopoverZeitspanneSelect: function(oEvent){
 
             var item = oEvent.getParameter("selectedItem");
+            var zeitspanne = item.getBindingContext("form").getObject();
 
-            this.getView().getModel("form").setProperty("/anzeigeZeitspanne/key", item.getKey());
-            this.getView().getModel("form").setProperty("/anzeigeZeitspanne/text", item.getText());
+            this.getView().getModel("form").setProperty("/_zeitspanne", zeitspanne);
         },
 
         onPopoverWaehrungSelect: function(oEvent){
 
             var item = oEvent.getParameter("selectedItem");
-
             var waehrung = item.getBindingContext("form").getObject();
-            this.getView().getModel("form").setProperty("/anzeigeWaehrung", waehrung);
+
+            this.getView().getModel("form").setProperty("/_waehrung", waehrung);
+
 
             // Mock
-            this.getView().getModel("form").setProperty("/anzeigeUmrechnungskurs", 1.12);
+            if(waehrung.key === "EUR")
+            {
+                this.getView().getModel("form").setProperty("/_umrechnungskurs", 1);
+            }
+            else if(waehrung.key === "USD")
+            {
+                this.getView().getModel("form").setProperty("/_umrechnungskurs", 1.12);
+            }
+
 
             /*
             var oDataModel = sap.ui.getCore().getModel("odata");
