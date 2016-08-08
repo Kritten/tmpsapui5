@@ -368,79 +368,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             }
         },
         
-        /**
-         * Q Promise Funktion
-         */
-        konditioneneinigungSpeichern: function(){
 
-            return Q.Promise(function(resolve, reject, notify) {
-
-            });
+        // Create
+        konditioneneinigungAnlegen: function(){
 
         },
 
-        /**
-         * Q Promise Funktion
-         */
-        objektSpeichern: function(objekt, objektIndex){
-            var _this = this;            
-
-            return Q.Promise(function(resolve, reject, notify) {
-
-                var oDataModel = sap.ui.getCore().getModel("odata");
-                
-                var objektPayload = {
-                    Confirmation: objekt.Confirmation,
-                    KeId: objekt.KeId,
-                    VaId: objekt.VaId,
-                    MoId: objekt.MoId,
-                    WeId: objekt.WeId,
-                    Bukrs: objekt.Bukrs,
-                    Switch: objekt.Switch,
-                    Aktiv: objekt.Aktiv,
-                    NutzartAlt: objekt.NutzartAlt,
-                    MonatJahr: objekt.MonatJahr,
-                    Nutzart: objekt.Nutzart,
-                    Whrung: objekt.Whrung,
-                    HnflUnit: objekt.HnflUnit,
-                    AnMiete: parseFloat( objekt.AnMiete.replace(',', '.') ),
-                    GaKosten: parseFloat( objekt.GaKosten.replace(',', '.') ),
-                    Hnfl: objekt.Hnfl,
-                    HnflAlt: parseFloat( objekt.HnflAlt.replace(',', '.') ),
-                    MaKosten: parseFloat( objekt.MaKosten.replace(',', '.') ),
-                    NhMiete: objekt.NhMiete
-                };
-              
-                oDataModel.update("/ObjektSet(KeId='"+objekt.KeId+"',VaId='"+objekt.VaId+"',MoId='"+objekt.MoId+"',WeId='"+objekt.WeId+"',Bukrs='"+objekt.Bukrs+"')", objektPayload, {
-                    success: function(){
-                        if(objekt.Confirmation === "X"){
-                            resolve();
-                        }
-                        else {
-                            // Dummy Logik für Testzwecke
-                            // Bei success sollte immer ein resolve erfolgen
-                            reject({
-                                objekt: objekt,
-                                objektIndex: objektIndex
-                            });
-                        }
-                    },
-                    error: function(oError){
-                        reject({
-                            objekt: objekt,
-                            objektIndex: objektIndex
-                        });
-                    }
-                });
-
-            });
-
-        },
-
-        /**
-         * Führt Aufrufe ans Backend aus um die Konditioneneinigung und dessen Objekte zu speichern.
-         */
-        speichern: function(){
+        // Update
+        konditioneneinigungAktualisieren: function(){
             var _this = this;
 
             var promises = [];
@@ -462,7 +397,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     {
                         if( (objektVonNeu.HnflAlt !== objektVonAlt.HnflAlt) || (objektVonNeu.AnMiete !== objektVonAlt.AnMiete) || (objektVonNeu.GaKosten !== objektVonAlt.GaKosten) || (objektVonNeu.MaKosten !== objektVonAlt.MaKosten) )
                         {                            
-                            var promise = this.objektSpeichern(objektVonNeu, i);
+                            var promise = this.asyncUpdateObjekt(objektVonNeu, i);
                             promises.push(promise);
                         }
 
@@ -535,7 +470,101 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 // Keine Änderungen getätigt
                 _this.getView().getModel("form").setProperty("/modus", "show");
             }
-            
+        },
+
+
+        /**
+         * Q Promise Funktion
+         * Führt asynchronen UPDATE Request für Konditioneneinigung aus
+         * Ergebnis wird als Promise zurückgeliefert
+         */
+        asyncUpdateKonditioneneinigung: function(konditioneneinigung){
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+            });
+        },
+
+        /**
+         * Q Promise Funktion
+         * Führt asynchronen UPDATE Request für ein Objekt der Konditioneneinigung aus
+         * Ergebnis wird als Promise zurückgeliefert
+         */
+        asyncUpdateObjekt: function(objekt, objektIndex){
+            var _this = this;            
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
+                
+                var objektPayload = {
+                    Confirmation: objekt.Confirmation,
+                    KeId: objekt.KeId,
+                    VaId: objekt.VaId,
+                    MoId: objekt.MoId,
+                    WeId: objekt.WeId,
+                    Bukrs: objekt.Bukrs,
+                    Switch: objekt.Switch,
+                    Aktiv: objekt.Aktiv,
+                    NutzartAlt: objekt.NutzartAlt,
+                    MonatJahr: objekt.MonatJahr,
+                    Nutzart: objekt.Nutzart,
+                    Whrung: objekt.Whrung,
+                    HnflUnit: objekt.HnflUnit,
+                    AnMiete: parseFloat( objekt.AnMiete.replace(',', '.') ),
+                    GaKosten: parseFloat( objekt.GaKosten.replace(',', '.') ),
+                    Hnfl: objekt.Hnfl,
+                    HnflAlt: parseFloat( objekt.HnflAlt.replace(',', '.') ),
+                    MaKosten: parseFloat( objekt.MaKosten.replace(',', '.') ),
+                    NhMiete: objekt.NhMiete
+                };
+              
+                oDataModel.update("/ObjektSet(KeId='"+objekt.KeId+"',VaId='"+objekt.VaId+"',MoId='"+objekt.MoId+"',WeId='"+objekt.WeId+"',Bukrs='"+objekt.Bukrs+"')", objektPayload, {
+                    success: function(){
+                        if(objekt.Confirmation === "X"){
+                            resolve();
+                        }
+                        else {
+                            // Dummy Logik für Testzwecke
+                            // Bei success sollte immer ein resolve erfolgen
+                            reject({
+                                objekt: objekt,
+                                objektIndex: objektIndex
+                            });
+                        }
+                    },
+                    error: function(oError){
+                        reject({
+                            objekt: objekt,
+                            objektIndex: objektIndex
+                        });
+                    }
+                });
+
+            });
+
+        },
+
+        /**
+         * Führt Aufrufe ans Backend aus um die Konditioneneinigung und dessen Objekte zu speichern.
+         */
+        speichern: function(){
+
+            var modus = this.getView().getModel("form").getProperty("/modus");   
+
+            switch(modus)
+            {
+                case "new":
+                    this.konditioneneinigungAnlegen();
+                break;
+
+                case "edit":
+                    this.konditioneneinigungAktualisieren();
+                break;
+
+                default:
+                break;
+            }            
         },
 
         aenderungsstatusBeiKonditioneneinigungVormerken: function(){
