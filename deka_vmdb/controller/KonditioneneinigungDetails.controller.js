@@ -62,6 +62,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                         objekt.AnMiete = objekt.AnMiete.toString();
                         objekt.GaKosten = objekt.GaKosten.toString();
                         objekt.MaKosten = objekt.MaKosten.toString();
+
+                        // Manuelles zurücksetzen des Confirmation Flag
+                        // Wichtig, weil der Mockserver die Werte speichert
+                        // Backend würde kein X bei Confirmation liefern
+                        objekt.Confirmation = "";
                     });
 
                     // Zusätzliche Felder
@@ -298,8 +303,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onSpeichernButtonPress");
             var _this = this;
 
-            console.log( this.getView().getModel("form").getProperty("/konditioneneinigung") );
-
             // Eingaben validieren
             // Daten ins Backend schicken
             // Neues Modell auf Basis der Backenddaten anbinden
@@ -438,10 +441,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     if(objektVonNeu.MoId === objektVonAlt.MoId)
                     {
                         if( (objektVonNeu.HnflAlt !== objektVonAlt.HnflAlt) || (objektVonNeu.AnMiete !== objektVonAlt.AnMiete) || (objektVonNeu.GaKosten !== objektVonAlt.GaKosten) || (objektVonNeu.MaKosten !== objektVonAlt.MaKosten) )
-                        {
-                            console.log(objektVonAlt);
-                            console.log(objektVonNeu);
-                            
+                        {                            
                             var promise = this.objektSpeichern(objektVonNeu, i);
                             promises.push(promise);
                         }
@@ -454,9 +454,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             if(promises.length > 0)
             {
                 Q.allSettled(promises).then(function(results){
-
-                    console.log("Q.allSettled");
-                    console.log(results);
+                    jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. Q: allSettled");
 
                     var objekteMitWarnungen = [];
 
@@ -473,7 +471,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     // Das Speichern wird hierbei mit dem Confirmation Flag erneut ausgeführt
                     if(objekteMitWarnungen.length > 0)
                     {
-                        MessageBox.show("Objekte sind fehlerhaft. Drücken Sie erneut auf speichern um die Konditioneneinigung trotz fehlerhafter Objekte zu speichern.", {
+                        MessageBox.show("Objekte sind fehlerhaft. Drücken Sie auf 'OK' um die Konditioneneinigung trotz fehlerhafter Objekte zu speichern.", {
                             title: "Warnung",
                             icon: sap.m.MessageBox.Icon.WARNING,
                             actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.ABORT],

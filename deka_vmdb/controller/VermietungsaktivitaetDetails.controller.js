@@ -709,6 +709,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
         },
 
+        onKonditioneneinigungLoeschenButtonPress: function(oEvent){
+
+            
+        },
+
+
         onKonditioneneinigungDialogSearch: function(oEvent){
 
         },

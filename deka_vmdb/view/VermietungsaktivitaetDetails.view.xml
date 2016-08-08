@@ -95,8 +95,8 @@
                 <items>
                     <FlexBox>
                         <items>
-                            <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onMietflaechenAngabeHinzufuegenButtonPress" class="sapUiSmallMarginEnd" />
-                            <Button text="{i18n>MIETFLAECHE_ENTFERNEN}" icon="sap-icon://sys-minus" press="onMietflaechenAngabenLoeschenButtonPress" class="sapUiSmallMarginEnd" />
+                            <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onKonditioneneinigungHinzufuegenButtonPress" class="sapUiSmallMarginEnd" />
+                            <Button text="{i18n>KONDITIONENEINIGUNG_ENTFERNEN}" icon="sap-icon://sys-minus" press="onKonditioneneinigungLoeschenButtonPress" class="sapUiSmallMarginEnd" />
                         </items>
                         <layoutData>
 							<FlexItemData growFactor="1" />
@@ -105,8 +105,6 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
-                            <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onKonditioneneinigungHinzufuegenButtonPress" class="sapUiSmallMarginEnd" />
-                            <Button text="{i18n>KONDITIONENEINIGUNG_ENTFERNEN}" icon="sap-icon://sys-minus" press="onKonditioneneinigungLoeschenButtonPress" class="sapUiSmallMarginEnd" />
                             <Button text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
                         </items>
                         <layoutData>
