@@ -56,7 +56,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function(Co
 								filterAnmerkung.push(konditioneneinigung.Anmerkung);
 							});
 							
-							jsonData.facetfilters = [{
+							jsonData.facetfilters = [];
+
+							/*	
+							[{
 								filterName: "Favorit",
 								values: [{key: true, text: "Ja"}, {key: false, text: "Nein"}]
 							},
@@ -78,7 +81,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function(Co
 									return {key: anmerkung, text: anmerkung}; 
 								})
 							}];
-
+							*/
+							
 							var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
 							_this.getView().setModel(jsonModel, "kondSel");
 

@@ -38,7 +38,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
         },
 
-        leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId){
+        leseKonditioneneinigungUndInitialisiereModel: function(Bukrs, KeId){
             var _this = this;
             
             var oDataModel = sap.ui.getCore().getModel("odata");
@@ -95,7 +95,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                         _umrechnungskurs: 1,                        // Umrechungskurs für Nachhaltige Miete
 
                         _zeitspanne: null,                          // Ausgewählte Zeitspanne als Objekt
-                        _zeitspanneSelectedKey: null,               // Key der aktuell ausgewählten Zeitspanne
+                        _zeitspanneSelectedKey: null                // Key der aktuell ausgewählten Zeitspanne
                     };
 
                     // Vorbelegte Auswahl
