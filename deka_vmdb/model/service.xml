@@ -50,7 +50,7 @@
                 </Key>
                 <Property Name="Confirmation" sap:filterable="false" sap:sortable="false" sap:label="Benutzerbestätigung" MaxLength="1" Type="Edm.String"/>
                 <Property Name="Ersteller" sap:filterable="false" sap:sortable="false" sap:label="Angelegt von" MaxLength="12" Nullable="false" Type="Edm.String"/>
-                <Property Name="Editable" sap:filterable="false" sap:sortable="false" sap:label="Bearbeitbar" Nullable="false" Type="Edm.Boolean"/>
+                <Property Name="Editable" sap:filterable="false" sap:sortable="false" sap:label="Bearbeitbar" MaxLength="1" Type="Edm.String"/>
                 <Property Name="GueltigkKe" sap:filterable="false" sap:sortable="false" sap:label="Gültigkeit der KE" Type="Edm.DateTime" Precision="7"/>
                 <Property Name="Bonitaet" sap:filterable="false" sap:sortable="false" sap:label="Bonität" MaxLength="4" Nullable="false" Type="Edm.String"/>
                 <Property Name="BtnFm" sap:filterable="false" sap:sortable="false" sap:label="Fondsmanagement (Fla" MaxLength="1" Type="Edm.String"/>

@@ -64,23 +64,19 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 					
 					jsonData.facetfilters = [{
 						filterName: "Favorit",
-						values: []
-					},
-					{
+						values: [{key: true, text: "Ja"}, {key: false, text: "Nein"}]
+					}, {
 						filterName: "Buchungskreis",
-						values: []
-					},
-					{
+						values: _.map(_.uniq(filterBuchungskreisValues), function(Bukrs){ return {key: Bukrs, text: Bukrs}; })
+					}, {
 						filterName: "Wirtschaftseinheit",
-						values: []
-					},
-					{
+						values: _.map(_.uniq(filterWirtschaftseinheitValues), function(WeId){ return {key: WeId, text: WeId}; })
+					}, {
 						filterName: "Anmerkung",
-						values: []
-					},
-					{
+						values: _.map(_.uniq(filterAnmerkungValues), function(Anmerkung){ return {key: Anmerkung, text: Anmerkung}; })
+					}, {
 						filterName: "Status",
-						values: []
+						values: _.map(_.uniq(filterStatusValues), function(Status){ return {key: Status, text: Status}; })
 					}];
 								
 					var jsonModel = new sap.ui.model.json.JSONModel(jsonData);

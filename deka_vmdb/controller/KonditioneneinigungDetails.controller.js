@@ -114,6 +114,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
                     // Struktur aufbereiten für UI5 Binding
                     oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
+                    oData.Editable = (Math.random() > 0.5);
+
                     oData.KeToOb = oData.KeToOb.results;
 
                     // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
@@ -878,7 +880,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
             var oDataModel = sap.ui.getCore().getModel("odata");
 
+            var WeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/WeId"); 
+            var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs"); 
+
             oDataModel.read("/MietobjektSet", {
+
+                urlParameters: {
+                    "$filter": "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'"
+                },
 
                 success: function(oData){
                     console.log(oData);

@@ -588,9 +588,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenSelektion", this);
             }
 
+            var WeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/WeId"); 
+            var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs"); 
+
             var oDataModel = sap.ui.getCore().getModel("odata");
 
             oDataModel.read("/MietobjektSet", {
+
+                urlParameters: {
+                    "$filter": "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'"
+                },
 
                 success: function(oData){
                     console.log(oData);
