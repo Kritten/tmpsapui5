@@ -83,6 +83,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
                     _this.onKonditioneneinigungAnlegen(oEvent);
 
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/MvId", MvId); 
                     _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.MvToWe.WeId); 
                     _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.MvToWe.Bukrs); 
                 }
@@ -112,7 +113,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 success: function(oData){
                     console.log(oData);
 
-                    // Struktur aufbereiten für UI5 Binding
+                    // Struktur aufbereiten für UI5 Binding                    
                     oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
                     oData.Editable = (Math.random() > 0.5);
 
@@ -883,10 +884,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             var WeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/WeId"); 
             var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs"); 
 
+            var requestFilter = "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'";
+
+            var MvId = _this.getView().getModel("form").getProperty("/konditioneneinigung/MvId"); 
+            
+            // Wenn die KE auf einem Mietvertrag basiert, dann die Objekte mit der MvId Filtern
+            if(MvId !== undefined){
+                requestFilter = "Bukrs eq '"+Bukrs+"' and MvId eq '"+MvId+"'";
+            }
+
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. request filter: " + requestFilter);
+
             oDataModel.read("/MietobjektSet", {
 
                 urlParameters: {
-                    "$filter": "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'"
+                    "$filter": requestFilter
                 },
 
                 success: function(oData){
@@ -910,11 +922,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                         // nur Objekte Anzeigen, die noch nicht in der Liste sind
                         if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1)
                         {
-                            // nur Mietflächen der selben Wirtschaftseinheit anzeigen
-                            if(objekt.WeId === wirtschaftseinheitId)
-                            {
-                                jsonData.mietflaechen.push( objekt );
-                            }
+                            jsonData.mietflaechen.push( objekt );
                         }
 
                     });
