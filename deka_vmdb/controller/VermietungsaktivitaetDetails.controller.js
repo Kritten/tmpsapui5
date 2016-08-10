@@ -554,16 +554,26 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 		
         onMietflaechenAngabenLoeschenButtonPress: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onMietflaechenAngabenLoeschenButtonPress");
-            
+  
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
-            var selectedItems = mietflaechenangabenTable.getSelectedItems();
-                                    
+            
+            // Objekte der ausgewählten Mietflächenangaben sammeln
+            var selectedMietflaechenangaben = [];
+            mietflaechenangabenTable.getSelectedItems().forEach(function(selectedItem){
+                selectedMietflaechenangaben.push( selectedItem.getBindingContext("form").getObject() );
+            });
+
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
 
-            // ES6 Zukunftstechnologie - eventuell überarbeiten
-            var objectsToRemove = selectedItems.map(item => item.getBindingContext("form").getObject() );
-            mietflaechenangaben = mietflaechenangaben.filter(ma => objectsToRemove.indexOf(ma) === -1  );
-                        
+			selectedMietflaechenangaben.forEach(function(mietflaechenangabe){
+				var i = mietflaechenangaben.length;
+				while (i--) {
+					if(mietflaechenangaben[i].MoId === mietflaechenangabe.MoId){
+						mietflaechenangaben.splice(i, 1);
+					}
+				}
+			});
+            
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
 
             // Selektion aufheben nach dem Löschen

@@ -49,11 +49,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
 			var selectedItems = sperrenTable.getSelectedItems();
 
             var sperren = this.getView().getModel("form").getProperty("/sperren");
-            
-            // ES6 Zukunftstechnologie - eventuell überarbeiten
-            var objectsToRemove = selectedItems.map(item => item.getBindingContext("form").getObject() );
-            sperren = sperren.filter(ma => objectsToRemove.indexOf(ma) === -1  );            
-            
+
+			var selectedSperren = [];
+			selectedItems.forEach(function(selectedItem){
+				selectedSperren.push( selectedItem.getBindingContext("form").getObject() );
+			});
+
+			selectedSperren.forEach(function(sperre){
+				var i = sperren.length;
+				while (i--) {
+					if( (sperren[i].KeId === sperre.KeId) && (sperren[i].VaId === sperre.VaId) && (sperren[i].Benutzer === sperre.Benutzer) ){
+						sperren.splice(i, 1);
+					}
+				}
+			});
+
             this.getView().getModel("form").setProperty("/sperren", sperren);
 
             // Selektion aufheben nach dem Löschen

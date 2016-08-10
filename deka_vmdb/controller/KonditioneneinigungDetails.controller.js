@@ -842,14 +842,17 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenAngabenLoeschenButtonPress");
             
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
-            var selectedItems = mietflaechenangabenTable.getSelectedItems();
-                                    
+            
+            // Objekte der ausgewählten Mietflächenangaben sammeln
+            var selectedMietflaechenangaben = [];
+            mietflaechenangabenTable.getSelectedItems().forEach(function(selectedItem){
+                selectedMietflaechenangaben.push( selectedItem.getBindingContext("form").getObject() );
+            });
+
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
 
-			selectedItems.forEach(function(selectedItem){
-				var mietflaechenangabe = selectedItem.getBindingContext("form").getObject();
-
-				var i = mietflaechenangaben.length
+			selectedMietflaechenangaben.forEach(function(mietflaechenangabe){
+				var i = mietflaechenangaben.length;
 				while (i--) {
 					if(mietflaechenangaben[i].MoId === mietflaechenangabe.MoId){
 						mietflaechenangaben.splice(i, 1);

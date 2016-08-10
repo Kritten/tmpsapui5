@@ -56,32 +56,22 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function(Co
 								filterAnmerkung.push(konditioneneinigung.Anmerkung);
 							});
 							
-							jsonData.facetfilters = [];
-
-							/*	
-							[{
+							jsonData.facetfilters = [{
 								filterName: "Favorit",
-								values: [{key: true, text: "Ja"}, {key: false, text: "Nein"}]
+								values: []
 							},
 							{
 								filterName: "Buchungskreis",
-								values: Array.from(new Set(filterBuchungskreisValues)).map(function(buchungskreis){
-									return {key: buchungskreis, text: buchungskreis};
-								})
+								values: []
 							},
 							{
 								filterName: "Wirtschaftseinheit",
-								values: Array.from(new Set(filterWirtschaftseinheitValues)).map(function(wirtschaftseinheit){
-									return {key: wirtschaftseinheit, text: wirtschaftseinheit}; 
-								})
+								values: []
 							},
 							{
 								filterName: "Anmerkung",
-								values: Array.from(new Set(filterAnmerkung)).map(function(anmerkung){
-									return {key: anmerkung, text: anmerkung}; 
-								})
+								values: []
 							}];
-							*/
 							
 							var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
 							_this.getView().setModel(jsonModel, "kondSel");
