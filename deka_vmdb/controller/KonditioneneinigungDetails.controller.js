@@ -2,7 +2,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
-        
+
 		onInit: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onInit");
             var _this = this;
@@ -37,6 +37,66 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
             this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
         },
+
+
+        onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit");
+            var _this = this;
+
+            var WeId = oEvent.getParameter("arguments").WeId;
+            var Bukrs = oEvent.getParameter("arguments").Bukrs;
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/WirtschaftseinheitenSet(Bukrs='" + Bukrs + "',WeId='" + WeId + "')", {
+
+                success: function(oData){
+                    console.log(oData);
+
+                    _this.onKonditioneneinigungAnlegen(oEvent);
+
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.WeId); 
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.Bukrs); 
+                }
+            });
+
+        },
+
+
+        onKonditioneneinigungAnlegenAufBasisEinesMietvertrags: function(oEvent){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinesMietvertrags");
+            var _this = this;
+
+            var MvId = oEvent.getParameter("arguments").MvId;
+            var Bukrs = oEvent.getParameter("arguments").Bukrs;
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/MietvertragSet(Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
+
+                urlParameters: {
+                    "$expand": "MvToWe"
+                },
+
+                success: function(oData){
+                    console.log(oData);
+
+                    _this.onKonditioneneinigungAnlegen(oEvent);
+
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.MvToWe.WeId); 
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.MvToWe.Bukrs); 
+                }
+            });
+        },
+
+        onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung");
+
+            this.onKonditioneneinigungAnlegen(oEvent);
+            var KeId = oEvent.getParameter("arguments").KeId;
+            var Bukrs = oEvent.getParameter("arguments").Bukrs;
+        },
+
 
         leseKonditioneneinigungUndInitialisiereModel: function(Bukrs, KeId){
             var _this = this;
@@ -120,53 +180,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             });
 
         },
-        
-        onPopoverZeitspanneSelect: function(oEvent){
-
-            var item = oEvent.getParameter("selectedItem");
-            var zeitspanne = item.getBindingContext("form").getObject();
-
-            this.getView().getModel("form").setProperty("/_zeitspanne", zeitspanne);
-        },
-
-        onPopoverWaehrungSelect: function(oEvent){
-
-            var item = oEvent.getParameter("selectedItem");
-            var waehrung = item.getBindingContext("form").getObject();
-
-            this.getView().getModel("form").setProperty("/_waehrung", waehrung);
-
-
-            // Mock
-            if(waehrung.key === "EUR")
-            {
-                this.getView().getModel("form").setProperty("/_umrechnungskurs", 1);
-            }
-            else if(waehrung.key === "USD")
-            {
-                this.getView().getModel("form").setProperty("/_umrechnungskurs", 1.12);
-            }
-
-
-            /*
-            var oDataModel = sap.ui.getCore().getModel("odata");
-
-            oDataModel.read("/WaehrungSet", {
-
-                urlParameters: {
-                    "$filter": "Von eq 'EUR' and Nach eq 'USD'"
-                },
-
-                success: function(oData){
-                    console.log(oData);
-                },
-
-                error: function(error){
-                    console.log(error);
-                }
-            });
-            */
-        },
 
         onKonditioneneinigungAnlegen: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegen");
@@ -228,64 +241,57 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             
             this.clearValidationState();
         },
-        
-        onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit");
-            var _this = this;
 
-            var WeId = oEvent.getParameter("arguments").WeId;
-            var Bukrs = oEvent.getParameter("arguments").Bukrs;
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+        onPopoverZeitspanneSelect: function(oEvent){
 
-            oDataModel.read("/WirtschaftseinheitenSet(Bukrs='" + Bukrs + "',WeId='" + WeId + "')", {
+            var item = oEvent.getParameter("selectedItem");
+            var zeitspanne = item.getBindingContext("form").getObject();
 
-                success: function(oData){
-                    console.log(oData);
-
-                    _this.onKonditioneneinigungAnlegen(oEvent);
-
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.WeId); 
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.Bukrs); 
-                }
-            });
-
+            this.getView().getModel("form").setProperty("/_zeitspanne", zeitspanne);
         },
-        
-        onKonditioneneinigungAnlegenAufBasisEinesMietvertrags: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinesMietvertrags");
-            var _this = this;
 
-            var MvId = oEvent.getParameter("arguments").MvId;
-            var Bukrs = oEvent.getParameter("arguments").Bukrs;
 
+        onPopoverWaehrungSelect: function(oEvent){
+
+            var item = oEvent.getParameter("selectedItem");
+            var waehrung = item.getBindingContext("form").getObject();
+
+            this.getView().getModel("form").setProperty("/_waehrung", waehrung);
+
+
+            // Mock
+            if(waehrung.key === "EUR")
+            {
+                this.getView().getModel("form").setProperty("/_umrechnungskurs", 1);
+            }
+            else if(waehrung.key === "USD")
+            {
+                this.getView().getModel("form").setProperty("/_umrechnungskurs", 1.12);
+            }
+
+
+            /*
             var oDataModel = sap.ui.getCore().getModel("odata");
 
-            oDataModel.read("/MietvertragSet(Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
+            oDataModel.read("/WaehrungSet", {
 
                 urlParameters: {
-                    "$expand": "MvToWe"
+                    "$filter": "Von eq 'EUR' and Nach eq 'USD'"
                 },
 
                 success: function(oData){
                     console.log(oData);
+                },
 
-                    _this.onKonditioneneinigungAnlegen(oEvent);
-
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.MvToWe.WeId); 
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.MvToWe.Bukrs); 
+                error: function(error){
+                    console.log(error);
                 }
             });
+            */
         },
 
-        onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung");
 
-            this.onKonditioneneinigungAnlegen(oEvent);
-            var KeId = oEvent.getParameter("arguments").KeId;
-            var Bukrs = oEvent.getParameter("arguments").Bukrs;
-        },
-        
         onBack : function(oEvent) {
             this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
         },
@@ -307,8 +313,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 			});
             
         },
-        
-        
+
+
         onBearbeitenButtonPress: function(evt){
             jQuery.sap.log.info(".. onBearbeitenButtonPress");
             
@@ -318,7 +324,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
             this.getView().getModel("form").setProperty("/modus", "edit");
         },
-        
+
+
         onSpeichernButtonPress: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onSpeichernButtonPress");
             var _this = this;
@@ -367,12 +374,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 dialog.open();
             }
         },
-        
+
 
         // Create
         konditioneneinigungAnlegen: function(){
 
         },
+
 
         // Update
         konditioneneinigungAktualisieren: function(){
@@ -485,6 +493,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             });
         },
 
+
         /**
          * Q Promise Funktion
          * Führt asynchronen UPDATE Request für ein Objekt der Konditioneneinigung aus
@@ -545,6 +554,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
         },
 
+
         /**
          * Führt Aufrufe ans Backend aus um die Konditioneneinigung und dessen Objekte zu speichern.
          */
@@ -567,6 +577,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             }            
         },
 
+
         aenderungsstatusBeiKonditioneneinigungVormerken: function(){
 
             var keAlt = this._formDataBackup.konditioneneinigung;
@@ -583,6 +594,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
             return aenderungenVorhanden;
         },
+
 
         validateForm: function(){
             
@@ -743,7 +755,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             
             return validationResult;
         },
-        
+
+
         clearValidationState: function(){
             this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.None);
@@ -761,7 +774,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 item.getCells()[8].setValueState(sap.ui.core.ValueState.None);  
             });   
         },
-        
+
+
         berechneMieteUndKosten: function(){
             
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
@@ -780,7 +794,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             this.getView().getModel("form").setProperty("/konditioneneinigung/kostenGesamt/vermietungsaktivitaet", "-"); 
             this.getView().getModel("form").setProperty("/konditioneneinigung/kostenGesamt/konditioneneinigung", kostenGesamtKE); 
         },
-        
+
+
         onAbbrechenButtonPress: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onAbbrechenButtonPress");
             
@@ -821,7 +836,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 //this.getView().getModel("form").setProperty("/modus", "show");
             }
         },
-        
+
+
         onMietflaechenAngabenLoeschenButtonPress: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenAngabenLoeschenButtonPress");
             
@@ -830,16 +846,24 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                                     
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
 
-            // ES6 Zukunftstechnologie - eventuell überarbeiten
-            var objectsToRemove = selectedItems.map(item => item.getBindingContext("form").getObject() );
-            mietflaechenangaben = mietflaechenangaben.filter(ma => objectsToRemove.indexOf(ma) === -1  );
+			selectedItems.forEach(function(selectedItem){
+				var mietflaechenangabe = selectedItem.getBindingContext("form").getObject();
+
+				var i = mietflaechenangaben.length
+				while (i--) {
+					if(mietflaechenangaben[i].MoId === mietflaechenangabe.MoId){
+						mietflaechenangaben.splice(i, 1);
+					}
+				}
+			});
             
             this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
 
             // Selektion aufheben nach dem Löschen
             mietflaechenangabenTable.removeSelections(true);
         },
-        
+
+
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenAngabeHinzufuegenButtonPress");
             var _this = this;
@@ -1060,6 +1084,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 });
             }
         }
+
         
 	});
 });
