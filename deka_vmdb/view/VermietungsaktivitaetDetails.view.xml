@@ -69,7 +69,7 @@
                     <ColumnListItem vAlign="Middle">
                         <cells>
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
-                            <Text text="( Bezeichnung )" />
+                            <Text text="{form>Bezei}" />
                             <Text text="{form>Nutzart}" />
                             <Select selectedKey="{form>NutzartAlt}" items="{form>/alternativeNutzungsarten}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                                 <items>

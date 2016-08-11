@@ -15,12 +15,11 @@
             width="100%">
             <items>
                 <Label text="Mietflächenangaben:" />
-                <Select selectedKey="{form>/_zeitspanneSelectedKey}" items="{form>/zeitspannen}" change="onPopoverZeitspanneSelect">
+                <Select selectedKey="{form>/viewsettings/zeitspanneSelectedKey}" items="{form>/viewsettings/zeitspannen}" change="onPopoverZeitspanneSelect">
                     <core:Item key="{form>key}" text="{form>text}" />
                 </Select>           
             </items>
         </FlexBox>
-
 
         <FlexBox
             direction="Column"
@@ -28,7 +27,7 @@
             width="100%">
             <items>
                 <Label text="Währung:" />
-                <Select selectedKey="{form>/_waehrungSelectedKey}" items="{form>/waehrungen}" change="onPopoverWaehrungSelect">
+                <Select selectedKey="{form>/viewsettings/waehrungSelectedKey}" items="{form>/viewsettings/waehrungen}" change="onPopoverWaehrungSelect">
                     <core:Item key="{form>key}" text="{form>text}" />
                 </Select>
             </items>

@@ -17,7 +17,7 @@
                 <Text text="{i18n>MIETFLAECHE}" />
             </Column>
             <Column minScreenWidth="Tablet" demandPopin="true">
-                <Text text="{i18n>WIRTSCHAFTSEINHEIT} {Id}" />
+                <Text text="{i18n>BEZEICHNUNG}" />
             </Column>
             <Column minScreenWidth="Tablet" demandPopin="true">
                 <Text text="{i18n>NUTZUNGSART}" />
@@ -27,7 +27,7 @@
 		<ColumnListItem>
 			<cells>
 				<Text text="{Bukrs}/{WeId}/{MoId}" />
-                <Text text="{WeId}" />
+                <Text text="{Bezei}" />
                 <Text text="{Nutzart}" />
 			</cells>
 		</ColumnListItem>

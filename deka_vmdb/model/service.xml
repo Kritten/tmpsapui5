@@ -88,7 +88,7 @@
                     <PropertyRef Name="Weahrung"/>
                 </Key>
                 <Property Name="Gdat" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Datum" Type="Edm.DateTime" Precision="8"/>
-                <Property Name="Ukurs" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Umrechnungskurs" Type="Edm.Float"/>
+                <Property Name="Ukurs" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Umrechnungskurs" Type="Edm.Decimal"/>
                 <Property Name="Weahrung" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Währung" MaxLength="5" Nullable="false" Type="Edm.String" sap:semantics="currency-code"/>
                 <Property Name="Von" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Von-Währung" MaxLength="5" Type="Edm.String" sap:semantics="currency-code"/>
                 <Property Name="Nach" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Nach-Währung" MaxLength="5" Type="Edm.String" sap:semantics="currency-code"/>

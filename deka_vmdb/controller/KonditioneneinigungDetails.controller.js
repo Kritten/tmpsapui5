@@ -139,34 +139,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
                     var form = {
                         modus: "show", // show, new, edit
-
-                        konditioneneinigung: oData,
-
-                        waehrungen: [
-                            {key: "EUR", text: "Euro", symbol: "€"},
-                            {key: "USD", text: "US Dollar", symbol: "$"}
-                        ],
-
-                        zeitspannen: [
-                            {key: "MONAT", text: "Monatsmiete"},
-                            {key: "JAHR", text: "Jahresmiete"}
-                        ],
-
-                        // Zusätzliche Felder für Frontend Logik
-                        _waehrung: null,                            // Ausgewählte Währung als Objekt
-                        _waehrungSelectedKey: null,                 // Key der aktuell ausgewählten Währung
-                        _umrechnungskurs: 1,                        // Umrechungskurs für Nachhaltige Miete
-
-                        _zeitspanne: null,                          // Ausgewählte Zeitspanne als Objekt
-                        _zeitspanneSelectedKey: null                // Key der aktuell ausgewählten Zeitspanne
+                        konditioneneinigung: oData
                     };
-
-                    // Vorbelegte Auswahl
-                    form._waehrung = form.waehrungen[0];
-                    form._waehrungSelectedKey = form.waehrungen[0].key;
-
-                    form._zeitspanne = form.zeitspannen[0];
-                    form._zeitspanneSelectedKey = form.zeitspannen[0].key;
 
                     var user = {
                         rolle: "FM" // FM, AM 
@@ -178,6 +152,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     _this.getView().setModel(userModel, "user");
                     _this.getView().setModel(formModel, "form");
                     
+                    _this.enhanceModelWithViewSettings();
                     _this.clearValidationState();
                 }
             });
@@ -229,29 +204,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
                     kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
                     arbeitsvorrat: null
-                },
+                }
 
-                waehrungen: [
-                    {key: "EUR", text: "Euro", symbol: "€"},
-                    {key: "USD", text: "US Dollar", symbol: "$"}
-                ],
-
-                zeitspannen: [
-                    {key: "MONAT", text: "Monatsmiete"},
-                    {key: "JAHR", text: "Jahresmiete"}
-                ],
-
-                // Zusätzliche Felder für Frontend Logik
-                _waehrung: null,                            // Ausgewählte Währung als Objekt
-                _waehrungSelectedKey: null,                 // Key der aktuell ausgewählten Währung
-                _umrechnungskurs: 1,                        // Umrechungskurs für Nachhaltige Miete
-
-                _zeitspanne: null,                          // Ausgewählte Zeitspanne als Objekt
-                _zeitspanneSelectedKey: null                // Key der aktuell ausgewählten Zeitspanne
             };
-            
+
             var user = {
-                rolle: "FM" // FM, AM 
+                rolle: "FM" // FM, AM
             };
             
             var formModel = new sap.ui.model.json.JSONModel(form);
@@ -260,7 +218,62 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             this.getView().setModel(userModel, "user");
 			this.getView().setModel(formModel, "form");
             
+            this.enhanceModelWithViewSettings();
             this.clearValidationState();
+        },
+
+        /**
+         * Liest Währungen und Umrechnungskurse aus dem Backend und initialisiert das Popup hinter dem Zahnrad
+         */
+        enhanceModelWithViewSettings: function(){
+            var _this = this;
+
+            var viewsettings = {
+                waehrungen: [],
+                zeitspannen: [
+                    {key: "MONAT", text: "Monatsmiete"},
+                    {key: "JAHR", text: "Jahresmiete"}
+                ],
+                waehrungSelectedKey: "",
+                waehrungSelected: null,
+                zeitspanneSelectedKey: "",
+                zeitspanneSelected: null
+            };
+
+            viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
+            viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
+
+            // Ausgangswährung ermitteln
+            var ausgangsWaehrung = "EUR";
+            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
+            if(mietflaechenangaben.length > 0){
+                ausgangsWaehrung = mietflaechenangaben[0].Whrung;
+            }
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/WaehrungSet", {
+
+                urlParameters: {
+                    "$filter": "Gdat eq datetime'2001-01-01T00:00:00' and Von eq '"+ausgangsWaehrung+"'"
+                },
+
+                success: function(oData){
+                    console.log(oData);
+
+                    oData.results.forEach(function(waehrung){
+                        viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Ukurs} );
+                    });
+
+                    if(viewsettings.waehrungen.length > 0){
+                        viewsettings.waehrungSelectedKey = viewsettings.waehrungen[0].key;
+                        viewsettings.waehrungSelected = viewsettings.waehrungen[0];
+                    }
+
+                    _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
+                }
+
+            });
         },
 
         onPopoverZeitspanneSelect: function(oEvent){
@@ -268,7 +281,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             var item = oEvent.getParameter("selectedItem");
             var zeitspanne = item.getBindingContext("form").getObject();
 
-            this.getView().getModel("form").setProperty("/_zeitspanne", zeitspanne);
+            this.getView().getModel("form").setProperty("/viewsettings/zeitspanneSelected", zeitspanne);
         },
 
 
@@ -277,61 +290,32 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             var item = oEvent.getParameter("selectedItem");
             var waehrung = item.getBindingContext("form").getObject();
 
-            this.getView().getModel("form").setProperty("/_waehrung", waehrung);
-
-
-            // Mock
-            if(waehrung.key === "EUR")
-            {
-                this.getView().getModel("form").setProperty("/_umrechnungskurs", 1);
-            }
-            else if(waehrung.key === "USD")
-            {
-                this.getView().getModel("form").setProperty("/_umrechnungskurs", 1.12);
-            }
-
-
-            /*
-            var oDataModel = sap.ui.getCore().getModel("odata");
-
-            oDataModel.read("/WaehrungSet", {
-
-                urlParameters: {
-                    "$filter": "Von eq 'EUR' and Nach eq 'USD'"
-                },
-
-                success: function(oData){
-                    console.log(oData);
-                },
-
-                error: function(error){
-                    console.log(error);
-                }
-            });
-            */
+            this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
         },
 
 
         onBack : function(oEvent) {
             this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
         },
-
+        
 
         handleTableSettingsButton: function(oEvent){
-            
+            var _this = this;
+
             // create popover
 			if (! this._tableViewSettingsPopover) {
 				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungDetailsPopover", this);
+                this._tableViewSettingsPopover.setModel( this.getView().getModel("form"), "form" );
 				this.getView().addDependent(this._tableViewSettingsPopover);
 			}
 
-            //this._tableViewSettingsPopover.setModel( this.getView().getModel("form") );
-            
+            // Wartet nicht auf vorausgehenden Request
+            // Anders zur Zeit nicht möglich, da Popup ansonsten nicht geöffnet wird
             var oButton = oEvent.getSource();
-			jQuery.sap.delayedCall(0, this, function () {
-				this._tableViewSettingsPopover.openBy(oButton);
-			});
-            
+            jQuery.sap.delayedCall(0, this, function () {
+                this._tableViewSettingsPopover.openBy(oButton);
+            });
+
         },
 
 
@@ -900,22 +884,28 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
             var WeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/WeId"); 
             var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs"); 
-
-            var requestFilter = "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'";
-
             var MvId = _this.getView().getModel("form").getProperty("/konditioneneinigung/MvId"); 
-            
-            // Wenn die KE auf einem Mietvertrag basiert, dann die Objekte mit der MvId Filtern
-            if(MvId !== undefined){
-                requestFilter = "Bukrs eq '"+Bukrs+"' and MvId eq '"+MvId+"'";
+
+            var requestUrl = "";
+            var expandValue = "";
+
+            // Objekte (Mietflächen) lesen
+            // Request abhängig davon, ob die KE auf einer Wirtschaftseinheit, einem Mietvertrag oder auf einer anderen Konditioneneinigung basiert
+            if(MvId !== undefined)
+            {
+                requestUrl = "/MietvertragSet(Bukrs='"+Bukrs+"',MvId='"+MvId+"')";
+                expandValue = "MvToMo";   
             }
-
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. request filter: " + requestFilter);
-
-            oDataModel.read("/MietobjektSet", {
+            else
+            {
+                requestUrl = "/WirtschaftseinheitenSet(Bukrs='"+Bukrs+"',WeId='"+WeId+"')";
+                expandValue = "WeToMo";        
+            }
+            
+            oDataModel.read(requestUrl, {
 
                 urlParameters: {
-                    "$filter": requestFilter
+                    "$expand": expandValue
                 },
 
                 success: function(oData){
@@ -928,26 +918,27 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                         aVorhandeneMoIds.push( mietflaechenangabe.MoId );
                     });
 
-                    var wirtschaftseinheitId = _this.getView().getModel("form").getProperty("/konditioneneinigung/WeId");
-
                     var jsonData = {
                         mietflaechen: []
                     };
 
-                    oData.results.forEach(function(objekt){
+                    oData[expandValue].results.forEach(function(objekt){
 
                         // nur Objekte Anzeigen, die noch nicht in der Liste sind
                         if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1)
                         {
                             jsonData.mietflaechen.push( objekt );
                         }
-
                     });
 
                     var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
 
                     _this._mietflaechenSelektionDialog.setModel(jsonModel);
                     _this._mietflaechenSelektionDialog.open();
+                },
+
+                error: function(error){
+                    MessageBox.error("Es konnten keine Objekte geladen werden.");
                 }
             });
 

@@ -54,16 +54,16 @@
                         <Text text="{i18n>MIETFLAECHE} {i18n>ALTERNATIV}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>NACHHALTIGE_MIETE} in {form>/_waehrung/symbol}/FE" />
+                        <Text text="{i18n>NACHHALTIGE_MIETE} in {form>/viewsettings/waehrungSelected/text}/FE" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>ANGEBOTSMIETE} in {form>/_waehrung/symbol}/FE" />
+                        <Text text="{i18n>ANGEBOTSMIETE} in {form>/viewsettings/waehrungSelected/text}/FE" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/_waehrung/symbol}/FE" />
+                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text}/FE" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/_waehrung/symbol}/FE" />
+                        <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text}/FE" />
                     </Column>
                 </columns>
                 
@@ -71,11 +71,11 @@
                     <ColumnListItem vAlign="Middle">
                         <cells>
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
-                            <Text text="(Bezeichnung)" />
+                            <Text text="{form>Bezei}" />
                             <Text text="{form>Nutzart}" />
                             <Text text="{form>Hnfl}" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{= (${form>NhMiete} * ${form>/_umrechnungskurs}).toFixed(2) }" />
+                            <Text text="{= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) }" />
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
