@@ -382,8 +382,81 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
         // Create
         konditioneneinigungAnlegen: function(){
+            var controller = this;
 
+            this.asyncCreateKonditioneneinigung().then(function(){
+                controller.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+            });
         },
+
+
+        /**
+         * Q Promise Funktion
+         * Führt ein CREATE Request für Konditioneneinigung aus
+         */
+        asyncCreateKonditioneneinigung: function(){
+            var _this = this;
+            
+            var konditioneneinigung = this.getView().getModel("form").getProperty("/konditioneneinigung");
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
+
+                // Objekt bereinigen für Payload
+                var konditioneneinigungPayload = {
+                    //Confirmation: "",
+                    //Ersteller: "",
+                    //Editable: "",
+                    GueltigkKe: konditioneneinigung.GueltigkKe,
+                    Bonitaet: konditioneneinigung.Bonitaet,
+                    //BtnFm: "",
+                    //MfSplit: "",
+                    //BtnAm: "",
+                    Favorit: konditioneneinigung.Favorit,
+                    LzFirstbreak: konditioneneinigung.LzFirstbreak,
+                    MzMonate: konditioneneinigung.MzMonate,
+                    WeId: konditioneneinigung.WeId,
+                    Bukrs: konditioneneinigung.Bukrs,
+                    Status: konditioneneinigung.Status,
+                    Anmerkung: konditioneneinigung.Anmerkung,
+                    //KeId: "",
+                    //Aktiv: "",
+                    Mietbeginn: konditioneneinigung.Mietbeginn,
+                    Bemerkung: konditioneneinigung.Bemerkung,
+                    //GnStufe: "",
+                    BkMonatsmieten: konditioneneinigung.BkMonatsmieten,
+                    //GnFm: "",
+                    //GnFmDurch: "",
+                    //GnGl: "",
+                    //GnGlDurch: "",
+                    MkMonate: konditioneneinigung.MkMonate,
+                    //Currency: "",
+                    //GnAl: "",
+                    //GnAlDurch: "",
+                    //Unit: "",
+                    //GnGf: "",
+                    //GnGfDurch: "",
+                    KeToWe: konditioneneinigung.KeToWe,
+                    KeToOb: konditioneneinigung.KeToOb
+                };
+
+                oDataModel.create("/KonditioneneinigungSet", konditioneneinigungPayload, {
+
+					success: function(oData, reponse){
+						console.log(oData);
+                        resolve();
+					},
+					error: function(oError){
+						console.log(oError);
+                        reject();
+					}
+
+                });
+
+            });
+        },
+
 
 
         // Update
