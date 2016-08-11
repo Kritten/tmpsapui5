@@ -1000,6 +1000,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                         // nur Objekte Anzeigen, die noch nicht in der Liste sind
                         if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1)
                         {
+                            objekt.HnflAlt = objekt.HnflAlt.toString();
+                            objekt.AnMiete = objekt.AnMiete.toString();
+                            objekt.GaKosten = objekt.GaKosten.toString();
+                            objekt.MaKosten = objekt.MaKosten.toString();
+                            
                             jsonData.mietflaechen.push( objekt );
                         }
                     });
