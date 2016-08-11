@@ -229,7 +229,25 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
                     kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
                     arbeitsvorrat: null
-                }
+                },
+
+                waehrungen: [
+                    {key: "EUR", text: "Euro", symbol: "€"},
+                    {key: "USD", text: "US Dollar", symbol: "$"}
+                ],
+
+                zeitspannen: [
+                    {key: "MONAT", text: "Monatsmiete"},
+                    {key: "JAHR", text: "Jahresmiete"}
+                ],
+
+                // Zusätzliche Felder für Frontend Logik
+                _waehrung: null,                            // Ausgewählte Währung als Objekt
+                _waehrungSelectedKey: null,                 // Key der aktuell ausgewählten Währung
+                _umrechnungskurs: 1,                        // Umrechungskurs für Nachhaltige Miete
+
+                _zeitspanne: null,                          // Ausgewählte Zeitspanne als Objekt
+                _zeitspanneSelectedKey: null                // Key der aktuell ausgewählten Zeitspanne
             };
             
             var user = {
@@ -244,7 +262,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             
             this.clearValidationState();
         },
-
 
         onPopoverZeitspanneSelect: function(oEvent){
 
