@@ -22,35 +22,36 @@
             <List items="{form>/level}" backgroundDesign="Transparent" showSeparators="None">
                 <CustomListItem>
 
-                    <f:SimpleForm
-                        minWidth="1024"
-                        title="{form>title}"
-                        maxContainerCols="2"
-                        editable="true"
-                        layout="ResponsiveGridLayout"
-                        labelSpanL="3"
-                        labelSpanM="3"
-                        emptySpanL="0"
-                        emptySpanM="0"
-                        columnsL="1"
-                        columnsM="1"
-                        class="sapUiSmallMarginBottom" >
+                    <Table items="{form>genehmiger}" inset="true">
 
-                        <f:content>
-                            <Label text="Status" />
-                            <Text id="idStatus" text="{form>status}" class="{form>class}" editable="false" />
+                        <headerToolbar>
+                            <Toolbar>
+                                <Title text="{form>title}" />
+                            </Toolbar>
+                        </headerToolbar>
 
-                            <Label text="Genehmiger" />
-                            <Select id="idGenehmiger" items="{form>moeglicheGenehmiger}" enabled="{form>editable}">
-                                <core:Item key="{form>key}" text="{form>text}" />
-                                <layoutData>
-                                    <l:GridData span="L5 M5 S12" />
-                                </layoutData>
-                            </Select>
+                        <columns>
+                            <Column width="40%">
+                                <Text text="Genehmiger" />
+                            </Column>
+                            <Column width="60%">
+                                <Text text="Status" />
+                            </Column>
+                        </columns>
 
-                        </f:content>
+                        <items>
+                            <ColumnListItem vAlign="Middle">
+                                <Select selectedKey="{form>selected}" items="{form>available}" enabled="{form>editable}" autoAdjustWidth="false" width="100%">
+                                    <core:Item key="{form>key}" text="{form>text}" />
+                                    <layoutData>
+                                        <l:GridData span="L8 M8 S12" />
+                                    </layoutData>
+                                </Select>
+                                <Text text="{form>status}" />
+                            </ColumnListItem>
+                        </items>
 
-                    </f:SimpleForm>
+                    </Table>
 
                 </CustomListItem>
             </List>

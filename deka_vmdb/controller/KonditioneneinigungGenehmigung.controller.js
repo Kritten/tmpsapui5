@@ -18,37 +18,72 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
             var form = {
                 level: [
                     {
-                        title: "Genehmigungslevel 1",
-                        genehmiger: "00000001", 
-                        status: "genehmigt", 
-                        class: "sapThemePositiveText",
-                        moeglicheGenehmiger: [
-                            {key: "00000001", text: "Max Mustermann"},
-                            {key: "00000002", text: "Gerd Hoffmann"}
-                        ],
-                        editable: false
+                        title: "Genehmigungslevel 1",                        
+                        genehmiger: [{
+                            selected: "00000001",
+                            available: [
+                                {key: "00000001", text: "Max Mustermann"},
+                                {key: "00000002", text: "Gerd Hoffmann"}  
+                            ],
+                            status: "genehmigt",
+                            editable: false
+                        }, {
+                            selected: "00000002",
+                            available: [
+                                {key: "00000001", text: "Max Mustermann"},
+                                {key: "00000002", text: "Gerd Hoffmann"}  
+                            ],
+                            status: "genehmigt",
+                            editable: false
+                        }]
                     },
                     {
-                        title: "Genehmigungslevel 2", 
-                        genehmiger: "00000001", 
-                        status: "offen",
-                        class: "sapThemeCriticalText",
-                        moeglicheGenehmiger: [
-                            {key: "00000001", text: "Herbert Schmidt"},
-                            {key: "00000002", text: "Peter Schneider"}
-                        ],
-                        editable: true
+                        title: "Genehmigungslevel 2",  
+                        genehmiger: [{
+                            selected: "00000001",
+                            available: [
+                                {key: "00000001", text: "Anke Peters"},
+                                {key: "00000002", text: "Alexander Hofmann"}  
+                            ],
+                            status: "offen",
+                            editable: true
+                        }, {
+                            selected: "00000001",
+                            available: [
+                                {key: "00000001", text: "Kerstin Fröhn"},
+                                {key: "00000002", text: "Hauke Thomsen"}  
+                            ],
+                            status: "offen",
+                            editable: true
+                        }, {
+                            selected: "00000001",
+                            available: [
+                                {key: "00000001", text: "Arabella Rolando"},
+                                {key: "00000002", text: "Sabine Friedrichs"}  
+                            ],
+                            status: "offen",
+                            editable: true
+                        }]
                     },
                     {
-                        title: "Genehmigungslevel 3", 
-                        genehmiger: "00000001", 
-                        status: "offen",
-                        class: "sapThemeCriticalText",
-                        moeglicheGenehmiger: [
-                            {key: "00000001", text: "Simon Petersen"},
-                            {key: "00000002", text: "Simone Petersen"}
-                        ],
-                        editable: true
+                        title: "Genehmigungslevel 3",                        
+                        genehmiger: [{
+                            selected: "00000001",
+                            available: [
+                                {key: "00000001", text: "Rita Gerke"},
+                                {key: "00000002", text: "Anja Rudde"}  
+                            ],
+                            status: "offen",
+                            editable: true
+                        }, {
+                            selected: "00000001",
+                            available: [
+                                {key: "00000001", text: "Simone Holsten"},
+                                {key: "00000002", text: "Katja Rudolphsen"}  
+                            ],
+                            status: "offen",
+                            editable: true
+                        }]
                     }
                 ]
             };
