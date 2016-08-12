@@ -386,7 +386,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
             this.asyncCreateKonditioneneinigung().then(function(){
                 controller.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
-            });
+            }).done();
         },
 
 

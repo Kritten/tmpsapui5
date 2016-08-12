@@ -1,0 +1,74 @@
+<mvc:View
+    controllerName="ag.bpc.Deka.controller.KonditioneneinigungGenehmigung"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc">
+    
+	<Page 
+        id="idKonditioneneinigungGenehmigung"
+        title="Konditioneneinigung Genehmigung" 
+        class="sapUiFioriObjectPage" 
+        showNavButton="true" 
+        navButtonPress="onBack">
+
+        <headerContent>
+			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" press="onBearbeitenButtonPress" />
+		</headerContent>
+
+        <content>
+
+            <List items="{form>/level}" backgroundDesign="Transparent" showSeparators="None">
+                <CustomListItem>
+
+                    <f:SimpleForm
+                        minWidth="1024"
+                        title="{form>title}"
+                        maxContainerCols="2"
+                        editable="true"
+                        layout="ResponsiveGridLayout"
+                        labelSpanL="3"
+                        labelSpanM="3"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        columnsL="1"
+                        columnsM="1"
+                        class="sapUiSmallMarginBottom" >
+
+                        <f:content>
+                            <Label text="Status" />
+                            <Text id="idStatus" text="{form>status}" class="{form>class}" editable="false" />
+
+                            <Label text="Genehmiger" />
+                            <Select id="idGenehmiger" items="{form>moeglicheGenehmiger}" enabled="{form>editable}">
+                                <core:Item key="{form>key}" text="{form>text}" />
+                                <layoutData>
+                                    <l:GridData span="L5 M5 S12" />
+                                </layoutData>
+                            </Select>
+
+                        </f:content>
+
+                    </f:SimpleForm>
+
+                </CustomListItem>
+            </List>
+
+        </content>
+        
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
+                    <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
+                </Button>
+                <Button text="{i18n>ABBRECHEN}" icon="sap-icon://decline" type="Reject" press="onAbbrechenButtonPress" >
+                    <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
+                </Button>
+            </OverflowToolbar>
+        </footer>
+
+	</Page>
+            
+</mvc:View>

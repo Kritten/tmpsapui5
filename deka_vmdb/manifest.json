@@ -58,6 +58,12 @@
 						"targetAggregation" : "pages"
 					},
 					{
+						"pattern": "KondSel/KeId/{KeId}/Bukrs/{Bukrs}/Genehmigung",
+						"name" : "konditioneneinigungGenehmigung",
+						"view" : "KonditioneneinigungGenehmigung",
+						"targetAggregation" : "pages"
+					},
+					{
 						"pattern": "KondSel/new/WeId/{WeId}/Bukrs/{Bukrs}",
 						"name" : "konditioneneinigungAnlegenWe",
 						"view" : "KonditioneneinigungDetails",
