@@ -10,11 +10,11 @@
         id="idKonditioneneinigungGenehmigung"
         title="Konditioneneinigung Genehmigung" 
         class="sapUiFioriObjectPage" 
-        showNavButton="true" 
+        showNavButton="{= ${form>/modus} === 'show' }"
         navButtonPress="onBack">
 
         <headerContent>
-			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" press="onBearbeitenButtonPress" />
+			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" press="onBearbeitenButtonPress" visible="{= ${form>/modus} === 'show' }" />
 		</headerContent>
 
         <content>
@@ -61,10 +61,10 @@
         <footer>
             <OverflowToolbar>
                 <ToolbarSpacer />
-                <Button text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
+                <Button text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" visible="{= ${form>/modus} === 'edit' }" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
-                <Button text="{i18n>ABBRECHEN}" icon="sap-icon://decline" type="Reject" press="onAbbrechenButtonPress" >
+                <Button text="{i18n>ABBRECHEN}" icon="sap-icon://decline" type="Reject" press="onAbbrechenButtonPress" visible="{= ${form>/modus} === 'edit' }" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
             </OverflowToolbar>

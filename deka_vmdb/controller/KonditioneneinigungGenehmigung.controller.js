@@ -15,7 +15,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
 
         onPatternMatched: function(oEvent){
 
+            // Werte vorhalten für Zurück-Navigation
+            this._KeId = oEvent.getParameter("arguments").KeId;
+            this._Bukrs = oEvent.getParameter("arguments").Bukrs;
+
             var form = {
+
+                modus: ["show", "edit"][0],
+
                 level: [
                     {
                         title: "Genehmigungslevel 1",                        
@@ -66,7 +73,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
                         }]
                     },
                     {
-                        title: "Genehmigungslevel 3",                        
+                        title: "Genehmigungslevel 3",
                         genehmiger: [{
                             selected: "00000001",
                             available: [
@@ -91,6 +98,26 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
             var formModel = new sap.ui.model.json.JSONModel(form);
             
             this.getView().setModel(formModel, "form");
+        },
+
+        onBearbeitenButtonPress: function(oEvent){
+            this.getView().getModel("form").setProperty("/modus", "edit");
+        },
+
+        onSpeichernButtonPress: function(oEvent){
+
+        },
+
+        onAbbrechenButtonPress: function(oEvent){
+            this.getView().getModel("form").setProperty("/modus", "show");
+        },
+
+        onBack : function(oEvent) {
+
+            this.getOwnerComponent().getRouter().navTo("konditioneneinigungDetails", {
+                KeId: this._KeId,
+                Bukrs: this._Bukrs
+            });
         }
 
 

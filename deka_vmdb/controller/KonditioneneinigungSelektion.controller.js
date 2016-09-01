@@ -176,6 +176,31 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function(Co
 
 				case 2:
 					// auf Basis einer Konditioneneinigung
+					oDataModel.read("/KonditioneneinigungSet", {
+						success: function(oData){
+							console.log(oData);
+
+							var jsonData = {
+								data: []
+							};
+
+							oData.results.forEach(function(konditioneneinigung){
+								jsonData.data.push({
+									type: "ke",
+									id: konditioneneinigung.KeId,
+									descr: konditioneneinigung.Mietbeginn + ", " + konditioneneinigung.LzFirstbreak,
+									konditioneneinigung: konditioneneinigung
+								});
+							});
+							
+							_this._oDialog.setModel( new sap.ui.model.json.JSONModel(jsonData) , "anlRbg");
+							
+							// clear the old search filter
+							_this._oDialog.getBinding("items").filter([]);
+							_this._oDialog.open();
+						}
+					});
+
 				break;
 			}
 
@@ -211,6 +236,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function(Co
 					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenMv", {
 						MvId: selectedObject.mietvertrag.MvId,
 						Bukrs: selectedObject.mietvertrag.Bukrs
+					});
+				break;
+
+				case "ke":
+					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenKe", {
+						KeId: selectedObject.konditioneneinigung.KeId,
+						Bukrs: selectedObject.konditioneneinigung.Bukrs
 					});
 				break;
 			}

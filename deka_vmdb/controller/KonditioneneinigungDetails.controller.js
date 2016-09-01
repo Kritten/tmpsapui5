@@ -92,10 +92,25 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
         onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung");
+            var _this = this;
 
-            this.onKonditioneneinigungAnlegen(oEvent);
             var KeId = oEvent.getParameter("arguments").KeId;
             var Bukrs = oEvent.getParameter("arguments").Bukrs;
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/KonditioneneinigungSet(Bukrs='" + Bukrs + "',KeId='" + KeId + "')", {
+
+                success: function(oData){
+                    console.log(oData);
+
+                    _this.onKonditioneneinigungAnlegen(oEvent);
+
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.WeId); 
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.Bukrs); 
+                }
+            });
+
         },
 
 
@@ -967,12 +982,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             if(MvId !== undefined)
             {
                 requestUrl = "/MietvertragSet(Bukrs='"+Bukrs+"',MvId='"+MvId+"')";
-                expandValue = "MvToMo";   
+                expandValue = "MvToMo";
             }
             else
             {
                 requestUrl = "/WirtschaftseinheitenSet(Bukrs='"+Bukrs+"',WeId='"+WeId+"')";
-                expandValue = "WeToMo";        
+                expandValue = "WeToMo";
             }
             
             oDataModel.read(requestUrl, {
