@@ -4,7 +4,7 @@
     xmlns:u="sap.ui.unified"
     xmlns:f="sap.ui.layout.form">
     
-    <Dialog title="Excel Import" contentWidth="30%">
+    <Dialog title="Excel Import" contentWidth="30%" afterClose="onExcelImportDialogAfterClose">
     
         <content>
             

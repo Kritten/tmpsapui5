@@ -181,6 +181,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 		onExcelImportDialogAbbrechenButtonPress: function(oEvent){
 			this._excelImportDialog.close();
 		},
+
+		onExcelImportDialogAfterClose: function(oEvent){
+			this._excelImportDialog.destroy();
+			delete this._excelImportDialog;
+		},
 		
 		onSelectDialogSearch : function(oEvent) {				
 			var sValue = oEvent.getParameter("value");
