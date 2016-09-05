@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/MessageBox"], function (Controller, Filter, MessageBox) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/MessageToast"], function (Controller, Filter, MessageToast) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
@@ -34,7 +34,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 
 					var jsonData = {
 						data: [],
-						facetfilters: null
+						facetfilters: null,
+						selectedRadioButtonGroupIndex: 0
 					};
 
 					oData.results.forEach(function(vermietungsaktivitaet){
@@ -96,29 +97,89 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 		onAnlegenPress : function (oEvent) {
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onAnlegenPress");
 			var _this = this;
-			
-			if (! this._oDialog) {
-				this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialog", this);
-			}
-			
-			var oDataModel = sap.ui.getCore().getModel("odata");
+						
+			var index = this.getView().getModel("vermSel").getProperty("/selectedRadioButtonGroupIndex");
 
-			oDataModel.read("/KonditioneneinigungSet", {
-				success: function(oData){
-					console.log(oData);
+			switch(index)
+			{
+				case 0:
+
+					if (! this._oDialog) {
+						this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialog", this);
+					}
+
+					var oDataModel = sap.ui.getCore().getModel("odata");
+
+					oDataModel.read("/KonditioneneinigungSet", {
+						success: function(oData){
+							console.log(oData);
+
+							var jsonData = {
+								data: oData.results
+							};
+							
+							_this._oDialog.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
+							
+							// clear the old search filter
+							_this._oDialog.getBinding("items").filter([]);
+							_this._oDialog.open();
+						}
+					});
+				break;
+
+				case 1:
+
+					if (! this._excelImportDialog) {
+						this._excelImportDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionExcelImportDialog", this);
+					}
 
 					var jsonData = {
-						data: oData.results
+						data: null,
+						valid: false
 					};
-					
-					_this._oDialog.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
-					
-					// clear the old search filter
-					_this._oDialog.getBinding("items").filter([]);
-					_this._oDialog.open();
-				}
-			});
 
+					this._excelImportDialog.setModel( new sap.ui.model.json.JSONModel(jsonData), "excelImportModel");
+					this._excelImportDialog.open();
+
+				break;
+			}
+
+		},
+
+		onExcelImportDialogFileUploadChange: function(oEvent){
+			var _this = this;
+
+			var files = oEvent.getParameter("files");
+
+			var reader = new FileReader();
+
+			reader.onload = function(e) {
+
+				var data = "";
+				var bytes = new Uint8Array(e.target.result);
+				var length = bytes.byteLength;
+
+				for (var i = 0; i < length; i++) {
+					data += String.fromCharCode(bytes[i]);
+				}
+
+				// Chrome/Firefox
+				// var data = e.target.result;
+				var workbook = XLSX.read(data, {type: 'binary'});
+
+				var first_sheet_name = workbook.SheetNames[0];
+				MessageToast.show("first_sheet_name: " + first_sheet_name);
+
+				// Validierung
+				_this._excelImportDialog.getModel("excelImportModel").setProperty("/valid", true);
+				_this._excelImportDialog.getModel("excelImportModel").setProperty("/data", {});
+			};
+
+			reader.readAsArrayBuffer(files[0]);
+		},
+
+		onExcelImportDialogAbbrechenButtonPress: function(oEvent){
+			this._excelImportDialog.close();
 		},
 		
 		onSelectDialogSearch : function(oEvent) {				
