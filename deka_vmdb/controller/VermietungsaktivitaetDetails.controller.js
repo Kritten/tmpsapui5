@@ -251,7 +251,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                         {key: "b1", text: "Wirtschaftliche Eckdaten in Verhandlung"},
                         {key: "b2", text: "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt"}
                     ];
-                break
+                break;
                 
                 case "c":
                     anmerkungen = [
@@ -691,7 +691,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
                     var jsonData = {
                         konditioneneinigungen: []
-                    }
+                    };
 
                     var wirtschaftseinheitId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId");
 
@@ -849,7 +849,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 nutzungsart: dialogModel.getProperty("/nutzungsart"),
                 grundausbaukosten: dialogModel.getProperty("/grundausbaukosten"),
                 mietausbaukosten: dialogModel.getProperty("/mietausbaukosten")
-            }
+            };
 
             // Logik zur Verteilung der Ausbaukosten
         

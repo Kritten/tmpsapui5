@@ -1113,7 +1113,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             
             // Object-Properties to Array
             var vorhandeneNutzungsarten = Object.keys(vorhandeneNutzungsarten).map(function (key) {
-                return vorhandeneNutzungsarten[key]
+                return vorhandeneNutzungsarten[key];
             });
             
             var dialogModel = new sap.ui.model.json.JSONModel({
@@ -1139,7 +1139,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 nutzungsart: dialogModel.getProperty("/nutzungsart"),
                 grundausbaukosten: dialogModel.getProperty("/grundausbaukosten"),
                 mietausbaukosten: dialogModel.getProperty("/mietausbaukosten")
-            }
+            };
 
             // Logik zur Verteilung der Ausbaukosten
         
