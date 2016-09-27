@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/MessageToast"], function (Controller, Filter, MessageToast) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/MessageToast", "ag/bpc/Deka/util/ExcelImportUtil"], function (Controller, Filter, MessageToast, ExcelImportUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
@@ -55,12 +55,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 					var filterWirtschaftseinheitValues = [];
 					var filterAnmerkungValues = [];
 					var filterStatusValues = [];
+					var filterExternerDienstleisterValues = [];
+					var filterTypDerVermietungValues = [];
 					
 					jsonData.data.forEach(function(vermietungsaktivitaet){
 						filterBuchungskreisValues.push(vermietungsaktivitaet.Bukrs);
 						filterWirtschaftseinheitValues.push(vermietungsaktivitaet.WeId);
 						filterAnmerkungValues.push(vermietungsaktivitaet.Anmerkung);
 						filterStatusValues.push(vermietungsaktivitaet.Status);
+						filterExternerDienstleisterValues.push(vermietungsaktivitaet.ExtDienstl);
+						filterTypDerVermietungValues.push(vermietungsaktivitaet.VermTyp);
 					});
 					
 					jsonData.facetfilters = [{
@@ -78,6 +82,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 					}, {
 						filterName: "Status",
 						values: _.map(_.uniq(filterStatusValues), function(Status){ return {key: Status, text: Status}; })
+					}, {
+						filterName: "Externer Dienstleister",
+						values: _.map(_.uniq(filterExternerDienstleisterValues), function(ExternerDienstleister){ return {key: ExternerDienstleister, text: ExternerDienstleister}; })
+					}, {
+						filterName: "Vermietungstyp",
+						values: _.map(_.uniq(filterTypDerVermietungValues), function(VermietungsTyp){ return {key: VermietungsTyp, text: VermietungsTyp}; })
 					}];
 								
 					var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
@@ -128,6 +138,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 				break;
 
 				case 1:
+				break;
+
+				case 2:
+				break;
+
+				case 3:
 
 					if (! this._excelImportDialog) {
 						this._excelImportDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionExcelImportDialog", this);
@@ -151,31 +167,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 
 			var files = oEvent.getParameter("files");
 
-			var reader = new FileReader();
-
-			reader.onload = function(e) {
-
-				var data = "";
-				var bytes = new Uint8Array(e.target.result);
-				var length = bytes.byteLength;
-
-				for (var i = 0; i < length; i++) {
-					data += String.fromCharCode(bytes[i]);
-				}
-
-				// Chrome/Firefox
-				// var data = e.target.result;
-				var workbook = XLSX.read(data, {type: 'binary'});
-
-				var first_sheet_name = workbook.SheetNames[0];
-				MessageToast.show("first_sheet_name: " + first_sheet_name);
-
+			ExcelImportUtil.importVermietungsaktivitaetFromFile(files[0]).then(function(vermietungsaktivitaet){
+				console.log(vermietungsaktivitaet);
+				
 				// Validierung
 				_this._excelImportDialog.getModel("excelImportModel").setProperty("/valid", true);
 				_this._excelImportDialog.getModel("excelImportModel").setProperty("/data", {});
-			};
+			})
+			.catch(function(error){
+				console.log(error);
+			})
+			.done();
 
-			reader.readAsArrayBuffer(files[0]);
 		},
 
 		onExcelImportDialogAbbrechenButtonPress: function(oEvent){

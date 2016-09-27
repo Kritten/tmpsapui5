@@ -54,7 +54,10 @@
                         <Text text="{i18n>MIETFLAECHE} {i18n>ALTERNATIV}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>NACHHALTIGE_MIETE} in {form>/viewsettings/waehrungSelected/text}/FE" />
+                        <Text text="{i18n>MIETFLAECHENSPLIT}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>MARKTUEBLICHE_MIETE} in {form>/viewsettings/waehrungSelected/text}/FE" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>ANGEBOTSMIETE} in {form>/viewsettings/waehrungSelected/text}/FE" />
@@ -75,6 +78,7 @@
                             <Text text="{form>Nutzart}" />
                             <Text text="{form>Hnfl}" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <CheckBox selected="true" editable="false" />
                             <Text text="{= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) }" />
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -140,13 +144,22 @@
                     <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>MIETFREIE_ZEITEN} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="mietfreieZeitenInMonaten" value="{form>/konditioneneinigung/MzMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="mietfreieZeitenInMonaten" value="{form>/konditioneneinigung/MzMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
                     
-                    <Label text="{i18n>MAKLERKOSTEN} {i18n>IN_MONATSMIETEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+
+                    <Label text="{i18n>MAKLERKOSTEN} ({i18n>IN_MONATSMIETEN})" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Input id="maklerkostenInMonatsmieten" value="{form>/konditioneneinigung/MkMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
-                    <Label text="{i18n>BERATUNGSKOSTEN} {i18n>IN_MONATSMIETEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Label text="{i18n>MAKLERKOSTEN} ({i18n>ABSOLUT})" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="maklerkostenAbsolut" value="{form>/konditioneneinigung/MkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
+
+
+                    <Label text="{i18n>BERATUNGSKOSTEN} ({i18n>IN_MONATSMIETEN})" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Input id="beratungskostenInMonatsmieten" value="{form>/konditioneneinigung/BkMonatsmieten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+
+                    <Label text="{i18n>BERATUNGSKOSTEN} ({i18n>ABSOLUT})" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="beratungskostenAbsolut" value="{form>/konditioneneinigung/BkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+
                 </f:content>
 
 			</f:SimpleForm>
@@ -167,13 +180,11 @@
                 <f:content>
                     <!-- <core:Title text="" /> -->
                     
-                    <Label text="{i18n>BONITAET}" />
-                    <Input value="{form>/konditioneneinigung/Bonitaet}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-
                     <Label text="{i18n>STATUS}" />
-                    <Select width="100%" enabled="false" >
+                    <Select width="100%" enabled="false" selectedKey="{form>/konditioneneinigung/Status}" >
                         <items>
-                            <core:Item text="Konditioneneinigung" />
+                            <core:Item key="Konditioneneinigung" text="Konditioneneinigung" />
+                            <core:Item key="GELOESCHT" text="Gelöscht" />
                         </items>
                     </Select>
                     
@@ -240,6 +251,8 @@
 				<Button text="{i18n>REAKTIVIEREN}" icon="sap-icon://repost" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
                 <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
                 <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" visible="{= (${form>/modus} === 'show') }" press="onDruckenButtonPress" />
+                <Button text="{i18n>GUELTIGKEIT_VERLAENGERN}" icon="sap-icon://fob-watch" press="onGueltigkeitVerlaengernButtonPress" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
+                <Button text="{i18n>LOESCHEN}" icon="sap-icon://delete" press="onLoeschenButtonPress" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>

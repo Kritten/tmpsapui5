@@ -96,6 +96,12 @@
 						
 					},
 					{
+						"pattern": "VermSel/VaId/{VaId}/Bukrs/{Bukrs}/Genehmigung",
+						"name" : "vermietungsaktivitaetGenehmigung",
+						"view" : "VermietungsaktivitaetGenehmigung",
+						"targetAggregation" : "pages"
+					},
+					{
 						"pattern": "VermSel/new/KE/{KEs}",
 						"name" : "vermietungsaktivitaetAnlegenKe",
 						"view" : "VermietungsaktivitaetDetails",

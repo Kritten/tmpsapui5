@@ -30,11 +30,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
             var oDataModel = sap.ui.getCore().getModel("odata");
 
-            oDataModel.read("/VermietungsaktivitaetSet(" 
-                + "Bukrs=" + "'" + Bukrs + "'" 
-                + ","
-                + "VaId=" + "'" + VaId + "'"
-                + ")",
+            oDataModel.read("/VermietungsaktivitaetSet(" +
+                "Bukrs=" + "'" + Bukrs + "'" +
+                "," +
+                "VaId=" + "'" + VaId + "'" +
+                ")",
             {
                 urlParameters: {
                     "$expand": "VaToOb"
@@ -177,7 +177,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     Bonitaet: "",
                     PLRelevant: false,
                     BkMonate: "",
+                    BkAbsolut: "",
                     MkMonate: "",
+                    MkAbsolut: "",
                     Poenale: "",
                     Currency: "",
                     Unit: "",
@@ -471,20 +473,20 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 				}
 				
                 if(mietflaechenangabe.AnMiete < 0 || mietflaechenangabe.AnMiete === ""){
-                    item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[7].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
-                    validationResult = false;
-                }
-                
-                if(mietflaechenangabe.GaKosten < 0 || mietflaechenangabe.GaKosten === ""){
                     item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
                     item.getCells()[8].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
                     validationResult = false;
                 }
                 
-                if(mietflaechenangabe.MaKosten < 0 || mietflaechenangabe.MaKosten === ""){
+                if(mietflaechenangabe.GaKosten < 0 || mietflaechenangabe.GaKosten === ""){
                     item.getCells()[9].setValueState(sap.ui.core.ValueState.Error);
                     item.getCells()[9].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
+                    validationResult = false;
+                }
+                
+                if(mietflaechenangabe.MaKosten < 0 || mietflaechenangabe.MaKosten === ""){
+                    item.getCells()[10].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[10].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
                     validationResult = false;
                 }
                 
@@ -509,9 +511,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             
             mietflaechenangabenItems.forEach(function(item){
                 item.getCells()[5].setValueState(sap.ui.core.ValueState.None);
-                item.getCells()[7].setValueState(sap.ui.core.ValueState.None);  
                 item.getCells()[8].setValueState(sap.ui.core.ValueState.None);  
                 item.getCells()[9].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[10].setValueState(sap.ui.core.ValueState.None);  
             });   
 		},
 		

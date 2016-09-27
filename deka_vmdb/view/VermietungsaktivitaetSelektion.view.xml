@@ -14,15 +14,18 @@
 						<Title level="H3" text="{i18n>VERM_SEL_PANEL_TITLE_ANL}" />
 					</Toolbar>
 				</headerToolbar>
+
 				<FlexBox>
 					<items>
 
-						<FlexBox justifyContent="Start" direction="Column">
+						<FlexBox justifyContent="Start">
 							<items>
-								<RadioButtonGroup select="onRadioButtonGroupSelect" selectedIndex="{vermSel>/selectedRadioButtonGroupIndex}">
+								<RadioButtonGroup select="onRadioButtonGroupSelect" selectedIndex="{vermSel>/selectedRadioButtonGroupIndex}" columns="4">
 									<buttons>
-										<RadioButton text="{i18n>VERM_SEL_RBG_O1}" />
-										<RadioButton text="{i18n>VERM_SEL_RBG_O2}" />
+										<RadioButton text="{i18n>VERM_SEL_ANLAGE_REGELVERMIETUNG}" tooltip="{i18n>VERM_SEL_ANLAGE_REGELVERMIETUNG_TOOLTIP}" />
+										<RadioButton text="{i18n>VERM_SEL_ANLAGE_KLEINVERMIETUNG}" tooltip="{i18n>VERM_SEL_ANLAGE_KLEINVERMIETUNG_TOOLTIP}" />
+										<RadioButton text="{i18n>VERM_SEL_ANLAGE_EXTERNEVERMIETUNG}" tooltip="{i18n>VERM_SEL_ANLAGE_EXTERNEVERMIETUNG_TOOLTIP}" />
+										<RadioButton text="{i18n>VERM_SEL_ANLAGE_EXCEL_UPLOAD}" tooltip="{i18n>VERM_SEL_ANLAGE_EXCEL_UPLOAD_TOOLTIP}" />
 									</buttons>
 								</RadioButtonGroup>
 							</items>

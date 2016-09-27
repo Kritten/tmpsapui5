@@ -19,23 +19,23 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil"], function (PrinterUtil) {
             var mietflaechenangabeHtml = "<table>";
 
             mietflaechenangabeHtml += "<tr>";
-                mietflaechenangabeHtml += "<td>AnMiete</td>"
-                mietflaechenangabeHtml += "<td>GaKosten</td>"
-                mietflaechenangabeHtml += "<td>Hnfl</td>"
-                mietflaechenangabeHtml += "<td>HnflAlt</td>"
-                mietflaechenangabeHtml += "<td>MaKosten</td>"
-                mietflaechenangabeHtml += "<td>NhMiete</td>"
+                mietflaechenangabeHtml += "<td>AnMiete</td>";
+                mietflaechenangabeHtml += "<td>GaKosten</td>";
+                mietflaechenangabeHtml += "<td>Hnfl</td>";
+                mietflaechenangabeHtml += "<td>HnflAlt</td>";
+                mietflaechenangabeHtml += "<td>MaKosten</td>";
+                mietflaechenangabeHtml += "<td>NhMiete</td>";
             mietflaechenangabeHtml += "</tr>";
 
             vermietungsaktivitaet.VaToOb.forEach(function(mietflaechenangabe){
 
                 mietflaechenangabeHtml += "<tr>";
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.AnMiete + "</td>"
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.GaKosten + "</td>"
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.Hnfl + "</td>"
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.HnflAlt + "</td>"
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.MaKosten + "</td>"
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.NhMiete + "</td>"
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.AnMiete + "</td>";
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.GaKosten + "</td>";
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.Hnfl + "</td>";
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.HnflAlt + "</td>";
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.MaKosten + "</td>";
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.NhMiete + "</td>";
                 mietflaechenangabeHtml += "</tr>";
             });
             mietflaechenangabeHtml += "</table>";
@@ -61,23 +61,23 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil"], function (PrinterUtil) {
             var mietflaechenangabeHtml = "<table>";
 
             mietflaechenangabeHtml += "<tr>";
-                mietflaechenangabeHtml += "<td>AnMiete</td>"
-                mietflaechenangabeHtml += "<td>GaKosten</td>"
-                mietflaechenangabeHtml += "<td>Hnfl</td>"
-                mietflaechenangabeHtml += "<td>HnflAlt</td>"
-                mietflaechenangabeHtml += "<td>MaKosten</td>"
-                mietflaechenangabeHtml += "<td>NhMiete</td>"
+                mietflaechenangabeHtml += "<td>AnMiete</td>";
+                mietflaechenangabeHtml += "<td>GaKosten</td>";
+                mietflaechenangabeHtml += "<td>Hnfl</td>";
+                mietflaechenangabeHtml += "<td>HnflAlt</td>";
+                mietflaechenangabeHtml += "<td>MaKosten</td>";
+                mietflaechenangabeHtml += "<td>NhMiete</td>";
             mietflaechenangabeHtml += "</tr>";
 
             konditioneneinigung.KeToOb.forEach(function(mietflaechenangabe){
 
                 mietflaechenangabeHtml += "<tr>";
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.AnMiete + "</td>"
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.GaKosten + "</td>"
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.Hnfl + "</td>"
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.HnflAlt + "</td>"
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.MaKosten + "</td>"
-                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.NhMiete + "</td>"
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.AnMiete + "</td>";
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.GaKosten + "</td>";
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.Hnfl + "</td>";
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.HnflAlt + "</td>";
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.MaKosten + "</td>";
+                    mietflaechenangabeHtml += "<td>" + mietflaechenangabe.NhMiete + "</td>";
                 mietflaechenangabeHtml += "</tr>";
             });
             mietflaechenangabeHtml += "</table>";

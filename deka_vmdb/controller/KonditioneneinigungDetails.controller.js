@@ -137,6 +137,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
                     oData.KeToOb.forEach(function(objekt){
                         objekt.HnflAlt = objekt.HnflAlt.toString();
+                        objekt.NhMiete = objekt.NhMiete.toString();
                         objekt.AnMiete = objekt.AnMiete.toString();
                         objekt.GaKosten = objekt.GaKosten.toString();
                         objekt.MaKosten = objekt.MaKosten.toString();
@@ -198,18 +199,19 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     Bemerkung: "",
                     GnStufe: "",
                     BkMonatsmieten: "",
+                    BkAbsolut: "",
                     GnFm: "",
                     GnFmDurch: "",
                     GnGl: "",
                     GnGlDurch: "",
                     MkMonate: "",
+                    MkAbsolut: "",
                     Currency: "",
                     GnAl: "",
                     GnAlDurch: "",
                     Unit: "",
                     GnGf: "",
                     GnGfDurch: "",
-                    Bonitaet: "",
                     GueltigkKe: null,
 
                     KeToOb: [],
@@ -424,7 +426,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     //Ersteller: "",
                     //Editable: "",
                     GueltigkKe: konditioneneinigung.GueltigkKe,
-                    Bonitaet: konditioneneinigung.Bonitaet,
                     //BtnFm: "",
                     //MfSplit: "",
                     //BtnAm: "",
@@ -441,11 +442,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     Bemerkung: konditioneneinigung.Bemerkung,
                     //GnStufe: "",
                     BkMonatsmieten: konditioneneinigung.BkMonatsmieten,
+                    BkAbsolut: konditioneneinigung.BkAbsolut,
                     //GnFm: "",
                     //GnFmDurch: "",
                     //GnGl: "",
                     //GnGlDurch: "",
                     MkMonate: konditioneneinigung.MkMonate,
+                    MkAbsolut: konditioneneinigung.MkAbsolut,
                     //Currency: "",
                     //GnAl: "",
                     //GnAlDurch: "",
@@ -796,37 +799,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
                 if(mietflaechenangabe.AnMiete.match(/^\d+((\.|,)\d\d?)?$/) === null)
                 {
-                    item.getCells()[6].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[6].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
-                    validationResult = false;
-                }
-                else
-                {
-                    var AnMiete = parseFloat( mietflaechenangabe.AnMiete.replace(",", ".") );
-                    if(AnMiete <= 0){
-                        item.getCells()[6].setValueState(sap.ui.core.ValueState.Error);
-                        item.getCells()[6].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
-                        validationResult = false;
-                    }
-                }
-                
-                if(mietflaechenangabe.GaKosten.match(/^\d+((\.|,)\d\d?)?$/) === null)
-                {
                     item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
                     item.getCells()[7].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
                     validationResult = false;
                 }
                 else
                 {
-                    var GaKosten = parseFloat( mietflaechenangabe.GaKosten.replace(",", ".") );
-                    if(GaKosten <= 0){
+                    var AnMiete = parseFloat( mietflaechenangabe.AnMiete.replace(",", ".") );
+                    if(AnMiete <= 0){
                         item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
                         item.getCells()[7].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
                         validationResult = false;
                     }
                 }
-
-                if(mietflaechenangabe.MaKosten.match(/^\d+((\.|,)\d\d?)?$/) === null)
+                
+                if(mietflaechenangabe.GaKosten.match(/^\d+((\.|,)\d\d?)?$/) === null)
                 {
                     item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
                     item.getCells()[8].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
@@ -834,10 +821,26 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 }
                 else
                 {
-                    var MaKosten = parseFloat( mietflaechenangabe.MaKosten.replace(",", ".") );
-                    if(MaKosten <= 0){
+                    var GaKosten = parseFloat( mietflaechenangabe.GaKosten.replace(",", ".") );
+                    if(GaKosten <= 0){
                         item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
                         item.getCells()[8].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
+                        validationResult = false;
+                    }
+                }
+
+                if(mietflaechenangabe.MaKosten.match(/^\d+((\.|,)\d\d?)?$/) === null)
+                {
+                    item.getCells()[9].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[9].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
+                    validationResult = false;
+                }
+                else
+                {
+                    var MaKosten = parseFloat( mietflaechenangabe.MaKosten.replace(",", ".") );
+                    if(MaKosten <= 0){
+                        item.getCells()[9].setValueState(sap.ui.core.ValueState.Error);
+                        item.getCells()[9].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
                         validationResult = false;
                     }
                 }
@@ -861,9 +864,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
             
             mietflaechenangabenItems.forEach(function(item){
-                item.getCells()[6].setValueState(sap.ui.core.ValueState.None);
-                item.getCells()[7].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[7].setValueState(sap.ui.core.ValueState.None);
                 item.getCells()[8].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[9].setValueState(sap.ui.core.ValueState.None);  
             });   
         },
 
@@ -887,6 +890,24 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             this.getView().getModel("form").setProperty("/konditioneneinigung/kostenGesamt/konditioneneinigung", kostenGesamtKE); 
         },
 
+        onLoeschenButtonPress: function(oEvent){
+            var _this = this;
+
+            MessageBox.confirm("Wollen Sie die Konditioneneinigung wirklich löschen?", {
+                title:"{i18n>HINWEIS}",
+                actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                onClose: function(action){
+                    if(action === sap.m.MessageBox.Action.YES){
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Status", "GELOESCHT");
+                    }
+                }
+            });
+        },
+
+        onGueltigkeitVerlaengernButtonPress: function(oEvent){
+                        
+
+        },
 
         onAbbrechenButtonPress: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onAbbrechenButtonPress");

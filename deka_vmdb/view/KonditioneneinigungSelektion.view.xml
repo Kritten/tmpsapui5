@@ -14,9 +14,10 @@
 						<Title level="H3" text="{i18n>KOND_SEL_PANEL_TITLE_ANL}" />
 					</Toolbar>
 				</headerToolbar>
+
 				<FlexBox>
 					<items>
-
+					
 						<FlexBox justifyContent="Start">
 							<items>
 								<RadioButtonGroup id="RBG_Anlage" columns="3">

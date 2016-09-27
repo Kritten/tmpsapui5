@@ -29,11 +29,6 @@
 					press= "onBudsTilePress"/>
 					
 					<StandardTile
-					icon="sap-icon://business-objects-experience"
-					title="{i18n>BERICHTE}"
-					press= "onBeriTilePress"/>
-					
-					<StandardTile
 					icon="sap-icon://locked"
 					title="{i18n>SPERRE}"
 					press= "onSperTilePress"/>
