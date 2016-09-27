@@ -184,14 +184,15 @@
                     <Select width="100%" enabled="false" selectedKey="{form>/konditioneneinigung/Status}" >
                         <items>
                             <core:Item key="Konditioneneinigung" text="Konditioneneinigung" />
-                            <core:Item key="GELOESCHT" text="Gelöscht" />
                         </items>
                     </Select>
                     
                     <Label text="{i18n>ANMERKUNG}" />
-                    <Select width="100%" enabled="false" >
+                    <Select width="100%" enabled="false" selectedKey="{form>/konditioneneinigung/Anmerkung}" >
                         <items>
-                            <core:Item text="Mietfläche in Auswahlool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekt am Markt" />
+                            <core:Item key="" text="Mietfläche in Auswahlool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekt am Markt" />
+                            <core:Item key="GELÖSCHT" text="Gelöscht" />
+                            <core:Item key="ZURÜCKGEZOGEN" text="Zurückgezogen" />
                         </items>
                     </Select>
                     
@@ -249,7 +250,7 @@
 				<Button text="{i18n>GENEHMIGEN}" icon="sap-icon://accept" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
 				<Button text="{i18n>NICHTGENEHMIGEN}" icon="sap-icon://decline" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
 				<Button text="{i18n>REAKTIVIEREN}" icon="sap-icon://repost" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
-                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
+                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" press="onGenehmigungZurueckziehenButtonPress" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
                 <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" visible="{= (${form>/modus} === 'show') }" press="onDruckenButtonPress" />
                 <Button text="{i18n>GUELTIGKEIT_VERLAENGERN}" icon="sap-icon://fob-watch" press="onGueltigkeitVerlaengernButtonPress" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
                 <Button text="{i18n>LOESCHEN}" icon="sap-icon://delete" press="onLoeschenButtonPress" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />

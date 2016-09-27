@@ -364,9 +364,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             else
             {
                 var dialog = new sap.m.Dialog({
-                    title: "Warnung",
-                    type: "Message",
-                    state: "Warning",
+                    title: "{i18n>WARNUNG}",
+                    type: sap.m.DialogType.Message,
+                    icon: "sap-icon://message-warning",
+                    state: sap.ui.core.ValueState.Warning,
                     content: new sap.m.Text({
                         text: "Validierung fehlgeschlagen. Sie können die Konditioneneinigung zunächst im Arbeitsvorrat speichern oder Ihre Eingaben überprüfen."
                     }),
@@ -898,15 +899,103 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                 actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                 onClose: function(action){
                     if(action === sap.m.MessageBox.Action.YES){
-                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Status", "GELOESCHT");
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Anmerkung", "GELÖSCHT");
                     }
                 }
             });
         },
 
         onGueltigkeitVerlaengernButtonPress: function(oEvent){
-                        
+            var _this = this;
 
+			var dialog = new sap.m.Dialog({
+				title: "{i18n>HINWEIS}",
+				type: sap.m.DialogType.Message,
+                icon: "sap-icon://message-information",
+				content: [
+					new sap.m.Text({
+                        text: "Bitte geben Sie das neue Gültigkeitsdatum der Konditioneneinigung an.",
+                    }), //.addStyleClass("sapUiSmallMarginBottom")
+                    new sap.m.DatePicker('idGueltigkeitsDatumDatePicker', {
+                        placeholder: " ",
+                        change: function(oEvent) {
+							var validDate = oEvent.getParameter('valid');
+                            var parent = oEvent.getSource().getParent(); 
+							parent.getBeginButton().setEnabled(validDate);
+						},
+                    })
+				],
+				beginButton: new sap.m.Button({
+                    text: "{i18n>AKZEPTIEREN}",
+                    enabled: false,
+					press: function () {
+                        var gueltigkeitsdatum = sap.ui.getCore().byId('idGueltigkeitsDatumDatePicker').getDateValue();
+                        
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/GueltigkKe", gueltigkeitsdatum);
+						
+                        dialog.close();
+					}
+				}),
+				endButton: new sap.m.Button({
+                    text: "{i18n>ABBRECHEN}",
+					press: function () {
+						dialog.close();
+					}
+				}),
+				afterClose: function() {
+					dialog.destroy();
+				}
+			});
+ 
+			dialog.open();
+        },
+
+        onGenehmigungZurueckziehenButtonPress: function(oEvent){
+            var _this = this;
+
+			var dialog = new sap.m.Dialog({
+				title: "{i18n>HINWEIS}",
+				type: sap.m.DialogType.Message,
+                icon: "sap-icon://message-warning",
+                state: sap.ui.core.ValueState.Warning,
+				content: [
+					new sap.m.Text({
+                        text: "Wollen Sie die Genehmigung wirklich zurückziehen? Bitte geben Sie hierfür einen Grund für das Zurückziehen der Genehmigung ein."
+                    }),
+					new sap.m.TextArea('idGenehmigungZurueckziehenBegruendungTextArea', {
+						liveChange: function(oEvent) {
+							var sText = oEvent.getParameter('value');
+							var parent = oEvent.getSource().getParent();
+							parent.getBeginButton().setEnabled(sText.length > 0);
+						},
+						width: "100%",
+						placeholder: "{i18n>BEGRUENDUNG}"
+					})
+				],
+				beginButton: new sap.m.Button({
+                    text: "{i18n>AKZEPTIEREN}",
+					enabled: false,
+					press: function () {
+						var sText = sap.ui.getCore().byId('idGenehmigungZurueckziehenBegruendungTextArea').getValue();
+                        
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Anmerkung", "ZURÜCKGEZOGEN");
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Bemerkung", sText);
+
+						dialog.close();
+					}
+				}),
+				endButton: new sap.m.Button({
+                    text: "{i18n>ABBRECHEN}",
+					press: function () {
+						dialog.close();
+					}
+				}),
+				afterClose: function() {
+					dialog.destroy();
+				}
+			});
+ 
+			dialog.open();
         },
 
         onAbbrechenButtonPress: function(evt){
