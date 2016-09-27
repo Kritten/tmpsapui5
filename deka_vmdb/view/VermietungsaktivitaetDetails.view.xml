@@ -28,6 +28,7 @@
                     <Toolbar>
                         <Title text="{i18n>MIETFLAECHENANGABEN}" level="H2"/>
                         <ToolbarSpacer />
+                        <Text text="{form>/viewsettings/zeitspanneSelected/text} | {form>/viewsettings/waehrungSelected/text}" />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" />
                     </Toolbar>
                 </headerToolbar>

@@ -90,6 +90,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
                     _this.getView().setModel(userModel, "user");
                     _this.getView().setModel(formModel, "form");
                                 
+                    _this.enhanceModelWithViewSettings();
                     _this.clearValidationState();
                     _this.anmerkungSelektionInitialisieren();
                 }
@@ -225,9 +226,65 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             this.getView().setModel(userModel, "user");
 			this.getView().setModel(formModel, "form");
             
+            this.enhanceModelWithViewSettings();
             this.clearValidationState();
             this.anmerkungSelektionInitialisieren();
         },
+
+        /**
+         * Liest Währungen und Umrechnungskurse aus dem Backend und initialisiert das Popup hinter dem Zahnrad
+         */
+        enhanceModelWithViewSettings: function(){
+            var _this = this;
+
+            var viewsettings = {
+                waehrungen: [],
+                zeitspannen: [
+                    {key: "MONAT", text: "Monatsmiete"},
+                    {key: "JAHR", text: "Jahresmiete"}
+                ],
+                waehrungSelectedKey: "",
+                waehrungSelected: null,
+                zeitspanneSelectedKey: "",
+                zeitspanneSelected: null
+            };
+
+            viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
+            viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
+
+            // Ausgangswährung ermitteln
+            var ausgangsWaehrung = "EUR";
+            var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+            if(mietflaechenangaben.length > 0){
+                ausgangsWaehrung = mietflaechenangaben[0].Whrung;
+            }
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/WaehrungSet", {
+
+                urlParameters: {
+                    //"$filter": "Gdat eq datetime'2001-01-01T00:00:00' and Von eq '"+ausgangsWaehrung+"'"
+                },
+
+                success: function(oData){
+                    console.log(oData);
+
+                    oData.results.forEach(function(waehrung){
+                        viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Ukurs} );
+                    });
+
+                    if(viewsettings.waehrungen.length > 0){
+                        viewsettings.waehrungSelectedKey = viewsettings.waehrungen[0].key;
+                        viewsettings.waehrungSelected = viewsettings.waehrungen[0];
+                    }
+
+                    _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
+                }
+
+            });
+        },
+
         
         onStatusSelektionChange: function(){
             this.anmerkungSelektionInitialisieren();
@@ -290,6 +347,44 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
         onBack : function(oEvent) {
             this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
         },
+
+
+        handleTableSettingsButton: function(oEvent){
+            var _this = this;
+
+            // create popover
+			if (! this._tableViewSettingsPopover) {
+				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenViewSettingsPopover", this);
+                this._tableViewSettingsPopover.setModel( this.getView().getModel("form"), "form" );
+				this.getView().addDependent(this._tableViewSettingsPopover);
+			}
+
+            // Wartet nicht auf vorausgehenden Request
+            // Anders zur Zeit nicht möglich, da Popup ansonsten nicht geöffnet wird
+            var oButton = oEvent.getSource();
+            jQuery.sap.delayedCall(0, this, function () {
+                this._tableViewSettingsPopover.openBy(oButton);
+            });
+
+        },
+
+        onPopoverZeitspanneSelect: function(oEvent){
+
+            var item = oEvent.getParameter("selectedItem");
+            var zeitspanne = item.getBindingContext("form").getObject();
+
+            this.getView().getModel("form").setProperty("/viewsettings/zeitspanneSelected", zeitspanne);
+        },
+
+
+        onPopoverWaehrungSelect: function(oEvent){
+
+            var item = oEvent.getParameter("selectedItem");
+            var waehrung = item.getBindingContext("form").getObject();
+
+            this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
+        },
+
                 
         onSpeichernButtonPress: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onSpeichernButtonPress");

@@ -272,7 +272,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             oDataModel.read("/WaehrungSet", {
 
                 urlParameters: {
-                    "$filter": "Gdat eq datetime'2001-01-01T00:00:00' and Von eq '"+ausgangsWaehrung+"'"
+                    //"$filter": "Gdat eq datetime'2001-01-01T00:00:00' and Von eq '"+ausgangsWaehrung+"'"
                 },
 
                 success: function(oData){
@@ -321,7 +321,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
             // create popover
 			if (! this._tableViewSettingsPopover) {
-				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungDetailsPopover", this);
+				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenViewSettingsPopover", this);
                 this._tableViewSettingsPopover.setModel( this.getView().getModel("form"), "form" );
 				this.getView().addDependent(this._tableViewSettingsPopover);
 			}
