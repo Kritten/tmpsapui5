@@ -64,19 +64,19 @@
 						"targetAggregation" : "pages"
 					},
 					{
-						"pattern": "KondSel/new/WeId/{WeId}/Bukrs/{Bukrs}",
+						"pattern": "KondSel/new/WE",
 						"name" : "konditioneneinigungAnlegenWe",
 						"view" : "KonditioneneinigungDetails",
 						"targetAggregation" : "pages"
 					},
 					{
-						"pattern": "KondSel/new/MvId/{MvId}/Bukrs/{Bukrs}",
+						"pattern": "KondSel/new/MV",
 						"name" : "konditioneneinigungAnlegenMv",
 						"view" : "KonditioneneinigungDetails",
 						"targetAggregation" : "pages"
 					},
 					{
-						"pattern": "KondSel/new/KeId/{KeId}/Bukrs/{Bukrs}",
+						"pattern": "KondSel/new/KE",
 						"name" : "konditioneneinigungAnlegenKe",
 						"view" : "KonditioneneinigungDetails",
 						"targetAggregation" : "pages"
@@ -102,8 +102,14 @@
 						"targetAggregation" : "pages"
 					},
 					{
-						"pattern": "VermSel/new/KE/{KEs}",
+						"pattern": "VermSel/new/KE",
 						"name" : "vermietungsaktivitaetAnlegenKe",
+						"view" : "VermietungsaktivitaetDetails",
+						"targetAggregation" : "pages"
+					},
+					{
+						"pattern": "VermSel/new/Excel",
+						"name" : "vermietungsaktivitaetAnlegenExcel",
 						"view" : "VermietungsaktivitaetDetails",
 						"targetAggregation" : "pages"
 					}]

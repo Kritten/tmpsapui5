@@ -1,4 +1,9 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/MessageToast", "ag/bpc/Deka/util/ExcelImportUtil"], function (Controller, Filter, MessageToast, ExcelImportUtil) {
+sap.ui.define([
+	"sap/ui/core/mvc/Controller", 
+	"sap/ui/model/Filter", 
+	"sap/m/MessageToast", 
+	"ag/bpc/Deka/util/ExcelImportUtil",
+	"ag/bpc/Deka/util/NavigationPayloadUtil"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
@@ -173,6 +178,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 				// Validierung
 				_this._excelImportDialog.getModel("excelImportModel").setProperty("/valid", true);
 				_this._excelImportDialog.getModel("excelImportModel").setProperty("/data", {});
+
+				NavigationPayloadUtil.putPayload(vermietungsaktivitaet);
+				_this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenExcel");
 			})
 			.catch(function(error){
 				console.log(error);
@@ -213,9 +221,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter", "sap/m/Messa
 					});
 				});
 
-				this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenKe", {
-					KEs: JSON.stringify( konditioneneinigungen )
-				});
+				NavigationPayloadUtil.putPayload(konditioneneinigungen);
+				this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenKe");
 			}
 		},
 		

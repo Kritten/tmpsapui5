@@ -1,4 +1,9 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/util/PrinterUtil", "sap/ui/model/Filter"], function (Controller, MessageBox, PrinterUtil, Filter) {
+sap.ui.define([
+    "sap/ui/core/mvc/Controller", 
+    "sap/m/MessageBox", 
+    "ag/bpc/Deka/util/PrinterUtil", 
+    "sap/ui/model/Filter",
+    "ag/bpc/Deka/util/NavigationPayloadUtil"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
@@ -43,8 +48,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit");
             var _this = this;
 
-            var WeId = oEvent.getParameter("arguments").WeId;
-            var Bukrs = oEvent.getParameter("arguments").Bukrs;
+            var payload = NavigationPayloadUtil.takePayload();
+
+            if(!payload){
+                this.onBack(null);
+                return;
+            }
+
+            var WeId = payload.WeId;
+            var Bukrs = payload.Bukrs;
 
             var oDataModel = sap.ui.getCore().getModel("odata");
 
@@ -67,8 +79,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinesMietvertrags");
             var _this = this;
 
-            var MvId = oEvent.getParameter("arguments").MvId;
-            var Bukrs = oEvent.getParameter("arguments").Bukrs;
+            var payload = NavigationPayloadUtil.takePayload();
+
+            if(!payload){
+                this.onBack(null);
+                return;
+            }
+
+            var MvId = payload.MvId;
+            var Bukrs = payload.Bukrs;
 
             var oDataModel = sap.ui.getCore().getModel("odata");
 
@@ -94,8 +113,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung");
             var _this = this;
 
-            var KeId = oEvent.getParameter("arguments").KeId;
-            var Bukrs = oEvent.getParameter("arguments").Bukrs;
+            var payload = NavigationPayloadUtil.takePayload();
+
+            if(!payload){
+                this.onBack(null);
+                return;
+            }
+
+            var KeId = payload.KeId;
+            var Bukrs = payload.Bukrs;
 
             var oDataModel = sap.ui.getCore().getModel("odata");
 
@@ -1222,7 +1248,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             });
             
             // Object-Properties to Array
-            var vorhandeneNutzungsarten = Object.keys(vorhandeneNutzungsarten).map(function (key) {
+            vorhandeneNutzungsarten = Object.keys(vorhandeneNutzungsarten).map(function (key) {
                 return vorhandeneNutzungsarten[key];
             });
             

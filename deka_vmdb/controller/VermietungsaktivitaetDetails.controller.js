@@ -1,4 +1,8 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/util/PrinterUtil"], function (Controller, MessageBox, PrinterUtil) {
+sap.ui.define([
+    "sap/ui/core/mvc/Controller", 
+    "sap/m/MessageBox", 
+    "ag/bpc/Deka/util/PrinterUtil",
+    "ag/bpc/Deka/util/NavigationPayloadUtil"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
@@ -19,6 +23,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("vermietungsaktivitaetDetails").attachPatternMatched(this.onVermietungsaktivitaetAnzeigen, this);
             oRouter.getRoute("vermietungsaktivitaetAnlegenKe").attachPatternMatched(this.onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung, this);
+            oRouter.getRoute("vermietungsaktivitaetAnlegenExcel").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExcelImport, this);
 		},
         
 		onVermietungsaktivitaetAnzeigen: function(oEvent){
@@ -102,7 +107,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung");
             var _this = this;
 
-            var konditioneneinigungen = JSON.parse( oEvent.getParameter("arguments").KEs );
+            var konditioneneinigungen = NavigationPayloadUtil.takePayload();
+
+            if(konditioneneinigungen === null){
+                this.onBack(null);
+                return;
+            }
+
 		    console.log(konditioneneinigungen);
           
             // Array für Promises der Konditioneneinigung-Requests
@@ -131,6 +142,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox", "ag/bpc/Deka/ut
 
 		},
 		
+        onVermietungsaktivitaetAnlegenExcelImport: function(oEvent){
+
+            var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
+
+            if(!vermietungsaktivitaet){
+                this.onBack(null);
+                return;
+            }
+
+            console.log(vermietungsaktivitaet);
+        },
+
         ladeKonditioneneinigung: function(KeId, Bukrs){
             var _this = this;
 

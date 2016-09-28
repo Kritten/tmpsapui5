@@ -23,8 +23,13 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 				bundleName: "ag.bpc.Deka.i18n.translation"
 				//,bundleLocale : "en-US"  // zum Test "de" oder "en" eintragen
 			});
-
 			sap.ui.getCore().setModel(oi18nModel, "i18n");
+
+			// Model für Übergabe komplexer Parameter bei Navigationen
+			var navigationModel = new sap.ui.model.json.JSONModel({
+				payload: null
+			});
+			sap.ui.getCore().setModel(navigationModel, "navigation");
 
 			// URL des OData Services auf dem Gateway
 			var serviceUrl = "https://xxx";

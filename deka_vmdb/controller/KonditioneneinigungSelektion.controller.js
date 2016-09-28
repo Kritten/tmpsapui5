@@ -1,4 +1,7 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function(Controller, Filter) {
+sap.ui.define([
+	"sap/ui/core/mvc/Controller", 
+	"sap/ui/model/Filter",
+	"ag/bpc/Deka/util/NavigationPayloadUtil"], function(Controller, Filter, NavigationPayloadUtil) {
 
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungSelektion", {
@@ -226,24 +229,27 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/model/Filter"], function(Co
 			switch(selectedObject.type)
 			{
 				case "we":
-					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenWe", {
+					NavigationPayloadUtil.putPayload({
 						WeId: selectedObject.wirtschaftseinheit.WeId,
 						Bukrs: selectedObject.wirtschaftseinheit.Bukrs
 					});
+					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenWe");
 				break;
 				
 				case "mv":
-					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenMv", {
+					NavigationPayloadUtil.putPayload({
 						MvId: selectedObject.mietvertrag.MvId,
 						Bukrs: selectedObject.mietvertrag.Bukrs
 					});
+					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenMv");
 				break;
 
 				case "ke":
-					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenKe", {
+					NavigationPayloadUtil.putPayload({
 						KeId: selectedObject.konditioneneinigung.KeId,
 						Bukrs: selectedObject.konditioneneinigung.Bukrs
 					});
+					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenKe");
 				break;
 			}
 
