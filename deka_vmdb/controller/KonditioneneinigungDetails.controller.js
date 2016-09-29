@@ -20,11 +20,6 @@ sap.ui.define([
                     _this.getView().byId("idKonditioneneinigungDetails").scrollTo(0, 0);
                 }
             });
-
-            // Das View kann auf drei unterschiedliche Arten aufgerufen werden
-            // - Konditioneneinigung anzeigen
-            // - Konditioneneinigung anlegen auf Basis einer Wirtschaftseinheit
-            // - Konditioneneinigung anlegen auf Basis eines Mietvertrags
             
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("konditioneneinigungDetails").attachPatternMatched(this.onKonditioneneinigungAnzeigen, this);

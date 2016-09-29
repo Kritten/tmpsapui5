@@ -241,7 +241,7 @@ sap.ui.define([
 				_this._excelImportDialog.getModel("excelImportModel").setProperty("/data", {});
 
 				NavigationPayloadUtil.putPayload(vermietungsaktivitaet);
-				_this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenExcel");
+				_this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenImport");
 			})
 			.catch(function(error){
 				console.log(error);

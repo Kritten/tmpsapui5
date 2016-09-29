@@ -20,6 +20,8 @@ sap.ui.define([
                 }
             });
 
+			//this.getView().addStyleClass("sapUiSizeCompact");
+
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("vermietungsaktivitaetDetails").attachPatternMatched(this.onVermietungsaktivitaetAnzeigen, this);
             oRouter.getRoute("vermietungsaktivitaetAnlegenRV").attachPatternMatched(this.onVermietungsaktivitaetAnlegenRegelvermietung, this);
@@ -112,7 +114,7 @@ sap.ui.define([
 
             var konditioneneinigungen = NavigationPayloadUtil.takePayload();
 
-            if(konditioneneinigungen === null){
+            if(!konditioneneinigungen){
                 this.onBack(null);
                 return;
             }
@@ -145,9 +147,26 @@ sap.ui.define([
         },
 
 		onVermietungsaktivitaetAnlegenKleinvermietung: function(oEvent){
+            var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
+
+            if(!wirtschaftseinheit){
+                this.onBack(null);
+                return;
+            }
+
+            this.onVermietungsaktivitaetAnlegen(oEvent);
 		},
 
         onVermietungsaktivitaetAnlegenExterneVermietung: function(oEvent){
+
+            var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
+
+            if(!wirtschaftseinheit){
+                this.onBack(null);
+                return;
+            }
+
+            this.onVermietungsaktivitaetAnlegen(oEvent);
         },
 
         onVermietungsaktivitaetAnlegenExcelImport: function(oEvent){
@@ -159,7 +178,7 @@ sap.ui.define([
                 return;
             }
 
-            console.log(vermietungsaktivitaet);
+            this.onVermietungsaktivitaetAnlegen(oEvent);
         },
 
         ladeKonditioneneinigung: function(KeId, Bukrs){
