@@ -20,7 +20,9 @@ sap.ui.define([
                 }
             });
 
-			//this.getView().addStyleClass("sapUiSizeCompact");
+            // Kompaktere Darstellung aller Elemente
+            // evtl. hilfreich für später
+			// this.getView().addStyleClass("sapUiSizeCompact");
 
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("vermietungsaktivitaetDetails").attachPatternMatched(this.onVermietungsaktivitaetAnzeigen, this);
@@ -29,7 +31,151 @@ sap.ui.define([
             oRouter.getRoute("vermietungsaktivitaetAnlegenEV").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExterneVermietung, this);
             oRouter.getRoute("vermietungsaktivitaetAnlegenImport").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExcelImport, this);
 		},
-        
+
+
+        initializeForm: function(fnCustomInitializer){
+            this.initializeEmptyModel();
+            fnCustomInitializer();
+            this.initializeAlternativeNutzungsarten();
+            this.initializeVermietungsarten();
+            this.initializeStatuswerte();
+            this.initializeAnmerkungen();
+            this.initializeViewsettings();
+            this.initializeValidationState();
+        },
+
+
+        initializeEmptyModel: function(){
+            var form = {
+                modus: null, // show, new, edit
+
+                vermietungsaktivitaet: null,
+
+                alternativeNutzungsarten: null,
+                vermietungsarten: null,
+                statuswerte: null,
+                anmerkungen: null,
+                viewsettings: null
+            };
+            
+            var formModel = new sap.ui.model.json.JSONModel(form);
+            this.getView().setModel(formModel, "form");
+        },
+
+        initializeAlternativeNutzungsarten: function(){
+
+            this.getView().getModel("form").setProperty("/alternativeNutzungsarten", [
+                {key: "", text: ""},
+                {key: "NutzartAlt 1", text: "NutzartAlt 1"}, // Fixe Werte passend zu Werten vom Mockserver
+                {key: "NutzartAlt 2", text: "NutzartAlt 2"},
+                {key: "NutzartAlt 3", text: "NutzartAlt 3"}
+            ]);
+
+        },
+
+        initializeVermietungsarten: function(){
+
+            this.getView().getModel("form").setProperty("/vermietungsarten", [
+                {key: "Neuvermietung", text: "Neuvermietung"},
+                {key: "Anschlussvermietung", text: "Anschlussvermietung"},
+            ]);
+        },
+
+        initializeStatuswerte: function(){
+
+            this.getView().getModel("form").setProperty("/statuswerte", [
+                {key: "a", text: "Abgebrochen 0%"},
+                {key: "b", text: "Ausbauplanung 50%"},
+                {key: "c", text: "Mietvertragsentwurf erstellt - 70%"},
+                {key: "d", text: "Mietvertrag abgeschlossen – 100%"}
+            ]);
+        },
+
+        initializeAnmerkungen: function(){
+
+            var anmerkungen = {
+                "a": [
+                    {key:"a0", text: "Abgebrochen"}
+                ],
+                "b": [
+                    {key: "b0", text: "Abstimmung der Mieteraus-bauplanung mit dem Mietinteressenten"},
+                    {key: "b1", text: "Wirtschaftliche Eckdaten in Verhandlung"},
+                    {key: "b2", text: "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt"}
+                ],
+                "c": [
+                    {key: "c0", text: "Mietvertragsverhandlungen in Vorbereitung"},
+                    {key: "c1", text: "Mietvertragsverhandlungen begonnen"},
+                    {key: "c2", text: "Vertragsverhandlungen dauern an"},
+                    {key: "c3", text: "Vertragsverhandlungen verzögern sich"},
+                    {key: "c4", text: "Genehmigtes MV-Eck liegt vor (Planungswahrschein-lichkeit 90%)"},
+                    {key: "c5", text: "Abschlusswahrscheinlichkeit binnen 8 Wochen erwartet (Planungswahrscheinlichkeit 90%)"}
+                ],
+                "d": [
+                    {key: "d0", text: "Mietvertrag noch nicht in SAP erfasst"},
+                    {key: "d1", text: "Mietvertrag in SAP erfasst"}
+                ]
+            };
+
+            var statusKey = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Status");
+            
+            this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen[statusKey]);
+        },
+
+
+        initializeViewsettings: function(){
+            var _this = this;
+
+            var viewsettings = {
+                waehrungen: [],
+                zeitspannen: [
+                    {key: "MONAT", text: "Monatsmiete"},
+                    {key: "JAHR", text: "Jahresmiete"}
+                ],
+                waehrungSelectedKey: "",
+                waehrungSelected: null,
+                zeitspanneSelectedKey: "",
+                zeitspanneSelected: null
+            };
+
+            viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
+            viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
+
+            // Refactoring: kann im Zuge der Form initialisierung nicht an dieser Stelle passieren
+            // da noch keine Vermietungsaktivitaet initialisiert wurde
+            // Ausgangswährung ermitteln
+            //var ausgangsWaehrung = "EUR";
+            //var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+            //if(mietflaechenangaben.length > 0){
+            //    ausgangsWaehrung = mietflaechenangaben[0].Whrung;
+            //}
+
+            var oDataModel = sap.ui.getCore().getModel("odata");
+
+            oDataModel.read("/WaehrungSet", {
+
+                urlParameters: {
+                    //"$filter": "Gdat eq datetime'2001-01-01T00:00:00' and Von eq '"+ausgangsWaehrung+"'"
+                },
+
+                success: function(oData){
+                    console.log(oData);
+
+                    oData.results.forEach(function(waehrung){
+                        viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Ukurs} );
+                    });
+
+                    if(viewsettings.waehrungen.length > 0){
+                        viewsettings.waehrungSelectedKey = viewsettings.waehrungen[0].key;
+                        viewsettings.waehrungSelected = viewsettings.waehrungen[0];
+                    }
+
+                    _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
+                }
+
+            });
+        },
+
+
 		onVermietungsaktivitaetAnzeigen: function(oEvent){
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnzeigen");
             var _this = this;
@@ -61,47 +207,12 @@ sap.ui.define([
                     oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
                     oData.arbeitsvorrat = null;
 
-                    var form = {
-                        modus: "show", // show, new, edit
-
-                        vermietungsaktivitaet: oData,
-
-                        alternativeNutzungsarten: [
-                            {key: "", text: ""},
-                            {key: "NutzartAlt 1", text: "NutzartAlt 1"}, // Fixe Werte passend zu Werten vom Mockserver
-                            {key: "NutzartAlt 2", text: "NutzartAlt 2"},
-                            {key: "NutzartAlt 3", text: "NutzartAlt 3"}
-                        ],
-                        
-                        vermietungsarten: [
-                            {key: "Neuvermietung", text: "Neuvermietung"},
-                            {key: "Anschlussvermietung", text: "Anschlussvermietung"},
-                        ],
-                        
-                        statuswerte: [
-                            {key: "a", text: "Abgebrochen 0%"},
-                            {key: "b", text: "Ausbauplanung 50%"},
-                            {key: "c", text: "Mietvertragsentwurf erstellt - 70%"},
-                            {key: "d", text: "Mietvertrag abgeschlossen – 100%"}
-                        ],
-                        
-                        anmerkungen: []
-                    };
+                    _this.initializeForm(function(){
+                        _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", oData);
+                        _this.getView().getModel("form").setProperty("/modus", show);
+                    });
 
 
-                    var user = {
-                        rolle: "FM" // FM, AM 
-                    };
-                    
-                    var formModel = new sap.ui.model.json.JSONModel(form);
-                    var userModel = new sap.ui.model.json.JSONModel(userModel);
-                    
-                    _this.getView().setModel(userModel, "user");
-                    _this.getView().setModel(formModel, "form");
-                                
-                    _this.enhanceModelWithViewSettings();
-                    _this.clearValidationState();
-                    _this.anmerkungSelektionInitialisieren();
                 }
             });
 
@@ -112,20 +223,20 @@ sap.ui.define([
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenRegelvermietung");
             var _this = this;
 
-            var konditioneneinigungen = NavigationPayloadUtil.takePayload();
+            var konditioneneinigungenPayload = NavigationPayloadUtil.takePayload();
 
-            if(!konditioneneinigungen){
+            if(!konditioneneinigungenPayload){
                 this.onBack(null);
                 return;
             }
 
-		    console.log(konditioneneinigungen);
+		    console.log(konditioneneinigungenPayload);
           
             // Array für Promises der Konditioneneinigung-Requests
             var promises = [];
 
             // Einzelnen Konditioneneinigungen laden
-            konditioneneinigungen.forEach(function(konditioneneinigung){
+            konditioneneinigungenPayload.forEach(function(konditioneneinigung){
                 promises.push( _this.ladeKonditioneneinigung(konditioneneinigung.KeId, konditioneneinigung.Bukrs) );
             });
 
@@ -133,84 +244,72 @@ sap.ui.define([
             // Objekte der 
             Q.all(promises).then(function(konditioneneinigungen){
 
-                _this.onVermietungsaktivitaetAnlegen(oEvent);
-                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", konditioneneinigungen[0].WeId);
+                _this.initializeForm(function(){
 
-                var objekteAllerKEs = [];
+                    var vermietungsaktivitaet = {
+                        Bukrs: "",
+                        LzFirstbreak: "",
+                        Debitorname: "",
+                        MzMonate: "",
+                        IdxWeitergabe: "",
+                        VaId: "",
+                        WeId: "",
+                        Status: "a",
+                        Anmerkung: "",
+                        Mietbeginn: null,
+                        Bemerkung: "",
+                        Vermietungsart: "",
+                        Aktiv: false,
+                        Debitor: "",
+                        Bonitaet: "",
+                        PLRelevant: false,
+                        BkMonate: "",
+                        BkAbsolut: "",
+                        MkMonate: "",
+                        MkAbsolut: "",
+                        Poenale: "",
+                        Currency: "",
+                        Unit: "",
+                        AuthUser: "",
+                        Favorit: false,
 
-                konditioneneinigungen.forEach(function(konditioneneinigung){
-                    objekteAllerKEs.push.apply(objekteAllerKEs, konditioneneinigung.KeToOb.results);
+                        VaToOb: [],
+
+                        // keine OData Felder
+                        mieteGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
+                        kostenGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
+                        arbeitsvorrat: false
+                    };
+
+                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", konditioneneinigungen[0].WeId);
+
+                    var objekteAllerKEs = [];
+
+                    konditioneneinigungen.forEach(function(konditioneneinigung){
+                        objekteAllerKEs.push.apply(objekteAllerKEs, konditioneneinigung.KeToOb.results);
+                    });
+
+                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekteAllerKEs);
+                    _this.getView().getModel("form").setProperty("/modus", "new");
                 });
 
-                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekteAllerKEs);
             });
         },
 
 		onVermietungsaktivitaetAnlegenKleinvermietung: function(oEvent){
-            var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
-
-            if(!wirtschaftseinheit){
-                this.onBack(null);
-                return;
-            }
-
-            this.onVermietungsaktivitaetAnlegen(oEvent);
-		},
-
-        onVermietungsaktivitaetAnlegenExterneVermietung: function(oEvent){
-
-            var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
-
-            if(!wirtschaftseinheit){
-                this.onBack(null);
-                return;
-            }
-
-            this.onVermietungsaktivitaetAnlegen(oEvent);
-        },
-
-        onVermietungsaktivitaetAnlegenExcelImport: function(oEvent){
-
-            var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
-
-            if(!vermietungsaktivitaet){
-                this.onBack(null);
-                return;
-            }
-
-            this.onVermietungsaktivitaetAnlegen(oEvent);
-        },
-
-        ladeKonditioneneinigung: function(KeId, Bukrs){
             var _this = this;
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+            var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
 
-    	    return Q.Promise(function(resolve, reject, notify) {
+            if(!wirtschaftseinheit){
+                this.onBack(null);
+                return;
+            }
 
-                // TODO: KonditioneneinigungSet(Bukrs='',KeId='')
-                oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
+            this.initializeForm(function(){
 
-                    urlParameters: {
-                        "$expand": "KeToOb"
-                    },
-
-                    success: function(oData){
-                        resolve(oData);
-                    }
-                });
-                
-            });
-        },
-
-
-        onVermietungsaktivitaetAnlegen: function(oEvent){
-            
-            var form = {
-                modus: "new", // show, new, edit
-                
-                vermietungsaktivitaet: {
-
+                var vermietungsaktivitaet = {
                     Bukrs: "",
                     LzFirstbreak: "",
                     Debitorname: "",
@@ -243,146 +342,64 @@ sap.ui.define([
                     mieteGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
                     kostenGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
                     arbeitsvorrat: false
-                },
-				
-				alternativeNutzungsarten: [
-					{key: "NutzartAlt 1", text: "NutzartAlt 1"}, // Fixe Werte passend zu Werten vom Mockserver
-					{key: "NutzartAlt 2", text: "NutzartAlt 2"},
-					{key: "NutzartAlt 3", text: "NutzartAlt 3"}
-				],
-				
-				vermietungsarten: [
-					{key: "Neuvermietung", text: "Neuvermietung"},
-					{key: "Anschlussvermietung", text: "Anschlussvermietung"},
-				],
-                
-                statuswerte: [
-                    {key: "a", text: "Abgebrochen 0%"},
-                    {key: "b", text: "Ausbauplanung 50%"},
-                    {key: "c", text: "Mietvertragsentwurf erstellt - 70%"},
-                    {key: "d", text: "Mietvertrag abgeschlossen – 100%"}
-                ],
-                
-                anmerkungen: []
-            };
-            
-            var user = {
-                rolle: "FM" // FM, AM 
-            };
-            
-            var formModel = new sap.ui.model.json.JSONModel(form);
-            var userModel = new sap.ui.model.json.JSONModel(userModel);
-            
-            this.getView().setModel(userModel, "user");
-			this.getView().setModel(formModel, "form");
-            
-            this.enhanceModelWithViewSettings();
-            this.clearValidationState();
-            this.anmerkungSelektionInitialisieren();
+                };
+
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+                _this.getView().getModel("form").setProperty("/modus", "new");
+            });
+		},
+
+        onVermietungsaktivitaetAnlegenExterneVermietung: function(oEvent){
+
+            var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
+
+            if(!wirtschaftseinheit){
+                this.onBack(null);
+                return;
+            }
+
+            this.initializeForm();
         },
 
-        /**
-         * Liest Währungen und Umrechnungskurse aus dem Backend und initialisiert das Popup hinter dem Zahnrad
-         */
-        enhanceModelWithViewSettings: function(){
-            var _this = this;
+        onVermietungsaktivitaetAnlegenExcelImport: function(oEvent){
 
-            var viewsettings = {
-                waehrungen: [],
-                zeitspannen: [
-                    {key: "MONAT", text: "Monatsmiete"},
-                    {key: "JAHR", text: "Jahresmiete"}
-                ],
-                waehrungSelectedKey: "",
-                waehrungSelected: null,
-                zeitspanneSelectedKey: "",
-                zeitspanneSelected: null
-            };
+            var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
 
-            viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
-            viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
-
-            // Ausgangswährung ermitteln
-            var ausgangsWaehrung = "EUR";
-            var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
-            if(mietflaechenangaben.length > 0){
-                ausgangsWaehrung = mietflaechenangaben[0].Whrung;
+            if(!vermietungsaktivitaet){
+                this.onBack(null);
+                return;
             }
+
+            this.initializeForm();
+        },
+
+        ladeKonditioneneinigung: function(KeId, Bukrs){
+            var _this = this;
 
             var oDataModel = sap.ui.getCore().getModel("odata");
 
-            oDataModel.read("/WaehrungSet", {
+    	    return Q.Promise(function(resolve, reject, notify) {
 
-                urlParameters: {
-                    //"$filter": "Gdat eq datetime'2001-01-01T00:00:00' and Von eq '"+ausgangsWaehrung+"'"
-                },
+                // TODO: KonditioneneinigungSet(Bukrs='',KeId='')
+                oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
 
-                success: function(oData){
-                    console.log(oData);
+                    urlParameters: {
+                        "$expand": "KeToOb"
+                    },
 
-                    oData.results.forEach(function(waehrung){
-                        viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Ukurs} );
-                    });
-
-                    if(viewsettings.waehrungen.length > 0){
-                        viewsettings.waehrungSelectedKey = viewsettings.waehrungen[0].key;
-                        viewsettings.waehrungSelected = viewsettings.waehrungen[0];
+                    success: function(oData){
+                        resolve(oData);
                     }
-
-                    _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
-                }
-
+                });
+                
             });
         },
 
-        
+
         onStatusSelektionChange: function(){
-            this.anmerkungSelektionInitialisieren();
+            this.initializeAnmerkungen();
         },
         
-        anmerkungSelektionInitialisieren: function(){
-
-            var statusKey = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Status");
-
-            var anmerkungen = null;
-
-            switch(statusKey)
-            {
-                case "a":
-                    anmerkungen = [
-                        {key:"a0", text: "Abgebrochen"}
-                    ];
-                break;
-                
-                case "b":
-                    anmerkungen = [
-                        {key: "b0", text: "Abstimmung der Mieteraus-bauplanung mit dem Mietinteressenten"},
-                        {key: "b1", text: "Wirtschaftliche Eckdaten in Verhandlung"},
-                        {key: "b2", text: "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt"}
-                    ];
-                break;
-                
-                case "c":
-                    anmerkungen = [
-                        {key: "c0", text: "Mietvertragsverhandlungen in Vorbereitung"},
-                        {key: "c1", text: "Mietvertragsverhandlungen begonnen"},
-                        {key: "c2", text: "Vertragsverhandlungen dauern an"},
-                        {key: "c3", text: "Vertragsverhandlungen verzögern sich"},
-                        {key: "c4", text: "Genehmigtes MV-Eck liegt vor (Planungswahrschein-lichkeit 90%)"},
-                        {key: "c5", text: "Abschlusswahrscheinlichkeit binnen 8 Wochen erwartet (Planungswahrscheinlichkeit 90%)"}
-                    ];
-                break;
-                
-                case "d":
-                    anmerkungen = [
-                        {key: "d0", text: "Mietvertrag noch nicht in SAP erfasst"},
-                        {key: "d1", text: "Mietvertrag in SAP erfasst"}
-                    ];
-                break;
-            }
-            
-            this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
-        },
 		
 		onBearbeitenButtonPress: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onBearbeitenButtonPress");
@@ -394,7 +411,8 @@ sap.ui.define([
             this.getView().getModel("form").setProperty("/modus", "edit");
         },
 		
-        onBack : function(oEvent) {
+
+        onBack: function(oEvent) {
             this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
         },
 
@@ -467,7 +485,7 @@ sap.ui.define([
                             // Im Arbeitsvorrat speichern
                             _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/arbeitsvorrat", true);
                             _this.getView().getModel("form").setProperty("/modus", "show");
-                            _this.clearValidationState();                        
+                            _this.initializeValidationState();                        
                             dialog.close();
                         }
                     }),
@@ -491,7 +509,7 @@ sap.ui.define([
             var validationResult = true;
             
             // vorhandene States zurücksetzen
-            this.clearValidationState();
+            this.initializeValidationState();
             
             if(this.getView().byId("dateMietbeginn").getDateValue() === null)
             {
@@ -641,7 +659,7 @@ sap.ui.define([
         },
 		
 		
-		clearValidationState: function(){
+		initializeValidationState: function(){
             this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.None);
@@ -665,7 +683,7 @@ sap.ui.define([
         onAbbrechenButtonPress: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onAbbrechenButtonPress");          
             
-            this.clearValidationState();
+            this.initializeValidationState();
             
             var modus = this.getView().getModel("form").getProperty("/modus");           
             
@@ -735,8 +753,8 @@ sap.ui.define([
                 this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenSelektion", this);
             }
 
-            var WeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/WeId"); 
-            var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs"); 
+            var WeId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId"); 
+            var Bukrs = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Bukrs"); 
 
             var oDataModel = sap.ui.getCore().getModel("odata");
 
