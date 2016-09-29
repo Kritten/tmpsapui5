@@ -22,8 +22,10 @@ sap.ui.define([
 
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("vermietungsaktivitaetDetails").attachPatternMatched(this.onVermietungsaktivitaetAnzeigen, this);
-            oRouter.getRoute("vermietungsaktivitaetAnlegenKe").attachPatternMatched(this.onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung, this);
-            oRouter.getRoute("vermietungsaktivitaetAnlegenExcel").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExcelImport, this);
+            oRouter.getRoute("vermietungsaktivitaetAnlegenRV").attachPatternMatched(this.onVermietungsaktivitaetAnlegenRegelvermietung, this);
+            oRouter.getRoute("vermietungsaktivitaetAnlegenKV").attachPatternMatched(this.onVermietungsaktivitaetAnlegenKleinvermietung, this);
+            oRouter.getRoute("vermietungsaktivitaetAnlegenEV").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExterneVermietung, this);
+            oRouter.getRoute("vermietungsaktivitaetAnlegenImport").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExcelImport, this);
 		},
         
 		onVermietungsaktivitaetAnzeigen: function(oEvent){
@@ -103,8 +105,9 @@ sap.ui.define([
 
 		},
 
-		onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenAufBasisEinerKonditioneneinigung");
+		
+        onVermietungsaktivitaetAnlegenRegelvermietung: function(oEvent){
+			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenRegelvermietung");
             var _this = this;
 
             var konditioneneinigungen = NavigationPayloadUtil.takePayload();
@@ -139,9 +142,14 @@ sap.ui.define([
 
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekteAllerKEs);
             });
+        },
 
+		onVermietungsaktivitaetAnlegenKleinvermietung: function(oEvent){
 		},
-		
+
+        onVermietungsaktivitaetAnlegenExterneVermietung: function(oEvent){
+        },
+
         onVermietungsaktivitaetAnlegenExcelImport: function(oEvent){
 
             var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
@@ -850,23 +858,20 @@ sap.ui.define([
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onKonditioneneinigungLoeschenButtonPress");
             
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
+            
+            // IDs der KEs der ausgewählten Mietflächen sammeln (einzigartige)
             var selectedItems = mietflaechenangabenTable.getSelectedItems();
-                                    
+            var konditioneneinigungenIds = _.unique(_.map(selectedItems, function(item){
+                return item.getBindingContext("form").getObject().KeId;
+            }));
+
+            // Alle Mietflächen löschen, deren KEs ausgewählt wurde
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
 
-            var konditioneneinigungenIds = new Set();
-
-            mietflaechenangaben.forEach(function(objekt){
-                konditioneneinigungenIds.add(objekt.KeId);
+            mietflaechenangaben = _.filter(mietflaechenangaben, function(mietflaechenangabe){
+                return (_.indexOf(konditioneneinigungenIds, mietflaechenangabe.KeId) === -1);
             });
 
-            var i = mietflaechenangaben.length;
-            while(i--) {
-                if( konditioneneinigungenIds.has(mietflaechenangaben[i].KeId) ){
-                    mietflaechenangaben.splice(i, 1);
-                }
-            }
-            
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
 
             // Selektion aufheben nach dem Löschen
@@ -899,7 +904,7 @@ sap.ui.define([
                     konditioneneinigung.KeToOb.results.forEach(function(mietflaechenangabe){
                         
                         // Nur die Mietflächen hinzufügen, die noch nicht vorhanden sind
-                        if(jQuery.inArray(mietflaechenangabe.MoId, aVorhandeneMoIds) === -1){
+                        if(_.indexOf(aVorhandeneMoIds, mietflaechenangabe.MoId) === -1){
                             mietflaechenangaben.push( mietflaechenangabe );
                         }
 
@@ -942,7 +947,7 @@ sap.ui.define([
             });
             
             // Object-Properties to Array
-            var vorhandeneNutzungsarten = Object.keys(vorhandeneNutzungsarten).map(function (key) {
+            vorhandeneNutzungsarten = Object.keys(vorhandeneNutzungsarten).map(function (key) {
                 return vorhandeneNutzungsarten[key]
             });
             

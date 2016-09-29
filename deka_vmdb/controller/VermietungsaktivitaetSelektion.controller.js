@@ -118,53 +118,114 @@ sap.ui.define([
 			switch(index)
 			{
 				case 0:
-
-					if (! this._oDialog) {
-						this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialog", this);
-					}
-
-					var oDataModel = sap.ui.getCore().getModel("odata");
-
-					oDataModel.read("/KonditioneneinigungSet", {
-						success: function(oData){
-							console.log(oData);
-
-							var jsonData = {
-								data: oData.results
-							};
-							
-							_this._oDialog.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
-							
-							// clear the old search filter
-							_this._oDialog.getBinding("items").filter([]);
-							_this._oDialog.open();
-						}
-					});
+					this.showSelectDialogRegelvermietung();
 				break;
 
 				case 1:
+					this.showSelectDialogKleinvermietung();
 				break;
 
 				case 2:
+					this.showSelectDialogExterneVermietung();
 				break;
 
 				case 3:
-
-					if (! this._excelImportDialog) {
-						this._excelImportDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionExcelImportDialog", this);
-					}
-
-					var jsonData = {
-						data: null,
-						valid: false
-					};
-
-					this._excelImportDialog.setModel( new sap.ui.model.json.JSONModel(jsonData), "excelImportModel");
-					this._excelImportDialog.open();
-
+					this.showExcelImportDialog();
 				break;
 			}
 
+		},
+
+		showSelectDialogRegelvermietung: function(){
+			var _this = this;
+
+			var oDataModel = sap.ui.getCore().getModel("odata");
+
+			oDataModel.read("/KonditioneneinigungSet", {
+				success: function(oData){
+					console.log(oData);
+
+					if (! _this._selectDialogRegelvermietung) {
+						_this._selectDialogRegelvermietung = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialogRegelvermietung", _this);
+					}
+
+					var jsonData = {
+						data: oData.results
+					};
+					
+					_this._selectDialogRegelvermietung.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
+					
+					// clear the old search filter
+					_this._selectDialogRegelvermietung.getBinding("items").filter([]);
+					_this._selectDialogRegelvermietung.open();
+				}
+			});
+		},
+
+		showSelectDialogKleinvermietung: function(){
+			var _this = this;
+
+			var oDataModel = sap.ui.getCore().getModel("odata");
+
+			oDataModel.read("/WirtschaftseinheitenSet", {
+				success: function(oData){
+					console.log(oData);
+
+					if (! _this._selectDialogKleinvermietung) {
+						_this._selectDialogKleinvermietung = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialogKleinvermietung", _this);
+					}
+
+					var jsonData = {
+						data: oData.results
+					};
+					
+					_this._selectDialogKleinvermietung.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
+					
+					// clear the old search filter
+					_this._selectDialogKleinvermietung.getBinding("items").filter([]);
+					_this._selectDialogKleinvermietung.open();
+				}
+			});
+		},
+
+		showSelectDialogExterneVermietung: function(){
+			var _this = this;
+
+			var oDataModel = sap.ui.getCore().getModel("odata");
+
+			oDataModel.read("/WirtschaftseinheitenSet", {
+				success: function(oData){
+					console.log(oData);
+
+					if (! _this._selectDialogExterneVermietung) {
+						_this._selectDialogExterneVermietung = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialogExterneVermietung", _this);
+					}
+
+					var jsonData = {
+						data: oData.results
+					};
+					
+					_this._selectDialogExterneVermietung.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
+					
+					// clear the old search filter
+					_this._selectDialogExterneVermietung.getBinding("items").filter([]);
+					_this._selectDialogExterneVermietung.open();
+				}
+			});
+		},
+
+		showExcelImportDialog: function(){
+			if (! this._excelImportDialog) {
+				this._excelImportDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionExcelImportDialog", this);
+			}
+
+			var jsonData = {
+				data: null,
+				valid: false
+			};
+
+			this._excelImportDialog.setModel( new sap.ui.model.json.JSONModel(jsonData), "excelImportModel");
+			this._excelImportDialog.open();
 		},
 
 		onExcelImportDialogFileUploadChange: function(oEvent){
@@ -197,16 +258,9 @@ sap.ui.define([
 			this._excelImportDialog.destroy();
 			delete this._excelImportDialog;
 		},
-		
-		onSelectDialogSearch : function(oEvent) {				
-			var sValue = oEvent.getParameter("value");
-			var oFilter = new Filter("id", sap.ui.model.FilterOperator.Contains, sValue);
-			var oBinding = oEvent.getSource().getBinding("items");
-			oBinding.filter([oFilter]);
-		},
 	
-		onSelectDialogConfirm: function(oEvent) {
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onSelectDialogConfirm");
+		onRegelvermietungSelectDialogConfirm: function(oEvent) {
+			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onRegelvermietungSelectDialogConfirm");
 			
 			var konditioneneinigungen = [];
 
@@ -222,9 +276,35 @@ sap.ui.define([
 				});
 
 				NavigationPayloadUtil.putPayload(konditioneneinigungen);
-				this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenKe");
+				this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenRV");
 			}
 		},
+
+		onRegelvermietungSelectDialogSearch : function(oEvent) {				
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new Filter("id", sap.ui.model.FilterOperator.Contains, sValue);
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([oFilter]);
+		},
+
+		onKleinvermietungSelectDialogConfirm: function(oEvent){
+			NavigationPayloadUtil.putPayload({});
+			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenKV");
+		},
+
+		onKleinvermietungSelectDialogSearch: function(oEvent){
+
+		},
+
+		onExterneVermietungSelectDialogConfirm: function(oEvent){
+			NavigationPayloadUtil.putPayload({});
+			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenEV");
+		},
+
+		onExterneVermietungSelectDialogSearch: function(oEvent){
+
+		},
+
 		
 		// Klick auf eine Zeile in der Tabelle
 		onItemPress : function(oEvent) {

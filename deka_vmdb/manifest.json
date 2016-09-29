@@ -102,14 +102,26 @@
 						"targetAggregation" : "pages"
 					},
 					{
-						"pattern": "VermSel/new/KE",
-						"name" : "vermietungsaktivitaetAnlegenKe",
+						"pattern": "VermSel/new/KV",
+						"name" : "vermietungsaktivitaetAnlegenKV",
 						"view" : "VermietungsaktivitaetDetails",
 						"targetAggregation" : "pages"
 					},
 					{
-						"pattern": "VermSel/new/Excel",
-						"name" : "vermietungsaktivitaetAnlegenExcel",
+						"pattern": "VermSel/new/RV",
+						"name" : "vermietungsaktivitaetAnlegenRV",
+						"view" : "VermietungsaktivitaetDetails",
+						"targetAggregation" : "pages"
+					},
+					{
+						"pattern": "VermSel/new/EV",
+						"name" : "vermietungsaktivitaetAnlegenEV",
+						"view" : "VermietungsaktivitaetDetails",
+						"targetAggregation" : "pages"
+					},
+					{
+						"pattern": "VermSel/new/IMPORT",
+						"name" : "vermietungsaktivitaetAnlegenImport",
 						"view" : "VermietungsaktivitaetDetails",
 						"targetAggregation" : "pages"
 					}]
