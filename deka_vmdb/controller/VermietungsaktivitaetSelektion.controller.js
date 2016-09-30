@@ -282,7 +282,7 @@ sap.ui.define([
 
 		onRegelvermietungSelectDialogSearch : function(oEvent) {				
 			var sValue = oEvent.getParameter("value");
-			var oFilter = new Filter("id", sap.ui.model.FilterOperator.Contains, sValue);
+			var oFilter = new Filter("KeId", sap.ui.model.FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getSource().getBinding("items");
 			oBinding.filter([oFilter]);
 		},
@@ -293,7 +293,10 @@ sap.ui.define([
 		},
 
 		onKleinvermietungSelectDialogSearch: function(oEvent){
-
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue);
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([oFilter]);
 		},
 
 		onExterneVermietungSelectDialogConfirm: function(oEvent){
@@ -302,7 +305,10 @@ sap.ui.define([
 		},
 
 		onExterneVermietungSelectDialogSearch: function(oEvent){
-
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue);
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([oFilter]);
 		},
 
 		

@@ -230,8 +230,6 @@ sap.ui.define([
                 return;
             }
 
-		    console.log(konditioneneinigungenPayload);
-          
             // Array für Promises der Konditioneneinigung-Requests
             var promises = [];
 
@@ -246,50 +244,15 @@ sap.ui.define([
 
                 _this.initializeForm(function(){
 
-                    var vermietungsaktivitaet = {
-                        Bukrs: "",
-                        LzFirstbreak: "",
-                        Debitorname: "",
-                        MzMonate: "",
-                        IdxWeitergabe: "",
-                        VaId: "",
-                        WeId: "",
-                        Status: "a",
-                        Anmerkung: "",
-                        Mietbeginn: null,
-                        Bemerkung: "",
-                        Vermietungsart: "",
-                        Aktiv: false,
-                        Debitor: "",
-                        Bonitaet: "",
-                        PLRelevant: false,
-                        BkMonate: "",
-                        BkAbsolut: "",
-                        MkMonate: "",
-                        MkAbsolut: "",
-                        Poenale: "",
-                        Currency: "",
-                        Unit: "",
-                        AuthUser: "",
-                        Favorit: false,
-
-                        VaToOb: [],
-
-                        // keine OData Felder
-                        mieteGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
-                        kostenGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
-                        arbeitsvorrat: false
-                    };
-
-                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", konditioneneinigungen[0].WeId);
+                    var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
 
                     var objekteAllerKEs = [];
-
                     konditioneneinigungen.forEach(function(konditioneneinigung){
                         objekteAllerKEs.push.apply(objekteAllerKEs, konditioneneinigung.KeToOb.results);
                     });
 
+                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", konditioneneinigungen[0].WeId);
                     _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekteAllerKEs);
                     _this.getView().getModel("form").setProperty("/modus", "new");
                 });
@@ -298,6 +261,7 @@ sap.ui.define([
         },
 
 		onVermietungsaktivitaetAnlegenKleinvermietung: function(oEvent){
+			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenKleinvermietung");
             var _this = this;
 
             var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
@@ -308,49 +272,16 @@ sap.ui.define([
             }
 
             this.initializeForm(function(){
-
-                var vermietungsaktivitaet = {
-                    Bukrs: "",
-                    LzFirstbreak: "",
-                    Debitorname: "",
-                    MzMonate: "",
-                    IdxWeitergabe: "",
-                    VaId: "",
-                    WeId: "",
-                    Status: "a",
-                    Anmerkung: "",
-                    Mietbeginn: null,
-                    Bemerkung: "",
-                    Vermietungsart: "",
-                    Aktiv: false,
-                    Debitor: "",
-                    Bonitaet: "",
-                    PLRelevant: false,
-                    BkMonate: "",
-                    BkAbsolut: "",
-                    MkMonate: "",
-                    MkAbsolut: "",
-                    Poenale: "",
-                    Currency: "",
-                    Unit: "",
-                    AuthUser: "",
-                    Favorit: false,
-
-                    VaToOb: [],
-
-                    // keine OData Felder
-                    mieteGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
-                    kostenGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
-                    arbeitsvorrat: false
-                };
-
+                var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
                 _this.getView().getModel("form").setProperty("/modus", "new");
             });
 		},
 
         onVermietungsaktivitaetAnlegenExterneVermietung: function(oEvent){
-
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenExterneVermietung");
+            var _this = this;
+            
             var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
 
             if(!wirtschaftseinheit){
@@ -358,10 +289,16 @@ sap.ui.define([
                 return;
             }
 
-            this.initializeForm();
+            this.initializeForm(function(){
+                var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+                _this.getView().getModel("form").setProperty("/modus", "new");
+            });
         },
 
         onVermietungsaktivitaetAnlegenExcelImport: function(oEvent){
+            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenExcelImport");
+            var _this = this;
 
             var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
 
@@ -370,17 +307,19 @@ sap.ui.define([
                 return;
             }
 
-            this.initializeForm();
+            this.initializeForm(function(){
+                vermietungsaktivitaet = _this.newVermietungsaktivitaet();
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+                _this.getView().getModel("form").setProperty("/modus", "new");
+            });
         },
 
         ladeKonditioneneinigung: function(KeId, Bukrs){
-            var _this = this;
 
             var oDataModel = sap.ui.getCore().getModel("odata");
 
     	    return Q.Promise(function(resolve, reject, notify) {
 
-                // TODO: KonditioneneinigungSet(Bukrs='',KeId='')
                 oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
 
                     urlParameters: {
@@ -418,7 +357,6 @@ sap.ui.define([
 
 
         handleTableSettingsButton: function(oEvent){
-            var _this = this;
 
             // create popover
 			if (! this._tableViewSettingsPopover) {
@@ -823,7 +761,6 @@ sap.ui.define([
         
         onMietflaechenSelektionDialogSearch: function(oEvent){
             jQuery.sap.log.info(".. onMietflaechenSelektionDialogSearch");
-            
         },
 		
 
@@ -917,7 +854,7 @@ sap.ui.define([
 
 
         onKonditioneneinigungDialogSearch: function(oEvent){
-
+            jQuery.sap.log.info(".. onKonditioneneinigungDialogSearch");
         },
 
         onKonditioneneinigungDialogConfirm: function(oEvent){
@@ -965,7 +902,7 @@ sap.ui.define([
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             
 			if(mietflaechenangaben.length === 0){
-// TODO: Fehlermeldung
+                // TODO: Fehlermeldung
 				return;
 			}
 			
@@ -1125,7 +1062,46 @@ sap.ui.define([
 			var debitor = oEvent.getParameter("selectedItem").getBindingContext().getObject();
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Debitorname", debitor.Name);
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Debitor", debitor.KdNr);
-        }
+        },
         
+        newVermietungsaktivitaet: function(){
+
+            return {
+                Bukrs: "",
+                LzFirstbreak: "",
+                Debitorname: "",
+                MzMonate: "",
+                IdxWeitergabe: "",
+                VaId: "",
+                WeId: "",
+                Status: "a",
+                Anmerkung: "",
+                Mietbeginn: null,
+                Bemerkung: "",
+                Vermietungsart: "",
+                Aktiv: false,
+                Debitor: "",
+                Bonitaet: "",
+                PLRelevant: false,
+                BkMonate: "",
+                BkAbsolut: "",
+                MkMonate: "",
+                MkAbsolut: "",
+                Poenale: "",
+                Currency: "",
+                Unit: "",
+                AuthUser: "",
+                Favorit: false,
+
+                VaToOb: [],
+
+                // keine OData Felder
+                mieteGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
+                kostenGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
+                arbeitsvorrat: false
+            };
+
+        }
+
 	});
 });
