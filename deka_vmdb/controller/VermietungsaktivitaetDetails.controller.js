@@ -33,143 +33,88 @@ sap.ui.define([
 		},
 
 
-        /**
-         * Hauptmethode zur Initialisierung des Views. Wird sowohl bei Anzeige als auch Anlage ausgeführt.
-         * Für fnPromiseCustomInitializer muss eine Promise-Methode übergeben werden, welche die Initialisierung des Vermietungsaktivität übernimmt.
-         * Einige darauffolgende Funktionen setzen voraus, dass ein Vermietungsaktivitäts-Objekt existiert.
-         */
-        initializeForm: function(fnPromiseCustomInitializer){
+        initializeEmptyModel: function(){
+
+            var form = {
+                modus: null, // show, new, edit
+
+                vermietungsaktivitaet: null,
+
+                alternativeNutzungsarten: null,
+                vermietungsarten: null,
+                statuswerte: null,
+                anmerkungen: null,
+                viewsettings: null
+            };
             
-            this.initializeEmptyModelQ()
-                .then( fnPromiseCustomInitializer() )
-                .then( this.initializeAlternativeNutzungsartenQ() )
-                .then( this.initializeVermietungsartenQ() )
-                .then( this.initializeStatuswerteQ() )
-                .then( this.initializeAnmerkungenQ() )
-                .then( this.initializeViewsettingsQ() )
-            .catch(function(error){
-                console.log(error);
-            })
-            .done();
-
+            var formModel = new sap.ui.model.json.JSONModel(form);
+            this.getView().setModel(formModel, "form");
         },
 
 
-        initializeEmptyModelQ: function(){
-            var _this = this;
-
-    	    return Q.Promise(function(resolve, reject, notify) {
-
-                var form = {
-                    modus: null, // show, new, edit
-
-                    vermietungsaktivitaet: null,
-
-                    alternativeNutzungsarten: null,
-                    vermietungsarten: null,
-                    statuswerte: null,
-                    anmerkungen: null,
-                    viewsettings: null
-                };
-                
-                var formModel = new sap.ui.model.json.JSONModel(form);
-                _this.getView().setModel(formModel, "form");
-                resolve();
-
-            });
-        },
-
-
-        initializeAlternativeNutzungsartenQ: function(){
-            var _this = this;
+        initializeAlternativeNutzungsarten: function(){
             
-            return Q.Promise(function(resolve, reject, notify) {
-
-                _this.getView().getModel("form").setProperty("/alternativeNutzungsarten", [
-                    {key: "", text: ""},
-                    {key: "NutzartAlt 1", text: "NutzartAlt 1"}, // Fixe Werte passend zu Werten vom Mockserver
-                    {key: "NutzartAlt 2", text: "NutzartAlt 2"},
-                    {key: "NutzartAlt 3", text: "NutzartAlt 3"}
-                ]);
-                resolve();
-
-            });
-
+            this.getView().getModel("form").setProperty("/alternativeNutzungsarten", [
+                {key: "", text: ""},
+                {key: "NutzartAlt 1", text: "NutzartAlt 1"}, // Fixe Werte passend zu Werten vom Mockserver
+                {key: "NutzartAlt 2", text: "NutzartAlt 2"},
+                {key: "NutzartAlt 3", text: "NutzartAlt 3"}
+            ]);
         },
 
 
-        initializeVermietungsartenQ: function(){
-            var _this = this;
+        initializeVermietungsarten: function(){
 
-            return Q.Promise(function(resolve, reject, notify) {
-
-                _this.getView().getModel("form").setProperty("/vermietungsarten", [
-                    {key: "Neuvermietung", text: "Neuvermietung"},
-                    {key: "Anschlussvermietung", text: "Anschlussvermietung"},
-                ]);
-                resolve();
-
-            });
-
+            this.getView().getModel("form").setProperty("/vermietungsarten", [
+                {key: "Neuvermietung", text: "Neuvermietung"},
+                {key: "Anschlussvermietung", text: "Anschlussvermietung"},
+            ]);
         },
 
 
-        initializeStatuswerteQ: function(){
-            var _this = this;
+        initializeStatuswerte: function(){
 
-            return Q.Promise(function(resolve, reject, notify) {
-
-                _this.getView().getModel("form").setProperty("/statuswerte", [
-                    {key: "a", text: "Abgebrochen 0%"},
-                    {key: "b", text: "Ausbauplanung 50%"},
-                    {key: "c", text: "Mietvertragsentwurf erstellt - 70%"},
-                    {key: "d", text: "Mietvertrag abgeschlossen – 100%"}
-                ]);
-                resolve();
-
-            });
-
+            this.getView().getModel("form").setProperty("/statuswerte", [
+                {key: "a", text: "Abgebrochen 0%"},
+                {key: "b", text: "Ausbauplanung 50%"},
+                {key: "c", text: "Mietvertragsentwurf erstellt - 70%"},
+                {key: "d", text: "Mietvertrag abgeschlossen – 100%"}
+            ]);
         },
 
 
-        initializeAnmerkungenQ: function(){
-            var _this = this;
+        initializeAnmerkungen: function(){
 
-            return Q.Promise(function(resolve, reject, notify) {
+            var anmerkungen = {
+                "a": [
+                    {key:"a0", text: "Abgebrochen"}
+                ],
+                "b": [
+                    {key: "b0", text: "Abstimmung der Mieteraus-bauplanung mit dem Mietinteressenten"},
+                    {key: "b1", text: "Wirtschaftliche Eckdaten in Verhandlung"},
+                    {key: "b2", text: "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt"}
+                ],
+                "c": [
+                    {key: "c0", text: "Mietvertragsverhandlungen in Vorbereitung"},
+                    {key: "c1", text: "Mietvertragsverhandlungen begonnen"},
+                    {key: "c2", text: "Vertragsverhandlungen dauern an"},
+                    {key: "c3", text: "Vertragsverhandlungen verzögern sich"},
+                    {key: "c4", text: "Genehmigtes MV-Eck liegt vor (Planungswahrschein-lichkeit 90%)"},
+                    {key: "c5", text: "Abschlusswahrscheinlichkeit binnen 8 Wochen erwartet (Planungswahrscheinlichkeit 90%)"}
+                ],
+                "d": [
+                    {key: "d0", text: "Mietvertrag noch nicht in SAP erfasst"},
+                    {key: "d1", text: "Mietvertrag in SAP erfasst"}
+                ]
+            };
 
-                var anmerkungen = {
-                    "a": [
-                        {key:"a0", text: "Abgebrochen"}
-                    ],
-                    "b": [
-                        {key: "b0", text: "Abstimmung der Mieteraus-bauplanung mit dem Mietinteressenten"},
-                        {key: "b1", text: "Wirtschaftliche Eckdaten in Verhandlung"},
-                        {key: "b2", text: "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt"}
-                    ],
-                    "c": [
-                        {key: "c0", text: "Mietvertragsverhandlungen in Vorbereitung"},
-                        {key: "c1", text: "Mietvertragsverhandlungen begonnen"},
-                        {key: "c2", text: "Vertragsverhandlungen dauern an"},
-                        {key: "c3", text: "Vertragsverhandlungen verzögern sich"},
-                        {key: "c4", text: "Genehmigtes MV-Eck liegt vor (Planungswahrschein-lichkeit 90%)"},
-                        {key: "c5", text: "Abschlusswahrscheinlichkeit binnen 8 Wochen erwartet (Planungswahrscheinlichkeit 90%)"}
-                    ],
-                    "d": [
-                        {key: "d0", text: "Mietvertrag noch nicht in SAP erfasst"},
-                        {key: "d1", text: "Mietvertrag in SAP erfasst"}
-                    ]
-                };
-
-                var statusKey = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Status");
-                _this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen[statusKey]);
-                resolve();
-
-            });
-
+            var statusKey = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Status");
+            this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen[statusKey]);
         },
 
 
-        initializeViewsettingsQ: function(){
+        initializeViewsettingsAsync: function(vermietungsaktivitaet){
+
             var _this = this;
 
             return Q.Promise(function(resolve, reject, notify) {
@@ -189,14 +134,12 @@ sap.ui.define([
                 viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
                 viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
 
-                // Refactoring: kann im Zuge der Form initialisierung nicht an dieser Stelle passieren
-                // da noch keine Vermietungsaktivitaet initialisiert wurde
-                // Ausgangswährung ermitteln
-                //var ausgangsWaehrung = "EUR";
-                //var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
-                //if(mietflaechenangaben.length > 0){
-                //    ausgangsWaehrung = mietflaechenangaben[0].Whrung;
-                //}
+                // Ausgangswährung ermitteln - Wenn Mietflächen enthalten sind, nimm die Währung der ersten Mietfläche
+                var ausgangsWaehrung = "EUR";
+                var mietflaechenangaben = vermietungsaktivitaet.VaToOb;
+                if(mietflaechenangaben.length > 0){
+                    ausgangsWaehrung = mietflaechenangaben[0].Whrung;
+                }
 
                 var oDataModel = sap.ui.getCore().getModel("odata");
 
@@ -220,6 +163,10 @@ sap.ui.define([
 
                         _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
                         resolve();
+                    },
+
+                    error: function(oError){
+                        reject(oError);
                     }
 
                 });
@@ -236,40 +183,31 @@ sap.ui.define([
             var Bukrs = oEvent.getParameter("arguments").Bukrs;
             var VaId = oEvent.getParameter("arguments").VaId;
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+            this.initializeEmptyModel();
 
-            oDataModel.read("/VermietungsaktivitaetSet(" +
-                "Bukrs=" + "'" + Bukrs + "'" +
-                "," +
-                "VaId=" + "'" + VaId + "'" +
-                ")",
-            {
-                urlParameters: {
-                    "$expand": "VaToOb"
-                },
+            this.readVermietungsaktivitaetAsync(Bukrs, VaId)
+            .then(function(vermietungsaktivitaet){
+                
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+                _this.getView().getModel("form").setProperty("/modus", "show");
 
-                success: function(oData){
-                    console.log(oData);
+                _this.initializeViewsettingsAsync(vermietungsaktivitaet)
+                .then(function(){
+                    _this.initializeAlternativeNutzungsarten();
+                    _this.initializeVermietungsarten();
+                    _this.initializeStatuswerte();
+                    _this.initializeAnmerkungen();
+                })
+                .catch(function(oError){
+                    console.log(oError);
+                })
+                .done();
 
-                    // Struktur aufbereiten für UI5 Binding
-                    oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
-                    oData.VaToOb = oData.VaToOb.results;
-
-                    // Zusätzliche Felder
-                    oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
-                    oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
-                    oData.arbeitsvorrat = null;
-
-                    _this.initializeForm(function(){
-                        return Q.Promise(function(resolve, reject, notify) {
-                            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", oData);
-                            _this.getView().getModel("form").setProperty("/modus", "show");
-                            resolve();
-                        });
-                    });
-
-                }
-            });
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
 
 		},
 
@@ -290,33 +228,44 @@ sap.ui.define([
 
             // Einzelnen Konditioneneinigungen laden
             konditioneneinigungenPayload.forEach(function(konditioneneinigung){
-                promises.push( _this.ladeKonditioneneinigung(konditioneneinigung.KeId, konditioneneinigung.Bukrs) );
+                promises.push( _this.readKonditioneneinigungAsync(konditioneneinigung.KeId, konditioneneinigung.Bukrs) );
             });
 
             // Wenn alle Konditioneneinigungen erfolgreich geladen wurden
-            // Objekte der 
             Q.all(promises).then(function(konditioneneinigungen){
 
-                _this.initializeForm(function(){
-                    return Q.Promise(function(resolve, reject, notify) {
+                _this.initializeEmptyModel();
 
-                        var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
+                var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", konditioneneinigungen[0].WeId);
 
-                        var objekteAllerKEs = [];
-                        konditioneneinigungen.forEach(function(konditioneneinigung){
-                            objekteAllerKEs.push.apply(objekteAllerKEs, konditioneneinigung.KeToOb.results);
-                        });
-
-                        _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-                        _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", konditioneneinigungen[0].WeId);
-                        _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekteAllerKEs);
-                        _this.getView().getModel("form").setProperty("/modus", "new");
-
-                        resolve();
-                    });
+                // Objekte der konditioneneinigungen zur Vermietungsaktivität hinzufügen
+                var objekteAllerKEs = [];
+                konditioneneinigungen.forEach(function(konditioneneinigung){
+                    objekteAllerKEs.push.apply(objekteAllerKEs, konditioneneinigung.KeToOb.results);
                 });
 
-            });
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekteAllerKEs);
+                _this.getView().getModel("form").setProperty("/modus", "new");
+
+                _this.initializeViewsettingsAsync(vermietungsaktivitaet)
+                .then(function(){
+                    _this.initializeAlternativeNutzungsarten();
+                    _this.initializeVermietungsarten();
+                    _this.initializeStatuswerte();
+                    _this.initializeAnmerkungen();
+                })
+                .catch(function(oError){
+                    console.log(oError);
+                })
+                .done();
+
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
         },
 
 		onVermietungsaktivitaetAnlegenKleinvermietung: function(oEvent){
@@ -326,20 +275,27 @@ sap.ui.define([
             var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
 
             if(!wirtschaftseinheit){
-                this.onBack(null);
+                _this.onBack(null);
                 return;
             }
 
-            this.initializeForm(function(){
-                return Q.Promise(function(resolve, reject, notify) {
+            _this.initializeEmptyModel();
 
-                    var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
-                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-                    _this.getView().getModel("form").setProperty("/modus", "new");
+            var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
+            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+            _this.getView().getModel("form").setProperty("/modus", "new");
 
-                    resolve();
-                });
-            });
+            _this.initializeViewsettingsAsync(vermietungsaktivitaet)
+            .then(function(){
+                _this.initializeAlternativeNutzungsarten();
+                _this.initializeVermietungsarten();
+                _this.initializeStatuswerte();
+                _this.initializeAnmerkungen();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
 
 		},
 
@@ -350,20 +306,27 @@ sap.ui.define([
             var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
 
             if(!wirtschaftseinheit){
-                this.onBack(null);
+                _this.onBack(null);
                 return;
             }
 
-            this.initializeForm(function(){
-                return Q.Promise(function(resolve, reject, notify) {
+            _this.initializeEmptyModel();
 
-                    var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
-                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-                    _this.getView().getModel("form").setProperty("/modus", "new");
+            var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
+            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+            _this.getView().getModel("form").setProperty("/modus", "new");
 
-                    resolve();
-                });
-            });
+            _this.initializeViewsettingsAsync(vermietungsaktivitaet)
+            .then(function(){
+                _this.initializeAlternativeNutzungsarten();
+                _this.initializeVermietungsarten();
+                _this.initializeStatuswerte();
+                _this.initializeAnmerkungen();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
 
         },
 
@@ -372,29 +335,73 @@ sap.ui.define([
             var _this = this;
 
             var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
+            vermietungsaktivitaet = _this.newVermietungsaktivitaet();
 
             if(!vermietungsaktivitaet){
                 this.onBack(null);
                 return;
             }
 
-            this.initializeForm(function(){
-                return Q.Promise(function(resolve, reject, notify) {
+            _this.initializeEmptyModel();
 
-                    vermietungsaktivitaet = _this.newVermietungsaktivitaet();
-                    _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-                    _this.getView().getModel("form").setProperty("/modus", "new");
+            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+            _this.getView().getModel("form").setProperty("/modus", "new");
 
-                    resolve();
+            _this.initializeViewsettingsAsync(vermietungsaktivitaet)
+            .then(function(){
+                _this.initializeAlternativeNutzungsarten();
+                _this.initializeVermietungsarten();
+                _this.initializeStatuswerte();
+                _this.initializeAnmerkungen();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
+        },
+
+
+        readVermietungsaktivitaetAsync: function(Bukrs, VaId){
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
+
+                oDataModel.read("/VermietungsaktivitaetSet(Bukrs='" + Bukrs + "',VaId='" + VaId + "')",
+                {
+                    urlParameters: {
+                        "$expand": "VaToOb"
+                    },
+
+                    success: function(oData){
+                        console.log(oData);
+
+                        // Struktur aufbereiten für UI5 Binding
+                        oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
+                        oData.VaToOb = oData.VaToOb.results;
+
+                        // Zusätzliche Felder
+                        oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
+                        oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
+                        oData.arbeitsvorrat = null;
+
+                        resolve(oData);
+                    },
+
+                    error: function(oError){
+                        reject(oError);
+                    }
                 });
+
             });
         },
 
-        ladeKonditioneneinigung: function(KeId, Bukrs){
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+        readKonditioneneinigungAsync: function(KeId, Bukrs){
 
     	    return Q.Promise(function(resolve, reject, notify) {
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
 
                 oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
 
@@ -403,10 +410,40 @@ sap.ui.define([
                     },
 
                     success: function(oData){
+                        console.log(oData);
                         resolve(oData);
+                    },
+
+                    error: function(oError){
+                        reject(oError);
                     }
                 });
                 
+            });
+        },
+
+        readKonditioneneinigungSetAsync: function(){
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
+
+                oDataModel.read("/KonditioneneinigungSet", {
+
+                    urlParameters:{
+                        "$expand": "KeToOb"
+                    },
+
+                    success: function(oData){
+                        console.log(oData);
+                        resolve(oData.results);
+                    },
+
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+
             });
         },
 
@@ -849,58 +886,52 @@ sap.ui.define([
                 this.getView().addDependent(this._konditioneneinigungHinzufuegenDialog);
             }
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+            this.readKonditioneneinigungSetAsync()
+            .then(function(konditioneneinigungen){
 
-            oDataModel.read("/KonditioneneinigungSet", {
+                var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+                var vorhandeneMoIds = _.map(mietflaechenangaben, function(mietflaechenangaben){
+                    return mietflaechenangaben.MoId;
+                });
 
-                urlParameters:{
-                    "$expand": "KeToOb"
-                },
+                var jsonData = {
+                    konditioneneinigungen: []
+                };
 
-                success: function(oData){
-                    console.log(oData);
+                var wirtschaftseinheitId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId");
 
-                    var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
-                    var aVorhandeneMoIds = [];
-                    
-                    mietflaechenangaben.forEach(function(mietflaechenangabe){
-                        aVorhandeneMoIds.push( mietflaechenangabe.MoId );
-                    });
+                // Nur Konditioneneinigungen der selben Wirtschaftseinheit betrachten
+                konditioneneinigungen = _.filter(konditioneneinigungen, function(konditioneneinigung){
+                    return (konditioneneinigung.WeId === wirtschaftseinheitId);
+                });
 
-                    var jsonData = {
-                        konditioneneinigungen: []
-                    };
+                konditioneneinigungen.forEach(function(konditioneneinigung){
 
-                    var wirtschaftseinheitId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId");
+                    var mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden = true;
 
-                    oData.results.forEach(function(konditioneneinigung){
-
-                        // Nur Konditioneneinigungen der selben Wirtschaftseinheit anzeigen
-                        if(konditioneneinigung.WeId === wirtschaftseinheitId){
-
-                            var mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden = true;
-
-                            // Prüfen ob die Konditioneneinigung Mietflächen enthält, die noch nicht in der Liste sind
-                            konditioneneinigung.KeToOb.results.forEach(function(objekt){
-                                if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1){
-                                    mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden = false;
-                                }
-                            });
-
-                            // Konditioneneinigung nur dann anzeigen, wenn sie Mietflächen enthält, die noch nicht in der Liste sind
-                            if(!mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden){
-                                jsonData.konditioneneinigungen.push( konditioneneinigung );
-                            }
+                    // Prüfen ob die Konditioneneinigung Mietflächen enthält, die noch nicht in der Liste sind
+                    konditioneneinigung.KeToOb.results.forEach(function(objekt){
+                        if(jQuery.inArray(objekt.MoId, vorhandeneMoIds) === -1){
+                            mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden = false;
                         }
-
                     });
-                    
-                    var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
 
-                    _this._konditioneneinigungHinzufuegenDialog.setModel(jsonModel);
-                    _this._konditioneneinigungHinzufuegenDialog.open();
-                }
-            });
+                    // Konditioneneinigung nur dann anzeigen, wenn sie Mietflächen enthält, die noch nicht in der Liste sind
+                    if(!mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden){
+                        jsonData.konditioneneinigungen.push( konditioneneinigung );
+                    }
+                    
+                });
+
+                var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
+
+                _this._konditioneneinigungHinzufuegenDialog.setModel(jsonModel);
+                _this._konditioneneinigungHinzufuegenDialog.open();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
 
         },
 
