@@ -32,7 +32,6 @@ sap.ui.define([
             oRouter.getRoute("vermietungsaktivitaetAnlegenImport").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExcelImport, this);
 		},
 
-
         initializeEmptyModel: function(){
 
             var form = {
@@ -51,7 +50,6 @@ sap.ui.define([
             this.getView().setModel(formModel, "form");
         },
 
-
         initializeAlternativeNutzungsarten: function(){
             
             this.getView().getModel("form").setProperty("/alternativeNutzungsarten", [
@@ -62,7 +60,6 @@ sap.ui.define([
             ]);
         },
 
-
         initializeVermietungsarten: function(){
 
             this.getView().getModel("form").setProperty("/vermietungsarten", [
@@ -70,7 +67,6 @@ sap.ui.define([
                 {key: "Anschlussvermietung", text: "Anschlussvermietung"},
             ]);
         },
-
 
         initializeStatuswerte: function(){
 
@@ -81,7 +77,6 @@ sap.ui.define([
                 {key: "d", text: "Mietvertrag abgeschlossen – 100%"}
             ]);
         },
-
 
         initializeAnmerkungen: function(){
 
@@ -111,7 +106,6 @@ sap.ui.define([
             var statusKey = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Status");
             this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen[statusKey]);
         },
-
 
         initializeViewsettingsAsync: function(vermietungsaktivitaet){
 
@@ -175,7 +169,6 @@ sap.ui.define([
 
         },
 
-
 		onVermietungsaktivitaetAnzeigen: function(oEvent){
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnzeigen");
             var _this = this;
@@ -211,7 +204,6 @@ sap.ui.define([
 
 		},
 
-		
         onVermietungsaktivitaetAnlegenRegelvermietung: function(oEvent){
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenRegelvermietung");
             var _this = this;
@@ -360,7 +352,6 @@ sap.ui.define([
             .done();
         },
 
-
         readVermietungsaktivitaetAsync: function(Bukrs, VaId){
 
             return Q.Promise(function(resolve, reject, notify) {
@@ -395,7 +386,6 @@ sap.ui.define([
 
             });
         },
-
 
         readKonditioneneinigungAsync: function(KeId, Bukrs){
 
@@ -447,12 +437,57 @@ sap.ui.define([
             });
         },
 
+        readDebitorenSetAsync: function(){
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
+
+                oDataModel.read("/DebitorSet", {
+
+                    success: function(oData){
+                        console.log(oData);
+                        resolve(oData.results);
+                    },
+
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+
+            });
+        },
+
+        readMietobjektSetAsync: function(Bukrs, WeId){
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
+
+                oDataModel.read("/MietobjektSet", {
+
+                    urlParameters: {
+                        "$filter": "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'"
+                    },
+
+                    success: function(oData){
+                        console.log(oData);
+                        resolve(oData.results);
+                    },
+
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+
+            });
+
+        },
 
         onStatusSelektionChange: function(){
             this.initializeAnmerkungen();
         },
         
-		
 		onBearbeitenButtonPress: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onBearbeitenButtonPress");
             
@@ -462,12 +497,10 @@ sap.ui.define([
 
             this.getView().getModel("form").setProperty("/modus", "edit");
         },
-		
 
         onBack: function(oEvent) {
             this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
         },
-
 
         handleTableSettingsButton: function(oEvent){
 
@@ -495,7 +528,6 @@ sap.ui.define([
             this.getView().getModel("form").setProperty("/viewsettings/zeitspanneSelected", zeitspanne);
         },
 
-
         onPopoverWaehrungSelect: function(oEvent){
 
             var item = oEvent.getParameter("selectedItem");
@@ -503,7 +535,6 @@ sap.ui.define([
 
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
         },
-
                 
         onSpeichernButtonPress: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onSpeichernButtonPress");
@@ -709,7 +740,6 @@ sap.ui.define([
             return validationResult;
         },
 		
-		
 		initializeValidationState: function(){
             this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.None);
@@ -805,8 +835,37 @@ sap.ui.define([
             }
 
             var WeId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId"); 
-            var Bukrs = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Bukrs"); 
+            var Bukrs = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Bukrs");
 
+            this.readMietobjektSetAsync(WeId, Bukrs)
+            .then(function(mietobjekte){
+
+                var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+                var vorhandeneMoIds = _.map(mietflaechenangaben, function(mietflaechenangaben){
+                    return mietflaechenangaben.MoId;
+                });
+
+                var wirtschaftseinheitId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId");
+
+                var jsonData = {
+                    mietflaechen: []
+                };
+
+                jsonData.mietflaechen = _.filter(mietobjekte, function(mietobjekt){
+                    return (_.indexOf(vorhandeneMoIds, mietobjekt.MoId) === -1) && (mietobjekt.WeId === wirtschaftseinheitId);
+                });
+
+                var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
+
+                _this._mietflaechenSelektionDialog.setModel(jsonModel);
+                _this._mietflaechenSelektionDialog.open();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
+
+            /*
             var oDataModel = sap.ui.getCore().getModel("odata");
 
             oDataModel.read("/MietobjektSet", {
@@ -851,7 +910,7 @@ sap.ui.define([
                     _this._mietflaechenSelektionDialog.open();
                 }
             });
-
+            */
         },
 		
         onMietflaechenSelektionDialogConfirm: function(oEvent){
@@ -875,7 +934,6 @@ sap.ui.define([
         onMietflaechenSelektionDialogSearch: function(oEvent){
             jQuery.sap.log.info(".. onMietflaechenSelektionDialogSearch");
         },
-		
 
         onKonditioneneinigungHinzufuegenButtonPress: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onKonditioneneinigungHinzufuegenButtonPress");
@@ -958,7 +1016,6 @@ sap.ui.define([
             // Selektion aufheben nach dem Löschen
             mietflaechenangabenTable.removeSelections(true);
         },
-
 
         onKonditioneneinigungDialogSearch: function(oEvent){
             jQuery.sap.log.info(".. onKonditioneneinigungDialogSearch");
@@ -1145,22 +1202,21 @@ sap.ui.define([
                 this._debitorSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.DebitorSelektion", this);
             }
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+            this.readDebitorenSetAsync()
+            .then(function(debitoren){
 
-            oDataModel.read("/DebitorSet", {
-                success: function(oData){
-                    console.log(oData);
-                    
-                    // Dialog öffnen
-                    
-                    var debitorSelektionDialogModel = new sap.ui.model.json.JSONModel({
-                        debitoren: oData.results
-                    });
-                    
-                    _this._debitorSelektionDialog.setModel(debitorSelektionDialogModel);
-                    _this._debitorSelektionDialog.open();
-                }
-            });
+                var debitorSelektionDialogModel = new sap.ui.model.json.JSONModel({
+                    debitoren: debitoren
+                });
+                
+                _this._debitorSelektionDialog.setModel(debitorSelektionDialogModel);
+                _this._debitorSelektionDialog.open();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
+
         },
         
         onDebitorSelektionConfirm: function(oEvent){
