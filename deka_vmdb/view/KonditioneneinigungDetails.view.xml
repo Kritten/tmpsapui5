@@ -182,21 +182,19 @@
                     <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>STATUS}" />
-                    <Select width="100%" enabled="false" selectedKey="{form>/konditioneneinigung/Status}" >
+                    <Select width="100%" enabled="false" selectedKey="{form>/konditioneneinigung/Status}" items="{form>/statuswerte}" >
                         <items>
-                            <core:Item key="Konditioneneinigung" text="Konditioneneinigung" />
+                            <core:Item key="{form>key}" text="{form>text}" />
                         </items>
                     </Select>
                     
                     <Label text="{i18n>ANMERKUNG}" />
-                    <Select width="100%" enabled="false" selectedKey="{form>/konditioneneinigung/Anmerkung}" >
+                    <Select width="100%" enabled="false" selectedKey="{form>/konditioneneinigung/Anmerkung}" items="{form>/anmerkungen}" >
                         <items>
-                            <core:Item key="" text="Mietfläche in Auswahlool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekt am Markt" />
-                            <core:Item key="GELÖSCHT" text="Gelöscht" />
-                            <core:Item key="ZURÜCKGEZOGEN" text="Zurückgezogen" />
+                            <core:Item key="{form>key}" text="{form>text}" />
                         </items>
                     </Select>
-                    
+
                     <Label text="{i18n>BEMERKUNG}" />
                     <TextArea value="{form>/konditioneneinigung/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     

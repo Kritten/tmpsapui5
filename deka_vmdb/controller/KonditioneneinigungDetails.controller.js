@@ -29,15 +29,152 @@ sap.ui.define([
 		},
         
 
+        initializeEmptyModel: function(){
+
+            var form = {
+                modus: null, // show, new, edit
+
+                konditioneneinigung: null,
+
+                statuswerte: null,
+                anmerkungen: null,
+                viewsettings: null
+            };
+            
+            var formModel = new sap.ui.model.json.JSONModel(form);
+            this.getView().setModel(formModel, "form");
+        },
+
+        initializeStatuswerte: function(){
+
+            this.getView().getModel("form").setProperty("/statuswerte", [
+                {key: "Konditioneneinigung", text: "Konditioneneinigung"}
+            ]);
+        },
+
+        initializeAnmerkungen: function(){
+
+            var anmerkungen = {
+                "Konditioneneinigung": [
+                    {key:"", text: "Mietfläche in Auswahl mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekt am Markt"},
+                    {key:"GELÖSCHT", text: "Gelöscht"},
+                    {key:"ZURÜCKGEZOGEN", text: "Zurückgezogen"}
+                ]
+            };
+
+            var statusKey = this.getView().getModel("form").getProperty("/konditioneneinigung/Status");
+            this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen[statusKey]);
+        },
+
+        initializeViewsettingsAsync: function(konditioneneinigung){
+
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                var viewsettings = {
+                    waehrungen: [],
+                    zeitspannen: [
+                        {key: "MONAT", text: "Monatsmiete"},
+                        {key: "JAHR", text: "Jahresmiete"}
+                    ],
+                    waehrungSelectedKey: "",
+                    waehrungSelected: null,
+                    zeitspanneSelectedKey: "",
+                    zeitspanneSelected: null
+                };
+
+                viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
+                viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
+
+                // Ausgangswährung ermitteln - Wenn Mietflächen enthalten sind, nimm die Währung der ersten Mietfläche
+                var ausgangsWaehrung = "EUR";
+                var mietflaechenangaben = konditioneneinigung.KeToOb;
+                if(mietflaechenangaben.length > 0){
+                    ausgangsWaehrung = mietflaechenangaben[0].Whrung;
+                }
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
+
+                oDataModel.read("/WaehrungSet", {
+
+                    urlParameters: {
+                        //"$filter": "Gdat eq datetime'2001-01-01T00:00:00' and Von eq '"+ausgangsWaehrung+"'"
+                    },
+
+                    success: function(oData){
+                        console.log(oData);
+
+                        oData.results.forEach(function(waehrung){
+                            viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Ukurs} );
+                        });
+
+                        if(viewsettings.waehrungen.length > 0){
+                            viewsettings.waehrungSelectedKey = viewsettings.waehrungen[0].key;
+                            viewsettings.waehrungSelected = viewsettings.waehrungen[0];
+                        }
+
+                        _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
+                        resolve();
+                    },
+
+                    error: function(oError){
+                        reject(oError);
+                    }
+
+                });
+
+            });
+
+        },
+
+        initializeValidationState: function(){
+            this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("mietflaechenangabenErrorBox").setVisible(false);
+            
+            var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
+            
+            mietflaechenangabenItems.forEach(function(item){
+                item.getCells()[7].setValueState(sap.ui.core.ValueState.None);
+                item.getCells()[8].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[9].setValueState(sap.ui.core.ValueState.None);  
+            });   
+        },
+
         onKonditioneneinigungAnzeigen: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnzeigen");
+            var _this = this;
 
             var Bukrs = oEvent.getParameter("arguments").Bukrs;
             var KeId = oEvent.getParameter("arguments").KeId;
 
-            this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
-        },
+            this.initializeEmptyModel();
 
+            this.readKonditioneneinigungAsync(Bukrs, KeId)
+            .then(function(konditioneneinigung){
+
+                _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
+                _this.getView().getModel("form").setProperty("/modus", "show");
+
+                // Promise wird zurückgegeben - Ermöglicht nächsten then Zweig
+                return _this.initializeViewsettingsAsync(konditioneneinigung);
+            })
+            .then(function(){
+                _this.initializeStatuswerte();
+                _this.initializeAnmerkungen();
+                _this.initializeValidationState();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
+
+        },
 
         onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit");
@@ -53,22 +190,31 @@ sap.ui.define([
             var WeId = payload.WeId;
             var Bukrs = payload.Bukrs;
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+            this.initializeEmptyModel();
 
-            oDataModel.read("/WirtschaftseinheitenSet(Bukrs='" + Bukrs + "',WeId='" + WeId + "')", {
+            var konditioneneinigung = this.newKonditioneneinigung();
+            this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
+            this.getView().getModel("form").setProperty("/modus", "new");
 
-                success: function(oData){
-                    console.log(oData);
+            this.readWirtschaftseinheitAsync(Bukrs, WeId)
+            .then(function(wirtschaftseinheit){
+                
+                _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", wirtschaftseinheit.WeId);
+                _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", wirtschaftseinheit.Bukrs);
 
-                    _this.onKonditioneneinigungAnlegen(oEvent);
-
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.WeId); 
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.Bukrs); 
-                }
-            });
+                return _this.initializeViewsettingsAsync(konditioneneinigung);
+            })
+            .then(function(){
+                _this.initializeStatuswerte();
+                _this.initializeAnmerkungen();
+                _this.initializeValidationState();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
 
         },
-
 
         onKonditioneneinigungAnlegenAufBasisEinesMietvertrags: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinesMietvertrags");
@@ -81,27 +227,34 @@ sap.ui.define([
                 return;
             }
 
-            var MvId = payload.MvId;
             var Bukrs = payload.Bukrs;
+            var MvId = payload.MvId;
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+            this.initializeEmptyModel();
 
-            oDataModel.read("/MietvertragSet(Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
+            var konditioneneinigung = this.newKonditioneneinigung();
+            this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
+            this.getView().getModel("form").setProperty("/modus", "new");
 
-                urlParameters: {
-                    "$expand": "MvToWe"
-                },
+            this.readMietvertragAsync(Bukrs, MvId)
+            .then(function(mietvertrag){
 
-                success: function(oData){
-                    console.log(oData);
+                _this.getView().getModel("form").setProperty("/konditioneneinigung/MvId", mietvertrag.MvId);
+                _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", mietvertrag.MvToWe.WeId); 
+                _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", mietvertrag.MvToWe.Bukrs);
 
-                    _this.onKonditioneneinigungAnlegen(oEvent);
+                return _this.initializeViewsettingsAsync(konditioneneinigung);
+            })
+            .then(function(){
+                _this.initializeStatuswerte();
+                _this.initializeAnmerkungen();
+                _this.initializeValidationState();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
 
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/MvId", MvId); 
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.MvToWe.WeId); 
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.MvToWe.Bukrs); 
-                }
-            });
         },
 
         onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
@@ -118,200 +271,179 @@ sap.ui.define([
             var KeId = payload.KeId;
             var Bukrs = payload.Bukrs;
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+            this.initializeEmptyModel();
 
-            oDataModel.read("/KonditioneneinigungSet(Bukrs='" + Bukrs + "',KeId='" + KeId + "')", {
+            var konditioneneinigung = this.newKonditioneneinigung();
+            this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
+            this.getView().getModel("form").setProperty("/modus", "new");
 
-                success: function(oData){
-                    console.log(oData);
+            this.readKonditioneneinigungAsync(Bukrs, KeId)
+            .then(function(basisKonditioneneinigung){
 
-                    _this.onKonditioneneinigungAnlegen(oEvent);
+                _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", basisKonditioneneinigung.WeId); 
+                _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", basisKonditioneneinigung.Bukrs);
 
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", oData.WeId); 
-                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", oData.Bukrs); 
-                }
-            });
-
-        },
-
-
-        leseKonditioneneinigungUndInitialisiereModel: function(Bukrs, KeId){
-            var _this = this;
-            
-            var oDataModel = sap.ui.getCore().getModel("odata");
-
-            oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
-
-                urlParameters: {
-                    "$expand": "KeToOb"
-                },
-
-                success: function(oData){
-                    console.log(oData);
-
-                    // Struktur aufbereiten für UI5 Binding                    
-                    oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
-                    oData.Editable = (Math.random() > 0.5);
-
-                    oData.KeToOb = oData.KeToOb.results;
-
-                    // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
-                    oData.KeToOb.forEach(function(objekt){
-                        objekt.HnflAlt = objekt.HnflAlt.toString();
-                        objekt.NhMiete = objekt.NhMiete.toString();
-                        objekt.AnMiete = objekt.AnMiete.toString();
-                        objekt.GaKosten = objekt.GaKosten.toString();
-                        objekt.MaKosten = objekt.MaKosten.toString();
-
-                        // Manuelles zurücksetzen des Confirmation Flag
-                        // Wichtig, weil der Mockserver die Werte speichert
-                        // Backend würde kein X bei Confirmation liefern
-                        objekt.Confirmation = "";
-                    });
-
-                    // Zusätzliche Felder
-                    oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
-                    oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
-                    oData.arbeitsvorrat = null;
-
-                    var form = {
-                        modus: "show", // show, new, edit
-                        konditioneneinigung: oData
-                    };
-
-                    var user = {
-                        rolle: "FM" // FM, AM 
-                    };
-                    
-                    var formModel = new sap.ui.model.json.JSONModel(form);
-                    var userModel = new sap.ui.model.json.JSONModel(userModel);
-                    
-                    _this.getView().setModel(userModel, "user");
-                    _this.getView().setModel(formModel, "form");
-                    
-                    _this.enhanceModelWithViewSettings();
-                    _this.clearValidationState();
-                }
-            });
+                return _this.initializeViewsettingsAsync(konditioneneinigung);
+            })
+            .then(function(){
+                _this.initializeStatuswerte();
+                _this.initializeAnmerkungen();
+                _this.initializeValidationState();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
 
         },
 
-        onKonditioneneinigungAnlegen: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegen");
-            var _this = this;
-            
-            var form = {
-                modus: "new", // show, new, edit
-                
-                konditioneneinigung: {
-
-                    KeId: "",
-                    Bukrs: "",
-                    MfSplit: "",
-                    AuthUser: "",
-                    Favorit: "",
-                    LzFirstbreak: "",
-                    WeId: "",
-                    MzMonate: "",
-                    Status: "",
-                    Anmerkung: "",
-                    Aktiv: "",
-                    Mietbeginn: null,
-                    Bemerkung: "",
-                    GnStufe: "",
-                    BkMonatsmieten: "",
-                    BkAbsolut: "",
-                    GnFm: "",
-                    GnFmDurch: "",
-                    GnGl: "",
-                    GnGlDurch: "",
-                    MkMonate: "",
-                    MkAbsolut: "",
-                    Currency: "",
-                    GnAl: "",
-                    GnAlDurch: "",
-                    Unit: "",
-                    GnGf: "",
-                    GnGfDurch: "",
-                    GueltigkKe: null,
-
-                    KeToOb: [],
-                    KeToWe: [],
-                    
-                    // keine OData Felder
-                    mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
-                    kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
-                    arbeitsvorrat: null
-                }
-
-            };
-
-            var user = {
-                rolle: "FM" // FM, AM
-            };
-            
-            var formModel = new sap.ui.model.json.JSONModel(form);
-            var userModel = new sap.ui.model.json.JSONModel(userModel);
-            
-            this.getView().setModel(userModel, "user");
-			this.getView().setModel(formModel, "form");
-            
-            this.enhanceModelWithViewSettings();
-            this.clearValidationState();
-        },
-
-        /**
-         * Liest Währungen und Umrechnungskurse aus dem Backend und initialisiert das Popup hinter dem Zahnrad
-         */
-        enhanceModelWithViewSettings: function(){
+        readKonditioneneinigungAsync: function(Bukrs, KeId){
             var _this = this;
 
-            var viewsettings = {
-                waehrungen: [],
-                zeitspannen: [
-                    {key: "MONAT", text: "Monatsmiete"},
-                    {key: "JAHR", text: "Jahresmiete"}
-                ],
-                waehrungSelectedKey: "",
-                waehrungSelected: null,
-                zeitspanneSelectedKey: "",
-                zeitspanneSelected: null
-            };
+            return Q.Promise(function(resolve, reject, notify) {
 
-            viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
-            viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
+                var oDataModel = sap.ui.getCore().getModel("odata");
 
-            // Ausgangswährung ermitteln
-            var ausgangsWaehrung = "EUR";
-            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-            if(mietflaechenangaben.length > 0){
-                ausgangsWaehrung = mietflaechenangaben[0].Whrung;
-            }
+                oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+                    urlParameters: {
+                        "$expand": "KeToOb"
+                    },
 
-            oDataModel.read("/WaehrungSet", {
+                    success: function(oData){
+                        console.log(oData);
 
-                urlParameters: {
-                    //"$filter": "Gdat eq datetime'2001-01-01T00:00:00' and Von eq '"+ausgangsWaehrung+"'"
-                },
+                        // Struktur aufbereiten für UI5 Binding                    
+                        oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
+                        oData.Editable = (Math.random() > 0.5);
+                        oData.Status = "Konditioneneinigung";
+                        oData.Anmerkung = "";
 
-                success: function(oData){
-                    console.log(oData);
+                        oData.KeToOb = oData.KeToOb.results;
 
-                    oData.results.forEach(function(waehrung){
-                        viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Ukurs} );
-                    });
+                        // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
+                        oData.KeToOb.forEach(function(objekt){
+                            objekt.HnflAlt = objekt.HnflAlt.toString();
+                            objekt.NhMiete = objekt.NhMiete.toString();
+                            objekt.AnMiete = objekt.AnMiete.toString();
+                            objekt.GaKosten = objekt.GaKosten.toString();
+                            objekt.MaKosten = objekt.MaKosten.toString();
 
-                    if(viewsettings.waehrungen.length > 0){
-                        viewsettings.waehrungSelectedKey = viewsettings.waehrungen[0].key;
-                        viewsettings.waehrungSelected = viewsettings.waehrungen[0];
+                            // Manuelles zurücksetzen des Confirmation Flag
+                            // Wichtig, weil der Mockserver die Werte speichert
+                            // Backend würde kein X bei Confirmation liefern
+                            objekt.Confirmation = "";
+                        });
+
+                        // Zusätzliche Felder
+                        oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
+                        oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
+                        oData.arbeitsvorrat = null;
+
+                        resolve(oData);
+                    },
+
+                    error: function(oError){
+                        reject(oError);
                     }
 
-                    _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
-                }
+                });
 
             });
+
+        },
+
+        readWirtschaftseinheitAsync: function(Bukrs, WeId){
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
+
+                oDataModel.read("/WirtschaftseinheitenSet(Bukrs='" + Bukrs + "',WeId='" + WeId + "')", {
+
+                    success: function(oData){                       
+                        console.log(oData);
+                        resolve(oData);
+                    },
+
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+
+            });
+
+        },
+
+        readMietvertragAsync: function(Bukrs, MvId){
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                var oDataModel = sap.ui.getCore().getModel("odata");
+
+                oDataModel.read("/MietvertragSet(Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
+
+                    urlParameters: {
+                        "$expand": "MvToWe"
+                    },
+
+                    success: function(oData){
+                        console.log(oData);
+                        resolve(oData);
+                    },
+
+                    error: function(oError){
+                        reject(oError);
+                    }
+
+                });
+
+            });
+
+        },
+
+        newKonditioneneinigung: function(){
+
+            return {
+                KeId: "",
+                Bukrs: "",
+                MfSplit: "",
+                AuthUser: "",
+                Favorit: "",
+                LzFirstbreak: "",
+                WeId: "",
+                MzMonate: "",
+                Status: "Konditioneneinigung",
+                Anmerkung: "",
+                Aktiv: "",
+                Mietbeginn: null,
+                Bemerkung: "",
+                GnStufe: "",
+                BkMonatsmieten: "",
+                BkAbsolut: "",
+                GnFm: "",
+                GnFmDurch: "",
+                GnGl: "",
+                GnGlDurch: "",
+                MkMonate: "",
+                MkAbsolut: "",
+                Currency: "",
+                GnAl: "",
+                GnAlDurch: "",
+                Unit: "",
+                GnGf: "",
+                GnGfDurch: "",
+                GueltigkKe: null,
+
+                KeToOb: [],
+                KeToWe: [],
+                
+                // keine OData Felder
+                mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                arbeitsvorrat: null
+            };
+
         },
 
         onPopoverZeitspanneSelect: function(oEvent){
@@ -322,7 +454,6 @@ sap.ui.define([
             this.getView().getModel("form").setProperty("/viewsettings/zeitspanneSelected", zeitspanne);
         },
 
-
         onPopoverWaehrungSelect: function(oEvent){
 
             var item = oEvent.getParameter("selectedItem");
@@ -331,12 +462,10 @@ sap.ui.define([
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
         },
 
-
         onBack : function(oEvent) {
             this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
         },
         
-
         handleTableSettingsButton: function(oEvent){
             var _this = this;
 
@@ -356,8 +485,7 @@ sap.ui.define([
 
         },
 
-
-        onBearbeitenButtonPress: function(evt){
+        onBearbeitenButtonPress: function(oEvent){
             jQuery.sap.log.info(".. onBearbeitenButtonPress");
             
             // Alten Zustand sichern für eventuelle Wiederherstellung
@@ -366,7 +494,6 @@ sap.ui.define([
 
             this.getView().getModel("form").setProperty("/modus", "edit");
         },
-
 
         onSpeichernButtonPress: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onSpeichernButtonPress");
@@ -399,7 +526,7 @@ sap.ui.define([
                             // Im Arbeitsvorrat speichern
                             _this.getView().getModel("form").setProperty("/konditioneneinigung/arbeitsvorrat", true);
                             _this.getView().getModel("form").setProperty("/modus", "show");
-                            _this.clearValidationState();
+                            _this.initializeValidationState();
                             dialog.close();
                         }
                     }),
@@ -418,14 +545,15 @@ sap.ui.define([
             }
         },
 
-
         // Create
         konditioneneinigungAnlegen: function(){
-            var controller = this;
+            var _this = this;
 
-            this.asyncCreateKonditioneneinigung().then(function(){
-                controller.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
-            }).done();
+            this.asyncCreateKonditioneneinigung()
+            .then(function(){
+                _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+            })
+            .done();
         },
 
 
@@ -572,8 +700,24 @@ sap.ui.define([
                                     var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
                                     var KeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
 
-                                    _this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
-                                    _this.getView().getModel("form").setProperty("/modus", "show");
+                                    _this.readKonditioneneinigungAsync(Bukrs, KeId)
+                                    .then(function(konditioneneinigung){
+
+                                        _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
+                                        _this.getView().getModel("form").setProperty("/modus", "show");
+
+                                        // Promise wird zurückgegeben - Ermöglicht nächsten then Zweig
+                                        return _this.initializeViewsettingsAsync(konditioneneinigung);
+                                    })
+                                    .then(function(){
+                                        _this.initializeStatuswerte();
+                                        _this.initializeAnmerkungen();
+                                        _this.initializeValidationState();
+                                    })
+                                    .catch(function(oError){
+                                        console.log(oError);
+                                    })
+                                    .done();
                                 }
 
                             }
@@ -584,8 +728,24 @@ sap.ui.define([
                         var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
                         var KeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
 
-                        _this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
-                        _this.getView().getModel("form").setProperty("/modus", "show");
+                        _this.readKonditioneneinigungAsync(Bukrs, KeId)
+                        .then(function(konditioneneinigung){
+
+                            _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
+                            _this.getView().getModel("form").setProperty("/modus", "show");
+
+                            // Promise wird zurückgegeben - Ermöglicht nächsten then Zweig
+                            return _this.initializeViewsettingsAsync(konditioneneinigung);
+                        })
+                        .then(function(){
+                            _this.initializeStatuswerte();
+                            _this.initializeAnmerkungen();
+                            _this.initializeValidationState();
+                        })
+                        .catch(function(oError){
+                            console.log(oError);
+                        })
+                        .done();
                     }
 
                 }).done();
@@ -718,7 +878,7 @@ sap.ui.define([
             var validationResult = true;
             
             // vorhandene States zurücksetzen
-            this.clearValidationState();
+            this.initializeValidationState();
             
             if(this.getView().byId("dateMietbeginn").getDateValue() === null)
             {
@@ -873,26 +1033,6 @@ sap.ui.define([
             return validationResult;
         },
 
-
-        clearValidationState: function(){
-            this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("dateGueltigkeitKonditioneneinigung").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("mietflaechenangabenErrorBox").setVisible(false);
-            
-            var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
-            
-            mietflaechenangabenItems.forEach(function(item){
-                item.getCells()[7].setValueState(sap.ui.core.ValueState.None);
-                item.getCells()[8].setValueState(sap.ui.core.ValueState.None);  
-                item.getCells()[9].setValueState(sap.ui.core.ValueState.None);  
-            });   
-        },
-
-
         berechneMieteUndKosten: function(){
             
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
@@ -1021,8 +1161,9 @@ sap.ui.define([
 
         onAbbrechenButtonPress: function(evt){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onAbbrechenButtonPress");
-            
-            this.clearValidationState();
+            var _this = this;
+
+            this.initializeValidationState();
             
             var modus = this.getView().getModel("form").getProperty("/modus");           
             
@@ -1053,7 +1194,24 @@ sap.ui.define([
                 var Bukrs = this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
                 var KeId = this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
 
-                this.leseKonditioneneinigungUndInitialisiereModel(Bukrs, KeId);
+                this.readKonditioneneinigungAsync(Bukrs, KeId)
+                .then(function(konditioneneinigung){
+
+                    _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
+                    _this.getView().getModel("form").setProperty("/modus", "show");
+
+                    // Promise wird zurückgegeben - Ermöglicht nächsten then Zweig
+                    return _this.initializeViewsettingsAsync(konditioneneinigung);
+                })
+                .then(function(){
+                    _this.initializeStatuswerte();
+                    _this.initializeAnmerkungen();
+                    _this.initializeValidationState();
+                })
+                .catch(function(oError){
+                    console.log(oError);
+                })
+                .done();
 
                 //this.getView().getModel("form").setData(this._formDataBackup);
                 //this.getView().getModel("form").setProperty("/modus", "show");

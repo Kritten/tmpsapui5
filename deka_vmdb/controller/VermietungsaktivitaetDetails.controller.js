@@ -232,7 +232,7 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", konditioneneinigungen[0].WeId);
 
-                // Objekte der konditioneneinigungen zur Vermietungsaktivität hinzufügen
+                // Objekte der Konditioneneinigungen zur Vermietungsaktivität hinzufügen
                 var objekteAllerKEs = [];
                 konditioneneinigungen.forEach(function(konditioneneinigung){
                     objekteAllerKEs.push.apply(objekteAllerKEs, konditioneneinigung.KeToOb.results);
@@ -241,18 +241,15 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekteAllerKEs);
                 _this.getView().getModel("form").setProperty("/modus", "new");
 
-                _this.initializeViewsettingsAsync(vermietungsaktivitaet)
-                .then(function(){
-                    _this.initializeAlternativeNutzungsarten();
-                    _this.initializeVermietungsarten();
-                    _this.initializeStatuswerte();
-                    _this.initializeAnmerkungen();
-                })
-                .catch(function(oError){
-                    console.log(oError);
-                })
-                .done();
-
+                // neues Promise der async Methode für den nächsten then Block
+                return _this.initializeViewsettingsAsync(vermietungsaktivitaet);
+            })
+            .then(function(){
+                _this.initializeAlternativeNutzungsarten();
+                _this.initializeVermietungsarten();
+                _this.initializeStatuswerte();
+                _this.initializeAnmerkungen();
+                _this.initializeValidationState();
             })
             .catch(function(oError){
                 console.log(oError);
@@ -271,13 +268,13 @@ sap.ui.define([
                 return;
             }
 
-            _this.initializeEmptyModel();
+            this.initializeEmptyModel();
 
             var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
-            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-            _this.getView().getModel("form").setProperty("/modus", "new");
+            this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+            this.getView().getModel("form").setProperty("/modus", "new");
 
-            _this.initializeViewsettingsAsync(vermietungsaktivitaet)
+            this.initializeViewsettingsAsync(vermietungsaktivitaet)
             .then(function(){
                 _this.initializeAlternativeNutzungsarten();
                 _this.initializeVermietungsarten();
@@ -302,13 +299,13 @@ sap.ui.define([
                 return;
             }
 
-            _this.initializeEmptyModel();
+            this.initializeEmptyModel();
 
             var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
-            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-            _this.getView().getModel("form").setProperty("/modus", "new");
+            this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+            this.getView().getModel("form").setProperty("/modus", "new");
 
-            _this.initializeViewsettingsAsync(vermietungsaktivitaet)
+            this.initializeViewsettingsAsync(vermietungsaktivitaet)
             .then(function(){
                 _this.initializeAlternativeNutzungsarten();
                 _this.initializeVermietungsarten();
@@ -334,12 +331,12 @@ sap.ui.define([
                 return;
             }
 
-            _this.initializeEmptyModel();
+            this.initializeEmptyModel();
 
-            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-            _this.getView().getModel("form").setProperty("/modus", "new");
+            this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+            this.getView().getModel("form").setProperty("/modus", "new");
 
-            _this.initializeViewsettingsAsync(vermietungsaktivitaet)
+            this.initializeViewsettingsAsync(vermietungsaktivitaet)
             .then(function(){
                 _this.initializeAlternativeNutzungsarten();
                 _this.initializeVermietungsarten();
