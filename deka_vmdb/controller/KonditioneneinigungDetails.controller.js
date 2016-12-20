@@ -1443,22 +1443,31 @@ sap.ui.define([
         
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             
-            var sumHauptnutzflaeche = 0;
+            var sumNutzflaechen = 0;
             
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
-                if(mietflaechenangabe.Nutzart === verteilung.nutzungsart)
+                if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
                 {
-                    sumHauptnutzflaeche += mietflaechenangabe.Hnfl;
+                    sumNutzflaechen += mietflaechenangabe.Hnfl;
+                }
+                else
+                {
+                    sumNutzflaechen += parseInt(mietflaechenangabe.HnflAlt);
                 }
             });
             
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
-                if(mietflaechenangabe.Nutzart === verteilung.nutzungsart)
+                if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
                 {
-                    mietflaechenangabe.GaKosten = (mietflaechenangabe.Hnfl / sumHauptnutzflaeche) * verteilung.grundausbaukosten;
-                    mietflaechenangabe.MaKosten = (mietflaechenangabe.Hnfl / sumHauptnutzflaeche) * verteilung.mietausbaukosten;
+                    mietflaechenangabe.GaKosten = (mietflaechenangabe.Hnfl / sumNutzflaechen) * verteilung.grundausbaukosten;
+                    mietflaechenangabe.MaKosten = (mietflaechenangabe.Hnfl / sumNutzflaechen) * verteilung.mietausbaukosten;
+                }
+                else
+                {
+                    mietflaechenangabe.GaKosten = (parseInt(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.grundausbaukosten;
+                    mietflaechenangabe.MaKosten = (parseInt(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.mietausbaukosten;
                 }
             });
             

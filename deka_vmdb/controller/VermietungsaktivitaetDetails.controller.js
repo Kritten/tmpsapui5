@@ -1083,7 +1083,7 @@ sap.ui.define([
             
             // Object-Properties to Array
             vorhandeneNutzungsarten = Object.keys(vorhandeneNutzungsarten).map(function (key) {
-                return vorhandeneNutzungsarten[key]
+                return vorhandeneNutzungsarten[key];
             });
             
             var dialogModel = new sap.ui.model.json.JSONModel({
