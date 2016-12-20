@@ -1310,6 +1310,15 @@ sap.ui.define([
                             objekt.MaKosten = objekt.MaKosten.toString();
                             
                             jsonData.mietflaechen.push( objekt );
+
+                            // 20.12.2016 - HACK für Präsentation
+                            // Hinzufügen mehrere Mietflächen
+                            // Zukünftig entfernen
+                            var objekt2 = jQuery.extend(true, {}, objekt);
+                            objekt2.MoId = "MoId 2";
+                            objekt2.Hnfl = 1579.59;
+                            jsonData.mietflaechen.push( objekt2 );
+                            // <--
                         }
                     });
 
