@@ -56,9 +56,14 @@ sap.ui.define([
 
             var anmerkungen = {
                 "Konditioneneinigung": [
-                    {key:"", text: "Mietfläche in Auswahl mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekt am Markt"},
-                    {key:"GELÖSCHT", text: "Gelöscht"},
-                    {key:"ZURÜCKGEZOGEN", text: "Zurückgezogen"}
+                    {key: '', text: 'Konditioneneinigung in Erstellung'},
+                    {key: 'ZUR_GENEHMIGUNG', text: 'Konditioneneinigung zur Genehmigung vorgelegt'},
+                    {key: 'GENEHMIGT', text: 'Konditioneneinigung genehmigt'},
+                    {key: 'NICHT_GENEHMIGT', text: 'Konditioneneinigung nicht genehmigt'},
+                    {key: 'ZURÜCKGEZOGEN', text: 'Konditioneneinigung aus wichtigem Grund zurückgezogen'},
+                    {key: 'NICHT_GUELTIG', text: 'Konditioneneinigung nicht mehr gültig'},
+                    {key: 'ABGESCHLOSSEN', text: 'Konditioneneinigung abgeschlossen'},
+                    {key: 'GELÖSCHT', text: 'Konditioneneinigung gelöscht'}
                 ]
             };
 
@@ -336,8 +341,8 @@ sap.ui.define([
                         });
 
                         // Zusätzliche Felder
-                        oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
-                        oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null};
+                        oData.mieteGesamt = {konditioneneinigung: null};
+                        oData.kostenGesamt = {konditioneneinigung: null};
                         oData.arbeitsvorrat = null;
 
                         resolve(oData);
@@ -439,13 +444,14 @@ sap.ui.define([
                 SonstigeKostenArt: "00",
                 SonstigeErtraege: "",
                 SonstigeErtraegeArt: "00",
+                BudgetStopp: false,
 
                 KeToOb: [],
                 KeToWe: [],
                 
                 // keine OData Felder
-                mieteGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
-                kostenGesamt: {vermietungsaktivitaet: null, konditioneneinigung: null},
+                mieteGesamt: {konditioneneinigung: null},
+                kostenGesamt: {konditioneneinigung: null},
                 arbeitsvorrat: null
             };
 
@@ -1050,10 +1056,7 @@ sap.ui.define([
                 kostenGesamtKE += mietflaechenangabe.Hnfl + (mietflaechenangabe.GaKosten + mietflaechenangabe.MaKosten);
             });
                       
-            this.getView().getModel("form").setProperty("/konditioneneinigung/mieteGesamt/vermietungsaktivitaet", "-"); 
             this.getView().getModel("form").setProperty("/konditioneneinigung/mieteGesamt/konditioneneinigung", mieteGesamtKE); 
-            
-            this.getView().getModel("form").setProperty("/konditioneneinigung/kostenGesamt/vermietungsaktivitaet", "-"); 
             this.getView().getModel("form").setProperty("/konditioneneinigung/kostenGesamt/konditioneneinigung", kostenGesamtKE); 
         },
 

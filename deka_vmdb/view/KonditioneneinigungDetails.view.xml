@@ -234,6 +234,13 @@
                     <Label text="{i18n>BEMERKUNG}" />
                     <TextArea value="{form>/konditioneneinigung/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
+                    <Label text="{i18n>BUDGET_STOPP}" />
+					<CheckBox id="budgetStopp" text="" selected="{form>/konditioneneinigung/BudgetStopp}" editable="false">
+                        <layoutData>
+							<l:GridData span="L1 M1 S12" />
+						</layoutData>
+                    </CheckBox>
+
                 </f:content>
 
 			</f:SimpleForm>
@@ -250,9 +257,6 @@
                         <Text text="Bezeichnung" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
-                        <Text text="Vermietungsaktivität" />
-                    </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
                         <Text text="Konditioneneinigung" />
                     </Column>
                 </columns>
@@ -261,7 +265,6 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="Miete gesamt" />
-                            <Text text="{form>/konditioneneinigung/mieteGesamt/vermietungsaktivitaet}" />
                             <Text text="{form>/konditioneneinigung/mieteGesamt/konditioneneinigung}" />
                         </cells>
                     </ColumnListItem>
@@ -269,7 +272,6 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="Kosten gesamt" />
-                            <Text text="{form>/konditioneneinigung/kostenGesamt/vermietungsaktivitaet}" />
                             <Text text="{form>/konditioneneinigung/kostenGesamt/konditioneneinigung}" />
                         </cells>
                     </ColumnListItem>
