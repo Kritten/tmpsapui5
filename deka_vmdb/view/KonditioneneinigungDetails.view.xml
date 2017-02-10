@@ -159,7 +159,43 @@
                     <Input id="beratungskostenInMonatsmieten" value="{form>/konditioneneinigung/BkMonatsmieten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                     <Label text="{i18n>BERATUNGSKOSTEN} ({i18n>ABSOLUT})" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="beratungskostenAbsolut" value="{form>/konditioneneinigung/BkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="beratungskostenAbsolut" value="{form>/konditioneneinigung/BkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
+
+                    <!-- Sonstige Kosten -->
+                    <Label text="{i18n>SONSTIGE_KOSTEN}" />
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/SonstigeKostenArt}">
+                        <items>
+                            <core:Item key="00" text="Sonstige Kostenart 00" />
+                            <core:Item key="01" text="Sonstige Kostenart 01" />
+                            <core:Item key="02" text="Sonstige Kostenart 02" />
+                        </items>
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Select>
+                    <Input id="sonstigeKosten" value="{form>/konditioneneinigung/SonstigeKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                        <layoutData>
+							<l:GridData span="L6 M6 S12" />
+						</layoutData>
+                    </Input>
+
+                    <!-- Sonstige Erträge  -->
+                    <Label text="{i18n>SONSTIGE_ERTRAEGE}" />
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/SonstigeErtraegeArt}">
+                        <items>
+                            <core:Item key="00" text="Sonstige Ertragsart 00" />
+                            <core:Item key="01" text="Sonstige Ertragsart 01" />
+                            <core:Item key="02" text="Sonstige Ertragsart 02" />
+                        </items>
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Select>
+                    <Input id="sonstigeErtraege" value="{form>/konditioneneinigung/SonstigeErtraege}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                        <layoutData>
+							<l:GridData span="L6 M6 S12" />
+						</layoutData>
+                    </Input>
 
                 </f:content>
 

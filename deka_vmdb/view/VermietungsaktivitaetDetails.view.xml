@@ -75,7 +75,7 @@
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="{form>Bezei}" />
                             <Text text="{form>Nutzart}" />
-                            <Select selectedKey="{form>NutzartAlt}" items="{form>/alternativeNutzungsarten}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                            <Select selectedKey="{form>NutzartAlt}" items="{path: 'form>/alternativeNutzungsarten', templateShareable: true}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                                 <items>
                                     <core:Item key="{form>key}" text="{form>text}" />
                                 </items>
@@ -182,6 +182,41 @@
                     <Label text="{i18n>BERATUNGSKOSTEN} ({i18n>ABSOLUT})" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Input id="beratungskostenAbsolut" value="{form>/vermietungsaktivitaet/BkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
+                    <!-- Sonstige Kosten -->
+                    <Label text="{i18n>SONSTIGE_KOSTEN}" />
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/SonstigeKostenArt}">
+                        <items>
+                            <core:Item key="00" text="Sonstige Kostenart 00" />
+                            <core:Item key="01" text="Sonstige Kostenart 01" />
+                            <core:Item key="02" text="Sonstige Kostenart 02" />
+                        </items>
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Select>
+                    <Input id="sonstigeKosten" value="{form>/vermietungsaktivitaet/SonstigeKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                        <layoutData>
+							<l:GridData span="L6 M6 S12" />
+						</layoutData>
+                    </Input>
+
+                    <!-- Sonstige Erträge  -->
+                    <Label text="{i18n>SONSTIGE_ERTRAEGE}" />
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/SonstigeErtraegeArt}">
+                        <items>
+                            <core:Item key="00" text="Sonstige Ertragsart 00" />
+                            <core:Item key="01" text="Sonstige Ertragsart 01" />
+                            <core:Item key="02" text="Sonstige Ertragsart 02" />
+                        </items>
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Select>
+                    <Input id="sonstigeErtraege" value="{form>/vermietungsaktivitaet/SonstigeErtraege}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                        <layoutData>
+							<l:GridData span="L6 M6 S12" />
+						</layoutData>
+                    </Input>
                 
                 </f:content>
 

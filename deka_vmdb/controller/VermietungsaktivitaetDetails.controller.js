@@ -1244,14 +1244,19 @@ sap.ui.define([
                 Bonitaet: "",
                 PLRelevant: false,
                 BkMonate: "",
-                BkAbsolut: "",
                 MkMonate: "",
-                MkAbsolut: "",
                 Poenale: "",
                 Currency: "",
                 Unit: "",
                 AuthUser: "",
                 Favorit: false,
+
+                BkAbsolut: "",
+                MkAbsolut: "",
+                SonstigeKosten: "",
+                SonstigeKostenArt: "00",
+                SonstigeErtraege: "",
+                SonstigeErtraegeArt: "00",
 
                 VaToOb: [],
 

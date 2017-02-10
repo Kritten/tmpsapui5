@@ -69,23 +69,25 @@
                 <Property Name="Bemerkung" sap:filterable="false" sap:sortable="false" sap:label="Bemerkung" MaxLength="60" Type="Edm.String"/>
                 <Property Name="GnStufe" sap:filterable="false" sap:sortable="false" sap:label="Genehmigungsstufe" MaxLength="5" Type="Edm.String"/>
                 <Property Name="BkMonatsmieten" sap:filterable="false" sap:sortable="false" sap:label="Beratungskosten in M" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
-                <!-- -->
-                <Property Name="BkAbsolut" sap:filterable="false" sap:sortable="false" sap:label="Beratungskosten in M" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
-                <!-- -->
                 <Property Name="GnFm" sap:filterable="false" sap:sortable="false" sap:label="Genehmigung FM" MaxLength="1" Type="Edm.String"/>
                 <Property Name="GnFmDurch" sap:filterable="false" sap:sortable="false" sap:label="Gehnehmigung FM durc" MaxLength="12" Type="Edm.String"/>
                 <Property Name="GnGl" sap:filterable="false" sap:sortable="false" sap:label="Genehmigung GL" MaxLength="1" Type="Edm.String"/>
                 <Property Name="GnGlDurch" sap:filterable="false" sap:sortable="false" sap:label="Genehmigung GL durch" MaxLength="12" Type="Edm.String"/>
                 <Property Name="MkMonate" sap:filterable="false" sap:sortable="false" sap:label="Maklerkosten in Mona" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
-                <!-- -->
-                <Property Name="MkAbsolut" sap:filterable="false" sap:sortable="false" sap:label="Maklerkosten in Mona" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
-                <!-- -->
                 <Property Name="Currency" sap:filterable="false" sap:sortable="false" sap:label="Währung" MaxLength="5" Type="Edm.String" sap:semantics="currency-code"/>
                 <Property Name="GnAl" sap:filterable="false" sap:sortable="false" sap:label="Genehmigung AL" MaxLength="1" Type="Edm.String"/>
                 <Property Name="GnAlDurch" sap:filterable="false" sap:sortable="false" sap:label="Genehmigung AL durch" MaxLength="12" Type="Edm.String"/>
                 <Property Name="Unit" sap:filterable="false" sap:sortable="false" sap:label="Mengeneinheit" MaxLength="3" Type="Edm.String" sap:semantics="unit-of-measure"/>
                 <Property Name="GnGf" sap:filterable="false" sap:sortable="false" sap:label="Genehmigung GF" MaxLength="1" Type="Edm.String"/>
                 <Property Name="GnGfDurch" sap:filterable="false" sap:sortable="false" sap:label="Genehmigung GF durch" MaxLength="12" Type="Edm.String"/>
+                <!-- Manuell hinzugefügte Felder - TODO: richtig Mappen -->
+                <Property Name="BkAbsolut" sap:filterable="false" sap:sortable="false" sap:label="Beratungskosten in M" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="MkAbsolut" sap:filterable="false" sap:sortable="false" sap:label="Maklerkosten" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="SonstigeKosten" sap:filterable="false" sap:sortable="false" sap:label="Sonstige Kosten" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="SonstigeKostenArt" sap:sortable="false" sap:label="Status" MaxLength="2" Type="Edm.String"/>
+                <Property Name="SonstigeErtraege" sap:filterable="false" sap:sortable="false" sap:label="Sonstige Kosten" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="SonstigeErtraegeArt" sap:sortable="false" sap:label="Status" MaxLength="2" Type="Edm.String"/>
+                <!-- Manuell hinzugefügte Felder - TODO: richtig Mappen -->
                 <NavigationProperty Name="KeToWe" ToRole="ToRole_KonditioneneinigungToWirtschaftseinheit" FromRole="FromRole_KonditioneneinigungToWirtschaftseinheit" Relationship="ZIP_VMDB_SRV.KonditioneneinigungToWirtschaftseinheit"/>
                 <NavigationProperty Name="KeToOb" ToRole="ToRole_KonditioneneinigungToObjekt" FromRole="FromRole_KonditioneneinigungToObjekt" Relationship="ZIP_VMDB_SRV.KonditioneneinigungToObjekt"/>
             </EntityType>
@@ -196,14 +198,20 @@
                 <Property Name="Debitor" sap:filterable="false" sap:sortable="false" sap:label="Kunde" MaxLength="10" Nullable="false" Type="Edm.String"/>
                 <Property Name="Bonitaet" sap:filterable="false" sap:sortable="false" sap:label="Bonität" MaxLength="4" Nullable="false" Type="Edm.String"/>
                 <Property Name="PLRelevant" sap:filterable="false" sap:sortable="false" sap:label="Planungsrelevanz" MaxLength="1" Nullable="false" Type="Edm.String"/>
-                <Property Name="BkMonate" sap:filterable="false" sap:sortable="false" sap:label="Beratungskosten in M" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
-                <Property Name="BkAbsolut" sap:filterable="false" sap:sortable="false" sap:label="Beratungskosten in M" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="BkMonate" sap:filterable="false" sap:sortable="false" sap:label="Beratungskosten in M" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>                
                 <Property Name="MkMonate" sap:filterable="false" sap:sortable="false" sap:label="Maklerkosten in Mona" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
-                <Property Name="MkAbsolut" sap:filterable="false" sap:sortable="false" sap:label="Maklerkosten in Mona" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
                 <Property Name="Poenale" sap:filterable="false" sap:sortable="false" sap:label="Pönale" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
                 <Property Name="Currency" sap:filterable="false" sap:sortable="false" sap:label="Währung" MaxLength="5" Nullable="false" Type="Edm.String" sap:semantics="currency-code"/>
                 <Property Name="Unit" sap:filterable="false" sap:sortable="false" sap:label="Mengeneinheit" MaxLength="3" Nullable="false" Type="Edm.String" sap:semantics="unit-of-measure"/>
                 <Property Name="Favorit" sap:filterable="false" sap:sortable="false" sap:label="Favorit (true/false)" MaxLength="1" Nullable="false" Type="Edm.String"/>
+                <!-- Manuell hinzugefügte Felder -->
+                <Property Name="BkAbsolut" sap:filterable="false" sap:sortable="false" sap:label="Beratungskosten in M" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="MkAbsolut" sap:filterable="false" sap:sortable="false" sap:label="Maklerkosten" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="SonstigeKosten" sap:filterable="false" sap:sortable="false" sap:label="Sonstige Kosten" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="SonstigeKostenArt" sap:sortable="false" sap:label="Status" MaxLength="2" Type="Edm.String"/>
+                <Property Name="SonstigeErtraege" sap:filterable="false" sap:sortable="false" sap:label="Sonstige Kosten" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="SonstigeErtraegeArt" sap:sortable="false" sap:label="Status" MaxLength="2" Type="Edm.String"/>
+                <!-- Manuell hinzugefügte Felder -->
                 <NavigationProperty Name="VaToOb" ToRole="ToRole_VermietungsaktivitaetToObjekt" FromRole="FromRole_VermietungsaktivitaetToObjekt" Relationship="ZIP_VMDB_SRV.VermietungsaktivitaetToObjekt"/>
             </EntityType>
             <EntityType sap:content-version="1" Name="Nutzungsart">
