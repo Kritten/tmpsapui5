@@ -20,7 +20,6 @@
                 <Property Name="WeId" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Wirtschaftseinheit" MaxLength="8" Nullable="false" Type="Edm.String"/>
                 <Property Name="MoId" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Mietobjekt" MaxLength="8" Nullable="false" Type="Edm.String"/>
                 <Property Name="Mietflche" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Mietfläche (zus. Sch" MaxLength="20" Nullable="false" Type="Edm.String"/>
-                <Property Name="Bezei" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Beschreibung lang" MaxLength="60" Nullable="false" Type="Edm.String"/>
                 <Property Name="Nutzart" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Beschreibung mittel" MaxLength="40" Nullable="false" Type="Edm.String"/>
                 <Property Name="Hnfl" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Menge" Nullable="false" Type="Edm.Decimal" sap:unit="HnflUnit" Scale="3" Precision="17"/>
                 <Property Name="HnflUnit" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Mengeneinheit" MaxLength="3" Nullable="false" Type="Edm.String" sap:semantics="unit-of-measure"/>
@@ -29,11 +28,14 @@
                 <Property Name="GaKosten" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Betrag" Nullable="false" Type="Edm.Decimal" sap:unit="Whrung" Scale="3" Precision="18"/>
                 <Property Name="MaKosten" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Betrag" Nullable="false" Type="Edm.Decimal" sap:unit="Whrung" Scale="3" Precision="18"/>
                 <Property Name="Whrung" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Währung" MaxLength="5" Nullable="false" Type="Edm.String" sap:semantics="currency-code"/>
-                <!-- -->
+                <!-- modified -->
+                <Property Name="Bezeichnung" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Beschreibung lang" MaxLength="60" Nullable="false" Type="Edm.String"/>
+                <!-- modified -->
+                <!-- added -->
                 <Property Name="Geschoss" sap:sortable="false" sap:label="Geschoss" Type="Edm.String"/>
                 <Property Name="Leerstand" sap:sortable="false" sap:label="Leerstand" Type="Edm.Boolean"/>
                 <Property Name="Flaechengroesse" sap:sortable="false" sap:label="Flächengröße" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
-                <!-- -->            
+                <!-- added -->            
             </EntityType>
             <EntityType sap:content-version="1" Name="Mietvertrag">
                 <Key>

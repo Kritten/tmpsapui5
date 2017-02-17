@@ -86,14 +86,23 @@ sap.ui.define([
                         {key: "MONAT", text: "Monatsmiete"},
                         {key: "JAHR", text: "Jahresmiete"}
                     ],
+                    flaecheneinheiten: [
+                        {key: "M2", text: "m²"},
+                        {key: "a", text: "a"}
+                    ],
                     waehrungSelectedKey: "",
                     waehrungSelected: null,
                     zeitspanneSelectedKey: "",
-                    zeitspanneSelected: null
+                    zeitspanneSelected: null,
+                    flaecheneinheitSelectedKey: "",
+                    flaecheneinheitSelected: null
                 };
 
                 viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
                 viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
+
+                viewsettings.flaecheneinheitSelectedKey = viewsettings.flaecheneinheiten[0].key;
+                viewsettings.flaecheneinheitSelected = viewsettings.flaecheneinheiten[0];
 
                 // Ausgangswährung ermitteln - Wenn Mietflächen enthalten sind, nimm die Währung der ersten Mietfläche
                 var ausgangsWaehrung = "EUR";
@@ -471,19 +480,21 @@ sap.ui.define([
         },
 
         onPopoverZeitspanneSelect: function(oEvent){
-
             var item = oEvent.getParameter("selectedItem");
             var zeitspanne = item.getBindingContext("form").getObject();
-
             this.getView().getModel("form").setProperty("/viewsettings/zeitspanneSelected", zeitspanne);
         },
 
         onPopoverWaehrungSelect: function(oEvent){
-
             var item = oEvent.getParameter("selectedItem");
             var waehrung = item.getBindingContext("form").getObject();
-
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
+        },
+
+        onPopoverFlaecheneinheitSelect: function(oEvent){
+            var item = oEvent.getParameter("selectedItem");
+            var flaecheneinheit = item.getBindingContext("form").getObject();
+            this.getView().getModel("form").setProperty("/viewsettings/flaecheneinheitSelected", flaecheneinheit);
         },
 
         onBack : function(oEvent) {
@@ -496,9 +507,10 @@ sap.ui.define([
             // create popover
 			if (! this._tableViewSettingsPopover) {
 				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenViewSettingsPopover", this);
-                this._tableViewSettingsPopover.setModel( this.getView().getModel("form"), "form" );
 				this.getView().addDependent(this._tableViewSettingsPopover);
 			}
+
+            this._tableViewSettingsPopover.setModel( this.getView().getModel("form"), "form" );
 
             // Wartet nicht auf vorausgehenden Request
             // Anders zur Zeit nicht möglich, da Popup ansonsten nicht geöffnet wird

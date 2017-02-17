@@ -33,7 +33,7 @@
                     <Toolbar>
                         <Title text="{i18n>MIETFLAECHENANGABEN}" level="H2"/>
                         <ToolbarSpacer />
-                        <Text text="{form>/viewsettings/zeitspanneSelected/text} | {form>/viewsettings/waehrungSelected/text}" />
+                        <Text text="{form>/viewsettings/zeitspanneSelected/text} | {form>/viewsettings/waehrungSelected/text} | {form>/viewsettings/flaecheneinheitSelected/text}" />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" />
                     </Toolbar>
                 </headerToolbar>
@@ -61,16 +61,16 @@
                         <Text text="{i18n>MIETFLAECHENSPLIT}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>MARKTUEBLICHE_MIETE} in {form>/viewsettings/waehrungSelected/text}/FE" />
+                        <Text text="{i18n>MARKTUEBLICHE_MIETE} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>ANGEBOTSMIETE} in {form>/viewsettings/waehrungSelected/text}/FE" />
+                        <Text text="{i18n>ANGEBOTSMIETE} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text}/FE" />
+                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text}/FE" />
+                        <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
                     </Column>
                 </columns>
                 
@@ -83,7 +83,7 @@
                             <Text text="{form>NutzartAlt}" />
                             <Text text="{form>Hnfl}" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <CheckBox selected="true" editable="false" />
+                            <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Text text="{= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) }" />
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -184,7 +184,7 @@
                     </Input>
 
                     <!-- Sonstige Erträge  -->
-                    <Label text="{i18n>SONSTIGE_ERTRAEGE}" />
+                    <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/text}" />
                     <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/SonstigeErtraegeArt}">
                         <items>
                             <core:Item key="00" text="Sonstige Ertragsart 00" />
