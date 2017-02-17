@@ -78,7 +78,7 @@
                     <ColumnListItem vAlign="Middle">
                         <cells>
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
-                            <Text text="{form>Bezei}" />
+                            <Text text="{form>Bezeichnung}" />
                             <Text text="{form>Nutzart}" />
                             <Text text="{form>NutzartAlt}" />
                             <Text text="{form>Hnfl}" />
