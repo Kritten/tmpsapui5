@@ -20,6 +20,9 @@ sap.ui.define([
                     _this.getView().byId("idKonditioneneinigungDetails").scrollTo(0, 0);
                 }
             });
+
+            // Kompaktere Darstellung für die Tabelle
+            //this.getView().byId("mietflaechenangabenTable").addStyleClass("sapUiSizeCompact");
             
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("konditioneneinigungDetails").attachPatternMatched(this.onKonditioneneinigungAnzeigen, this);
@@ -141,13 +144,20 @@ sap.ui.define([
             this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("mietflaechenangabenErrorBox").setVisible(false);
-            
+
+            // Verteilen Button normal stylen
+            this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Default);          
+
             var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
             
+            var cellIndexAnMiete = 8;
+            var cellIndexGaKosten = 9;
+            var cellIndexMaKosten = 10;
+
             mietflaechenangabenItems.forEach(function(item){
-                item.getCells()[7].setValueState(sap.ui.core.ValueState.None);
-                item.getCells()[8].setValueState(sap.ui.core.ValueState.None);  
-                item.getCells()[9].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[cellIndexAnMiete].setValueState(sap.ui.core.ValueState.None);
+                item.getCells()[cellIndexGaKosten].setValueState(sap.ui.core.ValueState.None);  
+                item.getCells()[cellIndexMaKosten].setValueState(sap.ui.core.ValueState.None);  
             });   
         },
 
@@ -409,6 +419,9 @@ sap.ui.define([
 
         newKonditioneneinigung: function(){
 
+            var then = new Date();
+            then.setFullYear(then.getFullYear() + 1 );
+
             return {
                 KeId: "",
                 Bukrs: "",
@@ -436,7 +449,7 @@ sap.ui.define([
                 Unit: "",
                 GnGf: "",
                 GnGfDurch: "",
-                GueltigkKe: null,
+                GueltigkKe: then,
 
                 BkAbsolut: "",
                 MkAbsolut: "",
@@ -986,54 +999,58 @@ sap.ui.define([
             
             mietflaechenangabenItems.forEach(function(item){
                 
+                var cellIndexAnMiete = 8;
+                var cellIndexGaKosten = 9;
+                var cellIndexMaKosten = 10;
+
                 var mietflaechenangabe = item.getBindingContext("form").getObject();
                 
                 // TODO: Validierungslogik klären
 
                 if(mietflaechenangabe.AnMiete.match(/^\d+((\.|,)\d\d?)?$/) === null)
                 {
-                    item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[7].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
+                    item.getCells()[cellIndexAnMiete].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[cellIndexAnMiete].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
                     validationResult = false;
                 }
                 else
                 {
                     var AnMiete = parseFloat( mietflaechenangabe.AnMiete.replace(",", ".") );
                     if(AnMiete <= 0){
-                        item.getCells()[7].setValueState(sap.ui.core.ValueState.Error);
-                        item.getCells()[7].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
+                        item.getCells()[cellIndexAnMiete].setValueState(sap.ui.core.ValueState.Error);
+                        item.getCells()[cellIndexAnMiete].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
                         validationResult = false;
                     }
                 }
                 
                 if(mietflaechenangabe.GaKosten.match(/^\d+((\.|,)\d\d?)?$/) === null)
                 {
-                    item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[8].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
+                    item.getCells()[cellIndexGaKosten].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[cellIndexGaKosten].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
                     validationResult = false;
                 }
                 else
                 {
                     var GaKosten = parseFloat( mietflaechenangabe.GaKosten.replace(",", ".") );
                     if(GaKosten <= 0){
-                        item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
-                        item.getCells()[8].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
+                        item.getCells()[cellIndexGaKosten].setValueState(sap.ui.core.ValueState.Error);
+                        item.getCells()[cellIndexGaKosten].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
                         validationResult = false;
                     }
                 }
 
                 if(mietflaechenangabe.MaKosten.match(/^\d+((\.|,)\d\d?)?$/) === null)
                 {
-                    item.getCells()[9].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[9].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
+                    item.getCells()[cellIndexMaKosten].setValueState(sap.ui.core.ValueState.Error);
+                    item.getCells()[cellIndexMaKosten].setValueStateText("Bitte geben Sie Wert mit maximal zwei Nachkommastellen ein.");
                     validationResult = false;
                 }
                 else
                 {
                     var MaKosten = parseFloat( mietflaechenangabe.MaKosten.replace(",", ".") );
                     if(MaKosten <= 0){
-                        item.getCells()[9].setValueState(sap.ui.core.ValueState.Error);
-                        item.getCells()[9].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
+                        item.getCells()[cellIndexMaKosten].setValueState(sap.ui.core.ValueState.Error);
+                        item.getCells()[cellIndexMaKosten].setValueStateText("Bitte geben Sie einen Wert größer 0 ein.");
                         validationResult = false;
                     }
                 }
@@ -1253,8 +1270,10 @@ sap.ui.define([
 
             // Selektion aufheben nach dem Löschen
             mietflaechenangabenTable.removeSelections(true);
-        },
 
+            // Verteilen Button rot hervorheben
+            this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
+        },
 
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenAngabeHinzufuegenButtonPress");
@@ -1372,6 +1391,9 @@ sap.ui.define([
                     });
                     
                     this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
+
+                    // Verteilen Button rot hervorheben
+                    this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
                 }
                 else
                 {
@@ -1480,6 +1502,9 @@ sap.ui.define([
             });
             
             this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
+
+            // Verteilen Button normal stylen
+            this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Default);
         },
         
         onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(oEvent){

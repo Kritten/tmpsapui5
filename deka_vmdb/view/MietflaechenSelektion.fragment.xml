@@ -22,6 +22,15 @@
             <Column minScreenWidth="Tablet" demandPopin="true">
                 <Text text="{i18n>NUTZUNGSART}" />
             </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>LEERSTAND}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>GESCHOSS}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>FLAECHENGROESSE}" />
+            </Column>
         </columns>
             
 		<ColumnListItem>
@@ -29,6 +38,9 @@
 				<Text text="{Bukrs}/{WeId}/{MoId}" />
                 <Text text="{Bezei}" />
                 <Text text="{Nutzart}" />
+                <CheckBox selected="{Leerstand}" editable="false" />
+                <Text text="{Geschoss}" />
+                <Text text="{Flaechengroesse}" />
 			</cells>
 		</ColumnListItem>
 

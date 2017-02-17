@@ -29,6 +29,11 @@
                 <Property Name="GaKosten" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Betrag" Nullable="false" Type="Edm.Decimal" sap:unit="Whrung" Scale="3" Precision="18"/>
                 <Property Name="MaKosten" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Betrag" Nullable="false" Type="Edm.Decimal" sap:unit="Whrung" Scale="3" Precision="18"/>
                 <Property Name="Whrung" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Währung" MaxLength="5" Nullable="false" Type="Edm.String" sap:semantics="currency-code"/>
+                <!-- -->
+                <Property Name="Geschoss" sap:sortable="false" sap:label="Geschoss" Type="Edm.String"/>
+                <Property Name="Leerstand" sap:sortable="false" sap:label="Leerstand" Type="Edm.Boolean"/>
+                <Property Name="Flaechengroesse" sap:sortable="false" sap:label="Flächengröße" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <!-- -->            
             </EntityType>
             <EntityType sap:content-version="1" Name="Mietvertrag">
                 <Key>
@@ -88,6 +93,7 @@
                 <Property Name="SonstigeErtraege" sap:filterable="false" sap:sortable="false" sap:label="Sonstige Kosten" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
                 <Property Name="SonstigeErtraegeArt" sap:sortable="false" sap:label="Status" MaxLength="2" Type="Edm.String"/>
                 <Property Name="BudgetStopp" sap:sortable="false" sap:label="Budgetstopp" Type="Edm.Boolean"/>                
+                <Property Name="Bezeichnung" sap:sortable="false" sap:label="Bezeichnung" Type="Edm.String"/>
                 <!-- Manuell hinzugefügte Felder - TODO: richtig Mappen -->
                 <NavigationProperty Name="KeToWe" ToRole="ToRole_KonditioneneinigungToWirtschaftseinheit" FromRole="FromRole_KonditioneneinigungToWirtschaftseinheit" Relationship="ZIP_VMDB_SRV.KonditioneneinigungToWirtschaftseinheit"/>
                 <NavigationProperty Name="KeToOb" ToRole="ToRole_KonditioneneinigungToObjekt" FromRole="FromRole_KonditioneneinigungToObjekt" Relationship="ZIP_VMDB_SRV.KonditioneneinigungToObjekt"/>
@@ -165,6 +171,12 @@
                 <Property Name="HnflAlt" sap:filterable="false" sap:sortable="false" sap:label="Mietfläche (alternat" Nullable="false" Type="Edm.Decimal" sap:unit="HnflUnit" Scale="3" Precision="17"/>
                 <Property Name="MaKosten" sap:filterable="false" sap:sortable="false" sap:label="Mietausbaukosten" Nullable="false" Type="Edm.Decimal" sap:unit="Whrung" Scale="3" Precision="18"/>
                 <Property Name="NhMiete" sap:filterable="false" sap:sortable="false" sap:label="Nachhaltige Miete" Nullable="false" Type="Edm.Decimal" sap:unit="Whrung" Scale="3" Precision="18"/>
+                <!-- -->
+                <Property Name="Bezeichnung" sap:sortable="false" sap:label="Bezeichnung" Type="Edm.String"/>
+                <Property Name="Geschoss" sap:sortable="false" sap:label="Geschoss" Type="Edm.String"/>
+                <Property Name="Leerstand" sap:sortable="false" sap:label="Leerstand" Type="Edm.Boolean"/>
+                <Property Name="Flaechengroesse" sap:sortable="false" sap:label="Flächengröße" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <!-- -->
             </EntityType>
             <EntityType sap:content-version="1" Name="Debitor">
                 <Key>
