@@ -119,14 +119,23 @@ sap.ui.define([
                         {key: "MONAT", text: "Monatsmiete"},
                         {key: "JAHR", text: "Jahresmiete"}
                     ],
+                    flaecheneinheiten: [
+                        {key: "M2", text: "m²"},
+                        {key: "a", text: "a"}
+                    ],
                     waehrungSelectedKey: "",
                     waehrungSelected: null,
                     zeitspanneSelectedKey: "",
-                    zeitspanneSelected: null
+                    zeitspanneSelected: null,
+                    flaecheneinheitSelectedKey: "",
+                    flaecheneinheitSelected: null
                 };
 
                 viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
                 viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
+
+                viewsettings.flaecheneinheitSelectedKey = viewsettings.flaecheneinheiten[0].key;
+                viewsettings.flaecheneinheitSelected = viewsettings.flaecheneinheiten[0];
 
                 // Ausgangswährung ermitteln - Wenn Mietflächen enthalten sind, nimm die Währung der ersten Mietfläche
                 var ausgangsWaehrung = "EUR";
@@ -523,6 +532,12 @@ sap.ui.define([
             var zeitspanne = item.getBindingContext("form").getObject();
 
             this.getView().getModel("form").setProperty("/viewsettings/zeitspanneSelected", zeitspanne);
+        },
+
+        onPopoverFlaecheneinheitSelect: function(oEvent){
+            var item = oEvent.getParameter("selectedItem");
+            var flaecheneinheit = item.getBindingContext("form").getObject();
+            this.getView().getModel("form").setProperty("/viewsettings/flaecheneinheitSelected", flaecheneinheit);
         },
 
         onPopoverWaehrungSelect: function(oEvent){
@@ -1241,7 +1256,6 @@ sap.ui.define([
                 Vermietungsart: "",
                 Aktiv: false,
                 Debitor: "",
-                Bonitaet: "",
                 PLRelevant: false,
                 BkMonate: "",
                 MkMonate: "",
@@ -1251,12 +1265,19 @@ sap.ui.define([
                 AuthUser: "",
                 Favorit: false,
 
+                ErsterMonatMietfrei: null,
+                AnzahlWdhInJahren: "",
+                ErsterMonatVerteilungAusbaukosten: null,
+                VerteilungAusbaukostenAnzahlMonate: "",
+
                 BkAbsolut: "",
                 MkAbsolut: "",
                 SonstigeKosten: "",
                 SonstigeKostenArt: "00",
                 SonstigeErtraege: "",
                 SonstigeErtraegeArt: "00",
+
+                BudgetStopp: false,
 
                 VaToOb: [],
 

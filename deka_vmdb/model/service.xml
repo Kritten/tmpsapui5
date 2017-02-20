@@ -220,6 +220,12 @@
                 <Property Name="Unit" sap:filterable="false" sap:sortable="false" sap:label="Mengeneinheit" MaxLength="3" Nullable="false" Type="Edm.String" sap:semantics="unit-of-measure"/>
                 <Property Name="Favorit" sap:filterable="false" sap:sortable="false" sap:label="Favorit (true/false)" MaxLength="1" Nullable="false" Type="Edm.String"/>
                 <!-- Manuell hinzugefügte Felder -->
+                <Property Name="ErsterMonatMietfrei" sap:filterable="false" sap:sortable="false" sap:label="ErsterMonatMietfrei" Type="Edm.DateTime" Precision="7"/>
+                <Property Name="AnzahlWdhInJahren" sap:filterable="false" sap:sortable="false" sap:label="AnzahlWdhInJahren" Nullable="false" Type="Edm.Byte" />
+                <Property Name="ErsterMonatVerteilungAusbaukosten" sap:filterable="false" sap:sortable="false" sap:label="ErsterMonatMietfrei" Type="Edm.DateTime" Precision="7"/>
+                <Property Name="VerteilungAusbaukostenAnzahlMonate" sap:filterable="false" sap:sortable="false" sap:label="VerteilungAusbaukostenAnzahlMonate" Nullable="false" Type="Edm.Byte" />
+                <Property Name="BudgetStopp" sap:sortable="false" sap:label="Budgetstopp" Type="Edm.Boolean"/>     
+                <Property Name="Bezeichnung" sap:sortable="false" sap:label="Bezeichnung" Type="Edm.String"/>
                 <Property Name="BkAbsolut" sap:filterable="false" sap:sortable="false" sap:label="Beratungskosten in M" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
                 <Property Name="MkAbsolut" sap:filterable="false" sap:sortable="false" sap:label="Maklerkosten" Nullable="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
                 <Property Name="SonstigeKosten" sap:filterable="false" sap:sortable="false" sap:label="Sonstige Kosten" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>

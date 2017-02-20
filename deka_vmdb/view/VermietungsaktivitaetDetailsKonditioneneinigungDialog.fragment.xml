@@ -25,7 +25,7 @@
 		<ColumnListItem>
 			<cells>
 				<Text text="{KeId}" />
-				<Text text="(Bezeichnung)" />
+				<Text text="{Bezeichnung}" />
 			</cells>
 		</ColumnListItem>
 
