@@ -96,6 +96,9 @@
                 <Property Name="SonstigeErtraegeArt" sap:sortable="false" sap:label="Status" MaxLength="2" Type="Edm.String"/>
                 <Property Name="BudgetStopp" sap:sortable="false" sap:label="Budgetstopp" Type="Edm.Boolean"/>                
                 <Property Name="Bezeichnung" sap:sortable="false" sap:label="Bezeichnung" Type="Edm.String"/>
+                <Property Name="KostenAusSteuerschaden" sap:filterable="false" sap:sortable="false" sap:label="Kosten aus Steuerschaden" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="ErtragAusMwstKompensation" sap:filterable="false" sap:sortable="false" sap:label="Ertrag aus Mwst-Kompensation" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
+                <Property Name="Einmalertrag" sap:filterable="false" sap:sortable="false" sap:label="Einmalertrag" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
                 <!-- Manuell hinzugefügte Felder - TODO: richtig Mappen -->
                 <NavigationProperty Name="KeToWe" ToRole="ToRole_KonditioneneinigungToWirtschaftseinheit" FromRole="FromRole_KonditioneneinigungToWirtschaftseinheit" Relationship="ZIP_VMDB_SRV.KonditioneneinigungToWirtschaftseinheit"/>
                 <NavigationProperty Name="KeToOb" ToRole="ToRole_KonditioneneinigungToObjekt" FromRole="FromRole_KonditioneneinigungToObjekt" Relationship="ZIP_VMDB_SRV.KonditioneneinigungToObjekt"/>

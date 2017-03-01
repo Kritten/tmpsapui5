@@ -83,7 +83,7 @@
 							<Text text="{i18n>MIETBEGINN}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>LAUFZEIT}" />
+							<Text text="{i18n>LAUFZEIT} {i18n>IN_MONATEN}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>GUELTIG_BIS}" />

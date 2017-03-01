@@ -467,6 +467,9 @@ sap.ui.define([
                 SonstigeErtraege: "",
                 SonstigeErtraegeArt: "00",
                 BudgetStopp: false,
+                KostenAusSteuerschaden: "",
+                ErtragAusMwstKompensation: "",
+                Einmalertrag: "",
 
                 KeToOb: [],
                 KeToWe: [],

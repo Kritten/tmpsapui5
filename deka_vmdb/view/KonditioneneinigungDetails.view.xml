@@ -137,15 +137,16 @@
                 <f:content>
                     <!-- <core:Title text="" /> -->
                     
+                    <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="{form>/konditioneneinigung/GueltigkKe}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+
                     <Label text="{i18n>MIETBEGINN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <DatePicker id="dateMietbeginn" dateValue="{form>/konditioneneinigung/Mietbeginn}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>LAUFZEIT_BIS_1ST_BREAK} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Input id="laufzeitBis1stBreak" value="{form>/konditioneneinigung/LzFirstbreak}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
-                    <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="{form>/konditioneneinigung/GueltigkKe}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    
+
                     <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>MIETFREIE_ZEIT} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -195,11 +196,21 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="sonstigeErtraege" value="{form>/konditioneneinigung/SonstigeErtraege}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                    <Input id="sonstigeErtraege" value="{form>/konditioneneinigung/SonstigeErtraege}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
                     </Input>
+
+
+                    <Label text="{i18n>KOSTEN_AUS_STEUERSCHADEN} in {form>/viewsettings/waehrungSelected/text}" />
+                    <Input id="kostenAusSteuerschaden" value="{form>/konditioneneinigung/KostenAusSteuerschaden}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+
+                    <Label text="{i18n>ERTRAG_AUS_MWST} in {form>/viewsettings/waehrungSelected/text}" />
+                    <Input id="ertragAusMwstKompensation" value="{form>/konditioneneinigung/ErtragAusMwstKompensation}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    
+                    <Label text="{i18n>EINMAL_ERTRAG} in {form>/viewsettings/waehrungSelected/text}" />
+                    <Input id="einmalertrag" value="{form>/konditioneneinigung/Einmalertrag}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                 </f:content>
 
