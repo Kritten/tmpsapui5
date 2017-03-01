@@ -42,7 +42,7 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 				});
 
 				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				oMockServer.simulate(sPath + "/model/service.xml");
+				oMockServer.simulate(sPath + "/model/service-v1.xml");
 				oMockServer.start();
 
 				serviceUrl = "/destinations/mockserver/service.svc/";
