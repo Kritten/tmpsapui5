@@ -49,9 +49,6 @@
                         <Text text="{i18n>NUTZUNGSART}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>NUTZUNGSART} {i18n>ALTERNATIV}" />
-                    </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>HAUPTNUTZFLAECHE}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
@@ -80,7 +77,6 @@
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="{form>Bezeichnung}" />
                             <Text text="{form>Nutzart}" />
-                            <Text text="{form>NutzartAlt}" />
                             <Text text="{form>Hnfl}" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
