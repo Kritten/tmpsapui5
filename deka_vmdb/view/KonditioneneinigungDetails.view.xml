@@ -164,7 +164,7 @@
 
                     <!-- Sonstige Kosten -->
                     <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/text}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/SonstigeKostenArt}">
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtKosten}">
                         <items>
                             <core:Item key="00" text="Sonstige Kostenart 00" />
                             <core:Item key="01" text="Sonstige Kostenart 01" />
@@ -174,7 +174,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="sonstigeKosten" value="{form>/konditioneneinigung/SonstigeKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                    <Input id="idSonstK" value="{form>/konditioneneinigung/SonstK}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
@@ -182,7 +182,7 @@
 
                     <!-- Sonstige Erträge  -->
                     <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/text}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/SonstigeErtraegeArt}">
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtErtrag}">
                         <items>
                             <core:Item key="00" text="Sonstige Ertragsart 00" />
                             <core:Item key="01" text="Sonstige Ertragsart 01" />
@@ -192,7 +192,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="sonstigeErtraege" value="{form>/konditioneneinigung/SonstigeErtraege}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
+                    <Input id="idSonstE" value="{form>/konditioneneinigung/SonstE}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
@@ -200,10 +200,10 @@
 
 
                     <Label text="{i18n>KOSTEN_AUS_STEUERSCHADEN} in {form>/viewsettings/waehrungSelected/text}" />
-                    <Input id="kostenAusSteuerschaden" value="{form>/konditioneneinigung/KostenAusSteuerschaden}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="idSteuerschaden" value="{form>/konditioneneinigung/Steuerschaden}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                     <Label text="{i18n>ERTRAG_AUS_MWST} in {form>/viewsettings/waehrungSelected/text}" />
-                    <Input id="ertragAusMwstKompensation" value="{form>/konditioneneinigung/ErtragAusMwstKompensation}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="idMwstkErtrag" value="{form>/konditioneneinigung/MwstkErtrag}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>EINMAL_ERTRAG} in {form>/viewsettings/waehrungSelected/text}" />
                     <Input id="einmalertrag" value="{form>/konditioneneinigung/Einmalertrag}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />

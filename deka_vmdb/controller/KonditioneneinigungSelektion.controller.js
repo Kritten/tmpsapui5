@@ -7,9 +7,7 @@ sap.ui.define([
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungSelektion", {
 				
-		onInit : function(evt) {
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onInit");
-			
+		onInit : function(evt) {			
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
 			
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -17,13 +15,12 @@ sap.ui.define([
 		},
 
 		onPatternMatched: function(oEvent){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onPatternMatched");
 			var _this = this;
 
 			DataProvider.readKondSelSetAsync().then(function(konditioneneinigungen){
 
 				var jsonData = {
-					data: konditioneneinigungen.map(function(ke){
+					data: _.map(konditioneneinigungen, function(ke){
 						ke.Favorit = (Math.random() > 0.5);
 						return ke;
 					}),
@@ -58,67 +55,6 @@ sap.ui.define([
             })
             .done();
 
-			/*
-			var oDataModel = sap.ui.getCore().getModel("odata");
-
-			oDataModel.read("/KonditioneneinigungSet", {
-
-				urlParameters:{
-					"$expand": "KeToOb"
-				},
-
-				success: function(oData){
-					console.log(oData);
-
-					var jsonData = {
-						data: [],
-						facetfilters: null
-					};
-
-					oData.results.forEach(function(konditioneneinigung){
-
-						konditioneneinigung.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
-
-						// Pro Objekt einen separaten Eintrag
-						konditioneneinigung.KeToOb.results.forEach(function(objekt){
-							var _konditioneneinigung = jQuery.extend(true, {}, konditioneneinigung);
-							_konditioneneinigung.KeToOb = objekt;
-							jsonData.data.push(_konditioneneinigung);
-						});
-
-					});
-
-					var filterBuchungskreisValues = [];
-					var filterWirtschaftseinheitValues = [];
-					var filterAnmerkung = [];
-					
-					jsonData.data.forEach(function(konditioneneinigung){
-						filterBuchungskreisValues.push(konditioneneinigung.Bukrs);
-						filterWirtschaftseinheitValues.push(konditioneneinigung.WeId);
-						filterAnmerkung.push(konditioneneinigung.Anmerkung);
-					});
-
-					jsonData.facetfilters = [{
-						filterName: "Favorit",
-						values: [{key: true, text: "Ja"}, {key: false, text: "Nein"}]
-					}, {
-						filterName: "Buchungskreis",
-						values: _.map(_.uniq(filterBuchungskreisValues), function(Bukrs){ return {key: Bukrs, text: Bukrs}; })
-					}, {
-						filterName: "Wirtschaftseinheit",
-						values: _.map(_.uniq(filterWirtschaftseinheitValues), function(WeId){ return {key: WeId, text: WeId}; })
-					}, {
-						filterName: "Anmerkung",
-						values: _.map(_.uniq(filterAnmerkung), function(Anmerkung){ return {key: Anmerkung, text: Anmerkung}; })
-					}];
-					
-					var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
-					_this.getView().setModel(jsonModel, "kondSel");
-
-					_this.applyFilters();
-				}
-			});
-			*/
 		},
 
 		// Klick auf den Zurück-Pfeil
@@ -148,7 +84,6 @@ sap.ui.define([
 		},
 
 		onAnlegenPress : function (oEvent) {
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onAnlegenPress");
 			var _this = this;
 
 			// Holt über die ElementID die Radio Button Group

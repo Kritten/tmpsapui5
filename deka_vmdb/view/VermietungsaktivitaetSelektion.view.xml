@@ -20,7 +20,7 @@
 
 						<FlexBox justifyContent="Start">
 							<items>
-								<RadioButtonGroup select="onRadioButtonGroupSelect" selectedIndex="{vermSel>/selectedRadioButtonGroupIndex}" columns="4">
+								<RadioButtonGroup id="RBG_Anlage" columns="4">
 									<buttons>
 										<RadioButton text="{i18n>VERM_SEL_ANLAGE_REGELVERMIETUNG}" tooltip="{i18n>VERM_SEL_ANLAGE_REGELVERMIETUNG_TOOLTIP}" />
 										<RadioButton text="{i18n>VERM_SEL_ANLAGE_KLEINVERMIETUNG}" tooltip="{i18n>VERM_SEL_ANLAGE_KLEINVERMIETUNG_TOOLTIP}" />
@@ -86,12 +86,6 @@
 							<Text text="{i18n>LAUFZEIT} {i18n>IN_MONATEN}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>GUELTIG_BIS}" />
-						</Column>
-						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>BEZEICHNUNG}" />
-						</Column>
-						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>HAUPTNUTZFLAECHE}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
@@ -124,11 +118,9 @@
 										formatOptions: {
 											maxIntegerDigits: 5
 										}
-								}" />	
-								<Text text="(Gültig bis)" />
-								<Text text="{vermSel>Bezeichnung}" />
+								}" />
 								<Text text="{
-										path: 'vermSel>VaToOb/Hnfl',
+										path: 'vermSel>Hnfl',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -137,9 +129,9 @@
 											groupingSeparator : '.', 
 											decimalSeparator : ',' 
 										}
-								}" />
+								} {vermSel>Unit}" />
 								<Text text="{
-										path: 'vermSel>VaToOb/AnMiete',
+										path: 'vermSel>AnMiete',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -148,9 +140,9 @@
 											groupingSeparator : '.', 
 											decimalSeparator : ',' 
 										}
-								}" />
+								} {vermSel>Currency}" />
 								<Text text="{
-										path: 'vermSel>VaToOb/GaKosten',
+										path: 'vermSel>GaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -159,9 +151,9 @@
 											groupingSeparator : '.', 
 											decimalSeparator : ',' 
 										}
-								}" />
+								} {vermSel>Currency}" />
 								<Text text="{
-										path: 'vermSel>VaToOb/MaKosten',
+										path: 'vermSel>MaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -170,7 +162,7 @@
 											groupingSeparator : '.', 
 											decimalSeparator : ',' 
 										}
-								}" />
+								} {vermSel>Currency}" />
 								
 							</cells>
 						</ColumnListItem>

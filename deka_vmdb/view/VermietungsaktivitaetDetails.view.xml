@@ -163,10 +163,10 @@
                     <Input id="mietfreieZeitenInMonaten" value="{form>/vermietungsaktivitaet/MzMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                     <Label text="{i18n>ERSTER_MONAT_MIETFREI}" />
-                    <DatePicker id="idDateErsterMonatMietfrei" dateValue="{form>/vermietungsaktivitaet/ErsterMonatMietfrei}" placeholder=" " displayFormat="MM/yyyy" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="idMzErsterMonat" dateValue="{form>/vermietungsaktivitaet/MzErsterMonat}" placeholder=" " displayFormat="MM/yyyy" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>ANZAHL_WIEDERHOLUNGEN} {i18n>IN_JAHREN}" />
-                    <Input id="idAnzahlWiederholungenInJahren" value="{form>/vermietungsaktivitaet/AnzahlWdhInJahren}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
+                    <Input id="idMzAnzahlJ" value="{form>/vermietungsaktivitaet/MzAnzahlJ}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
 
                     <Label text="{i18n>MAKLERKOSTEN} {i18n>IN_MONATSMIETEN}" />
                     <Input id="maklerkostenInMonatsmieten" value="{form>/vermietungsaktivitaet/MkMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -182,7 +182,7 @@
 
                     <!-- Sonstige Kosten -->
                     <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/text}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/SonstigeKostenArt}">
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtKosten}">
                         <items>
                             <core:Item key="00" text="Sonstige Kostenart 00" />
                             <core:Item key="01" text="Sonstige Kostenart 01" />
@@ -192,7 +192,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="sonstigeKosten" value="{form>/vermietungsaktivitaet/SonstigeKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                    <Input id="idSonstK" value="{form>/vermietungsaktivitaet/SonstK}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
@@ -200,7 +200,7 @@
 
                     <!-- Sonstige Erträge  -->
                     <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/text}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/SonstigeErtraegeArt}">
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtErtrag}">
                         <items>
                             <core:Item key="00" text="Sonstige Ertragsart 00" />
                             <core:Item key="01" text="Sonstige Ertragsart 01" />
@@ -210,14 +210,14 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="sonstigeErtraege" value="{form>/vermietungsaktivitaet/SonstigeErtraege}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
+                    <Input id="idSonstE" value="{form>/vermietungsaktivitaet/SonstE}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>ERSTER_MONAT_VERTEILUNG_AUSBAUKOSTEN}" />
-                    <DatePicker id="idErsterMonatVerteilungAusbaukosten" dateValue="{form>/vermietungsaktivitaet/ErsterMonatVerteilungAusbaukosten}" placeholder=" " displayFormat="MM/yyyy" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="idAkErsterMonat" dateValue="{form>/vermietungsaktivitaet/AkErsterMonat}" placeholder=" " displayFormat="MM/yyyy" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                     <Label text="{i18n>VERTEILUNG_AUSBAUKOSTEN_MONATE}" />
                     <Input id="idVerteilungAusbaukostenAnzahlMonate" value="{form>/vermietungsaktivitaet/VerteilungAusbaukostenAnzahlMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />

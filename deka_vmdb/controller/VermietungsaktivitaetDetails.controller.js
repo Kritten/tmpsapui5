@@ -1211,17 +1211,17 @@ sap.ui.define([
                 AuthUser: "",
                 Favorit: false,
 
-                ErsterMonatMietfrei: null,
-                AnzahlWdhInJahren: "",
-                ErsterMonatVerteilungAusbaukosten: null,
+                MzErsterMonat: null,
+                MzAnzahlJ: "",
+                AkErsterMonat: null,
                 VerteilungAusbaukostenAnzahlMonate: "",
 
                 BkAbsolut: "",
                 MkAbsolut: "",
-                SonstigeKosten: "",
-                SonstigeKostenArt: "00",
-                SonstigeErtraege: "",
-                SonstigeErtraegeArt: "00",
+                SonstK: "",
+                ArtKosten: "00",
+                SonstE: "",
+                ArtErtrag: "00",
 
                 BudgetStopp: false,
 

@@ -3,7 +3,8 @@ sap.ui.define([
 	"sap/ui/model/Filter", 
 	"sap/m/MessageToast", 
 	"ag/bpc/Deka/util/ExcelImportUtil",
-	"ag/bpc/Deka/util/NavigationPayloadUtil"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil) {
+	"ag/bpc/Deka/util/NavigationPayloadUtil",
+	"ag/bpc/Deka/util/DataProvider"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
@@ -26,82 +27,56 @@ sap.ui.define([
 		onPatternMatched: function(oEvent){
 			var _this = this;
 
-			var oDataModel = sap.ui.getCore().getModel("odata");
+			DataProvider.readVermSelSetAsync().then(function(vermietungsaktivitaeten){
+				
+				var jsonData = {
+					data: _.map(vermietungsaktivitaeten, function(va){
+						va.Favorit = (Math.random() > 0.5);
+						return va;
+					}),
+					facetfilters: null
+				};
 
-			oDataModel.read("/VermietungsaktivitaetSet", {
+				var filterBuchungskreisValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Bukrs; }));
+				var filterWirtschaftseinheitValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.WeId; }));
+				var filterAnmerkungValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Anmerkung; }));
+				var filterStatusValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Status; }));
+				var filterExternerDienstleisterValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Dienstleister; }));
+				var filterVermietungsartValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Vermietungsart; }));
+				
+				jsonData.facetfilters = [{
+					filterName: "Favorit",
+					values: [{key: true, text: "Ja"}, {key: false, text: "Nein"}]
+				}, {
+					filterName: "Buchungskreis",
+					values: _.map(filterBuchungskreisValues, function(Bukrs){ return {key: Bukrs, text: Bukrs}; })
+				}, {
+					filterName: "Wirtschaftseinheit",
+					values: _.map(filterWirtschaftseinheitValues, function(WeId){ return {key: WeId, text: WeId}; })
+				}, {
+					filterName: "Anmerkung",
+					values: _.map(filterAnmerkungValues, function(Anmerkung){ return {key: Anmerkung, text: Anmerkung}; })
+				}, {
+					filterName: "Status",
+					values: _.map(filterStatusValues, function(Status){ return {key: Status, text: Status}; })
+				}, {
+					filterName: "Externer Dienstleister",
+					values: _.map(filterExternerDienstleisterValues, function(ExternerDienstleister){ return {key: ExternerDienstleister, text: ExternerDienstleister}; })
+				}, {
+					filterName: "Vermietungsart",
+					values: _.map(filterVermietungsartValues, function(Vermietungsart){ return {key: Vermietungsart, text: Vermietungsart}; })
+				}];
+							
+				var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
+				_this.getView().setModel(jsonModel, "vermSel");
+				
+				_this.applyFilters();
+			})
+			.catch(function(oError){
+				console.log(oError);
+            })
+            .done();
 
-				urlParameters:{
-					"$expand": "VaToOb"
-				},
-
-				success: function(oData){
-					console.log(oData);
-
-					var jsonData = {
-						data: [],
-						facetfilters: null,
-						selectedRadioButtonGroupIndex: 0
-					};
-
-					oData.results.forEach(function(vermietungsaktivitaet){
-
-						vermietungsaktivitaet.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
-
-						// Pro Objekt einen separaten Eintrag
-						vermietungsaktivitaet.VaToOb.results.forEach(function(objekt){
-							var _vermietungsaktivitaet = jQuery.extend(true, {}, vermietungsaktivitaet);
-							_vermietungsaktivitaet.VaToOb = objekt;
-							jsonData.data.push(_vermietungsaktivitaet);
-						});
-						
-					});
-
-					var filterBuchungskreisValues = [];
-					var filterWirtschaftseinheitValues = [];
-					var filterAnmerkungValues = [];
-					var filterStatusValues = [];
-					var filterExternerDienstleisterValues = [];
-					var filterTypDerVermietungValues = [];
-					
-					jsonData.data.forEach(function(vermietungsaktivitaet){
-						filterBuchungskreisValues.push(vermietungsaktivitaet.Bukrs);
-						filterWirtschaftseinheitValues.push(vermietungsaktivitaet.WeId);
-						filterAnmerkungValues.push(vermietungsaktivitaet.Anmerkung);
-						filterStatusValues.push(vermietungsaktivitaet.Status);
-						filterExternerDienstleisterValues.push(vermietungsaktivitaet.ExtDienstl);
-						filterTypDerVermietungValues.push(vermietungsaktivitaet.VermTyp);
-					});
-					
-					jsonData.facetfilters = [{
-						filterName: "Favorit",
-						values: [{key: true, text: "Ja"}, {key: false, text: "Nein"}]
-					}, {
-						filterName: "Buchungskreis",
-						values: _.map(_.uniq(filterBuchungskreisValues), function(Bukrs){ return {key: Bukrs, text: Bukrs}; })
-					}, {
-						filterName: "Wirtschaftseinheit",
-						values: _.map(_.uniq(filterWirtschaftseinheitValues), function(WeId){ return {key: WeId, text: WeId}; })
-					}, {
-						filterName: "Anmerkung",
-						values: _.map(_.uniq(filterAnmerkungValues), function(Anmerkung){ return {key: Anmerkung, text: Anmerkung}; })
-					}, {
-						filterName: "Status",
-						values: _.map(_.uniq(filterStatusValues), function(Status){ return {key: Status, text: Status}; })
-					}, {
-						filterName: "Externer Dienstleister",
-						values: _.map(_.uniq(filterExternerDienstleisterValues), function(ExternerDienstleister){ return {key: ExternerDienstleister, text: ExternerDienstleister}; })
-					}, {
-						filterName: "Vermietungstyp",
-						values: _.map(_.uniq(filterTypDerVermietungValues), function(VermietungsTyp){ return {key: VermietungsTyp, text: VermietungsTyp}; })
-					}];
-								
-					var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
-					_this.getView().setModel(jsonModel, "vermSel");
-					
-					_this.applyFilters();
-				}
-			});
-					
 		},
 				
 		// Auswahl der anzuzeigenden VAs
@@ -110,12 +85,13 @@ sap.ui.define([
 		},
 
 		onAnlegenPress : function (oEvent) {
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onAnlegenPress");
 			var _this = this;
 						
-			var index = this.getView().getModel("vermSel").getProperty("/selectedRadioButtonGroupIndex");
+			// Holt über die ElementID die Radio Button Group
+			var oRBG = this.getView().byId("RBG_Anlage");
+			var idx = oRBG.getSelectedIndex();
 
-			switch(index)
+			switch(idx)
 			{
 				case 0:
 					this.showSelectDialogRegelvermietung();
@@ -259,9 +235,7 @@ sap.ui.define([
 			delete this._excelImportDialog;
 		},
 	
-		onRegelvermietungSelectDialogConfirm: function(oEvent) {
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onRegelvermietungSelectDialogConfirm");
-			
+		onRegelvermietungSelectDialogConfirm: function(oEvent) {	
 			var konditioneneinigungen = [];
 
 			var selectedItems = oEvent.getParameter("selectedItems");
@@ -393,6 +367,14 @@ sap.ui.define([
 
 							case "Status":
 								itemFilters.push( new Filter("Status", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+
+							case "Externer Dienstleister":
+								itemFilters.push( new Filter("Dienstleister", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+						
+							case "Vermietungsart":
+								itemFilters.push( new Filter("Vermietungsart", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 																
 							default:

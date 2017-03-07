@@ -82,6 +82,22 @@ sap.ui.define([], function() {
 
         },
 
+        readVermSelSetAsync: function(){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.read("/VermSelSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    } 
+                });
+            });
+        },
+
         readWirtschaftseinheitAsync: function(Bukrs, WeId){
             var _this = this;
 
