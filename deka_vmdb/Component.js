@@ -40,12 +40,12 @@ sap.ui.define([
 				});
 
 				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				mockserver.simulate(sPath + "/model/service-v1.xml");
+				mockserver.simulate(sPath + "/model/service-v2.xml");
 				mockserver.start();
 			}
 			else
 			{
-				if (document.location.origin) { 
+				if (document.location.origin) {
 					// for Chrome
 					serviceURL = document.location.origin;
 				} else { 

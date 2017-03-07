@@ -14,9 +14,7 @@ sap.ui.define([], function() {
 
             return Q.Promise(function(resolve, reject, notify) {
 
-                var oDataModel = sap.ui.getCore().getModel("odata");
-
-                oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
+                _this.oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
 
                     urlParameters: {
                         "$expand": "KeToOb"
@@ -65,13 +63,31 @@ sap.ui.define([], function() {
 
         },
 
+        readKondSelSetAsync: function(){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+
+                _this.oDataModel.read("/KondSelSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    } 
+                });
+
+            });
+
+        },
+
         readWirtschaftseinheitAsync: function(Bukrs, WeId){
+            var _this = this;
 
             return Q.Promise(function(resolve, reject, notify) {
 
-                var oDataModel = sap.ui.getCore().getModel("odata");
-
-                oDataModel.read("/WirtschaftseinheitenSet(Bukrs='" + Bukrs + "',WeId='" + WeId + "')", {
+                _this.oDataModel.read("/WirtschaftseinheitenSet(Bukrs='" + Bukrs + "',WeId='" + WeId + "')", {
 
                     success: function(oData){                       
                         console.log(oData);
@@ -88,12 +104,11 @@ sap.ui.define([], function() {
         },
 
         readMietvertragAsync: function(Bukrs, MvId){
+            var _this = this;
 
             return Q.Promise(function(resolve, reject, notify) {
 
-                var oDataModel = sap.ui.getCore().getModel("odata");
-
-                oDataModel.read("/MietvertragSet(Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
+                _this.oDataModel.read("/MietvertragSet(Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
 
                     urlParameters: {
                         "$expand": "MvToWe"

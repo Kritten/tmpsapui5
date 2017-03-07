@@ -89,9 +89,6 @@
 							<Text text="{i18n>GUELTIG_BIS}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>NUTZUNGSART}" />
-						</Column>
-						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>HAUPTNUTZFLAECHE}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
@@ -126,9 +123,8 @@
 											style: 'short'
 										}
 								}" />
-								<Text text="{kondSel>KeToOb/Nutzart}" />
 								<Text text="{
-										path: 'kondSel>KeToOb/Hnfl',
+										path: 'kondSel>Hnfl',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -139,7 +135,7 @@
 										}
 								}" />
 								<Text text="{
-										path: 'kondSel>KeToOb/AnMiete',
+										path: 'kondSel>AnMiete',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -150,7 +146,7 @@
 										}
 								}" />
 								<Text text="{
-										path: 'kondSel>KeToOb/GaKosten',
+										path: 'kondSel>GaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 
@@ -161,7 +157,7 @@
 										}
 								}" />
 								<Text text="{
-										path: 'kondSel>KeToOb/MaKosten',
+										path: 'kondSel>MaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
 											minIntegerDigits : 2, 

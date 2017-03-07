@@ -1,7 +1,8 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller", 
 	"sap/ui/model/Filter",
-	"ag/bpc/Deka/util/NavigationPayloadUtil"], function(Controller, Filter, NavigationPayloadUtil) {
+	"ag/bpc/Deka/util/NavigationPayloadUtil",
+	"ag/bpc/Deka/util/DataProvider"], function(Controller, Filter, NavigationPayloadUtil, DataProvider) {
 
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungSelektion", {
@@ -19,6 +20,45 @@ sap.ui.define([
 			jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onPatternMatched");
 			var _this = this;
 
+			DataProvider.readKondSelSetAsync().then(function(konditioneneinigungen){
+
+				var jsonData = {
+					data: konditioneneinigungen.map(function(ke){
+						ke.Favorit = (Math.random() > 0.5);
+						return ke;
+					}),
+					facetfilters: null
+				};
+
+				var filterBuchungskreisValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Bukrs; }));
+				var filterWirtschaftseinheitValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.WeId; }));
+				var filterAnmerkung = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Anmerkung; }));
+
+				jsonData.facetfilters = [{
+					filterName: "Favorit",
+					values: [{key: true, text: "Ja"}, {key: false, text: "Nein"}]
+				}, {
+					filterName: "Buchungskreis",
+					values: _.map(filterBuchungskreisValues, function(Bukrs){ return {key: Bukrs, text: Bukrs}; })
+				}, {
+					filterName: "Wirtschaftseinheit",
+					values: _.map(filterWirtschaftseinheitValues, function(WeId){ return {key: WeId, text: WeId}; })
+				}, {
+					filterName: "Anmerkung",
+					values: _.map(filterAnmerkung, function(Anmerkung){ return {key: Anmerkung, text: Anmerkung}; })
+				}];
+
+				var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
+				_this.getView().setModel(jsonModel, "kondSel");
+
+				_this.applyFilters();
+			})
+			.catch(function(oError){
+                console.log(oError);
+            })
+            .done();
+
+			/*
 			var oDataModel = sap.ui.getCore().getModel("odata");
 
 			oDataModel.read("/KonditioneneinigungSet", {
@@ -78,7 +118,7 @@ sap.ui.define([
 					_this.applyFilters();
 				}
 			});
-			
+			*/
 		},
 
 		// Klick auf den Zurück-Pfeil
