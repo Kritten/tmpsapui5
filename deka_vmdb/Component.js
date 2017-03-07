@@ -1,12 +1,17 @@
+jQuery.sap.includeScript('./../js/q.js');
+jQuery.sap.includeScript('./../js/underscore-min.js');
+jQuery.sap.includeScript('./../js/SheetJS/xlsx.core.min.js');
+jQuery.sap.includeStyleSheet('./../css/style.css');
+
 sap.ui.define([
 	"sap/ui/core/UIComponent", 
 	"sap/ui/model/resource/ResourceModel", 
 	"sap/ui/core/util/MockServer",
 	"ag/bpc/Deka/util/DataProvider"], function (UIComponent, ResourceModel, MockServer, DataProvider) {
 	
-   "use strict";
-   return UIComponent.extend("ag.bpc.Deka.Component", {
-	   
+	"use strict";
+	return UIComponent.extend("ag.bpc.Deka.Component", {
+		
 		metadata: {
 			manifest: "json"
 		},
@@ -14,7 +19,7 @@ sap.ui.define([
 		init: function () {
 			UIComponent.prototype.init.apply(this, arguments);
 
-            jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
+			jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
 
 			this.initI18nModel();
 
@@ -90,5 +95,5 @@ sap.ui.define([
 			sap.ui.getCore().setModel(oi18nModel, "i18n");
 		}
 
-   });
+	});
 });

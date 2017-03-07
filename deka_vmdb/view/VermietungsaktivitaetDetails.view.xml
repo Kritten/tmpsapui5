@@ -14,14 +14,40 @@
                 
 		<content>
             
-			<ObjectHeader title="{i18n>VERMIETUNGSAKTIVITAET}" number="{form>/vermietungsaktivitaet/VaId}" >
-				<attributes>
-					<ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/Bukrs}" />
-					<ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/vermietungsaktivitaet/WeId}" />
-                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/vermietungsaktivitaet/Bezeichnung}" />
-				</attributes>
-			</ObjectHeader>
-            
+            <FlexBox>
+                <items>
+                    <FlexBox>
+                        <items>
+                            <ObjectHeader title="{i18n>VERMIETUNGSAKTIVITAET} {form>/vermietungsaktivitaet/VaId}" >
+                                <attributes>
+                                    <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/Bukrs}" />
+                                    <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/vermietungsaktivitaet/WeId}" />
+                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/vermietungsaktivitaet/Bezeichnung}" />
+                                </attributes>
+                            </ObjectHeader>
+                        </items>
+                        <layoutData>
+							<FlexItemData growFactor="1" />
+						</layoutData>
+                    </FlexBox>
+                    
+                    <FlexBox justifyContent="End">
+                        <items>
+                            <List items="{form>/vermietungsaktivitaet/VaToMap}" growing="true" growingThreshold="4" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" >
+                                <StandardListItem 
+                                    type="Active"
+                                    title="{form>KeId}"
+                                    icon="{= ${form>Aktiv} ? 'sap-icon://status-positive' : 'sap-icon://status-inactive' }" press="onMappingPressed" />
+                            </List>
+                        </items>
+                        <layoutData>
+							<FlexItemData growFactor="1" />
+						</layoutData>
+                    </FlexBox>
+                </items>
+            </FlexBox>
+
+
             <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{form>/vermietungsaktivitaet/VaToOb}">
 
                 <headerToolbar>

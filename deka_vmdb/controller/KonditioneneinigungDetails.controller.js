@@ -159,9 +159,9 @@ sap.ui.define([
 
             var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
             
-            var cellIndexAnMiete = 8;
-            var cellIndexGaKosten = 9;
-            var cellIndexMaKosten = 10;
+            var cellIndexAnMiete = 7;
+            var cellIndexGaKosten = 8;
+            var cellIndexMaKosten = 9;
 
             mietflaechenangabenItems.forEach(function(item){
                 item.getCells()[cellIndexAnMiete].setValueState(sap.ui.core.ValueState.None);
@@ -900,9 +900,9 @@ sap.ui.define([
             
             mietflaechenangabenItems.forEach(function(item){
                 
-                var cellIndexAnMiete = 8;
-                var cellIndexGaKosten = 9;
-                var cellIndexMaKosten = 10;
+                var cellIndexAnMiete = 7;
+                var cellIndexGaKosten = 8;
+                var cellIndexMaKosten = 9;
 
                 var mietflaechenangabe = item.getBindingContext("form").getObject();
                 
@@ -1339,7 +1339,7 @@ sap.ui.define([
             });
             
             // Object-Properties to Array
-            vorhandeneNutzungsarten = Object.keys(vorhandeneNutzungsarten).map(function (key) {
+            vorhandeneNutzungsarten = _.map(Object.keys(vorhandeneNutzungsarten), function (key) {
                 return vorhandeneNutzungsarten[key];
             });
             
@@ -1442,8 +1442,14 @@ sap.ui.define([
                     title:"{i18n>HINWEIS}"
                 });
             }
+        },
+
+        onMappingPressed: function(oEvent){
+			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetDetails", {
+                VaId: oEvent.getSource().getBindingContext("form").getObject().VaId,
+                Bukrs: this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs")
+            }, true);
         }
 
-        
 	});
 });

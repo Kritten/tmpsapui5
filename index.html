@@ -20,10 +20,20 @@
             }'>
         </script>
         
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="js/q.js"></script>
-        <script type="text/javascript" src="js/underscore-min.js"></script>
-        <script type="text/javascript" src="js/SheetJS/xlsx.core.min.js"></script>
+        <!-- Nur für Entwicklung - Fiori Launchpad ignoriert index.html und initialisiert Component.js autark -->
+        <script type="text/javascript">
+        sap.ui.getCore().attachInit(function () {
+            new sap.m.Shell({
+                appWidthLimited: true,
+                backgroundImage: './img/shell_bg.jpg',
+                backgroundOpacity: 0.2,
+                app: new sap.ui.core.ComponentContainer({
+                    name : "ag.bpc.Deka",
+                    height : "100%"
+                })
+            }).placeAt("content");
+        });
+        </script>
     </head>
     
     <body class='sapUiBody' id='content'></body>

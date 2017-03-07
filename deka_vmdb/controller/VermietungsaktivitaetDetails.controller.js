@@ -362,7 +362,7 @@ sap.ui.define([
                 oDataModel.read("/VermietungsaktivitaetSet(Bukrs='" + Bukrs + "',VaId='" + VaId + "')",
                 {
                     urlParameters: {
-                        "$expand": "VaToOb"
+                        "$expand": "VaToOb,VaToMap"
                     },
 
                     success: function(oData){
@@ -376,6 +376,11 @@ sap.ui.define([
                         oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
                         oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
                         oData.arbeitsvorrat = null;
+
+                        oData.VaToMap = _.map(oData.VaToMap.results, function(mapping){
+                            mapping.Aktiv = (Math.random() > 0.5);
+                            return mapping;
+                        });
 
                         resolve(oData);
                     },
@@ -1233,7 +1238,15 @@ sap.ui.define([
                 arbeitsvorrat: false
             };
 
+        },
+
+        onMappingPressed: function(oEvent){
+			this.getOwnerComponent().getRouter().navTo("konditioneneinigungDetails", {
+                KeId: oEvent.getSource().getBindingContext("form").getObject().KeId,
+                Bukrs: this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Bukrs")
+            }, true);
         }
+
 
 	});
 });

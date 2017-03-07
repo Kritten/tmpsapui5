@@ -18,15 +18,45 @@
 		</headerContent>
 
 		<content>
-            
-			<ObjectHeader title="{i18n>KONDITIONENEINIGUNG}" number="{form>/konditioneneinigung/KeId}" >
-				<attributes>
-					<ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/konditioneneinigung/Bukrs}" />
-					<ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/konditioneneinigung/WeId}" />
-                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/konditioneneinigung/Bezeichnung}" />
-				</attributes>
-			</ObjectHeader>
-            
+                
+            <FlexBox>
+                <items>
+                    <FlexBox>
+                        <items>
+                            <ObjectHeader title="{i18n>KONDITIONENEINIGUNG} {form>/konditioneneinigung/KeId}">
+                                <attributes>
+                                    <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/konditioneneinigung/Bukrs}" />
+                                    <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/konditioneneinigung/WeId}" />
+                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/konditioneneinigung/Bezeichnung}" />
+                                </attributes>
+                            </ObjectHeader>
+                        </items>
+                        <layoutData>
+							<FlexItemData growFactor="1" />
+						</layoutData>
+                    </FlexBox>
+                    
+                    <FlexBox justifyContent="End">
+                        <items>
+                            <List items="{form>/konditioneneinigung/KeToMap}" growing="true" growingThreshold="4" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" >
+                                <StandardListItem 
+                                    type="Active"
+                                    title="{form>VaId}"
+                                    icon="{= ${form>Aktiv} ? 'sap-icon://status-positive' : 'sap-icon://status-inactive' }" press="onMappingPressed">
+                                    <customData>
+                                        <core:CustomData key="state" value="{= ${form>Aktiv} ? 'active' : 'inactive' }" writeToDom="true" />
+                                    </customData>
+                                </StandardListItem>
+                            </List>
+                        </items>
+                        <layoutData>
+							<FlexItemData growFactor="1" />
+						</layoutData>
+                    </FlexBox>
+                
+                </items>
+            </FlexBox>
+
             <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{form>/konditioneneinigung/KeToOb}">
                 
                 <headerToolbar>

@@ -17,7 +17,7 @@ sap.ui.define([], function() {
                 _this.oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
 
                     urlParameters: {
-                        "$expand": "KeToOb"
+                        "$expand": "KeToOb,KeToMap"
                     },
 
                     success: function(oData){
@@ -29,10 +29,9 @@ sap.ui.define([], function() {
                         oData.Status = "Konditioneneinigung";
                         oData.Anmerkung = "";
 
-                        oData.KeToOb = oData.KeToOb.results;
+                        oData.KeToOb = _.map(oData.KeToOb.results, function(objekt){
 
-                        // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
-                        oData.KeToOb.forEach(function(objekt){
+                            // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
                             objekt.HnflAlt = objekt.HnflAlt.toString();
                             objekt.NhMiete = objekt.NhMiete.toString();
                             objekt.AnMiete = objekt.AnMiete.toString();
@@ -43,6 +42,12 @@ sap.ui.define([], function() {
                             // Wichtig, weil der Mockserver die Werte speichert
                             // Backend würde kein X bei Confirmation liefern
                             objekt.Confirmation = "";
+                            return objekt;
+                        });
+
+                        oData.KeToMap = _.map(oData.KeToMap.results, function(mapping){
+                            mapping.Aktiv = (Math.random() > 0.5);
+                            return mapping;
                         });
 
                         // Zusätzliche Felder
