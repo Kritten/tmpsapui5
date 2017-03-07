@@ -1,4 +1,8 @@
-sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel", "sap/ui/core/util/MockServer"], function (UIComponent, ResourceModel, MockServer) {
+sap.ui.define([
+	"sap/ui/core/UIComponent", 
+	"sap/ui/model/resource/ResourceModel", 
+	"sap/ui/core/util/MockServer",
+	"ag/bpc/Deka/util/DataProvider"], function (UIComponent, ResourceModel, MockServer, DataProvider) {
 	
    "use strict";
    return UIComponent.extend("ag.bpc.Deka.Component", {
@@ -8,14 +12,74 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 		},
 
 		init: function () {
-			
-			// call the init function of the parent
-			console.log(".. init component");
 			UIComponent.prototype.init.apply(this, arguments);
-			
 
             jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
 
+			this.initI18nModel();
+
+			this.initNavigationModel();
+
+			this.initDataProvider({
+				useMockServer: true
+			});
+
+			this.getRouter().initialize();
+		},
+
+		initDataProvider: function(options){
+
+			var serviceURL;
+
+			if(options.useMockServer)
+			{
+				serviceURL = "http://mockserver/ZIP_VMDB_SRV/";
+
+				var mockserver = new MockServer({
+					rootUri: serviceURL
+				});
+
+				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
+				mockserver.simulate(sPath + "/model/service-v1.xml");
+				mockserver.start();
+			}
+			else
+			{
+				if (document.location.origin) { 
+					// for Chrome
+					serviceURL = document.location.origin;
+				} else { 
+					// for IE
+					serviceURL = document.location.protocol + "//" + document.location.host;
+				}
+
+				serviceURL += "/sap/opu/odata/sap/ZIP_VMDB_SRV/";
+			}
+
+			var oDataModel = new sap.ui.model.odata.v2.ODataModel(serviceURL, {
+				useBatch: false,
+				defaultUpdateMethod: "Put",
+				disableHeadRequestForToken: true
+			});
+
+			// > Nur für Abwärtskompatibilität. Rausschmeißen wenn alles gegen den DataProvider geht
+			sap.ui.getCore().setModel(oDataModel, "odata");
+			// <
+
+
+			DataProvider.setModel(oDataModel);
+		},
+
+		initNavigationModel: function(){
+
+			// Model für Übergabe komplexer Parameter bei Navigationen
+			var navigationModel = new sap.ui.model.json.JSONModel({
+				payload: null
+			});
+			sap.ui.getCore().setModel(navigationModel, "navigation");
+		},
+
+		initI18nModel: function(){
 			// Mehrsprachigkeit
 			var sLocale = sap.ui.getCore().getConfiguration().getLanguage(); // Anmeldesprache ermitteln		
 			
@@ -24,35 +88,7 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/model/resource/ResourceModel",
 				//,bundleLocale : "en-US"  // zum Test "de" oder "en" eintragen
 			});
 			sap.ui.getCore().setModel(oi18nModel, "i18n");
-
-			// Model für Übergabe komplexer Parameter bei Navigationen
-			var navigationModel = new sap.ui.model.json.JSONModel({
-				payload: null
-			});
-			sap.ui.getCore().setModel(navigationModel, "navigation");
-
-			// URL des OData Services auf dem Gateway
-			var serviceUrl = "https://xxx";
-			var useMockServer = true;
-
-			if(useMockServer)
-			{
-				var oMockServer = new MockServer({
-					rootUri: "/destinations/mockserver/service.svc/"
-				});
-
-				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				oMockServer.simulate(sPath + "/model/service-v1.xml");
-				oMockServer.start();
-
-				serviceUrl = "/destinations/mockserver/service.svc/";
-			}
-
-			//var oDataModel = new sap.ui.model.odata.ODataModel(serviceUrl);
-			var oDataModel = new sap.ui.model.odata.v2.ODataModel(serviceUrl);
-			sap.ui.getCore().setModel(oDataModel, "odata");
-
-			this.getRouter().initialize();
 		}
+
    });
 });

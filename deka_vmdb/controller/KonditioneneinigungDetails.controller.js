@@ -3,13 +3,13 @@ sap.ui.define([
     "sap/m/MessageBox", 
     "ag/bpc/Deka/util/PrinterUtil", 
     "sap/ui/model/Filter",
-    "ag/bpc/Deka/util/NavigationPayloadUtil"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil) {
+    "ag/bpc/Deka/util/NavigationPayloadUtil",
+    "ag/bpc/Deka/util/DataProvider"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
 
 		onInit: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onInit");
             var _this = this;
 
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
@@ -171,7 +171,6 @@ sap.ui.define([
         },
 
         onKonditioneneinigungAnzeigen: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnzeigen");
             var _this = this;
 
             var Bukrs = oEvent.getParameter("arguments").Bukrs;
@@ -179,7 +178,7 @@ sap.ui.define([
 
             this.initializeEmptyModel();
 
-            this.readKonditioneneinigungAsync(Bukrs, KeId)
+            DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
             .then(function(konditioneneinigung){
 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
@@ -201,7 +200,6 @@ sap.ui.define([
         },
 
         onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit");
             var _this = this;
 
             var payload = NavigationPayloadUtil.takePayload();
@@ -220,7 +218,7 @@ sap.ui.define([
             this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
             this.getView().getModel("form").setProperty("/modus", "new");
 
-            this.readWirtschaftseinheitAsync(Bukrs, WeId)
+            DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId)
             .then(function(wirtschaftseinheit){
                 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", wirtschaftseinheit.WeId);
@@ -241,7 +239,6 @@ sap.ui.define([
         },
 
         onKonditioneneinigungAnlegenAufBasisEinesMietvertrags: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinesMietvertrags");
             var _this = this;
 
             var payload = NavigationPayloadUtil.takePayload();
@@ -260,7 +257,7 @@ sap.ui.define([
             this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
             this.getView().getModel("form").setProperty("/modus", "new");
 
-            this.readMietvertragAsync(Bukrs, MvId)
+            DataProvider.readMietvertragAsync(Bukrs, MvId)
             .then(function(mietvertrag){
 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/MvId", mietvertrag.MvId);
@@ -282,7 +279,6 @@ sap.ui.define([
         },
 
         onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung");
             var _this = this;
 
             var payload = NavigationPayloadUtil.takePayload();
@@ -301,7 +297,7 @@ sap.ui.define([
             this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
             this.getView().getModel("form").setProperty("/modus", "new");
 
-            this.readKonditioneneinigungAsync(Bukrs, KeId)
+            DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
             .then(function(basisKonditioneneinigung){
 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", basisKonditioneneinigung.WeId); 
@@ -318,111 +314,6 @@ sap.ui.define([
                 console.log(oError);
             })
             .done();
-
-        },
-
-        readKonditioneneinigungAsync: function(Bukrs, KeId){
-            var _this = this;
-
-            return Q.Promise(function(resolve, reject, notify) {
-
-                var oDataModel = sap.ui.getCore().getModel("odata");
-
-                oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
-
-                    urlParameters: {
-                        "$expand": "KeToOb"
-                    },
-
-                    success: function(oData){
-                        console.log(oData);
-
-                        // Struktur aufbereiten für UI5 Binding                    
-                        oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
-                        oData.Editable = (Math.random() > 0.5);
-                        oData.Status = "Konditioneneinigung";
-                        oData.Anmerkung = "";
-
-                        oData.KeToOb = oData.KeToOb.results;
-
-                        // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
-                        oData.KeToOb.forEach(function(objekt){
-                            objekt.HnflAlt = objekt.HnflAlt.toString();
-                            objekt.NhMiete = objekt.NhMiete.toString();
-                            objekt.AnMiete = objekt.AnMiete.toString();
-                            objekt.GaKosten = objekt.GaKosten.toString();
-                            objekt.MaKosten = objekt.MaKosten.toString();
-
-                            // Manuelles zurücksetzen des Confirmation Flag
-                            // Wichtig, weil der Mockserver die Werte speichert
-                            // Backend würde kein X bei Confirmation liefern
-                            objekt.Confirmation = "";
-                        });
-
-                        // Zusätzliche Felder
-                        oData.mieteGesamt = {konditioneneinigung: null};
-                        oData.kostenGesamt = {konditioneneinigung: null};
-                        oData.arbeitsvorrat = null;
-
-                        resolve(oData);
-                    },
-
-                    error: function(oError){
-                        reject(oError);
-                    }
-
-                });
-
-            });
-
-        },
-
-        readWirtschaftseinheitAsync: function(Bukrs, WeId){
-
-            return Q.Promise(function(resolve, reject, notify) {
-
-                var oDataModel = sap.ui.getCore().getModel("odata");
-
-                oDataModel.read("/WirtschaftseinheitenSet(Bukrs='" + Bukrs + "',WeId='" + WeId + "')", {
-
-                    success: function(oData){                       
-                        console.log(oData);
-                        resolve(oData);
-                    },
-
-                    error: function(oError){
-                        reject(oError);
-                    }
-                });
-
-            });
-
-        },
-
-        readMietvertragAsync: function(Bukrs, MvId){
-
-            return Q.Promise(function(resolve, reject, notify) {
-
-                var oDataModel = sap.ui.getCore().getModel("odata");
-
-                oDataModel.read("/MietvertragSet(Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
-
-                    urlParameters: {
-                        "$expand": "MvToWe"
-                    },
-
-                    success: function(oData){
-                        console.log(oData);
-                        resolve(oData);
-                    },
-
-                    error: function(oError){
-                        reject(oError);
-                    }
-
-                });
-
-            });
 
         },
 
@@ -524,9 +415,7 @@ sap.ui.define([
 
         },
 
-        onBearbeitenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. onBearbeitenButtonPress");
-            
+        onBearbeitenButtonPress: function(oEvent){            
             // Alten Zustand sichern für eventuelle Wiederherstellung
             var formData = this.getView().getModel("form").getData();
             this._formDataBackup = jQuery.extend(true, {}, formData);
@@ -535,7 +424,6 @@ sap.ui.define([
         },
 
         onSpeichernButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onSpeichernButtonPress");
             var _this = this;
 
             // Eingaben validieren
@@ -701,8 +589,6 @@ sap.ui.define([
             if(promises.length > 0)
             {
                 Q.allSettled(promises).then(function(results){
-                    jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. Q: allSettled");
-
                     var objekteMitWarnungen = [];
 
                     results.forEach(function(result){
@@ -739,7 +625,7 @@ sap.ui.define([
                                     var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
                                     var KeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
 
-                                    _this.readKonditioneneinigungAsync(Bukrs, KeId)
+                                    DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
                                     .then(function(konditioneneinigung){
 
                                         _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
@@ -767,7 +653,7 @@ sap.ui.define([
                         var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
                         var KeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
 
-                        _this.readKonditioneneinigungAsync(Bukrs, KeId)
+                        DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
                         .then(function(konditioneneinigung){
 
                             _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
@@ -1200,7 +1086,6 @@ sap.ui.define([
         },
 
         onAbbrechenButtonPress: function(evt){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onAbbrechenButtonPress");
             var _this = this;
 
             this.initializeValidationState();
@@ -1234,7 +1119,7 @@ sap.ui.define([
                 var Bukrs = this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
                 var KeId = this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
 
-                this.readKonditioneneinigungAsync(Bukrs, KeId)
+                DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
                 .then(function(konditioneneinigung){
 
                     _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
@@ -1259,9 +1144,7 @@ sap.ui.define([
         },
 
 
-        onMietflaechenAngabenLoeschenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenAngabenLoeschenButtonPress");
-            
+        onMietflaechenAngabenLoeschenButtonPress: function(oEvent){           
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             
             // Objekte der ausgewählten Mietflächenangaben sammeln
@@ -1291,7 +1174,6 @@ sap.ui.define([
         },
 
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenAngabeHinzufuegenButtonPress");
             var _this = this;
             
             if (! this._mietflaechenSelektionDialog) {
@@ -1320,6 +1202,13 @@ sap.ui.define([
                 requestUrl = "/WirtschaftseinheitenSet(Bukrs='"+Bukrs+"',WeId='"+WeId+"')";
                 expandValue = "WeToMo";
             }
+
+            // TODO: Allgemeinere Lösung
+            /*
+            var promise = (MvId !== undefined) ? 
+                DataProvider.readMietvertragSetAsync(Bukrs,MvId) : 
+                DataProvider.readWirtschaftseinheitenSetAsync(Bukrs, WeId);
+            */
             
             oDataModel.read(requestUrl, {
 
@@ -1377,9 +1266,7 @@ sap.ui.define([
 
         },
         
-        onMietflaechenSelektionDialogConfirm: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenSelektionDialogConfirm");
-            
+        onMietflaechenSelektionDialogConfirm: function(oEvent){            
             var selectedItems = oEvent.getParameter("selectedItems");
             
             if(selectedItems.length > 0)
@@ -1418,8 +1305,6 @@ sap.ui.define([
         },
         
         onMietflaechenSelektionDialogSearch: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onMietflaechenSelektionDialogSearch");
-
 			var sValue = oEvent.getParameter("value");
 
             var combinedOrFilter = new Filter([
@@ -1432,8 +1317,7 @@ sap.ui.define([
         },
         
         onAusbaukostenVerteilenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onAusbaukostenVerteilenButtonPress");
-            
+
             if (!this._ausbaukostenVerteilenDialog) {
                 this._ausbaukostenVerteilenDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.AusbaukostenVerteilen", this);
                 this.getView().addDependent(this._ausbaukostenVerteilenDialog);
@@ -1472,7 +1356,6 @@ sap.ui.define([
         },
         
         onAusbaukostenVerteilenFragmentAkzeptierenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungDetails .. onAusbaukostenVerteilenFragmentAkzeptierenButtonPress");
             
             this._ausbaukostenVerteilenDialog.close();
             

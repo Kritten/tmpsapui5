@@ -2,13 +2,13 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller", 
     "sap/m/MessageBox", 
     "ag/bpc/Deka/util/PrinterUtil",
-    "ag/bpc/Deka/util/NavigationPayloadUtil"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil) {
+    "ag/bpc/Deka/util/NavigationPayloadUtil",
+    "ag/bpc/Deka/util/DataProvider"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
 		
 		onInit: function(evt){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onInit");
             var _this = this;
             
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
@@ -179,7 +179,6 @@ sap.ui.define([
         },
 
 		onVermietungsaktivitaetAnzeigen: function(oEvent){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnzeigen");
             var _this = this;
 
             var Bukrs = oEvent.getParameter("arguments").Bukrs;
@@ -214,7 +213,6 @@ sap.ui.define([
 		},
 
         onVermietungsaktivitaetAnlegenRegelvermietung: function(oEvent){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenRegelvermietung");
             var _this = this;
 
             var konditioneneinigungenPayload = NavigationPayloadUtil.takePayload();
@@ -229,7 +227,7 @@ sap.ui.define([
 
             // Einzelnen Konditioneneinigungen laden
             konditioneneinigungenPayload.forEach(function(konditioneneinigung){
-                promises.push( _this.readKonditioneneinigungAsync(konditioneneinigung.KeId, konditioneneinigung.Bukrs) );
+                promises.push( DataProvider.readKonditioneneinigungAsync(konditioneneinigung.Bukrs, konditioneneinigung.KeId) );
             });
 
             // Wenn alle Konditioneneinigungen erfolgreich geladen wurden
@@ -244,7 +242,7 @@ sap.ui.define([
                 // Objekte der Konditioneneinigungen zur Vermietungsaktivität hinzufügen
                 var objekteAllerKEs = [];
                 konditioneneinigungen.forEach(function(konditioneneinigung){
-                    objekteAllerKEs.push.apply(objekteAllerKEs, konditioneneinigung.KeToOb.results);
+                    objekteAllerKEs.push.apply(objekteAllerKEs, konditioneneinigung.KeToOb);
                 });
 
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekteAllerKEs);
@@ -267,7 +265,6 @@ sap.ui.define([
         },
 
 		onVermietungsaktivitaetAnlegenKleinvermietung: function(oEvent){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenKleinvermietung");
             var _this = this;
 
             var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
@@ -298,7 +295,6 @@ sap.ui.define([
 		},
 
         onVermietungsaktivitaetAnlegenExterneVermietung: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenExterneVermietung");
             var _this = this;
             
             var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
@@ -329,7 +325,6 @@ sap.ui.define([
         },
 
         onVermietungsaktivitaetAnlegenExcelImport: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onVermietungsaktivitaetAnlegenExcelImport");
             var _this = this;
 
             var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
@@ -390,31 +385,6 @@ sap.ui.define([
                     }
                 });
 
-            });
-        },
-
-        readKonditioneneinigungAsync: function(KeId, Bukrs){
-
-    	    return Q.Promise(function(resolve, reject, notify) {
-
-                var oDataModel = sap.ui.getCore().getModel("odata");
-
-                oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
-
-                    urlParameters: {
-                        "$expand": "KeToOb"
-                    },
-
-                    success: function(oData){
-                        console.log(oData);
-                        resolve(oData);
-                    },
-
-                    error: function(oError){
-                        reject(oError);
-                    }
-                });
-                
             });
         },
 
@@ -495,7 +465,6 @@ sap.ui.define([
         },
         
 		onBearbeitenButtonPress: function(evt){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onBearbeitenButtonPress");
             
             // Alten Zustand sichern für eventuelle Wiederherstellung
             var formData = this.getView().getModel("form").getData();
@@ -548,9 +517,7 @@ sap.ui.define([
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
         },
                 
-        onSpeichernButtonPress: function(evt){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onSpeichernButtonPress");
-            
+        onSpeichernButtonPress: function(evt){            
             // Eingaben validieren
             // Daten ins Backend schicken
             // Neues Modell auf Basis der Backenddaten anbinden
@@ -773,9 +740,7 @@ sap.ui.define([
             });   
 		},
 		
-        onAbbrechenButtonPress: function(evt){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onAbbrechenButtonPress");          
-            
+        onAbbrechenButtonPress: function(evt){            
             this.initializeValidationState();
             
             var modus = this.getView().getModel("form").getProperty("/modus");           
@@ -810,9 +775,7 @@ sap.ui.define([
 
         },
 		
-        onMietflaechenAngabenLoeschenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onMietflaechenAngabenLoeschenButtonPress");
-  
+        onMietflaechenAngabenLoeschenButtonPress: function(oEvent){  
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             
             // Objekte der ausgewählten Mietflächenangaben sammeln
@@ -839,7 +802,6 @@ sap.ui.define([
         },
 		
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onMietflaechenAngabeHinzufuegenButtonPress");
             var _this = this;
 			
             if (! this._mietflaechenSelektionDialog) {
@@ -925,9 +887,7 @@ sap.ui.define([
             */
         },
 		
-        onMietflaechenSelektionDialogConfirm: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onMietflaechenSelektionDialogConfirm");
-            
+        onMietflaechenSelektionDialogConfirm: function(oEvent){            
             var selectedItems = oEvent.getParameter("selectedItems");        
 
             if(selectedItems.length > 0)
@@ -944,11 +904,9 @@ sap.ui.define([
         },
         
         onMietflaechenSelektionDialogSearch: function(oEvent){
-            jQuery.sap.log.info(".. onMietflaechenSelektionDialogSearch");
         },
 
         onKonditioneneinigungHinzufuegenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onKonditioneneinigungHinzufuegenButtonPress");
             var _this = this;
 
             if (!this._konditioneneinigungHinzufuegenDialog) {
@@ -1005,9 +963,7 @@ sap.ui.define([
 
         },
 
-        onKonditioneneinigungLoeschenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onKonditioneneinigungLoeschenButtonPress");
-            
+        onKonditioneneinigungLoeschenButtonPress: function(oEvent){            
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             
             // IDs der KEs der ausgewählten Mietflächen sammeln (einzigartige)
@@ -1030,12 +986,9 @@ sap.ui.define([
         },
 
         onKonditioneneinigungDialogSearch: function(oEvent){
-            jQuery.sap.log.info(".. onKonditioneneinigungDialogSearch");
         },
 
         onKonditioneneinigungDialogConfirm: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onKonditioneneinigungDialogConfirm");
-
             var selectedItems = oEvent.getParameter("selectedItems");
 
             if(selectedItems.length > 0)
@@ -1051,7 +1004,7 @@ sap.ui.define([
 
                     var konditioneneinigung = item.getBindingContext().getObject();
 
-                    konditioneneinigung.KeToOb.results.forEach(function(mietflaechenangabe){
+                    konditioneneinigung.KeToOb.forEach(function(mietflaechenangabe){
                         
                         // Nur die Mietflächen hinzufügen, die noch nicht vorhanden sind
                         if(_.indexOf(aVorhandeneMoIds, mietflaechenangabe.MoId) === -1){
@@ -1066,9 +1019,7 @@ sap.ui.define([
 
         },
 		
-        onAusbaukostenVerteilenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onAusbaukostenVerteilenButtonPress");
-            
+        onAusbaukostenVerteilenButtonPress: function(oEvent){            
             if (!this._ausbaukostenVerteilenDialog) {
                 this._ausbaukostenVerteilenDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.AusbaukostenVerteilen", this);
                 this.getView().addDependent(this._ausbaukostenVerteilenDialog);
@@ -1113,9 +1064,7 @@ sap.ui.define([
 			this._ausbaukostenVerteilenDialog.open();
         },
 		
-        onAusbaukostenVerteilenFragmentAkzeptierenButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. onAusbaukostenVerteilenFragmentAkzeptierenButtonPress");
-            
+        onAusbaukostenVerteilenFragmentAkzeptierenButtonPress: function(oEvent){            
             this._ausbaukostenVerteilenDialog.close();
             
             var dialogModel = this._ausbaukostenVerteilenDialog.getModel();
@@ -1207,7 +1156,6 @@ sap.ui.define([
         },
         
         onDebitorAuswahlButtonPress: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onMietflaechenAngabeHinzufuegenButtonPress");
             var _this = this;
 
             if (! this._debitorSelektionDialog) {
@@ -1232,8 +1180,6 @@ sap.ui.define([
         },
         
         onDebitorSelektionConfirm: function(oEvent){
-            jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetDetails .. onDebitorSelektion");
-
 			var debitor = oEvent.getParameter("selectedItem").getBindingContext().getObject();
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Debitorname", debitor.Name);
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Debitor", debitor.KdNr);
