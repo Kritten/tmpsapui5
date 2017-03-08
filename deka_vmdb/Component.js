@@ -1,8 +1,3 @@
-//jQuery.sap.includeScript('./../js/q.js');
-//jQuery.sap.includeScript('./../js/underscore-min.js');
-//jQuery.sap.includeScript('./../js/SheetJS/xlsx.core.min.js');
-//jQuery.sap.includeStyleSheet('./../css/style.css');
-
 sap.ui.define([
 	"sap/ui/core/UIComponent", 
 	"sap/ui/model/resource/ResourceModel", 
