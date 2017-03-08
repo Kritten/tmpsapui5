@@ -47,7 +47,7 @@ sap.ui.define([
 				});
 
 				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				mockserver.simulate(sPath + "/model/service-v3.xml");
+				mockserver.simulate(sPath + "/model/service-v5.xml");
 				mockserver.start();
 			}
 			else

@@ -38,7 +38,7 @@
 				<Text text="{Bukrs}/{WeId}/{MoId}" />
                 <Text text="{Bezei}" />
                 <Text text="{Nutzart}" />
-                <CheckBox selected="{Leerstand}" editable="false" />
+                <CheckBox selected="{= ${Leerstand} === '1'}" editable="false" />
                 <Text text="{Dmgeschos}" />
                 <Text text="{Hnfl} {HnflUnit}" />
 			</cells>

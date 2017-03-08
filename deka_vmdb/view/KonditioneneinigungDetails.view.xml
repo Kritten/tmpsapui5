@@ -38,11 +38,14 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
-                            <List items="{form>/konditioneneinigung/KeToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" noDataText="" >
+                            <List items="{form>/konditioneneinigung/KeToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" noDataText=" " >
                                 <StandardListItem 
                                     type="Active"
                                     title="{form>VaId}"
-                                    icon="{= ${form>Aktiv} ? './img/iconmonstr-circle-1-active.png' : './img/iconmonstr-circle-1-inactive.png' }" press="onMappingPressed">
+                                    icon="{= ${form>Aktiv} ? './img/iconmonstr-circle-1-active.png' : './img/iconmonstr-circle-1-inactive.png' }"
+                                    iconDensityAware="false"
+                                    iconInset="false" 
+                                    press="onMappingPressed">
                                 </StandardListItem>
                             </List>
                         </items>
@@ -76,10 +79,10 @@
                         <Text text="{i18n>NUTZUNGSART}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>HAUPTNUTZFLAECHE}" />
+                        <Text text="{i18n>HAUPTNUTZFLAECHE} / {i18n>STUECK}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>MIETFLAECHE} {i18n>ALTERNATIV}" />
+                        <Text text="{i18n>HAUPTNUTZFLAECHE} {i18n>ALTERNATIV}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>MIETFLAECHENSPLIT}" />
@@ -104,10 +107,10 @@
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="{form>Bezei}" />
                             <Text text="{form>Nutzart}" />
-                            <Input value="{form>Hnfl}" editable="false" />
+                            <Text text="{form>Hnfl} {form>HnflUnit}" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>NhMiete}" editable="false" /> <!-- {= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) } -->
+                            <Text text="{= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) }" />
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -273,7 +276,7 @@
                     <TextArea value="{form>/konditioneneinigung/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>BUDGET_STOPP}" />
-					<CheckBox id="budgetStopp" text="" selected="{form>/konditioneneinigung/BudgetStopp}" editable="false">
+					<CheckBox id="idBudgetstp" text="" selected="{form>/konditioneneinigung/Budgetstp}" editable="false">
                         <layoutData>
 							<l:GridData span="L1 M1 S12" />
 						</layoutData>

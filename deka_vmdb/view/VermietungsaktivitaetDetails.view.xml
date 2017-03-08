@@ -22,7 +22,7 @@
                                 <attributes>
                                     <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/Bukrs}" />
                                     <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/vermietungsaktivitaet/WeId}" />
-                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/vermietungsaktivitaet/Bezeichnung}" />
+                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/vermietungsaktivitaet/VaToWe/Plz} {form>/vermietungsaktivitaet/VaToWe/Ort} {form>/vermietungsaktivitaet/VaToWe/StrHnum}" />
                                 </attributes>
                             </ObjectHeader>
                         </items>
@@ -33,11 +33,14 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
-                            <List items="{form>/vermietungsaktivitaet/VaToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" noDataText="" >
+                            <List items="{form>/vermietungsaktivitaet/VaToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" noDataText=" " >
                                 <StandardListItem 
                                     type="Active"
                                     title="{form>KeId}"
-                                    icon="{= ${form>Aktiv} ? './img/iconmonstr-circle-1-active.png' : './img/iconmonstr-circle-1-inactive.png' }" press="onMappingPressed">
+                                    icon="{= ${form>Aktiv} ? './img/iconmonstr-circle-1-active.png' : './img/iconmonstr-circle-1-inactive.png' }"
+                                    iconDensityAware="false"
+                                    iconInset="false" 
+                                    press="onMappingPressed">
                                 </StandardListItem>
                             </List>
                         </items>
@@ -107,10 +110,10 @@
                                     <core:Item key="{form>key}" text="{form>text}" />
                                 </items>
                             </Select>
-                            <Input value="{form>Hnfl}" editable="false" />
+                            <Text text="{form>Hnfl}" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{form>NhMiete}" />
+                            <Text text="{= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) }" />
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -295,7 +298,7 @@
                     <TextArea value="{form>/vermietungsaktivitaet/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>BUDGET_STOPP}" />
-					<CheckBox id="budgetStopp" text="" selected="{form>/vermietungsaktivitaet/BudgetStopp}" editable="false">
+					<CheckBox id="idBudgetstp" text="" selected="{form>/vermietungsaktivitaet/Budgetstp}" editable="false">
                         <layoutData>
 							<l:GridData span="L1 M1 S12" />
 						</layoutData>

@@ -75,7 +75,6 @@ sap.ui.define([
         },
 
         initializeViewsettingsAsync: function(konditioneneinigung){
-
             var _this = this;
 
             return Q.Promise(function(resolve, reject, notify) {
@@ -101,41 +100,41 @@ sap.ui.define([
                 viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
                 viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
 
-                viewsettings.flaecheneinheitSelectedKey = viewsettings.flaecheneinheiten[0].key;
-                viewsettings.flaecheneinheitSelected = viewsettings.flaecheneinheiten[0];
-
                 // Ausgangswährung ermitteln - TODO: welche Währung als Ausgangswährung?
                 var ausgangsWaehrung = konditioneneinigung.Currency;
+                var ausgangsFlaecheneinheit = konditioneneinigung.Unit;
 
-                var oDataModel = sap.ui.getCore().getModel("odata");
+                DataProvider.readExchangeRateSetAsync(ausgangsWaehrung).then(function(waehrungen){
 
-                oDataModel.read("/ExchangeRateSet", {
+                    viewsettings.waehrungen = _.map(waehrungen, function(waehrung){
+                        return {key: waehrung.Nach, text: waehrung.Nach};
+                    });
 
-                    urlParameters: {
-                        "$filter": "Von eq '"+ausgangsWaehrung+"'"
-                    },
-
-                    success: function(oData){
-                        console.log(oData);
-
-                        oData.results.forEach(function(waehrung){
-                            viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Multiplikator} );
-                        });
-
-                        if(viewsettings.waehrungen.length > 0){
-                            viewsettings.waehrungSelectedKey = viewsettings.waehrungen[0].key;
-                            viewsettings.waehrungSelected = viewsettings.waehrungen[0];
-                        }
-
-                        _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
-                        resolve();
-                    },
-
-                    error: function(oError){
-                        reject(oError);
+                    if(viewsettings.waehrungen.length > 0){
+                        viewsettings.waehrungSelectedKey = viewsettings.waehrungen[0].key;
+                        viewsettings.waehrungSelected = viewsettings.waehrungen[0];
                     }
 
-                });
+                    return DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheit);
+                })
+                .then(function(flaecheneinheiten){
+
+                    viewsettings.flaecheneinheiten = _.map(flaecheneinheiten, function(flaecheneinheit){
+                        return {key: flaecheneinheit.Nach, text: flaecheneinheit.Nach};
+                    });
+
+                    if(viewsettings.flaecheneinheiten.length > 0){
+                        viewsettings.flaecheneinheitSelectedKey = viewsettings.flaecheneinheiten[0].key;
+                        viewsettings.flaecheneinheitSelected = viewsettings.flaecheneinheiten[0];
+                    }
+
+                    _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
+                    resolve();
+                })
+                .catch(function(oError){
+                    reject();
+                })
+                .done();
 
             });
 
@@ -219,6 +218,7 @@ sap.ui.define([
                 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", wirtschaftseinheit.WeId);
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", wirtschaftseinheit.Bukrs);
+                _this.getView().getModel("form").setProperty("/konditioneneinigung/KeToWe", wirtschaftseinheit);
 
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
@@ -298,6 +298,7 @@ sap.ui.define([
 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", basisKonditioneneinigung.WeId); 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", basisKonditioneneinigung.Bukrs);
+                _this.getView().getModel("form").setProperty("/konditioneneinigung/KeToWe", basisKonditioneneinigung.KeToWe);
 
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
@@ -321,15 +322,15 @@ sap.ui.define([
             return {
                 KeId: "",
                 Bukrs: "",
-                MfSplit: "",
+                MfSplit: false,
                 AuthUser: "",
-                Favorit: "",
+                Favorit: false,
                 LzFirstbreak: "",
                 WeId: "",
                 MzMonate: "",
                 Status: "Konditioneneinigung",
                 Anmerkung: "",
-                Aktiv: "",
+                Aktiv: true,
                 Mietbeginn: null,
                 Bemerkung: "",
                 GnStufe: "",
@@ -353,13 +354,14 @@ sap.ui.define([
                 ArtKosten: "00",
                 SonstE: "",
                 ArtErtrag: "00",
-                BudgetStopp: false,
+                Budgetstp: false,
                 Steuerschaden: "",
                 MwstkErtrag: "",
                 Einmalertrag: "",
 
                 KeToOb: [],
-                KeToWe: [],
+                KeToMap: [],
+                KeToWe: null,
                 
                 // keine OData Felder
                 mieteGesamt: {konditioneneinigung: null},
@@ -611,7 +613,7 @@ sap.ui.define([
                                 if(action === sap.m.MessageBox.Action.OK)
                                 {
                                     objekteMitWarnungen.forEach(function(objekt){
-                                        _this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb/" + objekt.objektIndex + "/Confirmation", "X");
+                                        _this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb/" + objekt.objektIndex + "/Confirmation", true);
                                     });
 
                                     _this.speichern();
@@ -728,7 +730,7 @@ sap.ui.define([
               
                 oDataModel.update("/ObjektSet(KeId='"+objekt.KeId+"',VaId='"+objekt.VaId+"',MoId='"+objekt.MoId+"',WeId='"+objekt.WeId+"',Bukrs='"+objekt.Bukrs+"')", objektPayload, {
                     success: function(){
-                        if(objekt.Confirmation === "X"){
+                        if(objekt.Confirmation){
                             resolve();
                         }
                         else {
@@ -1363,27 +1365,33 @@ sap.ui.define([
             
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
-                if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
+                if(mietflaechenangabe.Nutzart === verteilung.nutzungsart)
                 {
-                    sumNutzflaechen += parseFloat(mietflaechenangabe.Hnfl);
-                }
-                else
-                {
-                    sumNutzflaechen += parseFloat(mietflaechenangabe.HnflAlt);
+                    if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
+                    {
+                        sumNutzflaechen += parseFloat(mietflaechenangabe.Hnfl);
+                    }
+                    else
+                    {
+                        sumNutzflaechen += parseFloat(mietflaechenangabe.HnflAlt);
+                    }
                 }
             });
             
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
-                if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
+                if(mietflaechenangabe.Nutzart === verteilung.nutzungsart)
                 {
-                    mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen) * verteilung.grundausbaukosten;
-                    mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen) * verteilung.mietausbaukosten;
-                }
-                else
-                {
-                    mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.grundausbaukosten;
-                    mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.mietausbaukosten;
+                    if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
+                    {
+                        mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen) * verteilung.grundausbaukosten;
+                        mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen) * verteilung.mietausbaukosten;
+                    }
+                    else
+                    {
+                        mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.grundausbaukosten;
+                        mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.mietausbaukosten;
+                    }
                 }
             });
             

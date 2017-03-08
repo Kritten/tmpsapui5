@@ -1185,9 +1185,11 @@ sap.ui.define([
                 SonstE: "",
                 ArtErtrag: "00",
 
-                BudgetStopp: false,
+                Budgetstp: false,
 
                 VaToOb: [],
+                VaToMap: [],
+                VaToWe: null,
 
                 // keine OData Felder
                 mieteGesamt: {vermietungsaktivitaet: "", konditioneneinigung: "", differenz: ""},
