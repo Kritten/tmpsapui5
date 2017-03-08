@@ -27,13 +27,18 @@ sap.ui.define([
 		onPatternMatched: function(oEvent){
 			var _this = this;
 
-			DataProvider.readVermSelSetAsync().then(function(vermietungsaktivitaeten){
+			var anmerkungMapping = {};
+
+			DataProvider.readAnmerkungSetAsync().then(function(anmerkungen){
+				_.each(anmerkungen, function(anmerkung){
+					anmerkungMapping[anmerkung.Id] = anmerkung.Txtmd;
+				});
+				return DataProvider.readVermSelSetAsync();
+			})
+			.then(function(vermietungsaktivitaeten){
 				
 				var jsonData = {
-					data: _.map(vermietungsaktivitaeten, function(va){
-						va.Favorit = (Math.random() > 0.5);
-						return va;
-					}),
+					data: vermietungsaktivitaeten,
 					facetfilters: null
 				};
 
@@ -55,7 +60,7 @@ sap.ui.define([
 					values: _.map(filterWirtschaftseinheitValues, function(WeId){ return {key: WeId, text: WeId}; })
 				}, {
 					filterName: "Anmerkung",
-					values: _.map(filterAnmerkungValues, function(Anmerkung){ return {key: Anmerkung, text: Anmerkung}; })
+					values: _.map(filterAnmerkungValues, function(Anmerkung){ return {key: Anmerkung, text: anmerkungMapping[Anmerkung]}; })
 				}, {
 					filterName: "Status",
 					values: _.map(filterStatusValues, function(Status){ return {key: Status, text: Status}; })
@@ -73,7 +78,7 @@ sap.ui.define([
 				_this.applyFilters();
 			})
 			.catch(function(oError){
-				console.log(oError);
+				ErrorMessageUtil.showError(oError);
             })
             .done();
 

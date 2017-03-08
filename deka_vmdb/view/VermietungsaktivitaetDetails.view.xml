@@ -33,14 +33,11 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
-                            <List items="{form>/vermietungsaktivitaet/VaToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" >
+                            <List items="{form>/vermietungsaktivitaet/VaToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" noDataText="" >
                                 <StandardListItem 
                                     type="Active"
-                                    title="{form>VaId}"
-                                    icon="{= ${form>Aktiv} ? 'sap-icon://status-positive' : 'sap-icon://status-inactive' }" press="onMappingPressed">
-                                    <customData>
-                                        <core:CustomData key="state" value="{= ${form>Aktiv} ? 'active' : 'inactive' }" writeToDom="true" />
-                                    </customData>
+                                    title="{form>KeId}"
+                                    icon="{= ${form>Aktiv} ? './img/iconmonstr-circle-1-active.png' : './img/iconmonstr-circle-1-inactive.png' }" press="onMappingPressed">
                                 </StandardListItem>
                             </List>
                         </items>
@@ -103,20 +100,20 @@
                     <ColumnListItem vAlign="Middle">
                         <cells>
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
-                            <Text text="{form>Bezeichnung}" />
+                            <Text text="{form>Bezei}" />
                             <Text text="{form>Nutzart}" />
                             <Select selectedKey="{form>NutzartAlt}" items="{path: 'form>/alternativeNutzungsarten', templateShareable: true}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                                 <items>
                                     <core:Item key="{form>key}" text="{form>text}" />
                                 </items>
                             </Select>
-                            <Text text="{form>Hnfl}" />
-                            <Input value="{form>HnflAlt}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>Hnfl}" editable="false" />
+                            <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Text text="{form>NhMiete}" />
-                            <Input value="{form>AnMiete}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>GaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>MaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                         </cells>
                     </ColumnListItem>
                     

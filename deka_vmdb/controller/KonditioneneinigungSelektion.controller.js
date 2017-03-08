@@ -2,7 +2,8 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller", 
 	"sap/ui/model/Filter",
 	"ag/bpc/Deka/util/NavigationPayloadUtil",
-	"ag/bpc/Deka/util/DataProvider"], function(Controller, Filter, NavigationPayloadUtil, DataProvider) {
+	"ag/bpc/Deka/util/DataProvider",
+	"ag/bpc/Deka/util/ErrorMessageUtil"], function(Controller, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil) {
 
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungSelektion", {
@@ -17,13 +18,18 @@ sap.ui.define([
 		onPatternMatched: function(oEvent){
 			var _this = this;
 
-			DataProvider.readKondSelSetAsync().then(function(konditioneneinigungen){
+			var anmerkungMapping = {};
+
+			DataProvider.readAnmerkungSetAsync().then(function(anmerkungen){
+				_.each(anmerkungen, function(anmerkung){
+					anmerkungMapping[anmerkung.Id] = anmerkung.Txtmd;
+				});
+				return DataProvider.readKondSelSetAsync();
+			})
+			.then(function(konditioneneinigungen){
 
 				var jsonData = {
-					data: _.map(konditioneneinigungen, function(ke){
-						ke.Favorit = (Math.random() > 0.5);
-						return ke;
-					}),
+					data: konditioneneinigungen,
 					facetfilters: null
 				};
 
@@ -42,7 +48,7 @@ sap.ui.define([
 					values: _.map(filterWirtschaftseinheitValues, function(WeId){ return {key: WeId, text: WeId}; })
 				}, {
 					filterName: "Anmerkung",
-					values: _.map(filterAnmerkung, function(Anmerkung){ return {key: Anmerkung, text: Anmerkung}; })
+					values: _.map(filterAnmerkung, function(Anmerkung){ return {key: Anmerkung, text: anmerkungMapping[Anmerkung]}; })
 				}];
 
 				var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
@@ -51,7 +57,7 @@ sap.ui.define([
 				_this.applyFilters();
 			})
 			.catch(function(oError){
-                console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
 

@@ -16,9 +16,9 @@
                         </items>
                     </Select>
                     <Label text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
-                    <Input value="{/grundausbaukosten}" type="Number" />
+                    <Input value="{/grundausbaukosten}" />
                     <Label text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
-                    <Input value="{/mietausbaukosten}" type="Number" />
+                    <Input value="{/mietausbaukosten}" />
                 </f:content>
             </f:SimpleForm>
             

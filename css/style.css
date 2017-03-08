@@ -1,7 +1,0 @@
-li[data-state="active"] span {
-    color: #00AA00;
-}
-
-li[data-state="inactive"] span {
-    color: #AAAAAA;
-}

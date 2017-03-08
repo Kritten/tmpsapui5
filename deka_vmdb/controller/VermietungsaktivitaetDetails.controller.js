@@ -137,26 +137,22 @@ sap.ui.define([
                 viewsettings.flaecheneinheitSelectedKey = viewsettings.flaecheneinheiten[0].key;
                 viewsettings.flaecheneinheitSelected = viewsettings.flaecheneinheiten[0];
 
-                // Ausgangswährung ermitteln - Wenn Mietflächen enthalten sind, nimm die Währung der ersten Mietfläche
-                var ausgangsWaehrung = "EUR";
-                var mietflaechenangaben = vermietungsaktivitaet.VaToOb;
-                if(mietflaechenangaben.length > 0){
-                    ausgangsWaehrung = mietflaechenangaben[0].Whrung;
-                }
-
+                // Ausgangswährung ermitteln - TODO: welche Währung als Ausgangswährung?
+                var ausgangsWaehrung = vermietungsaktivitaet.Currency;
+                
                 var oDataModel = sap.ui.getCore().getModel("odata");
 
-                oDataModel.read("/WaehrungSet", {
+                oDataModel.read("/ExchangeRateSet", {
 
                     urlParameters: {
-                        //"$filter": "Gdat eq datetime'2001-01-01T00:00:00' and Von eq '"+ausgangsWaehrung+"'"
+                        "$filter": "Von eq '"+ausgangsWaehrung+"'"
                     },
 
                     success: function(oData){
                         console.log(oData);
 
                         oData.results.forEach(function(waehrung){
-                            viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Ukurs} );
+                            viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Multiplikator} );
                         });
 
                         if(viewsettings.waehrungen.length > 0){
@@ -186,7 +182,7 @@ sap.ui.define([
 
             this.initializeEmptyModel();
 
-            this.readVermietungsaktivitaetAsync(Bukrs, VaId)
+            DataProvider.readVermietungsaktivitaetAsync(Bukrs, VaId)
             .then(function(vermietungsaktivitaet){
                 
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
@@ -351,46 +347,6 @@ sap.ui.define([
                 console.log(oError);
             })
             .done();
-        },
-
-        readVermietungsaktivitaetAsync: function(Bukrs, VaId){
-
-            return Q.Promise(function(resolve, reject, notify) {
-
-                var oDataModel = sap.ui.getCore().getModel("odata");
-
-                oDataModel.read("/VermietungsaktivitaetSet(Bukrs='" + Bukrs + "',VaId='" + VaId + "')",
-                {
-                    urlParameters: {
-                        "$expand": "VaToOb,VaToMap"
-                    },
-
-                    success: function(oData){
-                        console.log(oData);
-
-                        // Struktur aufbereiten für UI5 Binding
-                        oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
-                        oData.VaToOb = oData.VaToOb.results;
-
-                        // Zusätzliche Felder
-                        oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
-                        oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
-                        oData.arbeitsvorrat = null;
-
-                        oData.VaToMap = _.map(oData.VaToMap.results, function(mapping){
-                            mapping.Aktiv = (Math.random() > 0.5);
-                            return mapping;
-                        });
-
-                        resolve(oData);
-                    },
-
-                    error: function(oError){
-                        reject(oError);
-                    }
-                });
-
-            });
         },
 
         readKonditioneneinigungSetAsync: function(){
@@ -1076,8 +1032,8 @@ sap.ui.define([
             
             var verteilung = {
                 nutzungsart: dialogModel.getProperty("/nutzungsart"),
-                grundausbaukosten: dialogModel.getProperty("/grundausbaukosten"),
-                mietausbaukosten: dialogModel.getProperty("/mietausbaukosten")
+                grundausbaukosten: parseFloat(dialogModel.getProperty("/grundausbaukosten")),
+                mietausbaukosten: parseFloat(dialogModel.getProperty("/mietausbaukosten"))
             };
 
             // Logik zur Verteilung der Ausbaukosten
@@ -1092,11 +1048,11 @@ sap.ui.define([
                 {				
 					if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
 					{
-						sumNutzflaechen += mietflaechenangabe.Hnfl;
+						sumNutzflaechen += parseFloat(mietflaechenangabe.Hnfl);
 					}
 					else
 					{
-						sumNutzflaechen += parseInt(mietflaechenangabe.HnflAlt);
+						sumNutzflaechen += parseFloat(mietflaechenangabe.HnflAlt);
 					}
                 }
             });
@@ -1107,13 +1063,13 @@ sap.ui.define([
                 {
 					if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
 					{
-						mietflaechenangabe.GaKosten = (mietflaechenangabe.Hnfl / sumNutzflaechen) * verteilung.grundausbaukosten;
-						mietflaechenangabe.MaKosten = (mietflaechenangabe.Hnfl / sumNutzflaechen) * verteilung.mietausbaukosten;
+						mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen) * verteilung.grundausbaukosten;
+						mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen) * verteilung.mietausbaukosten;
 					}
 					else
 					{
-						mietflaechenangabe.GaKosten = (parseInt(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.grundausbaukosten;
-						mietflaechenangabe.MaKosten = (parseInt(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.mietausbaukosten;
+						mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.grundausbaukosten;
+						mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.mietausbaukosten;
 					}
                 }
             });

@@ -104,26 +104,22 @@ sap.ui.define([
                 viewsettings.flaecheneinheitSelectedKey = viewsettings.flaecheneinheiten[0].key;
                 viewsettings.flaecheneinheitSelected = viewsettings.flaecheneinheiten[0];
 
-                // Ausgangswährung ermitteln - Wenn Mietflächen enthalten sind, nimm die Währung der ersten Mietfläche
-                var ausgangsWaehrung = "EUR";
-                var mietflaechenangaben = konditioneneinigung.KeToOb;
-                if(mietflaechenangaben.length > 0){
-                    ausgangsWaehrung = mietflaechenangaben[0].Whrung;
-                }
+                // Ausgangswährung ermitteln - TODO: welche Währung als Ausgangswährung?
+                var ausgangsWaehrung = konditioneneinigung.Currency;
 
                 var oDataModel = sap.ui.getCore().getModel("odata");
 
-                oDataModel.read("/WaehrungSet", {
+                oDataModel.read("/ExchangeRateSet", {
 
                     urlParameters: {
-                        //"$filter": "Gdat eq datetime'2001-01-01T00:00:00' and Von eq '"+ausgangsWaehrung+"'"
+                        "$filter": "Von eq '"+ausgangsWaehrung+"'"
                     },
 
                     success: function(oData){
                         console.log(oData);
 
                         oData.results.forEach(function(waehrung){
-                            viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Ukurs} );
+                            viewsettings.waehrungen.push( {key: waehrung.Nach, text: waehrung.Nach, umrechungskurs: waehrung.Multiplikator} );
                         });
 
                         if(viewsettings.waehrungen.length > 0){
@@ -1236,20 +1232,12 @@ sap.ui.define([
                         if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1)
                         {
                             objekt.HnflAlt = objekt.HnflAlt.toString();
+                            objekt.NhMiete = objekt.NhMiete.toString();
                             objekt.AnMiete = objekt.AnMiete.toString();
                             objekt.GaKosten = objekt.GaKosten.toString();
                             objekt.MaKosten = objekt.MaKosten.toString();
                             
-                            jsonData.mietflaechen.push( objekt );
-
-                            // 20.12.2016 - HACK für Präsentation
-                            // Hinzufügen mehrere Mietflächen
-                            // Zukünftig entfernen
-                            var objekt2 = jQuery.extend(true, {}, objekt);
-                            objekt2.MoId = "MoId 2";
-                            objekt2.Hnfl = 1579.59;
-                            jsonData.mietflaechen.push( objekt2 );
-                            // <--
+                            jsonData.mietflaechen.push(objekt);
                         }
                     });
 
@@ -1363,8 +1351,8 @@ sap.ui.define([
             
             var verteilung = {
                 nutzungsart: dialogModel.getProperty("/nutzungsart"),
-                grundausbaukosten: dialogModel.getProperty("/grundausbaukosten"),
-                mietausbaukosten: dialogModel.getProperty("/mietausbaukosten")
+                grundausbaukosten: parseFloat(dialogModel.getProperty("/grundausbaukosten")),
+                mietausbaukosten: parseFloat(dialogModel.getProperty("/mietausbaukosten"))
             };
 
             // Logik zur Verteilung der Ausbaukosten
@@ -1377,11 +1365,11 @@ sap.ui.define([
             {
                 if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
                 {
-                    sumNutzflaechen += mietflaechenangabe.Hnfl;
+                    sumNutzflaechen += parseFloat(mietflaechenangabe.Hnfl);
                 }
                 else
                 {
-                    sumNutzflaechen += parseInt(mietflaechenangabe.HnflAlt);
+                    sumNutzflaechen += parseFloat(mietflaechenangabe.HnflAlt);
                 }
             });
             
@@ -1389,13 +1377,13 @@ sap.ui.define([
             {
                 if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
                 {
-                    mietflaechenangabe.GaKosten = (mietflaechenangabe.Hnfl / sumNutzflaechen) * verteilung.grundausbaukosten;
-                    mietflaechenangabe.MaKosten = (mietflaechenangabe.Hnfl / sumNutzflaechen) * verteilung.mietausbaukosten;
+                    mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen) * verteilung.grundausbaukosten;
+                    mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen) * verteilung.mietausbaukosten;
                 }
                 else
                 {
-                    mietflaechenangabe.GaKosten = (parseInt(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.grundausbaukosten;
-                    mietflaechenangabe.MaKosten = (parseInt(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.mietausbaukosten;
+                    mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.grundausbaukosten;
+                    mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.mietausbaukosten;
                 }
             });
             

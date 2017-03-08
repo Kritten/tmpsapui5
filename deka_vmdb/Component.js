@@ -26,7 +26,7 @@ sap.ui.define([
 				_this.initNavigationModel();
 
 				_this.initDataProvider({
-					useMockServer: true
+					useMockServer: (document.location.hostname === 'localhost')
 				});
 
 				_this.getRouter().initialize();
@@ -47,7 +47,7 @@ sap.ui.define([
 				});
 
 				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				mockserver.simulate(sPath + "/model/service-v2.xml");
+				mockserver.simulate(sPath + "/model/service-v3.xml");
 				mockserver.start();
 			}
 			else

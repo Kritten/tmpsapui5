@@ -29,18 +29,18 @@
                 <Text text="{i18n>GESCHOSS}" />
             </Column>
             <Column minScreenWidth="Tablet" demandPopin="true">
-                <Text text="{i18n>FLAECHENGROESSE} in {form>/viewsettings/flaecheneinheitSelected/text}" />
+                <Text text="{i18n>FLAECHENGROESSE} / {i18n>STUECK}" />
             </Column>
         </columns>
             
 		<ColumnListItem>
 			<cells>
 				<Text text="{Bukrs}/{WeId}/{MoId}" />
-                <Text text="{Bezeichnung}" />
+                <Text text="{Bezei}" />
                 <Text text="{Nutzart}" />
                 <CheckBox selected="{Leerstand}" editable="false" />
-                <Text text="{Geschoss}" />
-                <Text text="{Flaechengroesse}" />
+                <Text text="{Dmgeschos}" />
+                <Text text="{Hnfl} {HnflUnit}" />
 			</cells>
 		</ColumnListItem>
 

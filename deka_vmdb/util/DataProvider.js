@@ -17,17 +17,11 @@ sap.ui.define([], function() {
                 _this.oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
 
                     urlParameters: {
-                        "$expand": "KeToOb,KeToMap"
+                        "$expand": "KeToOb,KeToWe,KeToMap"
                     },
 
                     success: function(oData){
                         console.log(oData);
-
-                        // Struktur aufbereiten für UI5 Binding                    
-                        oData.Favorit = (Math.random() > 0.5); // Feld ist zur Zeit noch ein String
-                        oData.Editable = (Math.random() > 0.5);
-                        oData.Status = "Konditioneneinigung";
-                        oData.Anmerkung = "";
 
                         oData.KeToOb = _.map(oData.KeToOb.results, function(objekt){
 
@@ -43,11 +37,6 @@ sap.ui.define([], function() {
                             // Backend würde kein X bei Confirmation liefern
                             objekt.Confirmation = "";
                             return objekt;
-                        });
-
-                        oData.KeToMap = _.map(oData.KeToMap.results, function(mapping){
-                            mapping.Aktiv = (Math.random() > 0.5);
-                            return mapping;
                         });
 
                         // Zusätzliche Felder
@@ -66,6 +55,49 @@ sap.ui.define([], function() {
 
             });
 
+        },
+
+        readVermietungsaktivitaetAsync: function(Bukrs, VaId){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify) {
+
+                _this.oDataModel.read("/VermietungsaktivitaetSet(Bukrs='" + Bukrs + "',VaId='" + VaId + "')", {
+
+                    urlParameters: {
+                        "$expand": "VaToOb,VaToMap"
+                    },
+
+                    success: function(oData){
+                        console.log(oData);
+
+                        oData.VaToOb = _.map(oData.VaToOb.results, function(objekt){
+
+                            // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
+                            objekt.HnflAlt = objekt.HnflAlt.toString();
+                            objekt.NhMiete = objekt.NhMiete.toString();
+                            objekt.AnMiete = objekt.AnMiete.toString();
+                            objekt.GaKosten = objekt.GaKosten.toString();
+                            objekt.MaKosten = objekt.MaKosten.toString();
+
+                            return objekt;
+                        });
+
+                        // Zusätzliche Felder
+                        oData.mieteGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
+                        oData.kostenGesamt = {vermietungsaktivitaet: null, konditioneneinigung: null, differenz: null};
+                        oData.arbeitsvorrat = null;
+
+                        resolve(oData);
+                    },
+
+                    error: function(oError){
+                        reject(oError);
+                    }
+
+                });
+
+            });
         },
 
         readKondSelSetAsync: function(){
@@ -146,6 +178,41 @@ sap.ui.define([], function() {
 
             });
 
+        },
+
+        readSperrenAsync: function(){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+
+                _this.oDataModel.read("/SperreSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+
+            });
+        },
+
+        readAnmerkungSetAsync: function(){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+
+                _this.oDataModel.read("/AnmerkungSet", {
+                    success: function(oData){
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+
+            });
         }
 
     };

@@ -27,7 +27,7 @@
                                 <attributes>
                                     <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/konditioneneinigung/Bukrs}" />
                                     <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/konditioneneinigung/WeId}" />
-                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/konditioneneinigung/Bezeichnung}" />
+                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/konditioneneinigung/KeToWe/Plz} {form>/konditioneneinigung/KeToWe/Ort} {form>/konditioneneinigung/KeToWe/StrHnum}" />
                                 </attributes>
                             </ObjectHeader>
                         </items>
@@ -38,14 +38,11 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
-                            <List items="{form>/konditioneneinigung/KeToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" >
+                            <List items="{form>/konditioneneinigung/KeToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" noDataText="" >
                                 <StandardListItem 
                                     type="Active"
                                     title="{form>VaId}"
-                                    icon="{= ${form>Aktiv} ? 'sap-icon://status-positive' : 'sap-icon://status-inactive' }" press="onMappingPressed">
-                                    <customData>
-                                        <core:CustomData key="state" value="{= ${form>Aktiv} ? 'active' : 'inactive' }" writeToDom="true" />
-                                    </customData>
+                                    icon="{= ${form>Aktiv} ? './img/iconmonstr-circle-1-active.png' : './img/iconmonstr-circle-1-inactive.png' }" press="onMappingPressed">
                                 </StandardListItem>
                             </List>
                         </items>
@@ -105,12 +102,12 @@
                     <ColumnListItem vAlign="Middle">
                         <cells>
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
-                            <Text text="{form>Bezeichnung}" />
+                            <Text text="{form>Bezei}" />
                             <Text text="{form>Nutzart}" />
-                            <Text text="{form>Hnfl}" />
+                            <Input value="{form>Hnfl}" editable="false" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{form>NhMiete}" /> <!-- {= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) } -->
+                            <Input value="{form>NhMiete}" editable="false" /> <!-- {= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) } -->
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />

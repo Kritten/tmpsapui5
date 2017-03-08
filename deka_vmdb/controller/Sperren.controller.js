@@ -1,4 +1,6 @@
-sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
+sap.ui.define([
+	"sap/ui/core/mvc/Controller",
+	"ag/bpc/Deka/util/DataProvider"], function (Controller, DataProvider) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.Sperren", {
@@ -19,26 +21,23 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
 		onPatternMatched: function(oEvent){
 			var _this = this;
 
-            var oDataModel = sap.ui.getCore().getModel("odata");
+			DataProvider.readSperrenAsync().then(function(sperren){
 
-            oDataModel.read("/SperreSet", {
-                success: function(oData){
-                    console.log(oData);
-
-					var form = {
-						sperren: oData.results
-					};
-
-					form.sperren.forEach(function(sperre){
+				var form = {
+					sperren: _.map(sperren, function(sperre){
 						sperre.Uhrzeit = new Date(sperre.Uhrzeit.ms);
-					});
+						return sperre;
+					})
+				};
 
-					var formModel = new sap.ui.model.json.JSONModel(form);
-					_this.getView().setModel(formModel, "form");
-                }
-            });
+				var formModel = new sap.ui.model.json.JSONModel(form);
+				_this.getView().setModel(formModel, "form");
 
-
+			})
+			.catch(function(oError){
+				console.log(oError);
+			})
+			.done();
 
 		},
 		
