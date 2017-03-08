@@ -1219,6 +1219,7 @@ sap.ui.define([
                 MzErsterMonat: null,
                 MzAnzahlJ: "",
                 AkErsterMonat: null,
+                AkAnzahlM: "",
                 VerteilungAusbaukostenAnzahlMonate: "",
 
                 BkAbsolut: "",

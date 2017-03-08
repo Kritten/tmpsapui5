@@ -75,7 +75,6 @@ sap.ui.define([], function() {
 
                 _this.oDataModel.read("/KondSelSet", {
                     success: function(oData){
-                        console.log(oData.results);
                         resolve(oData.results);
                     },
                     error: function(oError){
@@ -93,7 +92,6 @@ sap.ui.define([], function() {
             return Q.Promise(function(resolve, reject, notify){
                 _this.oDataModel.read("/VermSelSet", {
                     success: function(oData){
-                        console.log(oData.results);
                         resolve(oData.results);
                     },
                     error: function(oError){

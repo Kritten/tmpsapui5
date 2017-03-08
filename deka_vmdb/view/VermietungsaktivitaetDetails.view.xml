@@ -33,11 +33,15 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
-                            <List items="{form>/vermietungsaktivitaet/VaToMap}" growing="true" growingThreshold="4" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" >
+                            <List items="{form>/vermietungsaktivitaet/VaToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" >
                                 <StandardListItem 
                                     type="Active"
-                                    title="{form>KeId}"
-                                    icon="{= ${form>Aktiv} ? 'sap-icon://status-positive' : 'sap-icon://status-inactive' }" press="onMappingPressed" />
+                                    title="{form>VaId}"
+                                    icon="{= ${form>Aktiv} ? 'sap-icon://status-positive' : 'sap-icon://status-inactive' }" press="onMappingPressed">
+                                    <customData>
+                                        <core:CustomData key="state" value="{= ${form>Aktiv} ? 'active' : 'inactive' }" writeToDom="true" />
+                                    </customData>
+                                </StandardListItem>
                             </List>
                         </items>
                         <layoutData>
@@ -246,7 +250,7 @@
                     <DatePicker id="idAkErsterMonat" dateValue="{form>/vermietungsaktivitaet/AkErsterMonat}" placeholder=" " displayFormat="MM/yyyy" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                     <Label text="{i18n>VERTEILUNG_AUSBAUKOSTEN_MONATE}" />
-                    <Input id="idVerteilungAusbaukostenAnzahlMonate" value="{form>/vermietungsaktivitaet/VerteilungAusbaukostenAnzahlMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
+                    <Input id="idAkAnzahlM" value="{form>/vermietungsaktivitaet/AkAnzahlM}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
 
                     <Label text="{i18n>POENALE} in {form>/viewsettings/waehrungSelected/text}" />
                     <Input id="poenale" value="{form>/vermietungsaktivitaet/Poenale}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />

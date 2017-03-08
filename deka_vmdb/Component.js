@@ -1,13 +1,14 @@
-jQuery.sap.includeScript('./../js/q.js');
-jQuery.sap.includeScript('./../js/underscore-min.js');
-jQuery.sap.includeScript('./../js/SheetJS/xlsx.core.min.js');
-jQuery.sap.includeStyleSheet('./../css/style.css');
+//jQuery.sap.includeScript('./../js/q.js');
+//jQuery.sap.includeScript('./../js/underscore-min.js');
+//jQuery.sap.includeScript('./../js/SheetJS/xlsx.core.min.js');
+//jQuery.sap.includeStyleSheet('./../css/style.css');
 
 sap.ui.define([
 	"sap/ui/core/UIComponent", 
 	"sap/ui/model/resource/ResourceModel", 
 	"sap/ui/core/util/MockServer",
-	"ag/bpc/Deka/util/DataProvider"], function (UIComponent, ResourceModel, MockServer, DataProvider) {
+	"ag/bpc/Deka/util/DataProvider",
+	"ag/bpc/Deka/util/AppInitHelper"], function (UIComponent, ResourceModel, MockServer, DataProvider, AppInitHelper) {
 	
 	"use strict";
 	return UIComponent.extend("ag.bpc.Deka.Component", {
@@ -17,19 +18,25 @@ sap.ui.define([
 		},
 
 		init: function () {
+
 			UIComponent.prototype.init.apply(this, arguments);
+			var _this = this;
 
-			jQuery.sap.log.setLevel(jQuery.sap.log.Level.INFO);
+			AppInitHelper.loadExternalFiles(function(){
 
-			this.initI18nModel();
+				console.log(".. external files loaded .. init app");
 
-			this.initNavigationModel();
+				_this.initI18nModel();
 
-			this.initDataProvider({
-				useMockServer: true
+				_this.initNavigationModel();
+
+				_this.initDataProvider({
+					useMockServer: true
+				});
+
+				_this.getRouter().initialize();
+
 			});
-
-			this.getRouter().initialize();
 		},
 
 		initDataProvider: function(options){

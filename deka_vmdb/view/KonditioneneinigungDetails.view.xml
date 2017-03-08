@@ -38,7 +38,7 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
-                            <List items="{form>/konditioneneinigung/KeToMap}" growing="true" growingThreshold="4" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" >
+                            <List items="{form>/konditioneneinigung/KeToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" >
                                 <StandardListItem 
                                     type="Active"
                                     title="{form>VaId}"
@@ -110,7 +110,7 @@
                             <Text text="{form>Hnfl}" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) }" />
+                            <Text text="{form>NhMiete}" /> <!-- {= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) } -->
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
