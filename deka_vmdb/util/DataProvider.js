@@ -223,6 +223,23 @@ sap.ui.define([], function() {
             });
         },
 
+        readNutzungsartSetAsync: function(){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+
+                _this.oDataModel.read("/NutzungsartSet", {
+                    success: function(oData){
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+
+            });
+        },
+
         readFlaecheSetAsync: function(ausgangseinheit){
             var _this = this;
 
@@ -231,7 +248,7 @@ sap.ui.define([], function() {
                 _this.oDataModel.read("/FlaecheSet", {
 
                     urlParameters: {
-                        "$filter": "Von eq '" + ausgangseinheit + "'"
+                        //"$filter": "Von eq '" + ausgangseinheit + "'"
                     },
                     success: function(oData){
                         console.log(oData.results);
@@ -254,11 +271,31 @@ sap.ui.define([], function() {
                 _this.oDataModel.read("/ExchangeRateSet", {
 
                     urlParameters: {
-                        "$filter": "Von eq '" + ausgangseinheit + "'"
+                        //"$filter": "Von eq '" + ausgangseinheit + "'"
                     },
+
                     success: function(oData){
                         console.log(oData.results);
                         resolve(oData.results);
+                    },
+                    
+                    error: function(oError){
+                        reject(oError);
+                    }
+
+                });
+
+            });
+        },
+
+        updateKonditioneneinigungAsync: function(KeId, Bukrs, payload){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                
+                _this.oDataModel.update("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", payload, {
+                    success: function(){
+                        resolve();
                     },
                     error: function(oError){
                         reject(oError);

@@ -37,7 +37,12 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
         },
 
         showError: function(oError) {
-            var errorMessage = oError ? JSON.stringify(oError) : 'Ein unbekannter Fehler ist aufgetreten';
+            var errorMessage = 'Ein unbekannter Fehler ist aufgetreten';
+
+            if(oError){
+                errorMessage = (typeof oError === 'string') ? oError : JSON.stringify(oError);
+            }
+
             MessageBox.alert(errorMessage);
         }
 

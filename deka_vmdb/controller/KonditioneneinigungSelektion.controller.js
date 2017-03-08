@@ -3,7 +3,8 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"ag/bpc/Deka/util/NavigationPayloadUtil",
 	"ag/bpc/Deka/util/DataProvider",
-	"ag/bpc/Deka/util/ErrorMessageUtil"], function(Controller, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil) {
+	"ag/bpc/Deka/util/ErrorMessageUtil",
+	"ag/bpc/Deka/util/StaticData"], function(Controller, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData) {
 
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungSelektion", {
@@ -20,7 +21,7 @@ sap.ui.define([
 
 			var anmerkungMapping = {};
 
-			DataProvider.readAnmerkungSetAsync().then(function(anmerkungen){
+			StaticData.ANMERKUNGEN.then(function(anmerkungen){
 				_.each(anmerkungen, function(anmerkung){
 					anmerkungMapping[anmerkung.Id] = anmerkung.Txtmd;
 				});

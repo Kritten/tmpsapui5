@@ -89,7 +89,17 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil"], function (PrinterUtil) {
             result = result.replace(/@@\w*@@/g, "");
 
             return result;
-        }
+        },
         
+        printKonditioneneinigung: function(konditioneneinigung){
+            var printableHtml = this.generatePrintableHtmlForKonditioneneinigung(konditioneneinigung);
+            var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+            printWindow.document.write(printableHtml);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        }
+
 	};
 });

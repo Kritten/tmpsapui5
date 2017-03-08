@@ -3,7 +3,8 @@ sap.ui.define([
 	"sap/ui/model/resource/ResourceModel", 
 	"sap/ui/core/util/MockServer",
 	"ag/bpc/Deka/util/DataProvider",
-	"ag/bpc/Deka/util/AppInitHelper"], function (UIComponent, ResourceModel, MockServer, DataProvider, AppInitHelper) {
+	"ag/bpc/Deka/util/AppInitHelper",
+	"ag/bpc/Deka/util/StaticData"], function (UIComponent, ResourceModel, MockServer, DataProvider, AppInitHelper, StaticData) {
 	
 	"use strict";
 	return UIComponent.extend("ag.bpc.Deka.Component", {
@@ -28,6 +29,8 @@ sap.ui.define([
 				_this.initDataProvider({
 					useMockServer: (document.location.hostname === 'localhost')
 				});
+
+				StaticData.init();
 
 				_this.getRouter().initialize();
 

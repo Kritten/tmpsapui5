@@ -29,7 +29,7 @@
             <items>
                 <Label text="Währung:" />
                 <Select selectedKey="{form>/viewsettings/waehrungSelectedKey}" items="{form>/viewsettings/waehrungen}" change="onPopoverWaehrungSelect">
-                    <core:Item key="{form>key}" text="{form>text}" />
+                    <core:Item key="{form>Nach}" text="{form>Nach}" />
                 </Select>
             </items>
         </FlexBox>
@@ -41,7 +41,7 @@
             <items>
                 <Label text="Flächeneinheit:" />
                 <Select selectedKey="{form>/viewsettings/flaecheneinheitSelectedKey}" items="{form>/viewsettings/flaecheneinheiten}" change="onPopoverFlaecheneinheitSelect">
-                    <core:Item key="{form>key}" text="{form>text}" />
+                    <core:Item key="{form>Nach}" text="{form>Nach}" />
                 </Select>
             </items>
         </FlexBox>
