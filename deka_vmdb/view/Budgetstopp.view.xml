@@ -11,9 +11,9 @@
             
             <FlexBox class="sapUiSmallMargin">
                 <items>
-                    <Select id="fondSelektion" items="{form>/fonds}" change="onFondSelektionChange" selectedKey="{form>/selectedFond}" forceSelection="false" autoAdjustWidth="true">
+                    <Select id="idSelectFond" items="{form>/fonds}" change="onFondSelektionChange" selectedKey="{form>/selectedFondKey}" forceSelection="false" autoAdjustWidth="true">
                         <items>
-                            <core:Item key="{form>key}" text="{form>text}" />
+                            <core:Item key="{form>Dmfonds}" text="{form>Dmfonds}" />
                         </items>
                     </Select>
                 </items>
@@ -35,28 +35,32 @@
                         <Text text="{i18n>MIETBEGINN}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>LAUFZEIT}" />
+                        <Text text="{i18n>LAUFZEIT} {i18n>IN_MONATEN}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>GUELTIG_BIS}" />
-                    </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>BEZEICHNUNG}" />
-                    </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>NUTZUNGSART}" />
                     </Column>
                 </columns>
                 
                 <items>
                     <ColumnListItem vAlign="Middle">
                         <cells>
-                            <Text text="{form>id}" />
-                            <Text text="{form>mietbeginn}" />
-                            <Text text="{form>laufzeit}" />
-                            <Text text="{form>gueltigBis}" />
-                            <Text text="{form>bezeichnung}" />
-                            <Text text="{form>nutzungsart}" />
+                            <Text text="{form>KeId}" />
+                            <Text text="{
+                                    path: 'form>Mietbeginn',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: {
+                                        style: 'short'
+                                    }
+                            }" />
+                            <Text text="{form>LzFirstbreak}" />
+                            <Text text="{
+                                    path: 'form>GueltigkKe',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: {
+                                        style: 'short'
+                                    }
+                            }" />
                         </cells>
                     </ColumnListItem>
                     

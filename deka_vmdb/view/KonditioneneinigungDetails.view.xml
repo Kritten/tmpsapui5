@@ -302,14 +302,14 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="Miete gesamt" />
-                            <Text text="{form>/konditioneneinigung/mieteGesamt/konditioneneinigung}" />
+                            <Text text="{form>/konditioneneinigung/GesErtrag}" />
                         </cells>
                     </ColumnListItem>
                     
                     <ColumnListItem>
                         <cells>
                             <Text text="Kosten gesamt" />
-                            <Text text="{form>/konditioneneinigung/kostenGesamt/konditioneneinigung}" />
+                            <Text text="{form>/konditioneneinigung/GesKosten}" />
                         </cells>
                     </ColumnListItem>
                 </items>
@@ -319,22 +319,68 @@
         
         <footer>
 			<OverflowToolbar>
-				<Button text="{= ${form>/konditioneneinigung/Favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" icon="{= ${form>/konditioneneinigung/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" press="onFavoritButtonPress" visible="{= (${form>/modus} === 'show') }" />
-				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" icon="sap-icon://request" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" press="onZurGenehmigungVorlegen" />
-				<Button text="{i18n>GENEHMIGEN}" icon="sap-icon://accept" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
-				<Button text="{i18n>NICHTGENEHMIGEN}" icon="sap-icon://decline" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
-				<Button text="{i18n>REAKTIVIEREN}" icon="sap-icon://repost" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
-                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" press="onGenehmigungZurueckziehenButtonPress" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" />
-                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" visible="{= (${form>/modus} === 'show') }" press="onDruckenButtonPress" />
-                <!-- <Button text="{i18n>GUELTIGKEIT_VERLAENGERN}" icon="sap-icon://fob-watch" press="onGueltigkeitVerlaengernButtonPress" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" /> -->
-                <!-- <Button text="{i18n>LOESCHEN}" icon="sap-icon://delete" press="onLoeschenButtonPress" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" /> -->
+
+				<Button text="{= ${form>/konditioneneinigung/Favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" 
+                        icon="{= ${form>/konditioneneinigung/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" 
+                        press="onFavoritButtonPress" />
+
+				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" 
+                        icon="sap-icon://request"
+                        press="onZurGenehmigungVorlegenButtonPress"
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnAm} }" />
+				
+                <Button text="{i18n>GENEHMIGEN}" 
+                        icon="sap-icon://accept" 
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
+
+				<Button text="{i18n>NICHTGENEHMIGEN}" 
+                        icon="sap-icon://decline" 
+                        press="onNichtGenehmigenButtonPress"
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
+        
+				<Button text="{i18n>REAKTIVIEREN}" 
+                        icon="sap-icon://repost" 
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnFm} }" />
+
+                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" 
+                        icon="sap-icon://undo" 
+                        press="onGenehmigungZurueckziehenButtonPress" 
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnFm} }" />
+
+                <Button text="{i18n>DRUCKEN}" 
+                        icon="sap-icon://print"
+                        press="onDruckenButtonPress"
+                        visible="{= (${form>/modus} === 'show') }" />
+
+                <!-- 
+                <Button text="{i18n>GUELTIGKEIT_VERLAENGERN}" 
+                        icon="sap-icon://fob-watch" 
+                        press="onGueltigkeitVerlaengernButtonPress" 
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" /> 
+                -->
+                
+                <Button text="{i18n>LOESCHEN}" 
+                        icon="sap-icon://delete" 
+                        press="onLoeschenButtonPress" 
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnAm} }" />
+                
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
+                
+                <Button text="{i18n>SPEICHERN}"
+                        type="Accept" 
+                        press="onSpeichernButtonPress"
+                        icon="sap-icon://accept" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
-                <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>ABBRECHEN}" icon="sap-icon://decline" type="Reject" press="onAbbrechenButtonPress" >
+                
+                <Button text="{i18n>ABBRECHEN}" 
+                        icon="sap-icon://decline" 
+                        type="Reject" 
+                        press="onAbbrechenButtonPress" 
+                        visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
+
 			</OverflowToolbar>
 		</footer>
 

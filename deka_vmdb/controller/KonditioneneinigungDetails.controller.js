@@ -6,7 +6,8 @@ sap.ui.define([
     "ag/bpc/Deka/util/NavigationPayloadUtil",
     "ag/bpc/Deka/util/DataProvider",
     "ag/bpc/Deka/util/ErrorMessageUtil",
-    "ag/bpc/Deka/util/StaticData"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData) {
+    "ag/bpc/Deka/util/StaticData",
+    "ag/bpc/Deka/util/TranslationUtil"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
@@ -139,8 +140,8 @@ sap.ui.define([
         konditioneneinigungAnzeigen: function(KeId, Bukrs){
             var _this = this;
 
+            _this.initializeValidationState();
             _this.initializeEmptyModel();
-
             _this.getView().getModel("form").setProperty("/modus", "show");
 
             DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
@@ -149,7 +150,7 @@ sap.ui.define([
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
             .then(function(){
-                return Q.when(StaticData.KE.STATUSWERTE);
+                return Q.when(StaticData.STATUSWERTE);
             })
             .then(function(statuswerte){
                 _this.getView().getModel("form").setProperty("/statuswerte", statuswerte);
@@ -165,7 +166,7 @@ sap.ui.define([
             })
             .then(function(anmerkungen){
                 _this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
-                _this.initializeValidationState();
+                
             })
             .catch(function(oError){
                 console.log(oError);
@@ -313,8 +314,8 @@ sap.ui.define([
                 LzFirstbreak: "",
                 WeId: "",
                 MzMonate: "",
-                Status: "01",
-                Anmerkung: "Id 1",
+                Status: StaticData.STATUS.KE.KONDITIONENEINIGUNG,
+                Anmerkung: StaticData.ANMERKUNG.KE.IN_ERSTELLUNG,
                 Aktiv: true,
                 Mietbeginn: null,
                 Bemerkung: "",
@@ -348,9 +349,6 @@ sap.ui.define([
                 KeToMap: [],
                 KeToWe: null,
                 
-                // keine OData Felder
-                mieteGesamt: {konditioneneinigung: null},
-                kostenGesamt: {konditioneneinigung: null},
                 arbeitsvorrat: null
             };
 
@@ -398,7 +396,7 @@ sap.ui.define([
 
         },
 
-        onBearbeitenButtonPress: function(oEvent){            
+        onBearbeitenButtonPress: function(oEvent){
             // Alten Zustand sichern für eventuelle Wiederherstellung
             var formData = this.getView().getModel("form").getData();
             this._formDataBackup = jQuery.extend(true, {}, formData);
@@ -422,7 +420,7 @@ sap.ui.define([
             else
             {
                 var dialog = new sap.m.Dialog({
-                    title: "{i18n>WARNUNG}",
+                    title: TranslationUtil.translate("WARNUNG"), 
                     type: sap.m.DialogType.Message,
                     icon: "sap-icon://message-warning",
                     state: sap.ui.core.ValueState.Warning,
@@ -949,27 +947,11 @@ sap.ui.define([
             return validationResult;
         },
 
-        berechneMieteUndKosten: function(){
-            
-            var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-            
-            var mieteGesamtKE = 0;
-            var kostenGesamtKE = 0;
-            
-            mietflaechenangaben.forEach(function(mietflaechenangabe){
-                mieteGesamtKE += mietflaechenangabe.Hnfl * mietflaechenangabe.NhMiete;
-                kostenGesamtKE += mietflaechenangabe.Hnfl + (mietflaechenangabe.GaKosten + mietflaechenangabe.MaKosten);
-            });
-                      
-            this.getView().getModel("form").setProperty("/konditioneneinigung/mieteGesamt/konditioneneinigung", mieteGesamtKE); 
-            this.getView().getModel("form").setProperty("/konditioneneinigung/kostenGesamt/konditioneneinigung", kostenGesamtKE); 
-        },
-
         onLoeschenButtonPress: function(oEvent){
             var _this = this;
 
             MessageBox.confirm("Wollen Sie die Konditioneneinigung wirklich löschen?", {
-                title:"{i18n>HINWEIS}",
+                title: TranslationUtil.translate("HINWEIS"),
                 actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                 onClose: function(action){
                     if(action === sap.m.MessageBox.Action.YES){
@@ -983,7 +965,7 @@ sap.ui.define([
             var _this = this;
 
 			var dialog = new sap.m.Dialog({
-				title: "{i18n>HINWEIS}",
+				title: TranslationUtil.translate("HINWEIS"),
 				type: sap.m.DialogType.Message,
                 icon: "sap-icon://message-information",
 				content: [
@@ -1000,7 +982,7 @@ sap.ui.define([
                     })
 				],
 				beginButton: new sap.m.Button({
-                    text: "{i18n>AKZEPTIEREN}",
+                    text: TranslationUtil.translate("AKZEPTIEREN"),
                     enabled: false,
 					press: function () {
                         var gueltigkeitsdatum = sap.ui.getCore().byId('idGueltigkeitsDatumDatePicker').getDateValue();
@@ -1011,55 +993,7 @@ sap.ui.define([
 					}
 				}),
 				endButton: new sap.m.Button({
-                    text: "{i18n>ABBRECHEN}",
-					press: function () {
-						dialog.close();
-					}
-				}),
-				afterClose: function() {
-					dialog.destroy();
-				}
-			});
- 
-			dialog.open();
-        },
-
-        onGenehmigungZurueckziehenButtonPress: function(oEvent){
-            var _this = this;
-
-			var dialog = new sap.m.Dialog({
-				title: "{i18n>HINWEIS}",
-				type: sap.m.DialogType.Message,
-                icon: "sap-icon://message-warning",
-                state: sap.ui.core.ValueState.Warning,
-				content: [
-					new sap.m.Text({
-                        text: "Wollen Sie die Genehmigung wirklich zurückziehen? Bitte geben Sie hierfür einen Grund für das Zurückziehen der Genehmigung ein."
-                    }),
-					new sap.m.TextArea('idGenehmigungZurueckziehenBegruendungTextArea', {
-						liveChange: function(oEvent) {
-							var sText = oEvent.getParameter('value');
-							var parent = oEvent.getSource().getParent();
-							parent.getBeginButton().setEnabled(sText.length > 0);
-						},
-						width: "100%",
-						placeholder: "{i18n>BEGRUENDUNG}"
-					})
-				],
-				beginButton: new sap.m.Button({
-                    text: "{i18n>AKZEPTIEREN}",
-					enabled: false,
-					press: function () {
-						var sText = sap.ui.getCore().byId('idGenehmigungZurueckziehenBegruendungTextArea').getValue();
-                        
-                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Anmerkung", "ZURÜCKGEZOGEN");
-                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Bemerkung", sText);
-
-						dialog.close();
-					}
-				}),
-				endButton: new sap.m.Button({
-                    text: "{i18n>ABBRECHEN}",
+                    text: TranslationUtil.translate("ABBRECHEN"),
 					press: function () {
 						dialog.close();
 					}
@@ -1087,7 +1021,7 @@ sap.ui.define([
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 
                 MessageBox.confirm("Wollen Sie den Vorgang wirklich abbrechen?", {
-                    title:"{i18n>HINWEIS}",
+                    title: TranslationUtil.translate("HINWEIS"),
                     actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                     onClose: function(action){
                         if(action === sap.m.MessageBox.Action.YES){
@@ -1133,7 +1067,7 @@ sap.ui.define([
         },
 
 
-        onMietflaechenAngabenLoeschenButtonPress: function(oEvent){           
+        onMietflaechenAngabenLoeschenButtonPress: function(oEvent){
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             
             // Objekte der ausgewählten Mietflächenangaben sammeln
@@ -1247,7 +1181,7 @@ sap.ui.define([
 
         },
         
-        onMietflaechenSelektionDialogConfirm: function(oEvent){            
+        onMietflaechenSelektionDialogConfirm: function(oEvent){
             var selectedItems = oEvent.getParameter("selectedItems");
             
             if(selectedItems.length > 0)
@@ -1395,42 +1329,27 @@ sap.ui.define([
         onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(oEvent){
             this._ausbaukostenVerteilenDialog.close();
         },
-        
+
+
         onDruckenButtonPress: function(oEvent){
             var konditioneneinigung = this.getView().getModel("form").getProperty("/konditioneneinigung");
             PrinterUtil.printKonditioneneinigung(konditioneneinigung);
         },
 
         onFavoritButtonPress: function(oEvent){
-            
-            var favorit = this.getView().getModel("form").getProperty("/konditioneneinigung/Favorit");
-
-            if(favorit)
-            {
-                this.getView().getModel("form").setProperty("/konditioneneinigung/Favorit", false);
-                
-                MessageBox.information("Die Konditioneneinigung wurde von den Favoriten entfernt.", {
-                    title:"{i18n>HINWEIS}"
-                });
-            }
-            else
-            {
-                this.getView().getModel("form").setProperty("/konditioneneinigung/Favorit", true);
-
-                MessageBox.information("Die Konditioneneinigung wurde zu den Favoriten hinzugefügt.", {
-                    title:"{i18n>HINWEIS}"
-                });
-            }
-        },
-
-        onZurGenehmigungVorlegen: function(oEvent){
             var _this = this;
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
+            var favorit = !ke.Favorit;
 
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+            DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
+                KeId: ke.KeId, 
+                Bukrs: ke.Bukrs, 
+                Favorit: favorit
+            }).then(function(){
 
-            DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {KeId: ke.KeId, Bukrs: ke.Bukrs, Anmerkung: '02'}).then(function(){
-                MessageBox.information("Die Konditioneneinigung wurde zur Genehmigung vorgelegt.", {
-                    title:"{i18n>HINWEIS}"
+                MessageBox.information(
+                    favorit ? TranslationUtil.translate("KE_ZU_FAVORITEN_HINZUGEFUEGT") : TranslationUtil.translate("KE_VON_FAVORITEN_ENTFERNT"), {
+                    title: TranslationUtil.translate("HINWEIS")
                 });
 
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
@@ -1439,8 +1358,115 @@ sap.ui.define([
                 ErrorMessageUtil.showError(oError);
             })
             .done();
-
         },
+
+        onZurGenehmigungVorlegenButtonPress: function(oEvent){
+            var _this = this;
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+
+            DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
+                KeId: ke.KeId, 
+                Bukrs: ke.Bukrs, 
+                Anmerkung: StaticData.ANMERKUNG.KE.ZUR_GEMEHMIGUNG_VORGELEGT
+            }).then(function(){
+                MessageBox.information(TranslationUtil.translate("KE_ZUR_GENEHMIGUNG_VORGELEGT"), {
+                    title: TranslationUtil.translate("HINWEIS")
+                });
+
+                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+            })
+            .catch(function(oError){
+                ErrorMessageUtil.showError(oError);
+            })
+            .done();
+        },
+
+        onGenehmigungZurueckziehenButtonPress: function(oEvent){
+            var _this = this;
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
+
+			var dialog = new sap.m.Dialog({
+				title: TranslationUtil.translate("HINWEIS"),
+				type: sap.m.DialogType.Message,
+                icon: "sap-icon://message-warning",
+                state: sap.ui.core.ValueState.Warning,
+				content: [
+					new sap.m.Text({
+                        text: TranslationUtil.translate("KE_GENEHMIGUNG_ZURUECKZIEHEN_GRUND")
+                    }),
+					new sap.m.TextArea('idGenehmigungZurueckziehenBegruendungTextArea', {
+						liveChange: function(oEvent) {
+							var sText = oEvent.getParameter('value');
+							var parent = oEvent.getSource().getParent();
+							parent.getBeginButton().setEnabled(sText.length > 0);
+						},
+						width: "100%",
+						placeholder: TranslationUtil.translate("BEGRUENDUNG")
+					})
+				],
+				beginButton: new sap.m.Button({
+                    text: TranslationUtil.translate("AKZEPTIEREN"),
+					enabled: false,
+					press: function () {
+
+                        var sText = sap.ui.getCore().byId('idGenehmigungZurueckziehenBegruendungTextArea').getValue();
+
+                        DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
+                            KeId: ke.KeId, 
+                            Bukrs: ke.Bukrs, 
+                            Anmerkung: StaticData.ANMERKUNG.KE.AUS_WICHTIGEM_GRUND_ZURUECKGEZOGEN,
+                            Bemerkung: sText
+                        }).then(function(){
+                            dialog.close();
+
+                            MessageBox.information(TranslationUtil.translate("KE_GENEHMIGUNG_ZURUECKGEZOGEN"), {
+                                title: TranslationUtil.translate("HINWEIS")
+                            });
+
+                            _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                        })
+                        .catch(function(oError){
+                            ErrorMessageUtil.showError(oError);
+                        })
+                        .done();
+
+					}
+				}),
+				endButton: new sap.m.Button({
+                    text: TranslationUtil.translate("ABBRECHEN"),
+					press: function () {
+						dialog.close();
+					}
+				}),
+				afterClose: function() {
+					dialog.destroy();
+				}
+			});
+ 
+			dialog.open();
+        },
+
+        onNichtGenehmigenButtonPress: function(oEvent){
+            var _this = this;
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+
+            DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
+                KeId: ke.KeId, 
+                Bukrs: ke.Bukrs, 
+                Anmerkung: StaticData.ANMERKUNG.KE.NICHT_GENEHMIGT
+            }).then(function(){
+                MessageBox.information(TranslationUtil.translate("KE_NICHT_GENEHMIGT"), {
+                    title: TranslationUtil.translate("HINWEIS")
+                });
+
+                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+            })
+            .catch(function(oError){
+                ErrorMessageUtil.showError(oError);
+            })
+            .done();
+        },
+
 
         onMappingPressed: function(oEvent){
 			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetDetails", {

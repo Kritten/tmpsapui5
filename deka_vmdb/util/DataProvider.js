@@ -304,6 +304,42 @@ sap.ui.define([], function() {
                 });
 
             });
+        },
+
+        readFondsSetAsync: function(){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.read("/FondsSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readFondAsync: function(Dmfonds){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.read("/FondsSet('" + Dmfonds + "')", {
+                    urlParameters: {
+                        "$expand": "FoToKo"
+                    },
+                    success: function(oData){
+                        oData.FoToKo = oData.FoToKo.results;
+                        console.log(oData);
+                        resolve(oData);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
         }
 
     };

@@ -4,6 +4,43 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
     return {
 
         NUTZUNGSARTEN: [],
+        ANMERKUNGEN: [],
+
+        ANMERKUNG: {
+            KE: {
+                IN_ERSTELLUNG: '01',
+                ZUR_GEMEHMIGUNG_VORGELEGT: '02',
+                GENEHMIGT: '03',
+                AUS_WICHTIGEM_GRUND_ZURUECKGEZOGEN: '04',
+                NICHT_MEHR_GUELTIG: '05',
+                ABGESCHLOSSEN: '06',
+                NICHT_GENEHMIGT: '07',
+                REAKTIVIERT: '08',
+                GELOESCHT: '09'
+            },
+            VA: {
+                ABGEBROCHEN: '50',
+                ABSTIMMUG_DER_MIETERAUSBAUPLANUNG: '60',
+                WIRTSCHAFTLICHE_ECKDATEN_IN_VERHANDLUNG: '61',
+                MIETFLAECHE_IN_AUSWAHLPOOL_MIT_KONK_OBJ: '62',
+                MIETVERTRAGSVERHANDLUNG_IN_VORBEREITUNG: '70',
+                MIETVERTRAGSVERHANDLUNG_BEGONNEN: '71',
+                VERTRAGSVERHANDLUNGEN_DAUERN_AN: '72',
+                VERTRAGSVERHANDLUNGEN_VERZOEGERN_SICH: '73',
+                GENEHMIGTES_MV_ECK_LIEGT_VOR: '74',
+                ABSCHLUSS_BINNEN_8_WOCHEN_ERWARTET: '75',
+                MIETVERTRAG_NOCH_NICHT_IN_SAP_ERFASST: '80',
+                MIETVERTRAG_IN_SAP_ERFASST: '81'
+            }
+        },
+
+        STATUS: {
+            KE: {
+                KONDITIONENEINIGUNG: '01'
+            }
+        },
+
+        STATUSWERTE: [{Id: '01', Text: 'Konditioneneinigung'}],
 
         KOSTENARTEN: [
             {Id: 'ArtKosten 1', Text: 'Sonstige Kostenart 1'},
@@ -22,12 +59,6 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
             {Id: 'M', Text: 'Monatsmiete'},
             {Id: 'J', Text: 'Jahresmiete'}
         ],
-
-        ANMERKUNGEN: [],
-
-        KE: {
-            STATUSWERTE: [{Id: '01', Text: 'Konditioneneinigung'}]
-        },
 
         init: function(){
             this.ANMERKUNGEN = DataProvider.readAnmerkungSetAsync();

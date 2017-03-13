@@ -50,7 +50,7 @@ sap.ui.define([
 				});
 
 				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				mockserver.simulate(sPath + "/model/service-v5.xml");
+				mockserver.simulate(sPath + "/model/service-v6.xml");
 				mockserver.start();
 			}
 			else
@@ -68,7 +68,7 @@ sap.ui.define([
 
 			var oDataModel = new sap.ui.model.odata.v2.ODataModel(serviceURL, {
 				useBatch: false,
-				defaultUpdateMethod: "Put",
+				//defaultUpdateMethod: "Put",
 				disableHeadRequestForToken: true
 			});
 
