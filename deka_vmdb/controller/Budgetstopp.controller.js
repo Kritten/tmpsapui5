@@ -1,8 +1,8 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller", 
-	"sap/ui/model/Filter",
+	"sap/ui/core/mvc/Controller",
 	"ag/bpc/Deka/util/DataProvider",
-	"ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, Filter, DataProvider, ErrorMessageUtil) {
+	"ag/bpc/Deka/util/ErrorMessageUtil",
+	"ag/bpc/Deka/util/StaticData"], function (Controller, DataProvider, ErrorMessageUtil, StaticData) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.Budgetstopp", {
@@ -59,6 +59,28 @@ sap.ui.define([
 		},
 		
 		onGenehmigungZurueckziehenButtonPress: function(oEvent){
+			var _this = this;
+
+			var items = _this.getView().byId("konditioneneinigungenTable").getSelectedItems();
+			var konditioneneinigungen = _.map(items, function(item){
+				return item.getBindingContext("form").getObject();
+			});
+
+			Q.all(_.map(konditioneneinigungen, function(ke){
+				
+				return DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
+					KeId: ke.KeId, 
+					Bukrs: ke.Bukrs, 
+					Anmerkung: StaticData.ANMERKUNG.KE.AUS_WICHTIGEM_GRUND_ZURUECKGEZOGEN
+				});
+
+			})).then(function(){
+				_this.ladeKonditioneneinigungen();
+			})
+			.catch(function(oError){
+
+			})
+			.done();
 		},
 
 		onBack: function(evt){
