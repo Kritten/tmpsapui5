@@ -106,7 +106,7 @@
                         <cells>
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="{form>Bezei}" />
-                            <Text text="{form>Nutzart}" />
+                            <Text text="{= ${form>/nutzungsartMapping}[${form>Nutzart}] }" />
                             <Select selectedKey="{form>NutzartAlt}" items="{path: 'form>/nutzungsarten', templateShareable: true}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                                 <items>
                                     <core:Item key="{form>NaId}" text="{form>TextSh}" />
@@ -338,16 +338,26 @@
                             <Text text="{i18n>MIETE_GESAMT}" />
                             <Text text="{form>/vermietungsaktivitaet/GesErtrag} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{form>/vermietungsaktivitaet/GesKeErtrag} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesErtrag} * 100 - ${form>/vermietungsaktivitaet/GesKeErtrag} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }" />
+                            <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesErtrag} * 100 - ${form>/vermietungsaktivitaet/GesKeErtrag} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }">
+                                <customData>
+                                    <core:CustomData key="numberstate" value="positive" writeToDom="{= (${form>/vermietungsaktivitaet/GesErtrag} - ${form>/vermietungsaktivitaet/GesKeErtrag}) &gt; 0 }" />
+                                    <core:CustomData key="numberstate" value="negative" writeToDom="{= (${form>/vermietungsaktivitaet/GesErtrag} - ${form>/vermietungsaktivitaet/GesKeErtrag}) &lt; 0 }" />
+                                </customData>
+                            </Text>
                         </cells>
                     </ColumnListItem>
                     
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>KOSTEN_GESAMT}" />
-                            <Text text="{form>/vermietungsaktivitaet/GesKosten}" />
-                            <Text text="{form>/vermietungsaktivitaet/GesKeKosten}" />
-                            <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesKosten} * 100 - ${form>/vermietungsaktivitaet/GesKeKosten} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }" />
+                            <Text text="{form>/vermietungsaktivitaet/GesKosten} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{form>/vermietungsaktivitaet/GesKeKosten} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesKosten} * 100 - ${form>/vermietungsaktivitaet/GesKeKosten} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }">
+                                <customData>
+                                    <core:CustomData key="numberstate" value="positive" writeToDom="{= (${form>/vermietungsaktivitaet/GesKosten} - ${form>/vermietungsaktivitaet/GesKeKosten}) &gt; 0 }" />
+                                    <core:CustomData key="numberstate" value="negative" writeToDom="{= (${form>/vermietungsaktivitaet/GesKosten} - ${form>/vermietungsaktivitaet/GesKeKosten}) &lt; 0 }" />
+                                </customData>
+                            </Text>
                         </cells>
                     </ColumnListItem>
                 </items>

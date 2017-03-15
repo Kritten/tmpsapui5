@@ -1,12 +1,12 @@
 [
     {
         "Von": "EUR",
-        "Nach": "EUR",
-        "Multiplikator": 1.0
+        "Nach": "USD",
+        "Multiplikator": 1.071185
     },
     {
         "Von": "USD",
-        "Nach": "USD",
-        "Multiplikator": 1.0
+        "Nach": "EUR",
+        "Multiplikator": 0.933545559
     }
 ]

@@ -1,0 +1,7 @@
+span[data-numberstate="positive"] {
+    color: green !important;
+}
+
+span[data-numberstate="negative"] {
+    color: red !important;
+}

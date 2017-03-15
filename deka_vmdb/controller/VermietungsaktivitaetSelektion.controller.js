@@ -33,21 +33,21 @@ sap.ui.define([
 			var vermietungsartMapping = {};
 
 			Q.when(StaticData.ANMERKUNGEN).then(function(anmerkungen){
-				_.each(anmerkungen, function(anmerkung){
-					anmerkungMapping[anmerkung.Id] = anmerkung.Txtmd;
-				});
+                anmerkungMapping = _.object(_.map(anmerkungen, function(anmerkung){
+                    return [anmerkung.Id, anmerkung.Txtmd];
+                }));
 				return Q.when(StaticData.STATUSWERTE);
 			})
 			.then(function(statuswerte){
-				_.each(statuswerte, function(statuswert){
-					statusMapping[statuswert.Stid] = statuswert.Txtmd;
-				});
+                statusMapping = _.object(_.map(statuswerte, function(statuswert){
+                    return [statuswert.Stid, statuswert.Txtmd];
+                }));
 				return Q.when(StaticData.VERMIETUNGSARTEN);
 			})
 			.then(function(vermietungsarten){
-				_.each(vermietungsarten, function(vermietungsart){
-					vermietungsartMapping[vermietungsart.key] = vermietungsart.text;
-				});
+                vermietungsartMapping = _.object(_.map(vermietungsarten, function(vermietungsart){
+                    return [vermietungsart.key, vermietungsart.text];
+                }));
 				return DataProvider.readVermSelSetAsync();
 			})
 			.then(function(vermietungsaktivitaeten){

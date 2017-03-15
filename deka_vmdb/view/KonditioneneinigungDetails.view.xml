@@ -106,8 +106,8 @@
                         <cells>
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="{form>Bezei}" />
-                            <Text text="{= ${text>/nutzungsart}[${form>Nutzart}] }" />
-                            <Text text="{= (${form>HnflUnit} === 'ST' ? ${form>Hnfl} : (${form>Hnfl} * ${form>/viewsettings/flaecheneinheitSelected/Multiplikator}).toFixed(2) ) + ' ' + (${form>HnflUnit} === 'ST' ? ${form>HnflUnit} : ${form>/viewsettings/flaecheneinheitSelected/Nach} ) }" />
+                            <Text text="{= ${form>/nutzungsartMapping}[${form>Nutzart}] }" />
+                            <Text text="{= (${form>HnflUnit} === 'ST') ? (${form>Hnfl} + ' ' + ${form>HnflUnit}) : ((Math.round(${form>Hnfl} * ${form>/viewsettings/flaecheneinheitSelected/Multiplikator} * 100) / 100) + ' ' + ${form>/viewsettings/flaecheneinheitSelected/Nach}) }" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Text text="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" />

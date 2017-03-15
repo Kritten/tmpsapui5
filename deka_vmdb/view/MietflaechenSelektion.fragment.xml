@@ -37,7 +37,7 @@
 			<cells>
 				<Text text="{Bukrs}/{WeId}/{MoId}" />
                 <Text text="{Bezei}" />
-                <Text text="{Nutzart}" />
+                <Text text="{= ${form>/nutzungsartMapping}[${Nutzart}] }" />
                 <CheckBox selected="{= ${Leerstand} === '1'}" editable="false" />
                 <Text text="{Dmgeschos}" />
                 <Text text="{Hnfl} {HnflUnit}" />

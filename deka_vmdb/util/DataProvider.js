@@ -146,7 +146,12 @@ sap.ui.define([], function() {
 
                 _this.oDataModel.read("/WirtschaftseinheitenSet(Bukrs='" + Bukrs + "',WeId='" + WeId + "')", {
 
-                    success: function(oData){                       
+                    urlParameters: {
+                        "$expand": "WeToMo"
+                    },
+
+                    success: function(oData){ 
+                        oData.WeToMo = oData.WeToMo.results;                      
                         console.log(oData);
                         resolve(oData);
                     },
@@ -248,7 +253,7 @@ sap.ui.define([], function() {
                 _this.oDataModel.read("/FlaecheSet", {
 
                     urlParameters: {
-                        "$filter": "Von eq '" + ausgangseinheit + "'"
+                        //"$filter": "Von eq '" + ausgangseinheit + "'"
                     },
                     success: function(oData){
                         console.log(oData.results);
@@ -271,7 +276,7 @@ sap.ui.define([], function() {
                 _this.oDataModel.read("/ExchangeRateSet", {
 
                     urlParameters: {
-                        "$filter": "Von eq '" + ausgangseinheit + "'"
+                        //"$filter": "Von eq '" + ausgangseinheit + "'"
                     },
 
                     success: function(oData){
@@ -367,6 +372,23 @@ sap.ui.define([], function() {
                         resolve(oData);
                     },
                     error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        createKonditioneneinigungAsync: function(konditioneneinigungPayload){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.create("/KonditioneneinigungSet", konditioneneinigungPayload, {
+                    success: function(oData){
+                        console.log(oData);
+                        resolve(oData);
+                    },
+                    error: function(oError){
+                        console.log(oError);
                         reject(oError);
                     }
                 });

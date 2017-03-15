@@ -45,7 +45,9 @@ sap.ui.define([
                 nutzungsarten: null,
                 vermietungsarten: null,
 
-                viewsettings: null
+                viewsettings: null,
+
+                nutzungsartMapping: null
             };
             
             var formModel = new sap.ui.model.json.JSONModel(form);
@@ -157,6 +159,10 @@ sap.ui.define([
                 return Q.when(StaticData.NUTZUNGSARTEN);
             })
             .then(function(nutzungsarten){
+                var nutzungsartMapping = _.object(_.map(nutzungsarten, function(nutzungsart){
+                    return [nutzungsart.NaId, nutzungsart.TextSh];
+                }));
+                _this.getView().getModel("form").setProperty("/nutzungsartMapping", nutzungsartMapping);
                 _this.getView().getModel("form").setProperty("/nutzungsarten", nutzungsarten);
                 return Q.when(StaticData.VERMIETUNGSARTEN);
             })

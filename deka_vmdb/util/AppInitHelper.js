@@ -10,7 +10,8 @@ sap.ui.define([], function() {
 
                 Q.all([
                     _this.loadExternalLibraryAsync('./js/underscore-min.js'),
-                    _this.loadExternalLibraryAsync('./js/SheetJS/xlsx.core.min.js')
+                    _this.loadExternalLibraryAsync('./js/SheetJS/xlsx.core.min.js'),
+                    _this.loadExternalStylesheetAsync('./css/style.css')
                 ])
                 .then(fnSuccess)
                 .catch(fnError)
