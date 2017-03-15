@@ -1,0 +1,32 @@
+[
+    {
+        "Stid": "01",
+        "Txtmd": "Konditioneneinigung",
+        "Txtlg": "Konditioneneinigung",
+        "FlgKeVa": "KE"
+    },
+    {
+        "Stid": "10",
+        "Txtmd": "Abgebrochen 0%",
+        "Txtlg": "Abgebrochen 0%",
+        "FlgKeVa": "VA"
+    },
+    {
+        "Stid": "20",
+        "Txtmd": "Ausbauplanung 50%",
+        "Txtlg": "Ausbauplanung 50%",
+        "FlgKeVa": "VA"
+    },
+    {
+        "Stid": "30",
+        "Txtmd": "Mietvertragsentwurf erstellt - 70%",
+        "Txtlg": "Mietvertragsentwurf erstellt - 70%",
+        "FlgKeVa":"VA"
+    },
+    {
+        "Stid": "90",
+        "Txtmd": "Mietvertrag abgeschlossen – 100%",
+        "Txtlg": "Mietvertrag abgeschlossen – 100%",
+        "FlgKeVa": "VA"
+    }
+]

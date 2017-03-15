@@ -31,7 +31,6 @@ sap.ui.define([], function() {
                             objekt.HnflAlt = objekt.HnflAlt.toString();
                             objekt.HnflAlt = (objekt.HnflAlt === '0.000') ? '' : objekt.HnflAlt;
 
-                            objekt.NhMiete = objekt.NhMiete.toString();
                             objekt.AnMiete = objekt.AnMiete.toString();
                             objekt.GaKosten = objekt.GaKosten.toString();
                             objekt.MaKosten = objekt.MaKosten.toString();
@@ -83,7 +82,6 @@ sap.ui.define([], function() {
                             objekt.HnflAlt = objekt.HnflAlt.toString();
                             objekt.HnflAlt = (objekt.HnflAlt === '0.000') ? '' : objekt.HnflAlt;
                             
-                            objekt.NhMiete = objekt.NhMiete.toString();
                             objekt.AnMiete = objekt.AnMiete.toString();
                             objekt.GaKosten = objekt.GaKosten.toString();
                             objekt.MaKosten = objekt.MaKosten.toString();
@@ -162,18 +160,19 @@ sap.ui.define([], function() {
 
         },
 
-        readMietvertragAsync: function(Bukrs, MvId){
+        readMietvertragAsync: function(WeId, Bukrs, MvId){
             var _this = this;
 
             return Q.Promise(function(resolve, reject, notify) {
 
-                _this.oDataModel.read("/MietvertragSet(Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
+                _this.oDataModel.read("/MietvertragSet(WeId='"+WeId+"',Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
 
                     urlParameters: {
-                        "$expand": "MvToWe"
+                        "$expand": "MvToWe,MvToMo"
                     },
 
                     success: function(oData){
+                        oData.MvToMo = oData.MvToMo.results;
                         console.log(oData);
                         resolve(oData);
                     },
@@ -213,6 +212,7 @@ sap.ui.define([], function() {
 
                 _this.oDataModel.read("/AnmerkungSet", {
                     success: function(oData){
+                        console.log(oData.results);
                         resolve(oData.results);
                     },
                     error: function(oError){
@@ -248,7 +248,7 @@ sap.ui.define([], function() {
                 _this.oDataModel.read("/FlaecheSet", {
 
                     urlParameters: {
-                        //"$filter": "Von eq '" + ausgangseinheit + "'"
+                        "$filter": "Von eq '" + ausgangseinheit + "'"
                     },
                     success: function(oData){
                         console.log(oData.results);
@@ -271,7 +271,7 @@ sap.ui.define([], function() {
                 _this.oDataModel.read("/ExchangeRateSet", {
 
                     urlParameters: {
-                        //"$filter": "Von eq '" + ausgangseinheit + "'"
+                        "$filter": "Von eq '" + ausgangseinheit + "'"
                     },
 
                     success: function(oData){
@@ -333,6 +333,37 @@ sap.ui.define([], function() {
                     success: function(oData){
                         oData.FoToKo = oData.FoToKo.results;
                         console.log(oData);
+                        resolve(oData);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readStatusSetAsync: function(){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.read("/StatusSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        deleteSperreAsync: function(KeId, VaId){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.remove("/SperreSet(KeId='" + KeId + "',VaId='" + VaId + "')", {
+                    success: function(oData){
                         resolve(oData);
                     },
                     error: function(oError){

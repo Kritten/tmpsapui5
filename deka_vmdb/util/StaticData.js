@@ -3,8 +3,14 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
     "use strict";
     return {
 
-        NUTZUNGSARTEN: [],
-        ANMERKUNGEN: [],
+        NUTZUNGSARTEN: null,
+        ANMERKUNGEN: null,
+        STATUSWERTE: null,
+
+        VERMIETUNGSARTEN: [
+            {key: "01", text: "Anschlussvermietung"},
+            {key: "02", text: "Neuvermietung"}
+        ],
 
         ANMERKUNG: {
             KE: {
@@ -16,7 +22,11 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
                 ABGESCHLOSSEN: '06',
                 NICHT_GENEHMIGT: '07',
                 REAKTIVIERT: '08',
-                GELOESCHT: '09'
+                GELOESCHT: '09',
+                VERLAENGERT: '10',
+                HNFL_IM_ERP_CHG: '11',
+                REEDIT: '12',
+                BUDGETSTOPP: '13'
             },
             VA: {
                 ABGEBROCHEN: '50',
@@ -40,8 +50,6 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
             }
         },
 
-        STATUSWERTE: [{Id: '01', Text: 'Konditioneneinigung'}],
-
         KOSTENARTEN: [
             {Id: 'ArtKosten 1', Text: 'Sonstige Kostenart 1'},
             {Id: 'ArtKosten 2', Text: 'Sonstige Kostenart 2'},
@@ -54,7 +62,6 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
             {Id: 'ArtErtrag 3', Text: 'Sonstige Ertragsart 3'}
         ],
 
-
         ZEITSPANNEN: [
             {Id: 'M', Text: 'Monatsmiete'},
             {Id: 'J', Text: 'Jahresmiete'}
@@ -62,6 +69,7 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
 
         init: function(){
             this.ANMERKUNGEN = DataProvider.readAnmerkungSetAsync();
+            this.STATUSWERTE = DataProvider.readStatusSetAsync();
             this.NUTZUNGSARTEN = DataProvider.readNutzungsartSetAsync();
         }
 

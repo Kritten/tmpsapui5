@@ -50,7 +50,10 @@ sap.ui.define([
 				});
 
 				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				mockserver.simulate(sPath + "/model/service-v6.xml");
+				mockserver.simulate(sPath + "/model/service-v8.xml", {
+					sMockdataBaseUrl: sPath + "/model/mockdata",
+					bGenerateMissingMockData: true
+				});
 				mockserver.start();
 			}
 			else
@@ -68,14 +71,13 @@ sap.ui.define([
 
 			var oDataModel = new sap.ui.model.odata.v2.ODataModel(serviceURL, {
 				useBatch: false,
-				//defaultUpdateMethod: "Put",
+				defaultUpdateMethod: "Put",
 				disableHeadRequestForToken: true
 			});
 
 			// > Nur für Abwärtskompatibilität. Rausschmeißen wenn alles gegen den DataProvider geht
 			sap.ui.getCore().setModel(oDataModel, "odata");
 			// <
-
 
 			DataProvider.setModel(oDataModel);
 		},

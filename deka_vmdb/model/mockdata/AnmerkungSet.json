@@ -1,0 +1,86 @@
+[
+    {
+        "Id": "01",
+        "Txtmd": "KE in Erstellung",
+        "Txtlg": "KE in Erstellung",
+        "Stid": "01"
+    },
+    {
+        "Id": "02",
+        "Txtmd": "KE zur Genehmigung vorgelegt",
+        "Txtlg": "KE zur Genehmigung vorgelegt",
+        "Stid": "01"
+    },
+    {
+        "Id": "03",
+        "Txtmd": "KE genehmigt",
+        "Txtlg": "KE genehmigt",
+        "Stid": "01"
+    },
+    {
+        "Id": "04",
+        "Txtmd": "KE aus wichtigem Grund zurückgezogen",
+        "Txtlg": "KE aus wichtigem Grund zurückgezogen",
+        "Stid": "01"
+    },
+    {
+        "Id": "05",
+        "Txtmd": "KE nicht mehr gültig",
+        "Txtlg": "KE nicht mehr gültig",
+        "Stid": "01"
+    },
+    {
+        "Id": "06",
+        "Txtmd": "KE abgeschlossen",
+        "Txtlg": "KE abgeschlossen",
+        "Stid": "01"
+    },
+    {
+        "Id": "07",
+        "Txtmd": "KE nicht genehmigt",
+        "Txtlg": "KE nicht genehmigt",
+        "Stid": "01"
+    },
+    {
+        "Id": "08",
+        "Txtmd": "KE reaktiviert",
+        "Txtlg": "KE reaktiviert",
+        "Stid": "01"
+    },
+    {
+        "Id": "09",
+        "Txtmd": "KE gelöscht",
+        "Txtlg": "KE gelöscht",
+        "Stid": "01"
+    },
+    {
+        "Id": "10",
+        "Txtmd": "KE verlängert",
+        "Txtlg": "KE verlängert",
+        "Stid": "01"
+    },
+    {
+        "Id": "11",
+        "Txtmd": "KE Hauptnutzfläche im ERP hat sich geändert",
+        "Txtlg": "KE Hauptnutzfläche im ERP hat sich geändert",
+        "Stid": "01"
+    },
+    {
+        "Id": "12",
+        "Txtmd": "KE Reedit",
+        "Txtlg": "KE Reedit",
+        "Stid": "01"
+    },
+    {
+        "Id": "13",
+        "Txtmd": "KE Budgetstopp",
+        "Txtlg": "KE Budgetstopp",
+        "Stid": "01"
+    },
+    {
+        "Id": "50",
+        "Txtmd": "Abgebrochen",
+        "Txtlg": "Abgebrochen",
+        "Stid": "02"
+    }
+]

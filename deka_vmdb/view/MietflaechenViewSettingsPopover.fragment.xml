@@ -16,7 +16,7 @@
             <items>
                 <Label text="Mietflächenangaben:" />
                 <Select selectedKey="{form>/viewsettings/zeitspanneSelectedKey}" items="{form>/viewsettings/zeitspannen}" change="onPopoverZeitspanneSelect">
-                    <core:Item key="{form>key}" text="{form>text}" />
+                    <core:Item key="{form>Id}" text="{form>Text}" />
                 </Select>           
             </items>
         </FlexBox>

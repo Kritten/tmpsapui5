@@ -1,0 +1,12 @@
+[
+    {
+        "Von": "EUR",
+        "Nach": "EUR",
+        "Multiplikator": 1.0
+    },
+    {
+        "Von": "USD",
+        "Nach": "USD",
+        "Multiplikator": 1.0
+    }
+]

@@ -63,7 +63,7 @@
                     <Toolbar>
                         <Title text="{i18n>MIETFLAECHENANGABEN}" level="H2"/>
                         <ToolbarSpacer />
-                        <Text text="{form>/viewsettings/zeitspanneSelected/text} | {form>/viewsettings/waehrungSelected/Nach} | {form>/viewsettings/flaecheneinheitSelected/Nach}" />
+                        <Text text="{form>/viewsettings/zeitspanneSelected/Text} | {form>/viewsettings/waehrungSelected/Nach} | {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" />
                     </Toolbar>
                 </headerToolbar>
@@ -106,11 +106,11 @@
                         <cells>
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="{form>Bezei}" />
-                            <Text text="{form>Nutzart}" />
+                            <Text text="{= ${text>/nutzungsart}[${form>Nutzart}] }" />
                             <Text text="{= (${form>HnflUnit} === 'ST' ? ${form>Hnfl} : (${form>Hnfl} * ${form>/viewsettings/flaecheneinheitSelected/Multiplikator}).toFixed(2) ) + ' ' + (${form>HnflUnit} === 'ST' ? ${form>HnflUnit} : ${form>/viewsettings/flaecheneinheitSelected/Nach} ) }" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator}).toFixed(2) }" />
+                            <Text text="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" />
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -257,7 +257,7 @@
                     <Label text="{i18n>STATUS}" />
                     <Select width="100%" enabled="false" selectedKey="{form>/konditioneneinigung/Status}" items="{form>/statuswerte}" >
                         <items>
-                            <core:Item key="{form>Id}" text="{form>Text}" />
+                            <core:Item key="{form>Stid}" text="{form>Txtmd}" />
                         </items>
                     </Select>
                     
@@ -302,14 +302,14 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="Miete gesamt" />
-                            <Text text="{form>/konditioneneinigung/GesErtrag}" />
+                            <Text text="{form>/konditioneneinigung/GesErtrag} {form>/viewsettings/waehrungSelected/Nach}" />
                         </cells>
                     </ColumnListItem>
                     
                     <ColumnListItem>
                         <cells>
                             <Text text="Kosten gesamt" />
-                            <Text text="{form>/konditioneneinigung/GesKosten}" />
+                            <Text text="{form>/konditioneneinigung/GesKosten} {form>/viewsettings/waehrungSelected/Nach}" />
                         </cells>
                     </ColumnListItem>
                 </items>
@@ -327,49 +327,55 @@
 				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" 
                         icon="sap-icon://request"
                         press="onZurGenehmigungVorlegenButtonPress"
-                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnAm} }" />
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnVorlegen} }" />
 				
                 <Button text="{i18n>GENEHMIGEN}" 
                         icon="sap-icon://accept" 
-                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
 
 				<Button text="{i18n>NICHTGENEHMIGEN}" 
                         icon="sap-icon://decline" 
                         press="onNichtGenehmigenButtonPress"
-                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
         
 				<Button text="{i18n>REAKTIVIEREN}" 
                         icon="sap-icon://repost" 
-                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnFm} }" />
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnReaktiv} }" />
 
                 <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" 
                         icon="sap-icon://undo" 
                         press="onGenehmigungZurueckziehenButtonPress" 
-                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnFm} }" />
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnZurueck} }" />
 
                 <Button text="{i18n>DRUCKEN}" 
                         icon="sap-icon://print"
                         press="onDruckenButtonPress"
                         visible="{= (${form>/modus} === 'show') }" />
 
-                <!-- 
+                <!--
                 <Button text="{i18n>GUELTIGKEIT_VERLAENGERN}" 
                         icon="sap-icon://fob-watch" 
                         press="onGueltigkeitVerlaengernButtonPress" 
-                        visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/Editable}) }" /> 
-                -->
-                
-                <Button text="{i18n>LOESCHEN}" 
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} }" />
+                 -->
+
+                <Button text="{i18n>REEDIT}"
+                        icon="sap-icon://edit-outside" 
+                        press="onReeditButtonPress" 
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnReedit} }" />
+
+                <Button text="{i18n>LOESCHEN}"
                         icon="sap-icon://delete" 
                         press="onLoeschenButtonPress" 
-                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} &amp;&amp; ${form>/konditioneneinigung/BtnAm} }" />
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnLoeschen} }" />
                 
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 
                 <Button text="{i18n>SPEICHERN}"
                         type="Accept" 
                         press="onSpeichernButtonPress"
-                        icon="sap-icon://accept" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        icon="sap-icon://accept" 
+                        visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
                 

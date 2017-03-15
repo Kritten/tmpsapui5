@@ -204,7 +204,6 @@ sap.ui.define([
 		},
 
 		onSelectDialogConfirm: function(oEvent) {
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.KonditioneneinigungSelektion .. onSelectDialogConfirm");
 			
 			var selectedObject = oEvent.getParameter("selectedItem").getBindingContext("anlRbg").getObject();
 			
@@ -220,8 +219,9 @@ sap.ui.define([
 				
 				case "mv":
 					NavigationPayloadUtil.putPayload({
-						MvId: selectedObject.mietvertrag.MvId,
-						Bukrs: selectedObject.mietvertrag.Bukrs
+						WeId: selectedObject.mietvertrag.WeId,
+						Bukrs: selectedObject.mietvertrag.Bukrs,
+						MvId: selectedObject.mietvertrag.MvId
 					});
 					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenMv");
 				break;

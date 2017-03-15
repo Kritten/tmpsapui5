@@ -4,7 +4,8 @@ sap.ui.define([
 	"sap/m/MessageToast", 
 	"ag/bpc/Deka/util/ExcelImportUtil",
 	"ag/bpc/Deka/util/NavigationPayloadUtil",
-	"ag/bpc/Deka/util/DataProvider"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider) {
+	"ag/bpc/Deka/util/DataProvider",
+	"ag/bpc/Deka/util/StaticData"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider, StaticData) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
@@ -28,10 +29,24 @@ sap.ui.define([
 			var _this = this;
 
 			var anmerkungMapping = {};
+			var statusMapping = {};
+			var vermietungsartMapping = {};
 
-			DataProvider.readAnmerkungSetAsync().then(function(anmerkungen){
+			Q.when(StaticData.ANMERKUNGEN).then(function(anmerkungen){
 				_.each(anmerkungen, function(anmerkung){
 					anmerkungMapping[anmerkung.Id] = anmerkung.Txtmd;
+				});
+				return Q.when(StaticData.STATUSWERTE);
+			})
+			.then(function(statuswerte){
+				_.each(statuswerte, function(statuswert){
+					statusMapping[statuswert.Stid] = statuswert.Txtmd;
+				});
+				return Q.when(StaticData.VERMIETUNGSARTEN);
+			})
+			.then(function(vermietungsarten){
+				_.each(vermietungsarten, function(vermietungsart){
+					vermietungsartMapping[vermietungsart.key] = vermietungsart.text;
 				});
 				return DataProvider.readVermSelSetAsync();
 			})
@@ -63,13 +78,13 @@ sap.ui.define([
 					values: _.map(filterAnmerkungValues, function(Anmerkung){ return {key: Anmerkung, text: anmerkungMapping[Anmerkung]}; })
 				}, {
 					filterName: "Status",
-					values: _.map(filterStatusValues, function(Status){ return {key: Status, text: Status}; })
+					values: _.map(filterStatusValues, function(Status){ return {key: Status, text: statusMapping[Status]}; })
 				}, {
 					filterName: "Externer Dienstleister",
 					values: _.map(filterExternerDienstleisterValues, function(ExternerDienstleister){ return {key: ExternerDienstleister, text: ExternerDienstleister}; })
 				}, {
 					filterName: "Vermietungsart",
-					values: _.map(filterVermietungsartValues, function(Vermietungsart){ return {key: Vermietungsart, text: Vermietungsart}; })
+					values: _.map(filterVermietungsartValues, function(Vermietungsart){ return {key: Vermietungsart, text: vermietungsartMapping[Vermietungsart]}; })
 				}];
 							
 				var jsonModel = new sap.ui.model.json.JSONModel(jsonData);

@@ -1,6 +1,7 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"ag/bpc/Deka/util/DataProvider"], function (Controller, DataProvider) {
+	"ag/bpc/Deka/util/DataProvider",
+	"ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, DataProvider, ErrorMessageUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.Sperren", {
@@ -19,54 +20,50 @@ sap.ui.define([
 		},
 		
 		onPatternMatched: function(oEvent){
+			var formModel = new sap.ui.model.json.JSONModel({
+				sperren: []
+			});
+			this.getView().setModel(formModel, "form");
+
+			this.ladeSperren();
+		},
+		
+		onSperreAufhebenButtonPress: function(oEvent){
 			var _this = this;
 
+			var items = _this.getView().byId("sperrenTable").getSelectedItems();
+			var sperren = _.map(items, function(item){
+				return item.getBindingContext("form").getObject();
+			});
+
+			Q.all(_.map(sperren, function(sperre){
+				return DataProvider.deleteSperreAsync(sperre.KeId, sperre.VaId);
+			}))
+			.fin(function(){
+				_this.ladeKonditioneneinigungen();
+			})
+			.catch(function(oError){
+				ErrorMessageUtil.showError(oError);
+			})
+			.done();
+		},
+
+		ladeSperren: function(){
+			var _this = this;
+
+			_this.getView().byId("sperrenTable").removeSelections(true);
+			_this.getView().getModel("form").setProperty("/sperren", []);
+
 			DataProvider.readSperrenAsync().then(function(sperren){
-
-				var form = {
-					sperren: _.map(sperren, function(sperre){
-						sperre.Uhrzeit = new Date(sperre.Uhrzeit.ms);
-						return sperre;
-					})
-				};
-
-				var formModel = new sap.ui.model.json.JSONModel(form);
-				_this.getView().setModel(formModel, "form");
-
+				_this.getView().getModel("form").setProperty("/sperren", _.map(sperren, function(sperre){
+					sperre.Uhrzeit = new Date(sperre.Uhrzeit.ms);
+					return sperre;
+				}));
 			})
 			.catch(function(oError){
 				console.log(oError);
 			})
 			.done();
-
-		},
-		
-		onSperreAufhebenButtonPress: function(oEvent){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.Sperren .. onSperreAufhebenButtonPress");
-			
-			var sperrenTable = this.getView().byId("sperrenTable");
-			var selectedItems = sperrenTable.getSelectedItems();
-
-            var sperren = this.getView().getModel("form").getProperty("/sperren");
-
-			var selectedSperren = [];
-			selectedItems.forEach(function(selectedItem){
-				selectedSperren.push( selectedItem.getBindingContext("form").getObject() );
-			});
-
-			selectedSperren.forEach(function(sperre){
-				var i = sperren.length;
-				while (i--) {
-					if( (sperren[i].KeId === sperre.KeId) && (sperren[i].VaId === sperre.VaId) && (sperren[i].Benutzer === sperre.Benutzer) ){
-						sperren.splice(i, 1);
-					}
-				}
-			});
-
-            this.getView().getModel("form").setProperty("/sperren", sperren);
-
-            // Selektion aufheben nach dem Löschen
-            sperrenTable.removeSelections(true);
 		},
 		
 		onDruckenButtonPress: function(oEvent){

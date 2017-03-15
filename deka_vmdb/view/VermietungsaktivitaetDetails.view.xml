@@ -20,6 +20,8 @@
                         <items>
                             <ObjectHeader title="{i18n>VERMIETUNGSAKTIVITAET} {form>/vermietungsaktivitaet/VaId}" >
                                 <attributes>
+                                    <ObjectAttribute title="{i18n>KATEGORIE}" text="{form>/vermietungsaktivitaet/Kategorie}" />
+                                    <ObjectAttribute title="{i18n>DIENSTLEISTER}" text="{form>/vermietungsaktivitaet/Dienstleister}" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '03' }" />
                                     <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/Bukrs}" />
                                     <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/vermietungsaktivitaet/WeId}" />
                                     <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/vermietungsaktivitaet/VaToWe/Plz} {form>/vermietungsaktivitaet/VaToWe/Ort} {form>/vermietungsaktivitaet/VaToWe/StrHnum}" />
@@ -33,7 +35,7 @@
                     
                     <FlexBox justifyContent="End">
                         <items>
-                            <List items="{form>/vermietungsaktivitaet/VaToMap}" growing="true" growingThreshold="10" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" noDataText=" " >
+                            <List items="{form>/vermietungsaktivitaet/VaToMap}" growing="true" growingThreshold="3" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" noDataText=" " >
                                 <StandardListItem 
                                     type="Active"
                                     title="{form>KeId}"
@@ -58,7 +60,7 @@
                     <Toolbar>
                         <Title text="{i18n>MIETFLAECHENANGABEN}" level="H2"/>
                         <ToolbarSpacer />
-                        <Text text="{form>/viewsettings/zeitspanneSelected/text} | {form>/viewsettings/waehrungSelected/text} | {form>/viewsettings/flaecheneinheitSelected/text}" />
+                        <Text text="{form>/viewsettings/zeitspanneSelected/Text} | {form>/viewsettings/waehrungSelected/Nach} | {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" />
                     </Toolbar>
                 </headerToolbar>
@@ -77,7 +79,7 @@
                         <Text text="{i18n>NUTZUNGSART} {i18n>ALTERNATIV}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>HAUPTNUTZFLAECHE}" />
+                        <Text text="{i18n>HAUPTNUTZFLAECHE} / {i18n>STUECK}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>MIETFLAECHE} {i18n>ALTERNATIV}" />
@@ -86,16 +88,16 @@
                         <Text text="{i18n>MIETFLAECHENSPLIT}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>MARKTUEBLICHE_MIETE} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
+                        <Text text="{i18n>MARKTUEBLICHE_MIETE} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) ? '*' : '' }{i18n>ANGEBOTSMIETE} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
+                        <Text text="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) ? '*' : '' }{i18n>ANGEBOTSMIETE} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
+                        <Text text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
+                        <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     </Column>
                 </columns>
                 
@@ -105,15 +107,15 @@
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="{form>Bezei}" />
                             <Text text="{form>Nutzart}" />
-                            <Select selectedKey="{form>NutzartAlt}" items="{path: 'form>/alternativeNutzungsarten', templateShareable: true}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                            <Select selectedKey="{form>NutzartAlt}" items="{path: 'form>/nutzungsarten', templateShareable: true}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                                 <items>
-                                    <core:Item key="{form>key}" text="{form>text}" />
+                                    <core:Item key="{form>NaId}" text="{form>TextSh}" />
                                 </items>
                             </Select>
                             <Text text="{form>Hnfl}" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{= (${form>NhMiete} * ${form>/viewsettings/waehrungSelected/umrechungskurs}).toFixed(2) }" />
+                            <Text text="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" />
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -201,17 +203,17 @@
                     <Label text="{i18n>MAKLERKOSTEN} {i18n>IN_MONATSMIETEN}" />
                     <Input id="maklerkostenInMonatsmieten" value="{form>/vermietungsaktivitaet/MkMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
-                    <Label text="{i18n>MAKLERKOSTEN} ({i18n>ABSOLUT}) in {form>/viewsettings/waehrungSelected/text}" />
+                    <Label text="{i18n>MAKLERKOSTEN} ({i18n>ABSOLUT}) in {form>/viewsettings/waehrungSelected/Nach}" />
                     <Input id="maklerkostenAbsolut" value="{form>/vermietungsaktivitaet/MkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
 
                     <Label text="{i18n>BERATUNGSKOSTEN} {i18n>IN_MONATSMIETEN}" />
                     <Input id="beratungskostenInMonatsmieten" value="{form>/vermietungsaktivitaet/BkMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 
-                    <Label text="{i18n>BERATUNGSKOSTEN} ({i18n>ABSOLUT}) in {form>/viewsettings/waehrungSelected/text}" />
+                    <Label text="{i18n>BERATUNGSKOSTEN} ({i18n>ABSOLUT}) in {form>/viewsettings/waehrungSelected/Nach}" />
                     <Input id="beratungskostenAbsolut" value="{form>/vermietungsaktivitaet/BkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
 
                     <!-- Sonstige Kosten -->
-                    <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/text}" />
+                    <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" />
                     <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtKosten}">
                         <items>
                             <core:Item key="00" text="Sonstige Kostenart 00" />
@@ -229,7 +231,7 @@
                     </Input>
 
                     <!-- Sonstige Erträge  -->
-                    <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/text}" />
+                    <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" />
                     <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtErtrag}">
                         <items>
                             <core:Item key="00" text="Sonstige Ertragsart 00" />
@@ -252,7 +254,7 @@
                     <Label text="{i18n>VERTEILUNG_AUSBAUKOSTEN_MONATE}" />
                     <Input id="idAkAnzahlM" value="{form>/vermietungsaktivitaet/AkAnzahlM}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
 
-                    <Label text="{i18n>POENALE} in {form>/viewsettings/waehrungSelected/text}" />
+                    <Label text="{i18n>POENALE} in {form>/viewsettings/waehrungSelected/Nach}" />
                     <Input id="poenale" value="{form>/vermietungsaktivitaet/Poenale}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                     <Label text="{i18n>INDEXWEITERGABE} {i18n>IN_PROZENT}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -276,21 +278,21 @@
                 emptySpanL="0"
                 emptySpanM="0"
                 columnsL="1"
-                columnsM="1" >
+                columnsM="1">
 
                 <f:content>
                     
                     <Label text="{i18n>STATUS}" />
                     <Select id="selectStatus" selectedKey="{form>/vermietungsaktivitaet/Status}" width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/statuswerte}" change="onStatusSelektionChange" >
                         <items>
-                            <core:Item key="{form>key}" text="{form>text}" />
+                            <core:Item key="{form>Stid}" text="{form>Txtmd}" />
                         </items>
                     </Select>
                     
                     <Label text="{i18n>ANMERKUNG}" />
                     <Select selectedKey="{form>/vermietungsaktivitaet/Anmerkung}" width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/anmerkungen}" >
                         <items>
-                            <core:Item key="{form>key}" text="{form>text}" />
+                            <core:Item key="{form>Id}" text="{form>Txtmd}" />
                         </items>
                     </Select>
                     
@@ -334,18 +336,18 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>MIETE_GESAMT}" />
-                            <Text text="{form>/vermietungsaktivitaet/mieteGesamt/vermietungsaktivitaet}" />
-                            <Text text="{form>/vermietungsaktivitaet/mieteGesamt/konditioneneinigung}" />
-                            <Text text="{form>/vermietungsaktivitaet/mieteGesamt/differenz}" />
+                            <Text text="{form>/vermietungsaktivitaet/GesErtrag} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{form>/vermietungsaktivitaet/GesKeErtrag} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesErtrag} * 100 - ${form>/vermietungsaktivitaet/GesKeErtrag} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }" />
                         </cells>
                     </ColumnListItem>
                     
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>KOSTEN_GESAMT}" />
-                            <Text text="{form>/vermietungsaktivitaet/kostenGesamt/vermietungsaktivitaet}" />
-                            <Text text="{form>/vermietungsaktivitaet/kostenGesamt/konditioneneinigung}" />
-                            <Text text="{form>/vermietungsaktivitaet/kostenGesamt/differenz}" />
+                            <Text text="{form>/vermietungsaktivitaet/GesKosten}" />
+                            <Text text="{form>/vermietungsaktivitaet/GesKeKosten}" />
+                            <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesKosten} * 100 - ${form>/vermietungsaktivitaet/GesKeKosten} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }" />
                         </cells>
                     </ColumnListItem>
                 </items>

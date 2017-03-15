@@ -12,12 +12,12 @@
                     <Label text="{i18n>NUTZUNGSART}" />
                     <Select selectedKey="{/nutzungsart}" items="{/nutzungsarten}">
                         <items>
-                            <core:Item key="{key}" text="{text}" />
+                            <core:Item key="{NaId}" text="{TextSh}" />
                         </items>
                     </Select>
-                    <Label text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
+                    <Label text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     <Input value="{/grundausbaukosten}" />
-                    <Label text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/text} / {form>/viewsettings/flaecheneinheitSelected/text}" />
+                    <Label text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     <Input value="{/mietausbaukosten}" />
                 </f:content>
             </f:SimpleForm>

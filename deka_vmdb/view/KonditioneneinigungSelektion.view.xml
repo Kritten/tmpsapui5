@@ -115,7 +115,13 @@
 											style: 'short'
 										}
 								}" />
-								<Text text="{kondSel>LzFirstbreak}" />	
+								<Text text="{
+										path: 'kondSel>LzFirstbreak',
+										type: 'sap.ui.model.type.Integer',
+										formatOptions: {
+											maxIntegerDigits: 5
+										}
+								}" />
 								<Text text="{
 										path: 'kondSel>GueltigkKe',
 										type: 'sap.ui.model.type.Date',
