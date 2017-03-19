@@ -253,7 +253,7 @@ sap.ui.define([], function() {
                 _this.oDataModel.read("/FlaecheSet", {
 
                     urlParameters: {
-                        //"$filter": "Von eq '" + ausgangseinheit + "'"
+                        "$filter": "Von eq '" + ausgangseinheit + "'"
                     },
                     success: function(oData){
                         console.log(oData.results);
@@ -276,7 +276,7 @@ sap.ui.define([], function() {
                 _this.oDataModel.read("/ExchangeRateSet", {
 
                     urlParameters: {
-                        //"$filter": "Von eq '" + ausgangseinheit + "'"
+                        "$filter": "Von eq '" + ausgangseinheit + "'"
                     },
 
                     success: function(oData){
@@ -363,6 +363,23 @@ sap.ui.define([], function() {
             });
         },
 
+        createSperreAsync: function(sperrePayload){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.create("/SperreSet", sperrePayload, {
+                    success: function(oData){
+                        console.log(oData);
+                        resolve(oData);
+                    },
+                    error: function(oError){
+                        console.log(oError);
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
         deleteSperreAsync: function(KeId, VaId){
             var _this = this;
 
@@ -393,7 +410,24 @@ sap.ui.define([], function() {
                     }
                 });
             });
-        }
+        },
 
+        createFavoritAsync: function(favoritPayload){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.create("/FavoritSet", favoritPayload, {
+                    success: function(oData){
+                        console.log(oData);
+                        resolve(oData);
+                    },
+                    error: function(oError){
+                        console.log(oError);
+                        reject(oError);
+                    }
+                });
+            });
+
+        }
     };
 });

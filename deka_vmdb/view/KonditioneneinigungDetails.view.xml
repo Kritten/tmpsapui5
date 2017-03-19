@@ -120,7 +120,7 @@
                 </items>
             </Table>
 
-            <MessageStrip id="mietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
+            <MessageStrip id="idMietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
                 
             <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
             
@@ -161,23 +161,19 @@
                 columnsM="1" >
 
                 <f:content>
-                    <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <DatePicker id="dateGueltigkeitKonditioneneinigung" dateValue="{form>/konditioneneinigung/GueltigkKe}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="idGueltigkKe" dateValue="{form>/konditioneneinigung/GueltigkKe}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                     <Label text="{i18n>MIETBEGINN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <DatePicker id="dateMietbeginn" dateValue="{form>/konditioneneinigung/Mietbeginn}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <DatePicker id="idMietbeginn" dateValue="{form>/konditioneneinigung/Mietbeginn}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     
                     <Label text="{i18n>LAUFZEIT_BIS_1ST_BREAK} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="laufzeitBis1stBreak" value="{form>/konditioneneinigung/LzFirstbreak}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    
+                    <Input id="idLzFirstbreak" value="{form>/konditioneneinigung/LzFirstbreak}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
-                    <!-- <core:Title text="" /> -->
-                    
                     <Label text="{i18n>MIETFREIE_ZEIT} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="mietfreieZeitenInMonaten" value="{form>/konditioneneinigung/MzMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
-                    
+                    <Input id="idMzMonate" value="{form>/konditioneneinigung/MzMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" />
+
 
                     <Label text="{i18n>MAKLERKOSTEN} {i18n>IN_MONATSMIETEN}"  />
                     <Input id="maklerkostenInMonatsmieten" value="{form>/konditioneneinigung/MkMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -322,7 +318,8 @@
 
 				<Button text="{= ${form>/konditioneneinigung/Favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" 
                         icon="{= ${form>/konditioneneinigung/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" 
-                        press="onFavoritButtonPress" />
+                        press="onFavoritButtonPress"
+                        visible="{= (${form>/modus} === 'show') }" />
 
 				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" 
                         icon="sap-icon://request"

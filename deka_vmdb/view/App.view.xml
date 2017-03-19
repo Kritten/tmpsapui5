@@ -4,6 +4,6 @@
 	displayBlock="true"
 	controllerName="ag.bpc.Deka.controller.App">
  
-	<App id="idAppControl" />
+	<App id="idAppControl"  />
 	
 </mvc:View>

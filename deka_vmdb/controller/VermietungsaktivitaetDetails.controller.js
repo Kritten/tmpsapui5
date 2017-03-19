@@ -97,27 +97,43 @@ sap.ui.define([
                 viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
 
                 // Ausgangswährung ermitteln - TODO: welche Währung als Ausgangswährung?
-                var ausgangsWaehrung = vermietungsaktivitaet.Currency;
-                var ausgangsFlaecheneinheit = vermietungsaktivitaet.Unit;
-                
-                DataProvider.readExchangeRateSetAsync(ausgangsWaehrung).then(function(waehrungen){
+                var ausgangsWaehrungKey = "EUR";
+                var ausgangsFlaecheneinheitKey = "M2";
+
+                DataProvider.readExchangeRateSetAsync(ausgangsWaehrungKey).then(function(waehrungen){
 
                     viewsettings.waehrungen = waehrungen;
 
                     if(viewsettings.waehrungen.length > 0){
-                        viewsettings.waehrungSelectedKey = viewsettings.waehrungen[0].key;
-                        viewsettings.waehrungSelected = viewsettings.waehrungen[0];
+                        var ausgangsWaehrung = _.find(viewsettings.waehrungen, function(waehrung){
+                            return waehrung.Nach === ausgangsWaehrungKey;
+                        });
+
+                        if(!ausgangsWaehrung){
+                            ausgangsWaehrung = viewsettings.waehrungen[0];
+                        }
+
+                        viewsettings.waehrungSelectedKey = ausgangsWaehrung.key;
+                        viewsettings.waehrungSelected = ausgangsWaehrung;
                     }
 
-                    return DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheit);
+                    return DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheitKey);
                 })
                 .then(function(flaecheneinheiten){
 
                     viewsettings.flaecheneinheiten = flaecheneinheiten;
 
                     if(viewsettings.flaecheneinheiten.length > 0){
-                        viewsettings.flaecheneinheitSelectedKey = viewsettings.flaecheneinheiten[0].key;
-                        viewsettings.flaecheneinheitSelected = viewsettings.flaecheneinheiten[0];
+                        var ausgangsFlaecheneinheit = _.find(viewsettings.flaecheneinheiten, function(flaecheneinheit){
+                            return flaecheneinheit.Nach === ausgangsFlaecheneinheitKey;
+                        });
+
+                        if(!ausgangsFlaecheneinheit){
+                            ausgangsFlaecheneinheit = viewsettings.flaecheneinheiten[0];
+                        }
+
+                        viewsettings.flaecheneinheitSelectedKey = ausgangsFlaecheneinheit.key;
+                        viewsettings.flaecheneinheitSelected = ausgangsFlaecheneinheit;
                     }
 
                     _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
