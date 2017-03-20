@@ -50,7 +50,7 @@ sap.ui.define([
 				});
 
 				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				mockserver.simulate(sPath + "/model/service-v8.xml", {
+				mockserver.simulate(sPath + "/model/service-v9.xml", {
 					sMockdataBaseUrl: sPath + "/model/mockdata",
 					bGenerateMissingMockData: true
 				});

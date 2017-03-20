@@ -70,7 +70,7 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
         init: function(){
             this.ANMERKUNGEN = DataProvider.readAnmerkungSetAsync();
             this.STATUSWERTE = DataProvider.readStatusSetAsync();
-            this.NUTZUNGSARTEN = [{NaId: "Nutzart 1", TextSh: "Test 123"}]; //DataProvider.readNutzungsartSetAsync();
+            this.NUTZUNGSARTEN = DataProvider.readNutzungsartSetAsync();
         }
 
     };

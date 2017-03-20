@@ -117,6 +117,7 @@ sap.ui.define([
 							oData.results.forEach(function(wirtschaftseinheit){
 								jsonData.data.push({
 									type: "we",
+									bukrs: wirtschaftseinheit.Bukrs,
 									id: wirtschaftseinheit.WeId,
 									descr: wirtschaftseinheit.Plz + " " + wirtschaftseinheit.Ort + ", " + wirtschaftseinheit.StrHnum,
 									wirtschaftseinheit: wirtschaftseinheit
@@ -144,6 +145,7 @@ sap.ui.define([
 							oData.results.forEach(function(mietvertrag){
 								jsonData.data.push({
 									type: "mv",
+									bukrs: mietvertrag.Bukrs,
 									id: mietvertrag.MvId,
 									descr: mietvertrag.Vertart,
 									mietvertrag: mietvertrag
@@ -165,15 +167,21 @@ sap.ui.define([
 						success: function(oData){
 							console.log(oData);
 
+							var dateFormatter =  sap.ui.core.format.DateFormat.getDateInstance({
+								pattern: 'dd.MM.yyyy'
+							});
+
 							var jsonData = {
 								data: []
 							};
 
 							oData.results.forEach(function(konditioneneinigung){
+
 								jsonData.data.push({
 									type: "ke",
+									bukrs: konditioneneinigung.Bukrs,
 									id: konditioneneinigung.KeId,
-									descr: konditioneneinigung.Mietbeginn + ", " + konditioneneinigung.LzFirstbreak,
+									descr: dateFormatter.format(konditioneneinigung.Mietbeginn) + ", " + konditioneneinigung.LzFirstbreak,
 									konditioneneinigung: konditioneneinigung
 								});
 							});

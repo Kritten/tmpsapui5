@@ -39,11 +39,11 @@ sap.ui.define([
 			Q.all(_.map(sperren, function(sperre){
 				return DataProvider.deleteSperreAsync(sperre.KeId, sperre.VaId);
 			}))
-			.fin(function(){
-				_this.ladeKonditioneneinigungen();
-			})
 			.catch(function(oError){
 				ErrorMessageUtil.showError(oError);
+			})
+			.fin(function(){
+				_this.ladeSperren();
 			})
 			.done();
 		},

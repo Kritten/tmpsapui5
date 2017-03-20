@@ -191,7 +191,7 @@ sap.ui.define([
             var payload = NavigationPayloadUtil.takePayload();
 
             if(!payload){
-                this.onBack(null);
+                _this.onBack(null);
                 return;
             }
 
@@ -218,18 +218,10 @@ sap.ui.define([
                 return Q.when(StaticData.NUTZUNGSARTEN);
             })
             .then(function(nutzungsarten){
-
-                var text = {
-                    nutzungsart: {}
-                };
-
-                _.each(nutzungsarten, function(nutzungsart){
-                    text.nutzungsart[nutzungsart.NaId] = nutzungsart.TextSh;
-                });
-
-                var textModel = new sap.ui.model.json.JSONModel(text);
-                _this.getView().setModel(textModel, "text");
-
+                var nutzungsartMapping = _.object(_.map(nutzungsarten, function(nutzungsart){
+                    return [nutzungsart.NaId, nutzungsart.TextSh];
+                }));
+                _this.getView().getModel("form").setProperty("/nutzungsartMapping", nutzungsartMapping);
                 return Q.when(StaticData.STATUSWERTE);
             })
             .then(function(statuswerte){
@@ -262,7 +254,7 @@ sap.ui.define([
             var payload = NavigationPayloadUtil.takePayload();
 
             if(!payload){
-                this.onBack(null);
+                _this.onBack(null);
                 return;
             }
 
@@ -270,14 +262,15 @@ sap.ui.define([
             var Bukrs = payload.Bukrs;
             var MvId = payload.MvId;
 
-            this.initializeEmptyModel();
-
-            var konditioneneinigung = this.newKonditioneneinigung();
-            this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
-            this.getView().getModel("form").setProperty("/modus", "new");
-
+            _this.initializeValidationState();
+            _this.initializeEmptyModel();
+            _this.getView().getModel("form").setProperty("/modus", "new");
+           
             DataProvider.readMietvertragAsync(WeId, Bukrs, MvId)
             .then(function(mietvertrag){
+
+                var konditioneneinigung = _this.newKonditioneneinigung();
+                _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/MvId", mietvertrag.MvId);
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", mietvertrag.MvToWe.WeId); 
@@ -288,11 +281,31 @@ sap.ui.define([
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
             .then(function(){
-                return StaticData.ANMERKUNGEN;
+                return Q.when(StaticData.NUTZUNGSARTEN);
+            })
+            .then(function(nutzungsarten){
+                var nutzungsartMapping = _.object(_.map(nutzungsarten, function(nutzungsart){
+                    return [nutzungsart.NaId, nutzungsart.TextSh];
+                }));
+                _this.getView().getModel("form").setProperty("/nutzungsartMapping", nutzungsartMapping);
+                return Q.when(StaticData.STATUSWERTE);
+            })
+            .then(function(statuswerte){
+                _this.getView().getModel("form").setProperty("/statuswerte", _.filter(statuswerte, function(statuswert){
+                    return statuswert.FlgKeVa === 'KE';
+                }));
+                return Q.when(StaticData.ERTRAGSARTEN);
+            })
+            .then(function(ertragsarten){
+                _this.getView().getModel("form").setProperty("/artertraege", ertragsarten);
+                return Q.when(StaticData.KOSTENARTEN);
+            })
+            .then(function(kostenarten){
+                _this.getView().getModel("form").setProperty("/artkosten", kostenarten);
+                return Q.when(StaticData.ANMERKUNGEN);
             })
             .then(function(anmerkungen){
-                _this.initializeAnmerkungen(anmerkungen);
-                _this.initializeValidationState();
+                _this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
             })
             .catch(function(oError){
                 console.log(oError);
@@ -307,21 +320,22 @@ sap.ui.define([
             var payload = NavigationPayloadUtil.takePayload();
 
             if(!payload){
-                this.onBack(null);
+                _this.onBack(null);
                 return;
             }
 
             var KeId = payload.KeId;
             var Bukrs = payload.Bukrs;
 
-            this.initializeEmptyModel();
-
-            var konditioneneinigung = this.newKonditioneneinigung();
-            this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
-            this.getView().getModel("form").setProperty("/modus", "new");
+            _this.initializeValidationState();
+            _this.initializeEmptyModel();
+            _this.getView().getModel("form").setProperty("/modus", "new");
 
             DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
             .then(function(basisKonditioneneinigung){
+
+                var konditioneneinigung = _this.newKonditioneneinigung();
+                _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", basisKonditioneneinigung.WeId); 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", basisKonditioneneinigung.Bukrs);
@@ -330,11 +344,31 @@ sap.ui.define([
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
             .then(function(){
-                return StaticData.ANMERKUNGEN;
+                return Q.when(StaticData.NUTZUNGSARTEN);
+            })
+            .then(function(nutzungsarten){
+                var nutzungsartMapping = _.object(_.map(nutzungsarten, function(nutzungsart){
+                    return [nutzungsart.NaId, nutzungsart.TextSh];
+                }));
+                _this.getView().getModel("form").setProperty("/nutzungsartMapping", nutzungsartMapping);
+                return Q.when(StaticData.STATUSWERTE);
+            })
+            .then(function(statuswerte){
+                _this.getView().getModel("form").setProperty("/statuswerte", _.filter(statuswerte, function(statuswert){
+                    return statuswert.FlgKeVa === 'KE';
+                }));
+                return Q.when(StaticData.ERTRAGSARTEN);
+            })
+            .then(function(ertragsarten){
+                _this.getView().getModel("form").setProperty("/artertraege", ertragsarten);
+                return Q.when(StaticData.KOSTENARTEN);
+            })
+            .then(function(kostenarten){
+                _this.getView().getModel("form").setProperty("/artkosten", kostenarten);
+                return Q.when(StaticData.ANMERKUNGEN);
             })
             .then(function(anmerkungen){
-                _this.initializeAnmerkungen(anmerkungen);
-                _this.initializeValidationState();
+                _this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
             })
             .catch(function(oError){
                 console.log(oError);
@@ -473,6 +507,7 @@ sap.ui.define([
                 MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre eingaben.");
             }
         },
+
 
         // Create
         konditioneneinigungAnlegen: function(){
@@ -620,18 +655,6 @@ sap.ui.define([
                 // Keine Änderungen getätigt
                 _this.getView().getModel("form").setProperty("/modus", "show");
             }
-        },
-
-
-        /**
-         * Q Promise Funktion
-         * Führt asynchronen UPDATE Request für Konditioneneinigung aus
-         * Ergebnis wird als Promise zurückgeliefert
-         */
-        asyncUpdateKonditioneneinigung: function(konditioneneinigung){
-            return Q.Promise(function(resolve, reject, notify) {
-
-            });
         },
 
 
@@ -1093,26 +1116,22 @@ sap.ui.define([
             var _this = this;
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
-            //var promise = ke.Favorit ? xxx : DataProvider.createFavoritAsync()
+            var promise = ke.Favorit ? DataProvider.deleteFavoritAsync(ke.KeId, '') : DataProvider.createFavoritAsync({KeId: ke.KeId});
 
-            if(ke.Favorit){
+            promise.then(function(){
+                var message = ke.Favorit ? TranslationUtil.translate("KE_VON_FAVORITEN_ENTFERNT") : TranslationUtil.translate("KE_ZU_FAVORITEN_HINZUGEFUEGT");
+                MessageBox.information(message, {
+                    title: TranslationUtil.translate("HINWEIS")
+                });
+            })
+            .catch(function(oError){
+                ErrorMessageUtil.showError(oError);
+            })
+            .fin(function(){
+                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+            })
+            .done();
 
-            } else {
-                DataProvider.createFavoritAsync({
-                    KeId: ke.KeId,
-                }).then(function(){
-
-                    MessageBox.information(TranslationUtil.translate("KE_ZU_FAVORITEN_HINZUGEFUEGT"), {
-                        title: TranslationUtil.translate("HINWEIS")
-                    });
-
-                    _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
-                })
-                .catch(function(oError){
-                    ErrorMessageUtil.showError(oError);
-                })
-                .done();
-            }
         },
 
         onZurGenehmigungVorlegenButtonPress: function(oEvent){

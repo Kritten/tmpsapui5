@@ -74,11 +74,12 @@ sap.ui.define([
 					Anmerkung: StaticData.ANMERKUNG.KE.AUS_WICHTIGEM_GRUND_ZURUECKGEZOGEN
 				});
 
-			})).fin(function(){
-				_this.ladeKonditioneneinigungen();
-			})
+			}))
 			.catch(function(oError){
 				ErrorMessageUtil.showError(oError);
+			})
+			.fin(function(){
+				_this.ladeKonditioneneinigungen();
 			})
 			.done();
 		},

@@ -36,14 +36,43 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
             MessageBox.alert(sMessage);
         },
 
+        parseErrorMessage: function(responseText){
+            var message = "Ein unbekannter Fehler ist aufgetreten";
+
+            var response = JSON.parse(responseText);
+
+            if(response.error)
+            {
+                if(response.error.innererror) {
+                    var messages = _.map(response.error.innererror.errordetails, function(errordetails){
+                        return errordetails.message;
+                    });
+                    message = messages.join('\n');
+                }
+                else{
+                    message = response.error.message.value;
+                }
+            }
+
+            return message;
+        },
+
         showError: function(oError) {
             var errorMessage = 'Ein unbekannter Fehler ist aufgetreten';
 
-            if(oError){
-                errorMessage = (typeof oError === 'string') ? oError : JSON.stringify(oError);
+            if(oError) 
+            {
+                if(oError.responseText)
+                {
+                    errorMessage = this.parseErrorMessage(oError.responseText);
+                } 
+                else 
+                {
+                    errorMessage = (typeof oError === 'string') ? oError : JSON.stringify(oError);
+                }
             }
-
-            MessageBox.alert(errorMessage);
+            
+            MessageBox.error(errorMessage);
         }
 
     };

@@ -428,6 +428,21 @@ sap.ui.define([], function() {
                 });
             });
 
+        },
+
+        deleteFavoritAsync: function(KeId, VaId){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.remove("/FavoritSet(KeId='" + KeId + "',VaId='" + VaId + "')", {
+                    success: function(oData){
+                        resolve(oData);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
         }
     };
 });
