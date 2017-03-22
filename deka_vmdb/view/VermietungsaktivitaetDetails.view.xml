@@ -367,17 +367,35 @@
         
         <footer>
 			<OverflowToolbar>
-				<Button text="{= ${form>/vermietungsaktivitaet/Favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" icon="{= ${form>/vermietungsaktivitaet/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" press="onFavoritButtonPress" visible="{= (${form>/modus} === 'show') }" />
-				<Button text="{i18n>GENEHMIGEN}" icon="sap-icon://accept" visible="{= (${form>/modus} === 'show') }" />
-				<Button text="{i18n>NICHTGENEHMIGEN}" icon="sap-icon://decline" visible="{= (${form>/modus} === 'show') }" />
-                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" press="onDruckenButtonPress" visible="{= (${form>/modus} === 'show') }" />
+
+				<Button text="{= ${form>/vermietungsaktivitaet/Favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" 
+                        icon="{= ${form>/vermietungsaktivitaet/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" 
+                        press="onFavoritButtonPress" 
+                        visible="{= (${form>/modus} === 'show') }" />
+                
+                <Button text="{i18n>DRUCKEN}" 
+                        icon="sap-icon://print" 
+                        press="onDruckenButtonPress" 
+                        visible="{= (${form>/modus} === 'show') }" />
+                
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>SPEICHERN}" icon="sap-icon://accept" type="Accept" press="onSpeichernButtonPress" >
+                
+                <Button text="{i18n>SPEICHERN}"
+                        icon="sap-icon://accept"
+                        type="Accept"
+                        press="onSpeichernButtonPress"
+                        visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
-                <Button visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>ABBRECHEN}" icon="sap-icon://decline" type="Reject" press="onAbbrechenButtonPress" >
+
+                <Button text="{i18n>ABBRECHEN}"
+                        icon="sap-icon://decline"
+                        type="Reject"
+                        press="onAbbrechenButtonPress"
+                        visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
+
 			</OverflowToolbar>
 		</footer>
 

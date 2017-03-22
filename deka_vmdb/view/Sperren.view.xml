@@ -59,14 +59,14 @@
 				
             </Table>
 
-            <FlexBox class="sapUiSmallMargin" justifyContent="End" >
-                <items>
-					<Button text="{i18n>SPERRE_AUFHEBEN}" icon="sap-icon://unlocked" press="onSperreAufhebenButtonPress" class="sapUiSmallMarginEnd" />
-					<Button text="{i18n>DRUCKEN}" icon="sap-icon://print" press="onDruckenButtonPress" />                
-                </items>
-            </FlexBox>
-
 		</content>
 	
+        <footer>
+            <OverflowToolbar>
+                <Button text="{i18n>SPERRE_AUFHEBEN}" icon="sap-icon://unlocked" press="onSperreAufhebenButtonPress" />
+                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" press="onDruckenButtonPress" />                
+            </OverflowToolbar>
+		</footer>
+
 	</Page>
 </core:View>

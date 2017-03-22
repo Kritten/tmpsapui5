@@ -19,14 +19,14 @@
 
         <content>
 
-            <List items="{form>/level}" backgroundDesign="Transparent" showSeparators="None">
+            <List items="{ path: 'form>/stufen', templateShareable: true }" backgroundDesign="Transparent" showSeparators="None">
                 <CustomListItem>
 
-                    <Table items="{form>genehmiger}" inset="true">
+                    <Table items="{ path: 'form>genehmigungen', templateShareable: true }" inset="true">
 
                         <headerToolbar>
                             <Toolbar>
-                                <Title text="{form>title}" />
+                                <Title text="{form>Stufe}" />
                             </Toolbar>
                         </headerToolbar>
 
@@ -41,13 +41,20 @@
 
                         <items>
                             <ColumnListItem vAlign="Middle">
-                                <Select selectedKey="{form>selected}" items="{form>available}" enabled="{form>editable}" autoAdjustWidth="false" width="100%">
+                                <!--
+                                <Select selectedKey="{form>selected}" items="{ path: 'form>available', templateShareable: true }" enabled="{form>editable}" autoAdjustWidth="false" width="100%">
                                     <core:Item key="{form>key}" text="{form>text}" />
                                     <layoutData>
                                         <l:GridData span="L8 M8 S12" />
                                     </layoutData>
                                 </Select>
-                                <Text text="{form>status}" />
+                                -->
+                                <Text text="{form>Genehmiger}">
+                                    <layoutData>
+                                        <l:GridData span="L8 M8 S12" />
+                                    </layoutData>
+                                </Text>
+                                <Text text="{form>Status}" />
                             </ColumnListItem>
                         </items>
 

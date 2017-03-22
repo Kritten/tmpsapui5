@@ -1,4 +1,7 @@
-sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
+sap.ui.define([
+    "sap/ui/core/mvc/Controller",
+    "ag/bpc/Deka/util/DataProvider",
+    "ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, DataProvider, ErrorMessageUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungGenehmigung", {
@@ -14,90 +17,47 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
         },
 
         onPatternMatched: function(oEvent){
-
             // Werte vorhalten für Zurück-Navigation
             this._KeId = oEvent.getParameter("arguments").KeId;
             this._Bukrs = oEvent.getParameter("arguments").Bukrs;
 
-            var form = {
+            this.ladeGenehmigungen();
+        },
 
-                modus: ["show", "edit"][0],
+        ladeGenehmigungen: function(){
+            var _this = this;
 
-                level: [
-                    {
-                        title: "Genehmigungslevel 1",                        
-                        genehmiger: [{
-                            selected: "00000001",
-                            available: [
-                                {key: "00000001", text: "Max Mustermann"},
-                                {key: "00000002", text: "Gerd Hoffmann"}  
-                            ],
-                            status: "genehmigt",
-                            editable: false
-                        }, {
-                            selected: "00000002",
-                            available: [
-                                {key: "00000001", text: "Max Mustermann"},
-                                {key: "00000002", text: "Gerd Hoffmann"}  
-                            ],
-                            status: "genehmigt",
-                            editable: false
-                        }]
-                    },
-                    {
-                        title: "Genehmigungslevel 2",  
-                        genehmiger: [{
-                            selected: "00000001",
-                            available: [
-                                {key: "00000001", text: "Anke Peters"},
-                                {key: "00000002", text: "Alexander Hofmann"}  
-                            ],
-                            status: "offen",
-                            editable: true
-                        }, {
-                            selected: "00000001",
-                            available: [
-                                {key: "00000001", text: "Kerstin Fröhn"},
-                                {key: "00000002", text: "Hauke Thomsen"}  
-                            ],
-                            status: "offen",
-                            editable: true
-                        }, {
-                            selected: "00000001",
-                            available: [
-                                {key: "00000001", text: "Arabella Rolando"},
-                                {key: "00000002", text: "Sabine Friedrichs"}  
-                            ],
-                            status: "offen",
-                            editable: true
-                        }]
-                    },
-                    {
-                        title: "Genehmigungslevel 3",
-                        genehmiger: [{
-                            selected: "00000001",
-                            available: [
-                                {key: "00000001", text: "Rita Gerke"},
-                                {key: "00000002", text: "Anja Rudde"}  
-                            ],
-                            status: "offen",
-                            editable: true
-                        }, {
-                            selected: "00000001",
-                            available: [
-                                {key: "00000001", text: "Simone Holsten"},
-                                {key: "00000002", text: "Katja Rudolphsen"}  
-                            ],
-                            status: "offen",
-                            editable: true
-                        }]
-                    }
-                ]
-            };
-            
-            var formModel = new sap.ui.model.json.JSONModel(form);
-            
-            this.getView().setModel(formModel, "form");
+            DataProvider.readGenehmigungsprozessSetAsync(_this._KeId, null)
+            .then(function(genehmigungen){
+
+                var genehmigungenGruppiert = _.groupBy(genehmigungen, function(genehmigung){
+                    return genehmigung.Stufe;
+                });
+
+                var stufen = _.map(_.pairs(genehmigungenGruppiert), function(pair){
+                    return {
+                        Stufe: pair[0],
+                        genehmigungen: _.sortBy(pair[1], function(genehmigung){
+                            return genehmigung.Index;
+                        })
+                    };
+                });
+
+                var form = {
+                    modus: ["show", "edit"][0],
+                    stufen: stufen
+                };
+
+                console.log(stufen);
+
+                var formModel = new sap.ui.model.json.JSONModel(form);
+                _this.getView().setModel(formModel, "form");
+            })
+            .catch(function(oError){
+                ErrorMessageUtil.showError(oError);
+            })
+            .done();
+
         },
 
         onBearbeitenButtonPress: function(oEvent){
@@ -105,7 +65,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
         },
 
         onSpeichernButtonPress: function(oEvent){
-
+            this.getView().getModel("form").setProperty("/modus", "show");
         },
 
         onAbbrechenButtonPress: function(oEvent){
@@ -113,7 +73,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
         },
 
         onBack : function(oEvent) {
-
             this.getOwnerComponent().getRouter().navTo("konditioneneinigungDetails", {
                 KeId: this._KeId,
                 Bukrs: this._Bukrs

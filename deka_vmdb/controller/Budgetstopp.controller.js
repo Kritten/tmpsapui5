@@ -16,14 +16,12 @@ sap.ui.define([
 		onPatternMatched: function(oEvent){
 			var _this = this;
 
-			var formModel = new sap.ui.model.json.JSONModel({
-				fonds: [],
-				konditioneneinigungen: []
-			});
+			var formModel = new sap.ui.model.json.JSONModel({});
 			_this.getView().setModel(formModel, "form");
 
 			DataProvider.readFondsSetAsync().then(function(fonds){
 				_this.getView().getModel("form").setProperty("/fonds", fonds);
+				_this.getView().getModel("form").setProperty("/selectedFond", fonds[0]);
 				_this.getView().getModel("form").setProperty("/selectedFondKey", fonds[0].Dmfonds);
 				_this.ladeKonditioneneinigungen();
 			})
@@ -41,6 +39,7 @@ sap.ui.define([
 
 			var item = _this.getView().byId("idSelectFond").getSelectedItem();
 			var fond = item.getBindingContext("form").getObject();
+			_this.getView().getModel("form").setProperty("/selectedFond", fond);
 
 			DataProvider.readFondAsync(fond.Dmfonds).then(function(fond){
 				_this.getView().getModel("form").setProperty("/konditioneneinigungen", fond.FoToKo);

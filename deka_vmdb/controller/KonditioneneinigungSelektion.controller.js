@@ -203,6 +203,7 @@ sap.ui.define([
 			var sValue = oEvent.getParameter("value");
 
 			var combinedOrFilter = new Filter([
+				new Filter("bukrs", sap.ui.model.FilterOperator.Contains, sValue),
 				new Filter("id", sap.ui.model.FilterOperator.Contains, sValue),
 				new Filter("descr", sap.ui.model.FilterOperator.Contains, sValue)
 			], false);

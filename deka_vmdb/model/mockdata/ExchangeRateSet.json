@@ -5,6 +5,11 @@
         "Multiplikator": 1.071185
     },
     {
+        "Von": "EUR",
+        "Nach": "JPY",
+        "Multiplikator": 121.219127
+    },
+    {
         "Von": "USD",
         "Nach": "EUR",
         "Multiplikator": 0.933545559

@@ -108,12 +108,12 @@
                             <Text text="{form>Bezei}" />
                             <Text text="{= ${form>/nutzungsartMapping}[${form>Nutzart}] }" />
                             <Text text="{= (${form>HnflUnit} === 'ST') ? (${form>Hnfl} + ' ' + ${form>HnflUnit}) : ((Math.round(${form>Hnfl} * ${form>/viewsettings/flaecheneinheitSelected/Multiplikator} * 100) / 100) + ' ' + ${form>/viewsettings/flaecheneinheitSelected/Nach}) }" />
-                            <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>HnflAlt}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" />
-                            <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" type="Number" editable="false" />
+                            <Input value="{form>AnMiete}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>GaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>MaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                         </cells>
                     </ColumnListItem>
                     
@@ -376,6 +376,7 @@
 				
                 <Button text="{i18n>GENEHMIGEN}" 
                         icon="sap-icon://accept" 
+                        press="onGenehmigenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
 
 				<Button text="{i18n>NICHTGENEHMIGEN}" 
@@ -385,12 +386,18 @@
         
 				<Button text="{i18n>REAKTIVIEREN}" 
                         icon="sap-icon://repost" 
+                        press="onReaktivierenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnReaktiv} }" />
 
                 <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" 
                         icon="sap-icon://undo" 
                         press="onGenehmigungZurueckziehenButtonPress" 
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnZurueck} }" />
+
+                <Button text="{i18n>GENEHMIGUNGSPROZESS}" 
+                        icon="sap-icon://approvals" 
+                        press="onGenehmigungsprozessButtonPress" 
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/BtnGp} || ${form>/konditioneneinigung/BtnGpAr}) }" />
 
                 <Button text="{i18n>DRUCKEN}" 
                         icon="sap-icon://print"

@@ -51,15 +51,15 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
         },
 
         KOSTENARTEN: [
-            {Id: 'ArtKosten 1', Text: 'Sonstige Kostenart 1'},
-            {Id: 'ArtKosten 2', Text: 'Sonstige Kostenart 2'},
-            {Id: 'ArtKosten 3', Text: 'Sonstige Kostenart 3'}
+            {Id: '01', Text: 'Sonstige Kostenart 1'},
+            {Id: '02', Text: 'Sonstige Kostenart 2'},
+            {Id: '03', Text: 'Sonstige Kostenart 3'}
         ],
 
         ERTRAGSARTEN: [
-            {Id: 'ArtErtrag 1', Text: 'Sonstige Ertragsart 1'},
-            {Id: 'ArtErtrag 2', Text: 'Sonstige Ertragsart 2'},
-            {Id: 'ArtErtrag 3', Text: 'Sonstige Ertragsart 3'}
+            {Id: '01', Text: 'Sonstige Ertragsart 1'},
+            {Id: '02', Text: 'Sonstige Ertragsart 2'},
+            {Id: '03', Text: 'Sonstige Ertragsart 3'}
         ],
 
         ZEITSPANNEN: [

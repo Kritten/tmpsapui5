@@ -1,6 +1,7 @@
 <core:View 
 	xmlns:core="sap.ui.core" 
 	xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:f="sap.ui.layout.form"
 	xmlns="sap.m"
 	controllerName="ag.bpc.Deka.controller.Budgetstopp" 
 	xmlns:html="http://www.w3.org/1999/xhtml">
@@ -8,7 +9,7 @@
 	<Page title="Budgetstopp (Fonds-Genehmigung zurückziehen)"  class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack">
 	
 		<content>
-            
+
             <FlexBox class="sapUiSmallMargin">
                 <items>
                     <Select id="idSelectFond" items="{form>/fonds}" change="onFondSelektionChange" selectedKey="{form>/selectedFondKey}" forceSelection="false" autoAdjustWidth="true">
@@ -18,7 +19,40 @@
                     </Select>
                 </items>
             </FlexBox>
-    
+
+            <f:SimpleForm
+                minWidth="1024"
+                maxContainerCols="2"
+                editable="false"
+                layout="ResponsiveGridLayout"
+                labelSpanL="2"
+                labelSpanM="2"
+                emptySpanL="0"
+                emptySpanM="0"
+                columnsL="1"
+                columnsM="1" >
+
+                <f:content>
+                    <Label text="{i18n>DMWKN}" />
+                    <Text text="{form>/selectedFond/Dmwkn}" />
+
+                    <Label text="{i18n>DMFOTYP}" />
+                    <Text text="{form>/selectedFond/Dmfotyp}" />
+
+                    <Label text="{i18n>DMFOKAT}" />
+                    <Text text="{form>/selectedFond/Dmfokat}" />
+
+                    <Label text="{i18n>DMFONDSN1}" />
+                    <Text text="{form>/selectedFond/Dmfondsn1}" />
+
+                    <Label text="{i18n>DMFONDSN2}" />
+                    <Text text="{form>/selectedFond/Dmfondsn2}" />
+
+                    <Label text="{i18n>DMMBUKRS}" />
+                    <Text text="{form>/selectedFond/Dmmbukrs}" />
+                </f:content>
+            </f:SimpleForm>
+
             <Table id="konditioneneinigungenTable" mode="MultiSelect" items="{form>/konditioneneinigungen}">
                 
                 <headerToolbar>
@@ -68,15 +102,15 @@
 				
             </Table>
 
-            <FlexBox class="sapUiSmallMargin" justifyContent="End" >
-                <items>
-					<Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" press="onGenehmigungZurueckziehenButtonPress" class="sapUiSmallMarginEnd" />
-					<Button text="{i18n>DRUCKEN}" icon="sap-icon://print" press="onDruckenButtonPress" />                
-                </items>
-            </FlexBox>
-
 		</content>
-	
+
+        <footer>
+            <OverflowToolbar>
+                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" press="onGenehmigungZurueckziehenButtonPress" />
+                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" press="onDruckenButtonPress" />                
+            </OverflowToolbar>
+		</footer>
+
 	</Page>
 	
 	

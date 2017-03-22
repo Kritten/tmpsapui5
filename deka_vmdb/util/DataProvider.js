@@ -21,13 +21,14 @@ sap.ui.define([], function() {
                     },
 
                     success: function(oData){
-                        console.log(oData);
-
+                        
                         oData.KeToMap = oData.KeToMap.results;
 
                         oData.KeToOb = _.map(oData.KeToOb.results, function(objekt){
 
                             // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
+                            objekt.Hnfl = objekt.Hnfl.toString();
+
                             objekt.HnflAlt = objekt.HnflAlt.toString();
                             objekt.HnflAlt = (objekt.HnflAlt === '0.000') ? '' : objekt.HnflAlt;
 
@@ -35,10 +36,6 @@ sap.ui.define([], function() {
                             objekt.GaKosten = objekt.GaKosten.toString();
                             objekt.MaKosten = objekt.MaKosten.toString();
 
-                            // Manuelles zurücksetzen des Confirmation Flag
-                            // Wichtig, weil der Mockserver die Werte speichert
-                            // Backend würde kein X bei Confirmation liefern
-                            objekt.Confirmation = "";
                             return objekt;
                         });
 
@@ -47,6 +44,7 @@ sap.ui.define([], function() {
                         oData.kostenGesamt = {konditioneneinigung: null};
                         oData.arbeitsvorrat = null;
 
+                        console.log(oData);
                         resolve(oData);
                     },
 
@@ -112,6 +110,9 @@ sap.ui.define([], function() {
             return Q.Promise(function(resolve, reject, notify){
 
                 _this.oDataModel.read("/KondSelSet", {
+                    urlParameters: {
+                        "$filter": "Aktiv eq true"
+                    },
                     success: function(oData){
                         resolve(oData.results);
                     },
@@ -150,8 +151,23 @@ sap.ui.define([], function() {
                         "$expand": "WeToMo"
                     },
 
-                    success: function(oData){ 
-                        oData.WeToMo = oData.WeToMo.results;                      
+                    success: function(oData){
+
+                        oData.WeToMo = _.map(oData.WeToMo.results, function(objekt){
+
+                            // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
+                            objekt.Hnfl = objekt.Hnfl.toString();
+
+                            objekt.HnflAlt = objekt.HnflAlt.toString();
+                            objekt.HnflAlt = (objekt.HnflAlt === '0.000') ? '' : objekt.HnflAlt;
+
+                            objekt.AnMiete = objekt.AnMiete.toString();
+                            objekt.GaKosten = objekt.GaKosten.toString();
+                            objekt.MaKosten = objekt.MaKosten.toString();
+
+                            return objekt;
+                        });
+
                         console.log(oData);
                         resolve(oData);
                     },
@@ -177,7 +193,22 @@ sap.ui.define([], function() {
                     },
 
                     success: function(oData){
-                        oData.MvToMo = oData.MvToMo.results;
+
+                        oData.MvToMo = _.map(oData.MvToMo.results, function(objekt){
+
+                            // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
+                            objekt.Hnfl = objekt.Hnfl.toString();
+
+                            objekt.HnflAlt = objekt.HnflAlt.toString();
+                            objekt.HnflAlt = (objekt.HnflAlt === '0.000') ? '' : objekt.HnflAlt;
+
+                            objekt.AnMiete = objekt.AnMiete.toString();
+                            objekt.GaKosten = objekt.GaKosten.toString();
+                            objekt.MaKosten = objekt.MaKosten.toString();
+
+                            return objekt;
+                        });
+
                         console.log(oData);
                         resolve(oData);
                     },
@@ -437,6 +468,31 @@ sap.ui.define([], function() {
                 _this.oDataModel.remove("/FavoritSet(KeId='" + KeId + "',VaId='" + VaId + "')", {
                     success: function(oData){
                         resolve(oData);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readGenehmigungsprozessSetAsync: function(KeId, VaId){
+            var _this = this;
+            
+            var urlParameters = {};
+
+            if(KeId) {
+                urlParameters.$filter = "KeId eq '" + KeId + "'";
+            } else if(VaId) {
+                urlParameters.$filter = "VaId eq '" + VaId + "'";
+            }
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.read("/GenehmigungsprozessSet", {
+                    urlParameters: urlParameters,
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
                     },
                     error: function(oError){
                         reject(oError);
