@@ -19,9 +19,7 @@ sap.ui.define([
 			oRouter.getRoute("vermietungsaktivitaetSelektion").attachPatternMatched(this.onPatternMatched, this);
 		}, 
 		
-		// Klick auf den Zurück-Pfeil
 		onBack: function(evt){
-			// Ruft die Startseite auf
 			this.getOwnerComponent().getRouter().navTo("startseite", null, true);
 		},
 		
@@ -344,17 +342,6 @@ sap.ui.define([
 			var table = this.getView().byId("idVermSelTable");
 			
 			var filtersToApply = [];
-			
-			/*			
-			var dropdownFilter = this.getView().byId("cb_work");
-			var selectedDropdownFilter = dropdownFilter.getSelectedKey();
-			
-			if(selectedDropdownFilter === "work")
-			{
-				var filter = new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, "In Bearbeitung");
-				filtersToApply.push(filter);
-			} 
-			*/
 			
 			var facetFilterLists = this.getView().byId("idFacetFilter").getLists();
 																

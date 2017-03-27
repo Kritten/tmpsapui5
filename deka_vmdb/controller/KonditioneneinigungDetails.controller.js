@@ -53,10 +53,6 @@ sap.ui.define([
             this.getView().setModel(formModel, "form");
         },
 
-        initializeAnmerkungen: function(anmerkungen){
-            this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
-        },
-
         initializeViewsettingsAsync: function(konditioneneinigung){
             var _this = this;
 
@@ -180,6 +176,7 @@ sap.ui.define([
             })
             .catch(function(oError){
                 console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
         },
@@ -244,6 +241,7 @@ sap.ui.define([
             })
             .catch(function(oError){
                 console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
 
@@ -337,6 +335,7 @@ sap.ui.define([
             })
             .catch(function(oError){
                 console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
 
@@ -432,6 +431,7 @@ sap.ui.define([
             })
             .catch(function(oError){
                 console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
 
@@ -444,7 +444,9 @@ sap.ui.define([
 
             return {
                 KeId: "",
-
+                Bukrs: "",
+                WeId: "",
+                
                 GueltigkKe: then,
                 Mietbeginn: null,
                 LzFirstbreak: "",
@@ -544,11 +546,6 @@ sap.ui.define([
         },
 
         onSpeichernButtonPress: function(oEvent){
-            var _this = this;
-
-            // Eingaben validieren
-            // Daten ins Backend schicken
-            // Neues Modell auf Basis der Backenddaten anbinden
                       
             var validationSuccess = this.validateForm();
             
@@ -704,7 +701,7 @@ sap.ui.define([
 
                 default:
                 break;
-            }            
+            }
         },
 
 

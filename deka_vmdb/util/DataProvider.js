@@ -110,9 +110,6 @@ sap.ui.define([], function() {
             return Q.Promise(function(resolve, reject, notify){
 
                 _this.oDataModel.read("/KondSelSet", {
-                    urlParameters: {
-                        "$filter": "Aktiv eq true"
-                    },
                     success: function(oData){
                         resolve(oData.results);
                     },
@@ -431,6 +428,23 @@ sap.ui.define([], function() {
 
             return Q.Promise(function(resolve, reject, notify){
                 _this.oDataModel.create("/KonditioneneinigungSet", konditioneneinigungPayload, {
+                    success: function(oData){
+                        console.log(oData);
+                        resolve(oData);
+                    },
+                    error: function(oError){
+                        console.log(oError);
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        createVermietungsaktivitaetAsync: function(vermietungsaktivitaetPayload){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.create("/VermietungsaktivitaetSet", vermietungsaktivitaetPayload, {
                     success: function(oData){
                         console.log(oData);
                         resolve(oData);

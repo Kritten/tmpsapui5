@@ -47,6 +47,13 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
         STATUS: {
             KE: {
                 KONDITIONENEINIGUNG: '01'
+            },
+            VA: {
+                ABGEBROCHEN: '10',
+                AUSBAUPLANUNG: '20',
+                MIETVERTRAGSENTWURF_ERSTELLT: '30',
+                MIETVERTRAG_ABGESCHLOSSEN: '90',
+                MIETVERTRAG_ANGELEGT: '99'
             }
         },
 

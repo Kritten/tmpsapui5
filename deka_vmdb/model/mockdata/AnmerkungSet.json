@@ -77,10 +77,80 @@
         "Txtlg": "KE Budgetstopp",
         "Stid": "01"
     },
+
     {
         "Id": "50",
         "Txtmd": "Abgebrochen",
         "Txtlg": "Abgebrochen",
-        "Stid": "02"
+        "Stid": "10"
+    },
+
+    {
+        "Id": "60",
+        "Txtmd": "Abstimmung der Mieterausbauplanung mit dem Mietinteressenten",
+        "Txtlg": "Abstimmung der Mieterausbauplanung mit dem Mietinteressenten",
+        "Stid": "20"
+    },
+    {
+        "Id": "61",
+        "Txtmd": "Wirtschaftliche Eckdaten in Verhandlung",
+        "Txtlg": "Wirtschaftliche Eckdaten in Verhandlung",
+        "Stid": "20"
+    },
+    {
+        "Id": "62",
+        "Txtmd": "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt",
+        "Txtlg": "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt",
+        "Stid": "20"
+    },
+
+    {
+        "Id": "70",
+        "Txtmd": "Mietvertragsverhandlungen in Vorbereitung",
+        "Txtlg": "Mietvertragsverhandlungen in Vorbereitung",
+        "Stid": "30"
+    },
+    {
+        "Id": "71",
+        "Txtmd": "Mietvertragsverhandlungen begonnen",
+        "Txtlg": "Mietvertragsverhandlungen begonnen",
+        "Stid": "30"
+    },
+    {
+        "Id": "72",
+        "Txtmd": "Vertragsverhandlungen dauern an",
+        "Txtlg": "Vertragsverhandlungen dauern an",
+        "Stid": "30"
+    },
+    {
+        "Id": "73",
+        "Txtmd": "Vertragsverhandlungen verzögern sich",
+        "Txtlg": "Vertragsverhandlungen verzögern sich",
+        "Stid": "30"
+    },
+    {
+        "Id": "74",
+        "Txtmd": "Genehmigtes MV-Eck liegt vor (Planungswahrschein-lichkeit 90%)",
+        "Txtlg": "Genehmigtes MV-Eck liegt vor (Planungswahrschein-lichkeit 90%)",
+        "Stid": "30"
+    },
+    {
+        "Id": "75",
+        "Txtmd": "Abschlusswahrscheinlichkeit binnen 8 Wochen erwartet (Planungswahrscheinlichkeit 90%)",
+        "Txtlg": "Abschlusswahrscheinlichkeit binnen 8 Wochen erwartet (Planungswahrscheinlichkeit 90%)",
+        "Stid": "30"
+    },
+
+    {
+        "Id": "80",
+        "Txtmd": "Mietvertrag noch nicht in SAP erfasst",
+        "Txtlg": "Mietvertrag noch nicht in SAP erfasst",
+        "Stid": "90"
+    },
+    {
+        "Id": "80",
+        "Txtmd": "Mietvertrag in SAP erfasst",
+        "Txtlg": "Mietvertrag in SAP erfasst",
+        "Stid": "91"
     }
 ]

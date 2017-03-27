@@ -4,7 +4,8 @@ sap.ui.define([
     "ag/bpc/Deka/util/PrinterUtil",
     "ag/bpc/Deka/util/NavigationPayloadUtil",
     "ag/bpc/Deka/util/DataProvider",
-    "ag/bpc/Deka/util/StaticData"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData) {
+    "ag/bpc/Deka/util/StaticData",
+    "ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
@@ -20,10 +21,6 @@ sap.ui.define([
                     _this.getView().byId("idVermietungsaktivitaetDetails").scrollTo(0, 0);
                 }
             });
-
-            // Kompaktere Darstellung aller Elemente
-            // evtl. hilfreich für später
-			// this.getView().addStyleClass("sapUiSizeCompact");
 
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("vermietungsaktivitaetDetails").attachPatternMatched(this.onVermietungsaktivitaetAnzeigen, this);
@@ -54,35 +51,6 @@ sap.ui.define([
             this.getView().setModel(formModel, "form");
         },
 
-        initializeAnmerkungen: function(){
-
-            var anmerkungen = {
-                "a": [
-                    {key: "a0", text: "Abgebrochen"}
-                ],
-                "b": [
-                    {key: "b0", text: "Abstimmung der Mieteraus-bauplanung mit dem Mietinteressenten"},
-                    {key: "b1", text: "Wirtschaftliche Eckdaten in Verhandlung"},
-                    {key: "b2", text: "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt"}
-                ],
-                "c": [
-                    {key: "c0", text: "Mietvertragsverhandlungen in Vorbereitung"},
-                    {key: "c1", text: "Mietvertragsverhandlungen begonnen"},
-                    {key: "c2", text: "Vertragsverhandlungen dauern an"},
-                    {key: "c3", text: "Vertragsverhandlungen verzögern sich"},
-                    {key: "c4", text: "Genehmigtes MV-Eck liegt vor (Planungswahrschein-lichkeit 90%)"},
-                    {key: "c5", text: "Abschlusswahrscheinlichkeit binnen 8 Wochen erwartet (Planungswahrscheinlichkeit 90%)"}
-                ],
-                "d": [
-                    {key: "d0", text: "Mietvertrag noch nicht in SAP erfasst"},
-                    {key: "d1", text: "Mietvertrag in SAP erfasst"}
-                ]
-            };
-
-            var statusKey = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Status");
-            this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen[statusKey]);
-        },
-
         initializeViewsettingsAsync: function(vermietungsaktivitaet){
 
             var _this = this;
@@ -96,9 +64,8 @@ sap.ui.define([
                 viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
                 viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
 
-                // Ausgangswährung ermitteln - TODO: welche Währung als Ausgangswährung?
-                var ausgangsWaehrungKey = "EUR";
-                var ausgangsFlaecheneinheitKey = "M2";
+                var ausgangsWaehrungKey = vermietungsaktivitaet.Currency;
+                var ausgangsFlaecheneinheitKey = vermietungsaktivitaet.Unit;
 
                 DataProvider.readExchangeRateSetAsync(ausgangsWaehrungKey).then(function(waehrungen){
 
@@ -113,7 +80,7 @@ sap.ui.define([
                             ausgangsWaehrung = viewsettings.waehrungen[0];
                         }
 
-                        viewsettings.waehrungSelectedKey = ausgangsWaehrung.key;
+                        viewsettings.waehrungSelectedKey = ausgangsWaehrung.Nach;
                         viewsettings.waehrungSelected = ausgangsWaehrung;
                     }
 
@@ -132,7 +99,7 @@ sap.ui.define([
                             ausgangsFlaecheneinheit = viewsettings.flaecheneinheiten[0];
                         }
 
-                        viewsettings.flaecheneinheitSelectedKey = ausgangsFlaecheneinheit.key;
+                        viewsettings.flaecheneinheitSelectedKey = ausgangsFlaecheneinheit.Nach;
                         viewsettings.flaecheneinheitSelected = ausgangsFlaecheneinheit;
                     }
 
@@ -148,6 +115,12 @@ sap.ui.define([
             });
 
         },
+
+		onVermietungsaktivitaetAnzeigen: function(oEvent){
+            var Bukrs = oEvent.getParameter("arguments").Bukrs;
+            var VaId = oEvent.getParameter("arguments").VaId;
+            this.vermietungsaktivitaetAnzeigen(VaId, Bukrs);
+		},
 
         vermietungsaktivitaetAnzeigen: function(VaId, Bukrs){
             var _this = this;
@@ -187,66 +160,68 @@ sap.ui.define([
             })
             .catch(function(oError){
                 console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
         },
 
-		onVermietungsaktivitaetAnzeigen: function(oEvent){
-            var Bukrs = oEvent.getParameter("arguments").Bukrs;
-            var VaId = oEvent.getParameter("arguments").VaId;
-            this.vermietungsaktivitaetAnzeigen(VaId, Bukrs);
-		},
-
         onVermietungsaktivitaetAnlegenRegelvermietung: function(oEvent){
             var _this = this;
 
-            var konditioneneinigungenPayload = NavigationPayloadUtil.takePayload();
+            var konditioneneinigungen = NavigationPayloadUtil.takePayload();
 
-            if(!konditioneneinigungenPayload){
+            if(!konditioneneinigungen){
                 this.onBack(null);
                 return;
             }
 
-            // Array für Promises der Konditioneneinigung-Requests
-            var promises = [];
+            _this.initializeValidationState();
+            _this.initializeEmptyModel();
+            _this.getView().getModel("form").setProperty("/modus", "new");
 
             // Einzelnen Konditioneneinigungen laden
-            konditioneneinigungenPayload.forEach(function(konditioneneinigung){
-                promises.push( DataProvider.readKonditioneneinigungAsync(konditioneneinigung.Bukrs, konditioneneinigung.KeId) );
+            var promises = _.map(konditioneneinigungen, function(konditioneneinigung){
+                return DataProvider.readKonditioneneinigungAsync(konditioneneinigung.Bukrs, konditioneneinigung.KeId);
             });
 
             // Wenn alle Konditioneneinigungen erfolgreich geladen wurden
             Q.all(promises).then(function(konditioneneinigungen){
 
-                _this.initializeValidationState();
-                _this.initializeEmptyModel();
-                
                 var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
+                
+                vermietungsaktivitaet.WeId = konditioneneinigungen[0].WeId;
+                vermietungsaktivitaet.Bukrs = konditioneneinigungen[0].Bukrs;
+
+                // Objekte aller selektierten KEs zur VA hinzufügen. Metadaten bereinigen
+                vermietungsaktivitaet.VaToOb = _.flatten(_.map(konditioneneinigungen, function(konditioneneinigung){
+                    return _.map(konditioneneinigung.KeToOb, function(objekt){
+                        delete objekt.__metadata;
+                        delete objekt.KeId;
+                        return objekt;
+                    });
+                }), true);
+                
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
 
-                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/WeId", konditioneneinigungen[0].WeId);
-
-                // Objekte der Konditioneneinigungen zur Vermietungsaktivität hinzufügen
-                var objekteAllerKEs = [];
-                konditioneneinigungen.forEach(function(konditioneneinigung){
-                    objekteAllerKEs.push.apply(objekteAllerKEs, konditioneneinigung.KeToOb);
-                });
-
-                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekteAllerKEs);
-                _this.getView().getModel("form").setProperty("/modus", "new");
-
-                // neues Promise der async Methode für den nächsten then Block
                 return _this.initializeViewsettingsAsync(vermietungsaktivitaet);
             })
             .then(function(){
-                return Q.when(StaticData.STATUSWERTE.VA);
+                return Q.when(StaticData.STATUSWERTE);
             })
             .then(function(statuswerte){
-                _this.getView().getModel("form").setProperty("/statuswerte", statuswerte);
+                _this.getView().getModel("form").setProperty("/statuswerte", _.filter(statuswerte, function(statuswert){
+                    return statuswert.FlgKeVa === 'VA';
+                }));
                 return Q.when(StaticData.ANMERKUNGEN);
             })
             .then(function(anmerkungen){
-                _this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
+                var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+                var filteredAnmerkungen = _.filter(anmerkungen, function(anmerkung){
+                    return anmerkung.Stid === va.Status;
+                });
+
+                _this.getView().getModel("form").setProperty("/anmerkungen", filteredAnmerkungen);
                 return Q.when(StaticData.NUTZUNGSARTEN);
             })
             .then(function(nutzungsarten){
@@ -258,6 +233,7 @@ sap.ui.define([
             })
             .catch(function(oError){
                 console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
         },
@@ -414,8 +390,18 @@ sap.ui.define([
 
         },
 
-        onStatusSelektionChange: function(){
-            this.initializeAnmerkungen();
+        onStatusSelektionChange: function(oEvent){
+            var _this = this;
+
+            var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+            
+            Q.when(StaticData.ANMERKUNGEN).then(function(anmerkungen){
+                var filteredAnmerkungen = _.filter(anmerkungen, function(anmerkung){
+                    return anmerkung.Stid === va.Status;
+                });
+                _this.getView().getModel("form").setProperty("/anmerkungen", filteredAnmerkungen);
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Anmerkung", filteredAnmerkungen[0].Id);
+            });
         },
         
 		onBearbeitenButtonPress: function(evt){
@@ -470,8 +456,9 @@ sap.ui.define([
 
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
         },
-                
-        onSpeichernButtonPress: function(evt){            
+
+        // Deprecated
+        ___onSpeichernButtonPress: function(evt){            
             // Eingaben validieren
             // Daten ins Backend schicken
             // Neues Modell auf Basis der Backenddaten anbinden
@@ -518,182 +505,124 @@ sap.ui.define([
                 dialog.open();
             }
         },
+
+        onSpeichernButtonPress: function(oEvent){                      
+            var validationSuccess = this.validateForm();
+            
+            if(validationSuccess){
+                this.speichern();
+            }
+            else {
+                MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre eingaben.");
+            }
+        },
 		
+        speichern: function(){
+            var modus = this.getView().getModel("form").getProperty("/modus");   
+
+            switch(modus)
+            {
+                case "new":
+                    this.vermietungsaktivitaetAnlegen();
+                break;
+
+                case "edit":
+                    this.vermietungsaktivitaetAktualisieren();
+                break;
+
+                default:
+                break;
+            }
+        },
+
+        vermietungsaktivitaetAnlegen: function(){
+            var _this = this;
+
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+            var payload = {
+                Action: 'CRE',
+
+                Bukrs: va.Bukrs,
+                WeId: va.WeId,
+
+                Vermietungsart: va.Vermietungsart,
+                Debitor: (va.Debitor !== '') ? va.Debitor : null,
+                Debitorname: va.Debitorname,
+                Mietbeginn: va.Mietbeginn,
+                LzFirstbreak: va.Mietbeginn,
+                
+                MzMonate: (va.MzMonate !== '') ? va.MzMonate : null,
+                MzErsterMonat: va.MzErsterMonat,
+                MzAnzahlJ: (va.MzAnzahlJ !== '') ? va.MzAnzahlJ : null,
+
+                MkMonate: (va.MkMonate !== '') ? va.MkMonate : null,
+                MkAbsolut: (va.MkAbsolut !== '') ? va.MkAbsolut : null,
+
+                BkMonate: (va.BkMonate !== '') ? va.BkMonate : null,
+                BkAbsolut: (va.BkAbsolut !== '') ? va.BkAbsolut : null,
+
+                ArtKosten: va.ArtKosten,
+                SonstK: (va.SonstK !== '') ? va.SonstK : null,
+                ArtErtrag: va.ArtErtrag,
+                SonstE: (va.SonstE !== '') ? va.SonstE : null,
+
+                AkErsterMonat: va.AkErsterMonat,
+                AkAnzahlM: (va.AkAnzahlM !== '') ? va.AkAnzahlM : null,
+
+                Poenale: (va.Poenale !== '') ? va.Poenale : null,
+                IdxWeitergabe: va.IdxWeitergabe,
+                PLRelevant: va.PLRelevant,
+
+                Status: va.Status,
+                Anmerkung: va.Anmerkung,
+                Bemerkung: va.Bemerkung,
+                Budgetstp: va.Budgetstp,
+                
+                MonatJahr: va.MonatJahr,
+                Currency: va.Currency,
+                Unit: va.Unit,
+
+                VaToOb: _.map(va.VaToOb, function(objekt){
+                    objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt : null;
+                    objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete : null;
+                    objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten : null;
+                    objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten : null;
+                    return objekt;
+                })
+            };
+
+            DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){
+                _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
+            })
+            .catch(function(oError){
+                ErrorMessageUtil.showError(oError);
+            })
+            .done();
+        },
+
+        vermietungsaktivitaetAktualisieren: function(){
+            // TODO
+        },
+
         validateForm: function(){
-            
-            var validationResult = true;
-            
-            // vorhandene States zurücksetzen
             this.initializeValidationState();
-            
-            if(this.getView().byId("dateMietbeginn").getDateValue() === null)
-            {
-                this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("dateMietbeginn").setValueStateText("Bitte geben Sie einen Wert ein.");
-                validationResult = false;
-            }
-            else if(this.getView().byId("dateMietbeginn").getDateValue() < Date.now())
-            {
-                var modus = this.getView().getModel("form").getProperty("/modus");           
-                
-                if(modus === "new")
-                {
-                    this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.Error);
-                    this.getView().byId("dateMietbeginn").setValueStateText("Das Datum des Mietbeginns muss in der Zukunft liegen.");
-                    validationResult = false;
-                }
-            }
-            
-            
-            if(this.getView().byId("laufzeitBis1stBreak").getValue() === "")
-            {
-                this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("laufzeitBis1stBreak").setValueStateText("Bitte geben Sie einen Wert ein.");
-                validationResult = false;
-            }
-            else if(this.getView().byId("laufzeitBis1stBreak").getValue() < 0)
-            {
-                this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("laufzeitBis1stBreak").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
-                validationResult = false;
-            }            
-            
-            if(this.getView().byId("mietfreieZeitenInMonaten").getValue() === "")
-            {
-                this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("mietfreieZeitenInMonaten").setValueStateText("Bitte geben Sie einen Wert ein.");
-                validationResult = false;
-            }
-            else if(this.getView().byId("mietfreieZeitenInMonaten").getValue() < 0)
-            {
-                this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("mietfreieZeitenInMonaten").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
-                validationResult = false;
-            }
-            
-            
-            if(this.getView().byId("maklerkostenInMonatsmieten").getValue() === "")
-            {
-                this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("maklerkostenInMonatsmieten").setValueStateText("Bitte geben Sie einen Wert ein.");
-                validationResult = false;
-            }
-            else if(this.getView().byId("maklerkostenInMonatsmieten").getValue() < 0)
-            {
-                this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("maklerkostenInMonatsmieten").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
-                validationResult = false;
-            }
-            
-            
-            if(this.getView().byId("beratungskostenInMonatsmieten").getValue() === "")
-            {
-                this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("beratungskostenInMonatsmieten").setValueStateText("Bitte geben Sie einen Wert ein.");
-                validationResult = false;
-            }
-            else if(this.getView().byId("beratungskostenInMonatsmieten").getValue() < 0)
-            {
-                this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("beratungskostenInMonatsmieten").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
-                validationResult = false;
-            }
-			
-			
-            if(this.getView().byId("poenale").getValue() === "")
-            {
-                this.getView().byId("poenale").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("poenale").setValueStateText("Bitte geben Sie einen Wert ein.");
-                validationResult = false;
-            }
-            else if((this.getView().byId("poenale").getValue() < 0) || (this.getView().byId("poenale").getValue() > 100))
-            {
-                this.getView().byId("poenale").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("poenale").setValueStateText("Bitte geben Sie einen Wert zwischen 0 und 100 ein.");
-                validationResult = false;
-            }
-			
-			
-            if(this.getView().byId("indexweitergabe").getValue() === "")
-            {
-                this.getView().byId("indexweitergabe").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("indexweitergabe").setValueStateText("Bitte geben Sie einen Wert ein.");
-                validationResult = false;
-            }
-            else if(this.getView().byId("indexweitergabe").getValue() < 0)
-            {
-                this.getView().byId("indexweitergabe").setValueState(sap.ui.core.ValueState.Error);
-                this.getView().byId("indexweitergabe").setValueStateText("Bitte geben Sie einen positiven Wert ein.");
-                validationResult = false;
-            }
-			
-            
-            var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
-            
-            if(mietflaechenangabenItems.length === 0)
-            {
-                this.getView().byId("mietflaechenangabenErrorBox").setVisible(true);
-                this.getView().byId("mietflaechenangabenErrorBox").setText("Es muss mindestens eine Mietflächenangabe hinzugefügt werden.");
-                validationResult = false;
-            }
-            
-            mietflaechenangabenItems.forEach(function(item){
-                
-                var mietflaechenangabe = item.getBindingContext("form").getObject();
-                
-				if(mietflaechenangabe.HnflAlt !== null && mietflaechenangabe.HnflAlt !== "")
-				{					
-					if(parseInt(mietflaechenangabe.HnflAlt) > (mietflaechenangabe.Hnfl * 1.1)){
-						item.getCells()[5].setValueState(sap.ui.core.ValueState.Error);
-						item.getCells()[5].setValueStateText("Die alternative Mietfläche darf maximal 10% größer sein als die Hauptnutzfläche.");
-						validationResult = false;
-					}
-				}
-				
-                if(mietflaechenangabe.AnMiete < 0 || mietflaechenangabe.AnMiete === ""){
-                    item.getCells()[8].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[8].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
-                    validationResult = false;
-                }
-                
-                if(mietflaechenangabe.GaKosten < 0 || mietflaechenangabe.GaKosten === ""){
-                    item.getCells()[9].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[9].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
-                    validationResult = false;
-                }
-                
-                if(mietflaechenangabe.MaKosten < 0 || mietflaechenangabe.MaKosten === ""){
-                    item.getCells()[10].setValueState(sap.ui.core.ValueState.Error);
-                    item.getCells()[10].setValueStateText("Bitte geben Sie einen positiven Wert ein.");
-                    validationResult = false;
-                }
-                
-            });        
+
+            var validationResult = true;
+
+            // TODO
             
             return validationResult;
         },
 		
 		initializeValidationState: function(){
-            this.getView().byId("dateMietbeginn").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("laufzeitBis1stBreak").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("mietfreieZeitenInMonaten").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("maklerkostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("beratungskostenInMonatsmieten").setValueState(sap.ui.core.ValueState.None);
-			this.getView().byId("poenale").setValueState(sap.ui.core.ValueState.None);
-			this.getView().byId("indexweitergabe").setValueState(sap.ui.core.ValueState.None);
-			
-            this.getView().byId("mietflaechenangabenErrorBox").setVisible(false);
-			
-            var mietflaechenangabenItems = this.getView().byId("mietflaechenangabenTable").getItems();
-            
-            mietflaechenangabenItems.forEach(function(item){
-                item.getCells()[5].setValueState(sap.ui.core.ValueState.None);
-                item.getCells()[8].setValueState(sap.ui.core.ValueState.None);  
-                item.getCells()[9].setValueState(sap.ui.core.ValueState.None);  
-                item.getCells()[10].setValueState(sap.ui.core.ValueState.None);  
-            });   
-		},
+            this.getView().byId("idMietername").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idMietbeginn").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idLzFirstbreak").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idIdxWeitergabe").setValueState(sap.ui.core.ValueState.None);
+        },
 		
+
         onAbbrechenButtonPress: function(evt){            
             this.initializeValidationState();
             
@@ -1140,49 +1069,51 @@ sap.ui.define([
         newVermietungsaktivitaet: function(){
 
             return {
-                Bukrs: "",
-                LzFirstbreak: "",
-                Debitorname: "",
-                MzMonate: "",
-                IdxWeitergabe: "",
                 VaId: "",
+                Bukrs: "",
                 WeId: "",
-                Status: "a",
-                Anmerkung: "",
-                Mietbeginn: null,
-                Bemerkung: "",
+                
                 Vermietungsart: "",
-                Aktiv: false,
                 Debitor: "",
-                PLRelevant: false,
-                BkMonate: "",
-                MkMonate: "",
-                Poenale: "",
-                Currency: "",
-                Unit: "",
-                AuthUser: "",
-                Favorit: false,
-
+                Debitorname: "",
+                Mietbeginn: null,
+                LzFirstbreak: "",
+                
+                MzMonate: "",
                 MzErsterMonat: null,
                 MzAnzahlJ: "",
+
+                MkMonate: "",
+                MkAbsolut: "",
+
+                BkMonate: "",
+                BkAbsolut: "",
+
+                
+                ArtKosten: "00",
+                SonstK: "",
+                ArtErtrag: "00",
+                SonstE: "",
+
                 AkErsterMonat: null,
                 AkAnzahlM: "",
-                VerteilungAusbaukostenAnzahlMonate: "",
 
-                BkAbsolut: "",
-                MkAbsolut: "",
-                SonstK: "",
-                ArtKosten: "00",
-                SonstE: "",
-                ArtErtrag: "00",
+                Poenale: "",
+                IdxWeitergabe: "",
+                PLRelevant: false,
 
+                Status: StaticData.STATUS.VA.ABGEBROCHEN,
+                Anmerkung: StaticData.ANMERKUNG.VA.ABGEBROCHEN,
+                Bemerkung: "",
                 Budgetstp: false,
+                
+                MonatJahr: "M",
+                Currency: "",
+                Unit: "",
 
                 VaToOb: [],
                 VaToMap: [],
                 VaToWe: null,
-
-                arbeitsvorrat: false
             };
 
         },
