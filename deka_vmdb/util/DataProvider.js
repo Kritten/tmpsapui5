@@ -513,6 +513,166 @@ sap.ui.define([], function() {
                     }
                 });
             });
+        },
+
+        readKategorieSetAsync: function(){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.read("/KategorieSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readDebitorenSetAsync: function(){
+            var _this = this;
+            
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/DebitorSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readUserAsync: function(){
+            var _this = this;
+            
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/UserSet", {
+                    success: function(oData){
+                        console.log(oData.results[0]);
+                        resolve(oData.results[0]);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readStockwerkSetAsync: function(){
+            var _this = this;
+            
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/StockwerkSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readVertragsArtSetAsync: function(){
+            var _this = this;
+            
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/VertragsartSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readDienstleisterSetAsync: function(){
+            var _this = this;
+            
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/DienstleisterSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readWirtschaftseinheitenSetAsync: function(expand, filter){
+            var _this = this;
+            
+            var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
+                return _.isUndefined(val);
+            });
+
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/WirtschaftseinheitenSet", {
+                    urlParameters: urlParameters,
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readMietvertragSetAsync: function(expand, filter){
+            var _this = this;
+            
+            var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
+                return _.isUndefined(val);
+            });
+
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/MietvertragSet", {
+                    urlParameters: urlParameters,
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readKonditioneneinigungSetAsync: function(expand, filter){
+            var _this = this;
+            
+            var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
+                return _.isUndefined(val);
+            });
+
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/KonditioneneinigungSet", {
+                    urlParameters: urlParameters,
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
         }
+
     };
 });
