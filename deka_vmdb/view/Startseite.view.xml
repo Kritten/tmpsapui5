@@ -12,25 +12,33 @@
 				<tiles>
 					
 					<StandardTile
-					icon="sap-icon://collections-insight"
-					title="{i18n>KONDITIONENEINIGUNG}"
-					press= "onKondTilePress"/>
-					
+						icon="sap-icon://collections-insight"
+						title="{i18n>KONDITIONENEINIGUNG}"
+						press="onKondTilePress"
+						visible="false"
+						id="idKonditioneneinigungTile" />
+
 					<StandardTile
-					icon="sap-icon://capital-projects"
-					title="{i18n>VERMIETUNGSAKTIVITAET}"
-					press= "onVermTilePress"/>
-					
+						icon="sap-icon://capital-projects"
+						title="{i18n>VERMIETUNGSAKTIVITAET}"
+						press="onVermTilePress"
+						visible="false"
+						id="idVermietungsaktivitaetTile" />
+
 					<StandardTile
-					icon="sap-icon://pause"
-					title="{i18n>BUDGETSTOPP}"
-					press= "onBudsTilePress"/>
-					
+						icon="sap-icon://pause"
+						title="{i18n>BUDGETSTOPP}"
+						press="onBudsTilePress"
+						visible="false"
+						id="idBudgetstoppTile" />
+
 					<StandardTile
-					icon="sap-icon://locked"
-					title="{i18n>SPERRE}"
-					press= "onSperTilePress"/>
-					
+						icon="sap-icon://locked"
+						title="{i18n>SPERRE}"
+						press="onSperTilePress"
+						visible="false"
+						id="idSperreTile" />
+
 				</tiles>
 
 			</TileContainer>
