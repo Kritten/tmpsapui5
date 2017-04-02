@@ -1,26 +1,46 @@
 [
     {
-        "NaId": "Nutzart 1", 
-        "TextSh": "Nutzart 1"
+        "NaId": "0100",
+        "TextSh": "Handel, Gastr."
     },
     {
-        "NaId": "Nutzart 2", 
-        "TextSh": "Nutzart 2"
+        "NaId": "0200",
+        "TextSh": "Büro"
     },
     {
-        "NaId": "Nutzart 3", 
-        "TextSh": "Nutzart 3"
+        "NaId": "0300",
+        "TextSh": "Lager, Logist."
     },
     {
-        "NaId": "Nutzart 4", 
-        "TextSh": "Nutzart 4"
+        "NaId": "0400",
+        "TextSh": "Wohnen"
     },
     {
-        "NaId": "Nutzart 5", 
-        "TextSh": "Nutzart 5"
+        "NaId": "0450",
+        "TextSh": "betr. Wohnen"
     },
     {
-        "NaId": "Nutzart 6", 
-        "TextSh": "Nutzart 6"
+        "NaId": "0500",
+        "TextSh": "Hotel"
+    },
+    {
+        "NaId": "0600",
+        "TextSh": "Freizeit"
+    },
+    {
+        "NaId": "0700",
+        "TextSh": "Parken innen"
+    },
+    {
+        "NaId": "0750",
+        "TextSh": "Parken außen"
+    },
+    {
+        "NaId": "0800",
+        "TextSh": "Andere Nutz. Fl"
+    },
+    {
+        "NaId": "0900",
+        "TextSh": "Antenne, etc."
     }
 ]

@@ -2,16 +2,16 @@
     {
         "Von": "EUR",
         "Nach": "USD",
-        "Multiplikator": 1.071185
+        "Multiplikator": "1.13565000E+00"
     },
     {
         "Von": "EUR",
         "Nach": "JPY",
-        "Multiplikator": 121.219127
+        "Multiplikator": "1.25400000E+02"
     },
     {
-        "Von": "USD",
+        "Von": "EUR",
         "Nach": "EUR",
-        "Multiplikator": 0.933545559
+        "Multiplikator": "1.00000000E+00"
     }
 ]

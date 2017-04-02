@@ -1,156 +1,128 @@
 [
     {
         "Id": "01",
+        "Stid": "01",
         "Txtmd": "KE in Erstellung",
-        "Txtlg": "KE in Erstellung",
-        "Stid": "01"
+        "Txtlg": "Konditioneneinigung in Erstellung"
     },
     {
         "Id": "02",
+        "Stid": "01",
         "Txtmd": "KE zur Genehmigung vorgelegt",
-        "Txtlg": "KE zur Genehmigung vorgelegt",
-        "Stid": "01"
+        "Txtlg": "Konditioneneinigung zur Gehnehmigung vorgelegt"
     },
     {
         "Id": "03",
+        "Stid": "01",
         "Txtmd": "KE genehmigt",
-        "Txtlg": "KE genehmigt",
-        "Stid": "01"
+        "Txtlg": "Konditioneneinigung genehmigt"
     },
     {
         "Id": "04",
+        "Stid": "01",
         "Txtmd": "KE aus wichtigem Grund zurückgezogen",
-        "Txtlg": "KE aus wichtigem Grund zurückgezogen",
-        "Stid": "01"
+        "Txtlg": "Konditioneneinigung aus wichtigem Grund zurückgezogen"
     },
     {
         "Id": "05",
+        "Stid": "01",
         "Txtmd": "KE nicht mehr gültig",
-        "Txtlg": "KE nicht mehr gültig",
-        "Stid": "01"
+        "Txtlg": "Konditioneneinigung nicht mehr gültig"
     },
     {
         "Id": "06",
+        "Stid": "01",
         "Txtmd": "KE abgeschlossen",
-        "Txtlg": "KE abgeschlossen",
-        "Stid": "01"
+        "Txtlg": "Konditioneneinigung abgeschlossen"
     },
-    {
-        "Id": "07",
-        "Txtmd": "KE nicht genehmigt",
-        "Txtlg": "KE nicht genehmigt",
-        "Stid": "01"
-    },
-    {
-        "Id": "08",
-        "Txtmd": "KE reaktiviert",
-        "Txtlg": "KE reaktiviert",
-        "Stid": "01"
-    },
-    {
-        "Id": "09",
-        "Txtmd": "KE gelöscht",
-        "Txtlg": "KE gelöscht",
-        "Stid": "01"
-    },
-    {
-        "Id": "10",
-        "Txtmd": "KE verlängert",
-        "Txtlg": "KE verlängert",
-        "Stid": "01"
-    },
-    {
-        "Id": "11",
-        "Txtmd": "KE Hauptnutzfläche im ERP hat sich geändert",
-        "Txtlg": "KE Hauptnutzfläche im ERP hat sich geändert",
-        "Stid": "01"
-    },
-    {
-        "Id": "12",
-        "Txtmd": "KE Reedit",
-        "Txtlg": "KE Reedit",
-        "Stid": "01"
-    },
-    {
-        "Id": "13",
-        "Txtmd": "KE Budgetstopp",
-        "Txtlg": "KE Budgetstopp",
-        "Stid": "01"
-    },
-
     {
         "Id": "50",
+        "Stid": "10",
         "Txtmd": "Abgebrochen",
-        "Txtlg": "Abgebrochen",
-        "Stid": "10"
+        "Txtlg": "Abgebrochen"
     },
-
     {
         "Id": "60",
-        "Txtmd": "Abstimmung der Mieterausbauplanung mit dem Mietinteressenten",
-        "Txtlg": "Abstimmung der Mieterausbauplanung mit dem Mietinteressenten",
-        "Stid": "20"
+        "Stid": "20",
+        "Txtmd": "Abstimmung der Mieterausbauplanung",
+        "Txtlg": "Abstimmung der Mieterausbauplanung mit dem Mietintressenten"
     },
     {
         "Id": "61",
+        "Stid": "20",
         "Txtmd": "Wirtschaftliche Eckdaten in Verhandlung",
-        "Txtlg": "Wirtschaftliche Eckdaten in Verhandlung",
-        "Stid": "20"
+        "Txtlg": "Wirtschaftliche Eckdaten in Verhandlung"
     },
     {
         "Id": "62",
-        "Txtmd": "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt",
-        "Txtlg": "Mietfläche in Auswahlpool mit Konkurrenzobjekten / Interessent prüft auch Alternativobjekte am Markt",
-        "Stid": "20"
+        "Stid": "20",
+        "Txtmd": "Mietfläche in Auswahlpool mit Konkur.obj",
+        "Txtlg": "Mietfläche in Auswahlpool mit Konkurrenzobjekten"
     },
-
     {
         "Id": "70",
-        "Txtmd": "Mietvertragsverhandlungen in Vorbereitung",
-        "Txtlg": "Mietvertragsverhandlungen in Vorbereitung",
-        "Stid": "30"
+        "Stid": "30",
+        "Txtmd": "Mietvertragsverhandlung in Vorbereitung",
+        "Txtlg": "Mietvertragsverhandlungen in Vorbereitung"
     },
     {
         "Id": "71",
-        "Txtmd": "Mietvertragsverhandlungen begonnen",
-        "Txtlg": "Mietvertragsverhandlungen begonnen",
-        "Stid": "30"
+        "Stid": "30",
+        "Txtmd": "Mietvertragsverhandlung begonnen",
+        "Txtlg": "Mietvertragsverhandlung begonnen"
     },
     {
         "Id": "72",
+        "Stid": "30",
         "Txtmd": "Vertragsverhandlungen dauern an",
-        "Txtlg": "Vertragsverhandlungen dauern an",
-        "Stid": "30"
+        "Txtlg": "Vertragsverhandlungen dauern an"
     },
     {
         "Id": "73",
+        "Stid": "30",
         "Txtmd": "Vertragsverhandlungen verzögern sich",
-        "Txtlg": "Vertragsverhandlungen verzögern sich",
-        "Stid": "30"
+        "Txtlg": "Vertragsverhandlungen verzögern sich"
     },
     {
         "Id": "74",
-        "Txtmd": "Genehmigtes MV-Eck liegt vor (Planungswahrschein-lichkeit 90%)",
-        "Txtlg": "Genehmigtes MV-Eck liegt vor (Planungswahrschein-lichkeit 90%)",
-        "Stid": "30"
+        "Stid": "30",
+        "Txtmd": "Genehmigtes MV-Eck liegt vor",
+        "Txtlg": "Genehmigtes MV-Eck liegt vor Planungswahrscheinlichkeit 90%"
     },
     {
         "Id": "75",
-        "Txtmd": "Abschlusswahrscheinlichkeit binnen 8 Wochen erwartet (Planungswahrscheinlichkeit 90%)",
-        "Txtlg": "Abschlusswahrscheinlichkeit binnen 8 Wochen erwartet (Planungswahrscheinlichkeit 90%)",
-        "Stid": "30"
+        "Stid": "30",
+        "Txtmd": "Abschluss binnen 8 Wochen erwartet",
+        "Txtlg": "Abschluss binnen 8 Wochen erwartet (Planungswahrsch. 90%)"
     },
-
     {
         "Id": "80",
+        "Stid": "90",
         "Txtmd": "Mietvertrag noch nicht in SAP erfasst",
-        "Txtlg": "Mietvertrag noch nicht in SAP erfasst",
-        "Stid": "90"
+        "Txtlg": "Mietvertrag noch nicht in SAP erfasst"
     },
     {
-        "Id": "80",
+        "Id": "81",
+        "Stid": "90",
         "Txtmd": "Mietvertrag in SAP erfasst",
-        "Txtlg": "Mietvertrag in SAP erfasst",
-        "Stid": "91"
+        "Txtlg": "Mietvertrag in SAP erfasst"
+    },
+    {
+        "Id": "07",
+        "Stid": "01",
+        "Txtmd": "KE nicht genehmigt",
+        "Txtlg": "Konditioneneinigung nicht genehmigt"
+    },
+    {
+        "Id": "08",
+        "Stid": "01",
+        "Txtmd": "KE reaktiviert",
+        "Txtlg": "KE reaktiviert"
+    },
+    {
+        "Id": "09",
+        "Stid": "01",
+        "Txtmd": "KE gelöscht",
+        "Txtlg": "KE gelöscht"
     }
 ]

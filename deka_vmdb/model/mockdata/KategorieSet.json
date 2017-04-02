@@ -1,0 +1,14 @@
+[
+    {
+        "KaId": "01",
+        "Text": "Regelvermietung"
+    },
+    {
+        "KaId": "02",
+        "Text": "Kleinvermietung"
+    },
+    {
+        "KaId": "03",
+        "Text": "Externe Vermietung"
+    }
+]
