@@ -14,8 +14,8 @@
             class="sapUiSmallMarginBottom"
             width="100%">
             <items>
-                <Label text="Mietflächenangaben:" />
-                <Select selectedKey="{form>/viewsettings/zeitspanneSelectedKey}" items="{form>/viewsettings/zeitspannen}" change="onPopoverZeitspanneSelect">
+                <Label text="Zeitspanne:" />
+                <Select selectedKey="{form>/vermietungsaktivitaet/MonatJahr}" items="{form>/viewsettings/zeitspannen}" change="onPopoverZeitspanneSelect">
                     <core:Item key="{form>Id}" text="{form>Text}" />
                 </Select>           
             </items>
@@ -28,7 +28,7 @@
             width="100%">
             <items>
                 <Label text="Währung:" />
-                <Select selectedKey="{form>/viewsettings/waehrungSelectedKey}" items="{form>/viewsettings/waehrungen}" change="onPopoverWaehrungSelect">
+                <Select selectedKey="{form>/vermietungsaktivitaet/Currency}" items="{form>/viewsettings/waehrungen}" change="onPopoverWaehrungSelect">
                     <core:Item key="{form>Nach}" text="{form>Nach}" />
                 </Select>
             </items>
@@ -40,7 +40,7 @@
             width="100%">
             <items>
                 <Label text="Flächeneinheit:" />
-                <Select selectedKey="{form>/viewsettings/flaecheneinheitSelectedKey}" items="{form>/viewsettings/flaecheneinheiten}" change="onPopoverFlaecheneinheitSelect">
+                <Select selectedKey="{form>/vermietungsaktivitaet/Unit}" items="{form>/viewsettings/flaecheneinheiten}" change="onPopoverFlaecheneinheitSelect">
                     <core:Item key="{form>Nach}" text="{form>Nach}" />
                 </Select>
             </items>

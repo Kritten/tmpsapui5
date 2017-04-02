@@ -1,0 +1,56 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout">
+
+    <!-- contentMinWidth since 1.36 -->
+    <Popover title="Anzeigeeinstellungen" placement="Bottom" class="sapUiContentPadding">
+
+    <content>
+
+        <FlexBox
+            direction="Column"
+            alignItems="Start"
+            class="sapUiSmallMarginBottom"
+            width="100%">
+            <items>
+                <Label text="Zeitspanne:" />
+                <Select selectedKey="{form>/konditioneneinigung/MonatJahr}" items="{form>/viewsettings/zeitspannen}" change="onPopoverZeitspanneSelect">
+                    <core:Item key="{form>Id}" text="{form>Text}" />
+                </Select>           
+            </items>
+        </FlexBox>
+
+        <FlexBox
+            direction="Column"
+            alignItems="Start"
+            class="sapUiSmallMarginBottom"
+            width="100%">
+            <items>
+                <Label text="Währung:" />
+                <Select selectedKey="{form>/konditioneneinigung/Currency}" items="{form>/viewsettings/waehrungen}" change="onPopoverWaehrungSelect">
+                    <core:Item key="{form>Nach}" text="{form>Nach}" />
+                </Select>
+            </items>
+        </FlexBox>
+
+        <FlexBox
+            direction="Column"
+            alignItems="Start"
+            width="100%">
+            <items>
+                <Label text="Flächeneinheit:" />
+                <Select selectedKey="{form>/konditioneneinigung/Unit}" items="{form>/viewsettings/flaecheneinheiten}" change="onPopoverFlaecheneinheitSelect">
+                    <core:Item key="{form>Nach}" text="{form>Nach}" />
+                </Select>
+            </items>
+        </FlexBox>
+
+    </content>
+
+
+
+
+        
+    </Popover>
+</core:FragmentDefinition>
