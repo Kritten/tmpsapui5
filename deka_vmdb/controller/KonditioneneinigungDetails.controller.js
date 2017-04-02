@@ -16,6 +16,7 @@ sap.ui.define([
             var _this = this;
 
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
+            this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
             
             // View nach oben Scrollen, da die Scrollposition von vorherigen Anzeigen übernommen wird
             this.getView().addEventDelegate({
@@ -44,9 +45,7 @@ sap.ui.define([
                 artertraege: null,
 
                 anmerkungen: null,
-                viewsettings: null,
-
-                nutzungsartMapping: null
+                viewsettings: null
             };
             
             var formModel = new sap.ui.model.json.JSONModel(form);
@@ -58,17 +57,32 @@ sap.ui.define([
 
             return Q.Promise(function(resolve, reject, notify) {
 
-                var viewsettings = {
-                    zeitspannen: StaticData.ZEITSPANNEN
-                };
+                var viewsettings = {};
 
-                viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
-                viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
-
+                var ausgangsZeitspanneKey = konditioneneinigung.MonatJahr;
                 var ausgangsWaehrungKey = konditioneneinigung.Currency;
                 var ausgangsFlaecheneinheitKey = konditioneneinigung.Unit;
 
-                DataProvider.readExchangeRateSetAsync(ausgangsWaehrungKey).then(function(waehrungen){
+                Q.when(StaticData.ZEITSPANNEN)
+                .then(function(zeitspannen){
+
+                    viewsettings.zeitspannen = zeitspannen;
+
+                    if(viewsettings.zeitspannen.length > 0){
+                        var ausgangsZeitspanne = _.find(viewsettings.zeitspannen, function(zeitspanne){
+                            return zeitspanne.Id === ausgangsZeitspanneKey;
+                        });
+
+                        if(!ausgangsZeitspanne){
+                            ausgangsZeitspanne = viewsettings.zeitspannen[0];
+                        }
+
+                        viewsettings.zeitspanneSelected = ausgangsZeitspanne;
+                    }
+
+                    return DataProvider.readExchangeRateSetAsync(ausgangsWaehrungKey);
+                })
+                .then(function(waehrungen){
 
                     viewsettings.waehrungen = waehrungen;
 
@@ -81,7 +95,6 @@ sap.ui.define([
                             ausgangsWaehrung = viewsettings.waehrungen[0];
                         }
 
-                        viewsettings.waehrungSelectedKey = ausgangsWaehrung.Nach;
                         viewsettings.waehrungSelected = ausgangsWaehrung;
                     }
 
@@ -100,7 +113,6 @@ sap.ui.define([
                             ausgangsFlaecheneinheit = viewsettings.flaecheneinheiten[0];
                         }
 
-                        viewsettings.flaecheneinheitSelectedKey = ausgangsFlaecheneinheit.Nach;
                         viewsettings.flaecheneinheitSelected = ausgangsFlaecheneinheit;
                     }
 
@@ -148,13 +160,6 @@ sap.ui.define([
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
             .then(function(){
-                return Q.when(StaticData.NUTZUNGSARTEN);
-            })
-            .then(function(nutzungsarten){
-                var nutzungsartMapping = _.object(_.map(nutzungsarten, function(nutzungsart){
-                    return [nutzungsart.NaId, nutzungsart.TextSh];
-                }));
-                _this.getView().getModel("form").setProperty("/nutzungsartMapping", nutzungsartMapping);
                 return Q.when(StaticData.STATUSWERTE);
             })
             .then(function(statuswerte){
@@ -213,13 +218,6 @@ sap.ui.define([
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
             .then(function(){
-                return Q.when(StaticData.NUTZUNGSARTEN);
-            })
-            .then(function(nutzungsarten){
-                var nutzungsartMapping = _.object(_.map(nutzungsarten, function(nutzungsart){
-                    return [nutzungsart.NaId, nutzungsart.TextSh];
-                }));
-                _this.getView().getModel("form").setProperty("/nutzungsartMapping", nutzungsartMapping);
                 return Q.when(StaticData.STATUSWERTE);
             })
             .then(function(statuswerte){
@@ -307,13 +305,6 @@ sap.ui.define([
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
             .then(function(){
-                return Q.when(StaticData.NUTZUNGSARTEN);
-            })
-            .then(function(nutzungsarten){
-                var nutzungsartMapping = _.object(_.map(nutzungsarten, function(nutzungsart){
-                    return [nutzungsart.NaId, nutzungsart.TextSh];
-                }));
-                _this.getView().getModel("form").setProperty("/nutzungsartMapping", nutzungsartMapping);
                 return Q.when(StaticData.STATUSWERTE);
             })
             .then(function(statuswerte){
@@ -403,13 +394,6 @@ sap.ui.define([
                 return _this.initializeViewsettingsAsync(ke);
             })
             .then(function(){
-                return Q.when(StaticData.NUTZUNGSARTEN);
-            })
-            .then(function(nutzungsarten){
-                var nutzungsartMapping = _.object(_.map(nutzungsarten, function(nutzungsart){
-                    return [nutzungsart.NaId, nutzungsart.TextSh];
-                }));
-                _this.getView().getModel("form").setProperty("/nutzungsartMapping", nutzungsartMapping);
                 return Q.when(StaticData.STATUSWERTE);
             })
             .then(function(statuswerte){
@@ -512,7 +496,7 @@ sap.ui.define([
 
             // create popover
 			if (! this._tableViewSettingsPopover) {
-				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenViewSettingsPopover", this);
+				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungUnitsPopover", this);
 				this.getView().addDependent(this._tableViewSettingsPopover);
 			}
 
@@ -557,8 +541,25 @@ sap.ui.define([
             }
         },
 
+        speichern: function(){
 
-        // Create
+            var modus = this.getView().getModel("form").getProperty("/modus");   
+
+            switch(modus)
+            {
+                case "new":
+                    this.konditioneneinigungAnlegen();
+                break;
+
+                case "edit":
+                    this.konditioneneinigungAktualisieren();
+                break;
+
+                default:
+                break;
+            }
+        },
+
         konditioneneinigungAnlegen: function(){
             var _this = this;
 
@@ -604,20 +605,27 @@ sap.ui.define([
                     object.GaKosten = (object.GaKosten !== '') ? object.GaKosten : null;
                     object.MaKosten = (object.MaKosten !== '') ? object.MaKosten : null;
                     return object;
-                })
+                }),
+
+                Confirmation: ke.Confirmation
             };
 
             DataProvider.createKonditioneneinigungAsync(payload).then(function(){
                 _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
             })
             .catch(function(oError){
-                ErrorMessageUtil.showError(oError);
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error);
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
             })
             .done();
         },
 
-
-        // Update
         konditioneneinigungAktualisieren: function(){
             var _this = this;
 
@@ -669,7 +677,9 @@ sap.ui.define([
                     object.GaKosten = (object.GaKosten !== '') ? object.GaKosten : null;
                     object.MaKosten = (object.MaKosten !== '') ? object.MaKosten : null;
                     return object;
-                })
+                }),
+
+                Confirmation: ke.Confirmation
             };
 
             DataProvider.createKonditioneneinigungAsync(payload).then(function(){
@@ -679,31 +689,49 @@ sap.ui.define([
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
-                ErrorMessageUtil.showError(oError);
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error);
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
             })
             .done();
         },
 
+        showConfirmationDialog: function(error){
+            var _this = this;
 
-        speichern: function(){
+            var dialog = new sap.m.Dialog({
+				title: TranslationUtil.translate("WARNUNG"),
+				type: sap.m.DialogType.Message,
+                state: sap.ui.core.ValueState.Warning,
+                content: new sap.m.Text({
+                    text: error.text
+                }),
+                beginButton: new sap.m.Button({
+                    text: TranslationUtil.translate("FORTFAHREN"),
+                    press: function () {
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                        _this.speichern();
+                        dialog.close();
+                    }
+                }),
+				endButton: new sap.m.Button({
+                    text: TranslationUtil.translate("ABBRECHEN"),
+					press: function () {
+						dialog.close();
+					}
+				}),
+                afterClose: function() {
+                    dialog.destroy();
+                }
+            });
 
-            var modus = this.getView().getModel("form").getProperty("/modus");   
-
-            switch(modus)
-            {
-                case "new":
-                    this.konditioneneinigungAnlegen();
-                break;
-
-                case "edit":
-                    this.konditioneneinigungAktualisieren();
-                break;
-
-                default:
-                break;
-            }
+            dialog.open();
         },
-
 
         validateForm: function(){
             this.initializeValidationState();
@@ -1063,8 +1091,8 @@ sap.ui.define([
                     }
                     else
                     {
-                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt / sumNutzflaechen) * verteilung.grundausbaukosten * 100)) / 100).toString();
-                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt / sumNutzflaechen) * verteilung.mietausbaukosten * 100)) / 100).toString();
+                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100).toString();
+                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100).toString();
                     }
                 }
             });
@@ -1078,7 +1106,6 @@ sap.ui.define([
         onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(oEvent){
             this._ausbaukostenVerteilenDialog.close();
         },
-
 
         onDruckenButtonPress: function(oEvent){
             var konditioneneinigung = this.getView().getModel("form").getProperty("/konditioneneinigung");
@@ -1104,7 +1131,6 @@ sap.ui.define([
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .done();
-
         },
 
         onZurGenehmigungVorlegenButtonPress: function(oEvent){
@@ -1114,7 +1140,8 @@ sap.ui.define([
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
-                Anmerkung: StaticData.ANMERKUNG.KE.ZUR_GEMEHMIGUNG_VORGELEGT
+                Anmerkung: StaticData.ANMERKUNG.KE.ZUR_GEMEHMIGUNG_VORGELEGT,
+                Bemerkung: ke.Bemerkung
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_ZUR_GENEHMIGUNG_VORGELEGT"), {
@@ -1212,7 +1239,8 @@ sap.ui.define([
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
-                Anmerkung: StaticData.ANMERKUNG.KE.NICHT_GENEHMIGT
+                Anmerkung: StaticData.ANMERKUNG.KE.NICHT_GENEHMIGT,
+                Bemerkung: ke.Bemerkung
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_NICHT_GENEHMIGT_SUCCESS"), {
@@ -1234,7 +1262,8 @@ sap.ui.define([
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
-                Anmerkung: StaticData.ANMERKUNG.KE.GENEHMIGT
+                Anmerkung: StaticData.ANMERKUNG.KE.GENEHMIGT,
+                Bemerkung: ke.Bemerkung
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_GENEHMIGT_SUCCESS"), {
@@ -1256,7 +1285,8 @@ sap.ui.define([
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
-                Anmerkung: StaticData.ANMERKUNG.KE.REEDIT
+                Anmerkung: StaticData.ANMERKUNG.KE.REEDIT,
+                Bemerkung: ke.Bemerkung
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_REEDIT_SUCCESS"), {
@@ -1278,7 +1308,8 @@ sap.ui.define([
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
-                Anmerkung: StaticData.ANMERKUNG.KE.REAKTIVIERT
+                Anmerkung: StaticData.ANMERKUNG.KE.REAKTIVIERT,
+                Bemerkung: ke.Bemerkung
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_REACTIVATION_SUCCESS"), {
@@ -1300,7 +1331,8 @@ sap.ui.define([
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
-                Anmerkung: StaticData.ANMERKUNG.KE.GELOESCHT
+                Anmerkung: StaticData.ANMERKUNG.KE.GELOESCHT,
+                Bemerkung: ke.Bemerkung
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_DELETE_SUCCESS"), {
