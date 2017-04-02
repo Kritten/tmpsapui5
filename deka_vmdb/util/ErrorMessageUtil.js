@@ -36,43 +36,57 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
             MessageBox.alert(sMessage);
         },
 
-        parseErrorMessage: function(responseText){
-            var message = "Ein unbekannter Fehler ist aufgetreten";
 
-            var response = JSON.parse(responseText);
-
-            if(response.error)
-            {
-                if(response.error.innererror) {
-                    var messages = _.map(response.error.innererror.errordetails, function(errordetails){
-                        return errordetails.message;
-                    });
-                    message = messages.join('\n');
-                }
-                else{
-                    message = response.error.message.value;
-                }
-            }
-
-            return message;
+        // Lecacy Funktion. Show etablieren. Erst parsen, dann anzeigen
+        showError: function(oError) {
+            var error = this.parseErrorMessage(oError);
+            MessageBox.error(error.text);
         },
 
-        showError: function(oError) {
-            var errorMessage = 'Ein unbekannter Fehler ist aufgetreten';
 
-            if(oError) 
-            {
-                if(oError.responseText)
-                {
-                    errorMessage = this.parseErrorMessage(oError.responseText);
-                } 
-                else 
-                {
-                    errorMessage = (typeof oError === 'string') ? oError : JSON.stringify(oError);
+        show: function(error){
+            MessageBox.error(error.text);
+        },
+
+
+        parseErrorMessage: function(oError){
+            var error = {
+                type: 'ERROR'
+            };
+
+            if(oError.responseText){
+                var response = JSON.parse(oError.responseText);
+
+                if(response.error && response.error.code){
+
+                    // SAP Nachrichtenklasse und Nummer holen
+                    var matches = response.error.code.match(/([A-Z_]+)\/([0-9]+)/);
+                    
+                    if(matches){
+                        error.msgid = matches[1];
+                        error.msgno = matches[2];
+
+                        if(error.msgid === 'ZCL_ZIP_VMDB_MESSAGE'){
+                            error.type = 'WARNING';
+                        }
+                    }
+
+                    if(response.error.innererror) {
+                        var messages = _.map(response.error.innererror.errordetails, function(errordetails){
+                            return errordetails.message;
+                        });
+                        error.text = messages.join('\n');
+                    }
+                    else{
+                        error.text = response.error.message.value;
+                    }
                 }
             }
-            
-            MessageBox.error(errorMessage);
+            else {
+                error.text = (typeof oError === 'string') ? oError : JSON.stringify(oError);
+            }
+
+            return error;
         }
 
     };
