@@ -32,6 +32,8 @@ sap.ui.define([
 
 				StaticData.init();
 
+				_this.initTextModel();
+
 				_this.getRouter().initialize();
 
 			});
@@ -50,7 +52,7 @@ sap.ui.define([
 				});
 
 				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				mockserver.simulate(sPath + "/model/service-v11.xml", {
+				mockserver.simulate(sPath + "/model/service-v13.xml", {
 					sMockdataBaseUrl: sPath + "/model/mockdata",
 					bGenerateMissingMockData: true
 				});
@@ -100,6 +102,54 @@ sap.ui.define([
 				//,bundleLocale : "en-US"  // zum Test "de" oder "en" eintragen
 			});
 			sap.ui.getCore().setModel(oi18nModel, "i18n");
+		},
+
+		initTextModel: function(){
+			var textModel = new sap.ui.model.json.JSONModel({});
+			sap.ui.getCore().setModel(textModel, "text");
+
+            Q.when(StaticData.VERTRAGSARTEN).then(function(vertragsarten){
+                var vertragsartMapping = _.object(_.map(vertragsarten, function(vertragsart){
+                    return [vertragsart.VrId, vertragsart.Txtsh];
+                }));
+                textModel.setProperty("/vertragsart", vertragsartMapping);
+            }).done();
+
+			Q.when(StaticData.NUTZUNGSARTEN).then(function(nutzungsarten){
+				var nutzungsartMapping = _.object(_.map(nutzungsarten, function(nutzungsart){
+                    return [nutzungsart.NaId, nutzungsart.TextSh];
+                }));
+                textModel.setProperty("/nutzungsart", nutzungsartMapping);
+			}).done();
+
+			Q.when(StaticData.KATEGORIEN).then(function(kategorien){
+                var kategorieMapping = _.object(_.map(kategorien, function(kategorie){
+                    return [kategorie.KaId, kategorie.Text];
+                }));
+				textModel.setProperty("/kategorie", kategorieMapping);
+			}).done();
+
+			Q.when(StaticData.ANMERKUNGEN).then(function(anmerkungen){
+                var anmerkungMapping = _.object(_.map(anmerkungen, function(anmerkung){
+                    return [anmerkung.Id, anmerkung.Txtmd];
+                }));
+				textModel.setProperty("/anmerkung", anmerkungMapping);
+			}).done();
+
+			Q.when(StaticData.STATUSWERTE).then(function(statuswerte){
+                var statusMapping = _.object(_.map(statuswerte, function(statuswert){
+                    return [statuswert.Stid, statuswert.Txtmd];
+                }));
+				textModel.setProperty("/status", statusMapping);
+			}).done();
+
+			Q.when(StaticData.VERMIETUNGSARTEN).then(function(vermietungsarten){
+                var vermietungsartMapping = _.object(_.map(vermietungsarten, function(vermietungsart){
+                    return [vermietungsart.key, vermietungsart.text];
+                }));
+				textModel.setProperty("/vermietungsart", vermietungsartMapping);
+			}).done();
+
 		}
 
 	});

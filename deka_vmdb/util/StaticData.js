@@ -6,6 +6,11 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
         NUTZUNGSARTEN: null,
         ANMERKUNGEN: null,
         STATUSWERTE: null,
+        KATEGORIEN: null,
+        STOCKWERKE: null,
+        VERTRAGSARTEN: null,
+        DIENSTLEISTER: null,
+        USER: null,
 
         VERMIETUNGSARTEN: [
             {key: "01", text: "Anschlussvermietung"},
@@ -57,6 +62,14 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
             }
         },
 
+        KATEGORIE: {
+            VA: {
+                REGELVERMIETUNG: '01',
+                KLEINVERMIETUNG: '02',
+                EXTERNE_VERMIETUNG: '03'
+            }
+        },
+
         KOSTENARTEN: [
             {Id: '01', Text: 'Sonstige Kostenart 1'},
             {Id: '02', Text: 'Sonstige Kostenart 2'},
@@ -75,9 +88,14 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
         ],
 
         init: function(){
+            this.USER = DataProvider.readUserAsync();
             this.ANMERKUNGEN = DataProvider.readAnmerkungSetAsync();
             this.STATUSWERTE = DataProvider.readStatusSetAsync();
             this.NUTZUNGSARTEN = DataProvider.readNutzungsartSetAsync();
+            this.KATEGORIEN = DataProvider.readKategorieSetAsync();
+            this.STOCKWERKE = DataProvider.readStockwerkSetAsync();
+            this.VERTRAGSARTEN = DataProvider.readVertragsArtSetAsync();
+            this.DIENSTLEISTER = DataProvider.readDienstleisterSetAsync();
         }
 
     };
