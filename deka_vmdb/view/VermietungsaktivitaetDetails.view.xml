@@ -20,7 +20,7 @@
                         <items>
                             <ObjectHeader title="{i18n>VERMIETUNGSAKTIVITAET} {form>/vermietungsaktivitaet/VaId}" >
                                 <attributes>
-                                    <ObjectAttribute title="{i18n>KATEGORIE}" text="{form>/vermietungsaktivitaet/Kategorie}" />
+                                    <ObjectAttribute title="{i18n>KATEGORIE}" text="{= ${form>/kategorieMapping}[${form>/vermietungsaktivitaet/Kategorie}] }" />
                                     <ObjectAttribute title="{i18n>DIENSTLEISTER}" text="{form>/vermietungsaktivitaet/Dienstleister}" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '03' }" />
                                     <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/Bukrs}" />
                                     <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/vermietungsaktivitaet/WeId}" />
@@ -54,6 +54,14 @@
             </FlexBox>
 
 
+            <!--
+            <ScrollContainer
+                horizontal="true"
+                focusable="false"
+                class="sapUiSmallMarginBeginEnd">
+            </ScrollContainer>
+            -->
+            
             <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{form>/vermietungsaktivitaet/VaToOb}">
 
                 <headerToolbar>
@@ -112,10 +120,10 @@
                                     <core:Item key="{form>NaId}" text="{form>TextSh}" />
                                 </items>
                             </Select>
-                            <Text text="{form>Hnfl}" />
+                            <Text text="{= (${form>HnflUnit} === 'ST') ? (${form>Hnfl} + ' ' + ${form>HnflUnit}) : ((Math.round(${form>Hnfl} * ${form>/viewsettings/flaecheneinheitSelected/Multiplikator} * 100) / 100) + ' ' + ${form>/viewsettings/flaecheneinheitSelected/Nach}) }" />
                             <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Text text="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" />
+                            <Input value="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" type="Number" editable="false" />
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
@@ -124,7 +132,7 @@
                     
                 </items>
             </Table>
-            
+
             <MessageStrip id="mietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
 
             <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
@@ -371,13 +379,6 @@
                     
                     <Label text="{i18n>BEMERKUNG}" />
                     <TextArea value="{form>/vermietungsaktivitaet/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    
-                    <Label text="{i18n>BUDGET_STOPP}" />
-					<CheckBox id="idBudgetstp" text="" selected="{form>/vermietungsaktivitaet/Budgetstp}" editable="false">
-                        <layoutData>
-							<l:GridData span="L1 M1 S12" />
-						</layoutData>
-                    </CheckBox>
 
                 </f:content>
 
