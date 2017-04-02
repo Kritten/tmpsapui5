@@ -11,7 +11,8 @@ sap.ui.define([
 				
 		onInit : function(evt) {			
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
-			
+			this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
+
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("konditioneneinigungSelektion").attachPatternMatched(this.onPatternMatched, this);
 		},
@@ -19,233 +20,202 @@ sap.ui.define([
 		onPatternMatched: function(oEvent){
 			var _this = this;
 
-			var anmerkungMapping = {};
-
-			StaticData.ANMERKUNGEN.then(function(anmerkungen){
-                anmerkungMapping = _.object(_.map(anmerkungen, function(anmerkung){
-                    return [anmerkung.Id, anmerkung.Txtmd];
-                }));
+			StaticData.USER.then(function(user){
+				_this.getView().byId('idKeAnlagePanel').setVisible(!user.BtnFm);
 				return DataProvider.readKondSelSetAsync();
 			})
 			.then(function(konditioneneinigungen){
 
+				var favoritValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Favorit; }));
+				var buchungskreisValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Bukrs; }));
+				var wirtschaftseinheitValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.WeId; }));
+				var anmerkungValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Anmerkung; }));
+				var erstellerValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Ersteller; }));
+
 				var jsonData = {
 					data: konditioneneinigungen,
-					facetfilters: null
+					facetfilterValues: {
+						Favorit: _.map(favoritValues, function(Favorit){ return {key: Favorit, text: Favorit ? 'Ja' : 'Nein'}; }),
+						Bukrs: _.map(buchungskreisValues, function(Bukrs){ return {key: Bukrs}; }),
+						WeId: _.map(wirtschaftseinheitValues, function(WeId){ return {key: WeId}; }),
+						Anmerkung: _.map(anmerkungValues, function(Anmerkung){ return {key: Anmerkung}; }),
+						Ersteller: _.map(erstellerValues, function(Ersteller){ return {key: Ersteller}; })
+					}
 				};
-
-				var filterBuchungskreisValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Bukrs; }));
-				var filterWirtschaftseinheitValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.WeId; }));
-				var filterAnmerkung = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Anmerkung; }));
-
-				jsonData.facetfilters = [{
-					filterName: "Favorit",
-					values: [{key: true, text: "Ja"}, {key: false, text: "Nein"}]
-				}, {
-					filterName: "Buchungskreis",
-					values: _.map(filterBuchungskreisValues, function(Bukrs){ return {key: Bukrs, text: Bukrs}; })
-				}, {
-					filterName: "Wirtschaftseinheit",
-					values: _.map(filterWirtschaftseinheitValues, function(WeId){ return {key: WeId, text: WeId}; })
-				}, {
-					filterName: "Anmerkung",
-					values: _.map(filterAnmerkung, function(Anmerkung){ return {key: Anmerkung, text: anmerkungMapping[Anmerkung]}; })
-				}];
 
 				var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
 				_this.getView().setModel(jsonModel, "kondSel");
-
 				_this.applyFilters();
 			})
 			.catch(function(oError){
                 ErrorMessageUtil.showError(oError);
             })
             .done();
-
 		},
 
-		// Klick auf den Zurück-Pfeil
-		onBack : function(evt) {
-			// Ruft die Startseite auf
+		onBack : function(oEvent) {
 			this.getOwnerComponent().getRouter().navTo("startseite");
 		},
 		
-		// Auswahl der anzuzeigenden KEs
-		onComboBoxChange : function(evt) {
-			this.applyFilters();
-		},
-		
-		// Klick auf eine Zeile in der Tabelle
 		onItemPress : function(oEvent) {
-
 			var konditioneneinigung = oEvent.getParameter("listItem").getBindingContext('kondSel').getObject();
 
-			// Ruft die Detailsseite auf (Anzeige)
-			this.getOwnerComponent().getRouter().navTo(
-				"konditioneneinigungDetails", 
-				{
-					KeId: konditioneneinigung.KeId,
-					Bukrs: konditioneneinigung.Bukrs
-				}
-			);
+			this.getOwnerComponent().getRouter().navTo("konditioneneinigungDetails", {
+				KeId: konditioneneinigung.KeId,
+				Bukrs: konditioneneinigung.Bukrs
+			});
 		},
 
 		onAnlegenPress : function (oEvent) {
 			var _this = this;
 
-			// Holt über die ElementID die Radio Button Group
-			var oRBG = this.getView().byId("RBG_Anlage");
-			var idx = oRBG.getSelectedIndex();
+			var radioButtonIndex = _this.getView().byId("RBG_Anlage").getSelectedIndex();
 			
-			if (! this._oDialog) {
-				this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungSelektionAnlageDialog", this);
-			}
-			
-			var oDataModel = sap.ui.getCore().getModel("odata");
-
-			switch(idx)
+			switch(radioButtonIndex)
 			{
 				case 0:
-					oDataModel.read("/WirtschaftseinheitenSet", {
-						success: function(oData){
-							console.log(oData);
+					DataProvider.readWirtschaftseinheitenSetAsync()
+					.then(function(wirtschaftseinheiten){
+						_this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungSelektionAnlageWirtschaftseinheit", _this);
 
-							var jsonData = {
-								data: []
-							};
-
-							oData.results.forEach(function(wirtschaftseinheit){
-								jsonData.data.push({
-									type: "we",
-									bukrs: wirtschaftseinheit.Bukrs,
-									id: wirtschaftseinheit.WeId,
-									descr: wirtschaftseinheit.Plz + " " + wirtschaftseinheit.Ort + ", " + wirtschaftseinheit.StrHnum,
-									wirtschaftseinheit: wirtschaftseinheit
-								});
-							});
-							
-							_this._oDialog.setModel( new sap.ui.model.json.JSONModel(jsonData) , "anlRbg");
-							
-							// clear the old search filter
-							_this._oDialog.getBinding("items").filter([]);
-							_this._oDialog.open();
-						}
-					});
+						var formData = {
+							wirtschaftseinheiten: wirtschaftseinheiten
+						};
+						
+						_this._oDialog.setModel( new sap.ui.model.json.JSONModel(formData) , "form");
+						
+						// clear the old search filter
+						_this._oDialog.getBinding("items").filter([]);
+						_this._oDialog.open();
+					})
+					.catch(function(oError){
+						ErrorMessageUtil.showError(oError);
+					})
+					.done();
 				break;
 
 				case 1:
-					oDataModel.read("/MietvertragSet", {
-						success: function(oData){
-							console.log(oData);
-
-							var jsonData = {
-								data: []
-							};
-
-							oData.results.forEach(function(mietvertrag){
-								jsonData.data.push({
-									type: "mv",
-									bukrs: mietvertrag.Bukrs,
-									id: mietvertrag.MvId,
-									descr: mietvertrag.Vertart,
-									mietvertrag: mietvertrag
-								});
-							});
-							
-							_this._oDialog.setModel( new sap.ui.model.json.JSONModel(jsonData) , "anlRbg");
-							
-							// clear the old search filter
-							_this._oDialog.getBinding("items").filter([]);
-							_this._oDialog.open();
-						}
-					});
+					DataProvider.readMietvertragSetAsync().then(function(mietvertraege){
+						_this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungSelektionAnlageMietvertrag", _this);
+						
+						var formData = {
+							mietvertraege: mietvertraege
+						};
+						
+						_this._oDialog.setModel(new sap.ui.model.json.JSONModel(formData), "form");
+						
+						// clear the old search filter
+						_this._oDialog.getBinding("items").filter([]);
+						_this._oDialog.open();
+					})
+					.catch(function(oError){
+						ErrorMessageUtil.showError(oError);
+					})
+					.done();
 				break;
 
 				case 2:
-					// auf Basis einer Konditioneneinigung
-					oDataModel.read("/KonditioneneinigungSet", {
-						success: function(oData){
-							console.log(oData);
+					DataProvider.readKonditioneneinigungSetAsync()
+					.then(function(konditioneneinigungen){
+						_this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungSelektionAnlageKonditioneneinigung", _this);
 
-							var dateFormatter =  sap.ui.core.format.DateFormat.getDateInstance({
-								pattern: 'dd.MM.yyyy'
-							});
-
-							var jsonData = {
-								data: []
-							};
-
-							oData.results.forEach(function(konditioneneinigung){
-
-								jsonData.data.push({
-									type: "ke",
-									bukrs: konditioneneinigung.Bukrs,
-									id: konditioneneinigung.KeId,
-									descr: dateFormatter.format(konditioneneinigung.Mietbeginn) + ", " + konditioneneinigung.LzFirstbreak,
-									konditioneneinigung: konditioneneinigung
-								});
-							});
-							
-							_this._oDialog.setModel( new sap.ui.model.json.JSONModel(jsonData) , "anlRbg");
-							
-							// clear the old search filter
-							_this._oDialog.getBinding("items").filter([]);
-							_this._oDialog.open();
-						}
-					});
-
+						var formData = {
+							konditioneneinigungen: konditioneneinigungen
+						};
+						
+						_this._oDialog.setModel( new sap.ui.model.json.JSONModel(formData) , "form");
+						
+						// clear the old search filter
+						_this._oDialog.getBinding("items").filter([]);
+						_this._oDialog.open();
+					})
+					.catch(function(oError){
+						ErrorMessageUtil.showError(oError);
+					})
+					.done();
 				break;
 			}
 
 		},
 
-		onSelectDialogSearch : function(oEvent) {				
+
+		onKonditioneneinigungDialogConfirm: function(oEvent){
+			var konditioneneinigung = oEvent.getParameter("selectedItem").getBindingContext("form").getObject();
+
+			NavigationPayloadUtil.putPayload({
+				KeId: konditioneneinigung.KeId,
+				Bukrs: konditioneneinigung.Bukrs
+			});
+
+			this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenKe");
+		},
+
+		onKonditioneneinigungDialogSearch: function(oEvent){
 			var sValue = oEvent.getParameter("value");
 
 			var combinedOrFilter = new Filter([
-				new Filter("bukrs", sap.ui.model.FilterOperator.Contains, sValue),
-				new Filter("id", sap.ui.model.FilterOperator.Contains, sValue),
-				new Filter("descr", sap.ui.model.FilterOperator.Contains, sValue)
+				new Filter("Bukrs", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("KeId", sap.ui.model.FilterOperator.Contains, sValue),
 			], false);
 
 			var oBinding = oEvent.getSource().getBinding("items");
 			oBinding.filter([combinedOrFilter]);
 		},
 
-		onSelectDialogConfirm: function(oEvent) {
-			
-			var selectedObject = oEvent.getParameter("selectedItem").getBindingContext("anlRbg").getObject();
-			
-			switch(selectedObject.type)
-			{
-				case "we":
-					NavigationPayloadUtil.putPayload({
-						WeId: selectedObject.wirtschaftseinheit.WeId,
-						Bukrs: selectedObject.wirtschaftseinheit.Bukrs
-					});
-					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenWe");
-				break;
-				
-				case "mv":
-					NavigationPayloadUtil.putPayload({
-						WeId: selectedObject.mietvertrag.WeId,
-						Bukrs: selectedObject.mietvertrag.Bukrs,
-						MvId: selectedObject.mietvertrag.MvId
-					});
-					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenMv");
-				break;
 
-				case "ke":
-					NavigationPayloadUtil.putPayload({
-						KeId: selectedObject.konditioneneinigung.KeId,
-						Bukrs: selectedObject.konditioneneinigung.Bukrs
-					});
-					this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenKe");
-				break;
-			}
+		onWirtschaftseinheitDialogConfirm: function(oEvent){
+			var wirtschaftseinheit = oEvent.getParameter("selectedItem").getBindingContext("form").getObject();
 
+			NavigationPayloadUtil.putPayload({
+				WeId: wirtschaftseinheit.WeId,
+				Bukrs: wirtschaftseinheit.Bukrs
+			});
+
+			this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenWe");
 		},
-		
+
+		onWirtschaftseinheitDialogSearch: function(oEvent){
+			var sValue = oEvent.getParameter("value");
+
+			var combinedOrFilter = new Filter([
+				new Filter("Bukrs", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("Plz", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("Ort", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("StrHnum", sap.ui.model.FilterOperator.Contains, sValue)
+			], false);
+
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([combinedOrFilter]);
+		},
+
+
+		onMietvertragDialogConfirm: function(oEvent){
+			var mietvertrag = oEvent.getParameter("selectedItem").getBindingContext("form").getObject();
+
+			NavigationPayloadUtil.putPayload({
+				WeId: mietvertrag.WeId,
+				Bukrs: mietvertrag.Bukrs,
+				MvId: mietvertrag.MvId
+			});
+
+			this.getOwnerComponent().getRouter().navTo("konditioneneinigungAnlegenMv");
+		},
+
+		onMietvertragDialogSearch: function(oEvent){
+			var sValue = oEvent.getParameter("value");
+
+			var combinedOrFilter = new Filter([
+				new Filter("Bukrs", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("MvId", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("Mietername", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("Vertart", sap.ui.model.FilterOperator.Contains, sValue),
+			], false);
+
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([combinedOrFilter]);
+		},
+
 
 		onFacetFilterReset: function(oEvent) {
 						
@@ -257,10 +227,8 @@ sap.ui.define([
 
 			this.applyFilters();
 		},
-
 		
-		onFacetFilterListClose: function(oEvent){
-			
+		onFacetFilterListClose: function(oEvent){	
 			this.applyFilters();
 		},
 		
@@ -268,17 +236,6 @@ sap.ui.define([
 			var table = this.getView().byId("idKondSelTable");
 			
 			var filtersToApply = [];
-			
-			/*
-			var dropdownFilter = this.getView().byId("cb_work");
-			var selectedDropdownFilter = dropdownFilter.getSelectedKey();
-			
-			if(selectedDropdownFilter === "work")
-			{
-				var filter = new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, "In Bearbeitung");
-				filtersToApply.push(filter);
-			}      
-			*/
 			
 			var facetFilterLists = this.getView().byId("idFacetFilter").getLists();
 																

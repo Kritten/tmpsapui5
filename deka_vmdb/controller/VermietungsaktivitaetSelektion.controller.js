@@ -10,91 +10,60 @@ sap.ui.define([
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
 		
-		onInit: function(evt){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetSelektion .. onInit");
-			
+		onInit: function(evt){		
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
+			this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
 
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("vermietungsaktivitaetSelektion").attachPatternMatched(this.onPatternMatched, this);
 		}, 
 		
-		onBack: function(evt){
-			this.getOwnerComponent().getRouter().navTo("startseite", null, true);
-		},
-		
 		onPatternMatched: function(oEvent){
 			var _this = this;
 
-			var anmerkungMapping = {};
-			var statusMapping = {};
-			var vermietungsartMapping = {};
-
-			Q.when(StaticData.ANMERKUNGEN).then(function(anmerkungen){
-                anmerkungMapping = _.object(_.map(anmerkungen, function(anmerkung){
-                    return [anmerkung.Id, anmerkung.Txtmd];
-                }));
-				return Q.when(StaticData.STATUSWERTE);
-			})
-			.then(function(statuswerte){
-                statusMapping = _.object(_.map(statuswerte, function(statuswert){
-                    return [statuswert.Stid, statuswert.Txtmd];
-                }));
-				return Q.when(StaticData.VERMIETUNGSARTEN);
-			})
-			.then(function(vermietungsarten){
-                vermietungsartMapping = _.object(_.map(vermietungsarten, function(vermietungsart){
-                    return [vermietungsart.key, vermietungsart.text];
-                }));
+			StaticData.USER.then(function(user){
+				_this.getView().byId('idVaAnlagePanel').setVisible(!user.BtnFm);
 				return DataProvider.readVermSelSetAsync();
 			})
 			.then(function(vermietungsaktivitaeten){
 				
+				var favoritValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Favorit; }));
+				var buchungskreisValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Bukrs; }));
+				var wirtschaftseinheitValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.WeId; }));
+				var anmerkungValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Anmerkung; }));
+				var statusValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Status; }));
+				var dienstleisterValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Dienstleister; }));
+				var vermietungsartValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Vermietungsart; }));
+				var kategorieValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Kategorie; }));
+				var erstellerValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Ersteller; }));
+
 				var jsonData = {
 					data: vermietungsaktivitaeten,
-					facetfilters: null
+					facetfilterValues: {
+						Favorit: _.map(favoritValues, function(Favorit){ return {key: Favorit, text: Favorit ? 'Ja' : 'Nein'}; }),
+						Bukrs: _.map(buchungskreisValues, function(Bukrs){ return {key: Bukrs}; }),
+						WeId: _.map(wirtschaftseinheitValues, function(WeId){ return {key: WeId}; }),
+						Anmerkung: _.map(anmerkungValues, function(Anmerkung){ return {key: Anmerkung}; }),
+						Status: _.map(statusValues, function(Status){ return {key: Status}; }),
+						Dienstleister: _.map(dienstleisterValues, function(Dienstleister){ return {key: Dienstleister}; }),
+						Vermietungsart: _.map(vermietungsartValues, function(Vermietungsart){ return {key: Vermietungsart}; }),
+						Kategorie: _.map(kategorieValues, function(Kategorie){ return {key: Kategorie}; }),
+						Ersteller: _.map(erstellerValues, function(Ersteller){ return {key: Ersteller}; })
+					}
 				};
-
-				var filterBuchungskreisValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Bukrs; }));
-				var filterWirtschaftseinheitValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.WeId; }));
-				var filterAnmerkungValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Anmerkung; }));
-				var filterStatusValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Status; }));
-				var filterExternerDienstleisterValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Dienstleister; }));
-				var filterVermietungsartValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Vermietungsart; }));
-				
-				jsonData.facetfilters = [{
-					filterName: "Favorit",
-					values: [{key: true, text: "Ja"}, {key: false, text: "Nein"}]
-				}, {
-					filterName: "Buchungskreis",
-					values: _.map(filterBuchungskreisValues, function(Bukrs){ return {key: Bukrs, text: Bukrs}; })
-				}, {
-					filterName: "Wirtschaftseinheit",
-					values: _.map(filterWirtschaftseinheitValues, function(WeId){ return {key: WeId, text: WeId}; })
-				}, {
-					filterName: "Anmerkung",
-					values: _.map(filterAnmerkungValues, function(Anmerkung){ return {key: Anmerkung, text: anmerkungMapping[Anmerkung]}; })
-				}, {
-					filterName: "Status",
-					values: _.map(filterStatusValues, function(Status){ return {key: Status, text: statusMapping[Status]}; })
-				}, {
-					filterName: "Externer Dienstleister",
-					values: _.map(filterExternerDienstleisterValues, function(ExternerDienstleister){ return {key: ExternerDienstleister, text: ExternerDienstleister}; })
-				}, {
-					filterName: "Vermietungsart",
-					values: _.map(filterVermietungsartValues, function(Vermietungsart){ return {key: Vermietungsart, text: vermietungsartMapping[Vermietungsart]}; })
-				}];
 							
 				var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
 				_this.getView().setModel(jsonModel, "vermSel");
-				
 				_this.applyFilters();
 			})
 			.catch(function(oError){
 				ErrorMessageUtil.showError(oError);
             })
             .done();
+		},
 
+		onBack: function(evt){
+			this.getOwnerComponent().getRouter().navTo("startseite", null, true);
 		},
 				
 		// Auswahl der anzuzeigenden VAs
@@ -254,20 +223,19 @@ sap.ui.define([
 		},
 	
 		onRegelvermietungSelectDialogConfirm: function(oEvent) {	
-			var konditioneneinigungen = [];
 
 			var selectedItems = oEvent.getParameter("selectedItems");
 
 			if(selectedItems.length > 0)
 			{
-				selectedItems.forEach(function(item){
-					konditioneneinigungen.push({
+				var keKeys = _.map(selectedItems, function(item){
+					return {
 						KeId: item.getBindingContext("selektionsModel").getObject().KeId,
-						Bukrs: item.getBindingContext("selektionsModel").getObject().Bukrs,
-					});
+						Bukrs: item.getBindingContext("selektionsModel").getObject().Bukrs
+					};
 				});
 
-				NavigationPayloadUtil.putPayload(konditioneneinigungen);
+				NavigationPayloadUtil.putPayload(keKeys);
 				this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenRV");
 			}
 		},
@@ -280,7 +248,15 @@ sap.ui.define([
 		},
 
 		onKleinvermietungSelectDialogConfirm: function(oEvent){
-			NavigationPayloadUtil.putPayload({});
+
+			var selectedItem = oEvent.getParameter("selectedItem");
+			var we = selectedItem.getBindingContext("selektionsModel").getObject();
+
+			NavigationPayloadUtil.putPayload({
+				WeId: we.WeId,
+				Bukrs: we.Bukrs
+			});
+
 			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenKV");
 		},
 
@@ -292,7 +268,15 @@ sap.ui.define([
 		},
 
 		onExterneVermietungSelectDialogConfirm: function(oEvent){
-			NavigationPayloadUtil.putPayload({});
+
+			var selectedItem = oEvent.getParameter("selectedItem");
+			var we = selectedItem.getBindingContext("selektionsModel").getObject();
+
+			NavigationPayloadUtil.putPayload({
+				WeId: we.WeId,
+				Bukrs: we.Bukrs
+			});
+
 			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenEV");
 		},
 

@@ -8,7 +8,7 @@
 	<Page title="{i18n>VERM_SEL_TITLE}"  showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
 		<content>
 				
-			<Panel>
+			<Panel id="idVaAnlagePanel" visible="false">
 				<headerToolbar>
 					<Toolbar>
 						<Title level="H3" text="{i18n>VERM_SEL_PANEL_TITLE_ANL}" />
@@ -56,16 +56,64 @@
 					</Toolbar>
 				</headerToolbar>
 				
-				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" lists="{vermSel>/facetfilters}" type="Simple" >
+				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" type="Simple" >
 					<lists>
-						<FacetFilterList title="{vermSel>filterName}" items="{path: 'vermSel>values', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="Favorit" items="{path: 'vermSel>/facetfilterValues/Favorit', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
-								<FacetFilterItem text="{vermSel>text}" key="{vermSel>key}" />
+								<FacetFilterItem key="{vermSel>key}" text="{vermSel>text}" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Buchungskreis" items="{path: 'vermSel>/facetfilterValues/Bukrs', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{vermSel>key}" text="{vermSel>key}" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Wirtschaftseinheit" items="{path: 'vermSel>/facetfilterValues/WeId', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{vermSel>key}" text="{vermSel>key}" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Anmerkung" items="{path: 'vermSel>/facetfilterValues/Anmerkung', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/anmerkung}[${vermSel>key}] }" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Status" items="{path: 'vermSel>/facetfilterValues/Status', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/status}[${vermSel>key}] }" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Dienstleister" items="{path: 'vermSel>/facetfilterValues/Dienstleister', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{vermSel>key}" text="{vermSel>key}" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Vermietungsart" items="{path: 'vermSel>/facetfilterValues/Vermietungsart', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/vermietungsart}[${vermSel>key}] }" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Kategorie" items="{path: 'vermSel>/facetfilterValues/Kategorie', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/kategorie}[${vermSel>key}] }" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Ersteller" items="{path: 'vermSel>/facetfilterValues/Ersteller', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{vermSel>key}" text="{vermSel>key}" />
 							</items>
 						</FacetFilterList>
 					</lists>
 				</FacetFilter>
-				
+
 				<Table id="idVermSelTable" inset="false" itemPress="onItemPress" items="{vermSel>/data}">
 					<headerToolbar>
 						<Toolbar>
@@ -73,29 +121,38 @@
 						</Toolbar>
 					</headerToolbar>
 					<columns>
-						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>FAVORIT}" />
+						<Column minScreenWidth="Tablet" width="6%">
+							<Text text="{i18n>VERM_SEL_COL_FAVORIT}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>ID}" />
+							<Text text="{i18n>VERM_SEL_COL_BUCHUNGSKREIS}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>MIETBEGINN}" />
+							<Text text="{i18n>VERM_SEL_COL_WIRTSCHAFTSEINHEIT}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>LAUFZEIT} {i18n>IN_MONATEN}" />
+							<Text text="{i18n>VERM_SEL_COL_ID}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>HAUPTNUTZFLAECHE}" />
+							<Text text="{i18n>VERM_SEL_COL_REGIONALBUERO}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>ANGEBOTSMIETE}" />
+							<Text text="{i18n>VERM_SEL_COL_MIETBEGINN}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>GRUNDAUSBAUKOSTEN}" />
+							<Text text="{i18n>VERM_SEL_COL_LAUFZEIT}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>MIETERAUSBAUKOSTEN}" />
+							<Text text="{i18n>VERM_SEL_COL_HAUPTNUTZFLAECHE}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_COL_ANGEBOTSMIETE}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_COL_GRUNDAUSBAUKOSTEN}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_COL_MIETAUSBAUKOSTEN}" />
 						</Column>
 					</columns>
 
@@ -103,8 +160,10 @@
 						<ColumnListItem type="Navigation">
 							<cells>
 								<core:Icon src="{= (${vermSel>Favorit} === true) ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" />
-								
+								<Text text="{vermSel>Bukrs}" />
+								<Text text="{vermSel>WeId}" />
 								<Text text="{vermSel>VaId}" />
+								<Text text="{vermSel>Regionalbuero}" />
 								<Text text="{
 										path: 'vermSel>Mietbeginn',
 										type: 'sap.ui.model.type.Date',

@@ -8,7 +8,7 @@
 	<Page title="Konditioneneinigung (Selektion)" showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
 		<content>
 
-			<Panel>
+			<Panel id="idKeAnlagePanel" visible="false">
 				<headerToolbar>
 					<Toolbar>
 						<Title level="H3" text="{i18n>KOND_SEL_PANEL_TITLE_ANL}" />
@@ -22,9 +22,9 @@
 							<items>
 								<RadioButtonGroup id="RBG_Anlage" columns="3">
 									<buttons>
-										<RadioButton text="{i18n>KOND_SEL_RBG_O1}" />
-										<RadioButton text="{i18n>KOND_SEL_RBG_O2}" />
-										<RadioButton text="{i18n>KOND_SEL_RBG_O3}" />
+										<RadioButton text="{i18n>KOND_SEL_ANLAGE_FREIE_ZUORDNUNG}" tooltip="KOND_SEL_ANLAGE_FREIE_ZUORDNUNG_TOOLTIP" />
+										<RadioButton text="{i18n>KOND_SEL_ANLAGE_MIETVERTRAG}" />
+										<RadioButton text="{i18n>KOND_SEL_ANLAGE_KOPIE_KONDITIONENEINIGUNG}" />
 									</buttons>
 								</RadioButtonGroup>
 							</items>
@@ -55,16 +55,41 @@
 					</Toolbar>
 				</headerToolbar>
 
-				
-				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" lists="{kondSel>/facetfilters}" type="Simple" >
+
+				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" type="Simple" >
 					<lists>
-						<FacetFilterList title="{kondSel>filterName}" items="{path: 'kondSel>values', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="Favorit" items="{path: 'kondSel>/facetfilterValues/Favorit', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{kondSel>key}" text="{kondSel>text}" />
 							</items>
 						</FacetFilterList>
+
+						<FacetFilterList title="Buchungskreis" items="{path: 'kondSel>/facetfilterValues/Bukrs', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Wirtschaftseinheit" items="{path: 'kondSel>/facetfilterValues/WeId', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Anmerkung" items="{path: 'kondSel>/facetfilterValues/Anmerkung', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{kondSel>key}" text="{= ${text>/anmerkung}[${kondSel>key}] }" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="Ersteller" items="{path: 'kondSel>/facetfilterValues/Ersteller', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
+							</items>
+						</FacetFilterList>
 					</lists>
 				</FacetFilter>
+
 
 				<Table id="idKondSelTable" inset="false" itemPress="onItemPress" items="{kondSel>/data}">
 					<headerToolbar>
@@ -73,32 +98,41 @@
 						</Toolbar>
 					</headerToolbar>
 					<columns>
-						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>FAVORIT}" />
+						<Column minScreenWidth="Tablet" width="6%">
+							<Text text="{i18n>KOND_SEL_COL_FAVORIT}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>ID}" />
+							<Text text="{i18n>KOND_SEL_COL_BUCHUNGSKREIS}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>MIETBEGINN}" />
+							<Text text="{i18n>KOND_SEL_COL_WIRTSCHAFTSEINHEIT}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>LAUFZEIT} {i18n>IN_MONATEN}" />
+							<Text text="{i18n>KOND_SEL_COL_ID}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>GUELTIG_BIS}" />
+							<Text text="{i18n>KOND_SEL_COL_REGIONALBUERO}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>HAUPTNUTZFLAECHE}" />
+							<Text text="{i18n>KOND_SEL_COL_MIETBEGINN}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>ANGEBOTSMIETE}" />
+							<Text text="{i18n>KOND_SEL_COL_LAUFZEIT}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>GRUNDAUSBAUKOSTEN}" />
+							<Text text="{i18n>KOND_SEL_COL_GUELTIG_BIS}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
-							<Text text="{i18n>MIETERAUSBAUKOSTEN}" />
+							<Text text="{i18n>KOND_SEL_COL_HAUPTNUTZFLAECHE}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>KOND_SEL_COL_ANGEBOTSMIETE}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>KOND_SEL_COL_GRUNDAUSBAUKOSTEN}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>KOND_SEL_COL_MIETAUSBAUKOSTEN}" />
 						</Column>
 					</columns>
 
@@ -106,8 +140,10 @@
 						<ColumnListItem type="Navigation">
 							<cells>
 								<core:Icon src="{= (${kondSel>Favorit} === true) ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" />
-								
+								<Text text="{kondSel>Bukrs}" />
+								<Text text="{kondSel>WeId}" />
 								<Text text="{kondSel>KeId}" />
+								<Text text="{kondSel>Regionalbuero}" />
 								<Text text="{
 										path: 'kondSel>Mietbeginn',
 										type: 'sap.ui.model.type.Date',
