@@ -21,7 +21,6 @@
                             <ObjectHeader title="{i18n>VERMIETUNGSAKTIVITAET} {form>/vermietungsaktivitaet/VaId}" >
                                 <attributes>
                                     <ObjectAttribute title="{i18n>KATEGORIE}" text="{= ${text>/kategorie}[${form>/vermietungsaktivitaet/Kategorie}] }" />
-                                    <ObjectAttribute title="{i18n>DIENSTLEISTER}" text="{form>/vermietungsaktivitaet/Dienstleister}" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '03' }" />
                                     <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/Bukrs}" />
                                     <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/vermietungsaktivitaet/WeId}" />
                                     <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/vermietungsaktivitaet/VaToWe/Plz} {form>/vermietungsaktivitaet/VaToWe/Ort} {form>/vermietungsaktivitaet/VaToWe/StrHnum}" />
@@ -188,6 +187,18 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
+
+                    <Label text="{i18n>DIENSTLEISTER}" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '03' }" />
+                    <Input id="idDienstleister" value="{form>/vermietungsaktivitaet/Dienstleister}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '03' }" class="sapUiSmallMarginBottom">
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    <Button text="{i18n>DIENSTLEISTER_WAEHLEN}" visible="{= (${form>/vermietungsaktivitaet/Kategorie} === '03') &amp;&amp; (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" press="onDienstleisterAuswahlButtonPress">
+                        <layoutData>
+                            <l:GridData span="L3 M3 S12" />
+                        </layoutData>
+                    </Button>
 
                     <Label text="{i18n>DEBITORENNUMMER}" />
                     <Input id="idDebitor" value="{form>/vermietungsaktivitaet/Debitor}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >

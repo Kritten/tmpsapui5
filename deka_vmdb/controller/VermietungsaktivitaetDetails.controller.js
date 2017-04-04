@@ -1177,11 +1177,11 @@ sap.ui.define([
             DataProvider.readDebitorenSetAsync()
             .then(function(debitoren){
 
-                var debitorSelektionDialogModel = new sap.ui.model.json.JSONModel({
+                var formModel = new sap.ui.model.json.JSONModel({
                     debitoren: debitoren
                 });
                 
-                _this._debitorSelektionDialog.setModel(debitorSelektionDialogModel);
+                _this._debitorSelektionDialog.setModel(formModel, "form");
                 _this._debitorSelektionDialog.open();
             })
             .catch(function(oError){
@@ -1191,10 +1191,56 @@ sap.ui.define([
 
         },
         
+        onDienstleisterAuswahlButtonPress: function(oEvent){
+            var _this = this;
+
+            if (!_this._dienstleisterSelektionDialog){
+                _this._dienstleisterSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.DienstleisterSelektion", _this);
+            }
+
+            DataProvider.readDienstleisterSetAsync()
+            .then(function(dienstleister){
+
+                var formModel = new sap.ui.model.json.JSONModel({
+                    dienstleister: dienstleister
+                });
+                
+                _this._dienstleisterSelektionDialog.setModel(formModel, "form");
+                _this._dienstleisterSelektionDialog.open();
+            })
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
+        },
+
+        onDienstleisterSelektionConfirm: function(oEvent){
+            var dienstleister = oEvent.getParameter("selectedItem").getBindingContext("form").getObject();
+            this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Dienstleister", dienstleister.Name);
+        },
+
+        onDienstleisterSelektionSearch: function(oEvent){
+			var sValue = oEvent.getParameter("value");
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, sValue)]);
+        },
+
         onDebitorSelektionConfirm: function(oEvent){
-			var debitor = oEvent.getParameter("selectedItem").getBindingContext().getObject();
+			var debitor = oEvent.getParameter("selectedItem").getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Debitorname", debitor.Name);
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Debitor", debitor.KdNr);
+        },
+
+        onDebitorSelektionSearch: function(oEvent){
+			var sValue = oEvent.getParameter("value");
+
+			var combinedOrFilter = new sap.ui.model.Filter([
+				new sap.ui.model.Filter("KdNr", sap.ui.model.FilterOperator.Contains, sValue),
+				new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, sValue),
+			], false);
+
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([combinedOrFilter]);
         },
         
         newVermietungsaktivitaet: function(){
