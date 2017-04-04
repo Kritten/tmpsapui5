@@ -77,7 +77,8 @@ sap.ui.define([
 				disableHeadRequestForToken: true
 			});
 
-			// > Nur für Abwärtskompatibilität. Rausschmeißen wenn alles gegen den DataProvider geht
+			// Model Zugriff mit getModel sollten nicht mehr verwendet werden
+			// Rausschmeißen wenn alles über den DataProvider geht
 			sap.ui.getCore().setModel(oDataModel, "odata");
 			// <
 
@@ -150,6 +151,12 @@ sap.ui.define([
 				textModel.setProperty("/vermietungsart", vermietungsartMapping);
 			}).done();
 
+			Q.when(StaticData.STOCKWERKE).then(function(stockwerke){
+                var stockwerkMapping = _.object(_.map(stockwerke, function(stockwerk){
+                    return [stockwerk.FlId, stockwerk.Txtsh];
+                }));
+				textModel.setProperty("/stockwerk", stockwerkMapping);
+			}).done();
 		}
 
 	});
