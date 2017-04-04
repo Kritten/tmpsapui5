@@ -326,6 +326,9 @@ sap.ui.define([], function() {
 
             return Q.Promise(function(resolve, reject, notify){
                 
+                // Warnmeldung Test
+                // reject({"responseText":"{\"error\":{\"code\":\"ZCL_ZIP_VMDB_MESSAGE/002\",\"message\":{\"lang\":\"de\",\"value\":\"MO: 01010002 bereits in KE_000000002 verwendet.//MO: 01010003 bereits in KE_000000002 verwendet.\"},\"innererror\":{\"application\":{\"component_id\":\"\",\"service_namespace\":\"/SAP/\",\"service_id\":\"ZIP_VMDB_SRV\",\"service_version\":\"0001\"},\"transactionid\":\"58C4C7E9E53A0FFDE10000000A44582D\",\"timestamp\":\"\",\"Error_Resolution\":{\"SAP_Transaction\":\"\",\"SAP_Note\":\"See SAP Note 1797736 for error analysis (https://service.sap.com/sap/support/notes/1797736)\"},\"errordetails\":[{\"code\":\"/IWBEP/CX_MGW_BUSI_EXCEPTION\",\"message\":\"MO: 01010002 bereits in KE_000000002 verwendet.//MO: 01010003 bereits in KE_000000002 verwendet.\",\"propertyref\":\"\",\"severity\":\"error\",\"target\":\"\"}]}}}"});
+
                 _this.oDataModel.update("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", payload, {
                     success: function(){
                         resolve();
@@ -335,7 +338,6 @@ sap.ui.define([], function() {
                     }
 
                 });
-
             });
         },
 
