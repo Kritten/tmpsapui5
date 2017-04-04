@@ -617,7 +617,10 @@ sap.ui.define([
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
                 if(error.type === 'WARNING'){
-                    _this.showConfirmationDialog(error);
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                        _this.speichern();
+                    });
                 }
                 else {
                     ErrorMessageUtil.show(error);
@@ -692,7 +695,10 @@ sap.ui.define([
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
                 if(error.type === 'WARNING'){
-                    _this.showConfirmationDialog(error);
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                        _this.speichern();
+                    });
                 }
                 else {
                     ErrorMessageUtil.show(error);
@@ -701,7 +707,7 @@ sap.ui.define([
             .done();
         },
 
-        showConfirmationDialog: function(error){
+        showConfirmationDialog: function(oError, onProceed, onAbort){
             var _this = this;
 
             var dialog = new sap.m.Dialog({
@@ -709,20 +715,24 @@ sap.ui.define([
 				type: sap.m.DialogType.Message,
                 state: sap.ui.core.ValueState.Warning,
                 content: new sap.m.Text({
-                    text: error.text
+                    text: oError.text
                 }),
                 beginButton: new sap.m.Button({
                     text: TranslationUtil.translate("FORTFAHREN"),
                     press: function () {
-                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
-                        _this.speichern();
                         dialog.close();
+                        if(typeof onProceed === 'function'){
+                            onProceed();
+                        }
                     }
                 }),
 				endButton: new sap.m.Button({
                     text: TranslationUtil.translate("ABBRECHEN"),
 					press: function () {
 						dialog.close();
+                        if(typeof onAbort === 'function'){
+                            onAbort();
+                        }
 					}
 				}),
                 afterClose: function() {
@@ -1141,7 +1151,8 @@ sap.ui.define([
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
                 Anmerkung: StaticData.ANMERKUNG.KE.ZUR_GEMEHMIGUNG_VORGELEGT,
-                Bemerkung: ke.Bemerkung
+                Bemerkung: ke.Bemerkung,
+                Confirmation: ke.Confirmation
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_ZUR_GENEHMIGUNG_VORGELEGT"), {
@@ -1151,7 +1162,17 @@ sap.ui.define([
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
-                ErrorMessageUtil.showError(oError);
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                        _this.onZurGenehmigungVorlegenButtonPress();
+                    });
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
             })
             .done();
         },
@@ -1190,7 +1211,8 @@ sap.ui.define([
                             KeId: ke.KeId, 
                             Bukrs: ke.Bukrs, 
                             Anmerkung: StaticData.ANMERKUNG.KE.AUS_WICHTIGEM_GRUND_ZURUECKGEZOGEN,
-                            Bemerkung: sText
+                            Bemerkung: sText,
+                            Confirmation: ke.Confirmation
                         })
                         .then(function(){
                             dialog.close();
@@ -1202,7 +1224,17 @@ sap.ui.define([
                             _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
                         })
                         .catch(function(oError){
-                            ErrorMessageUtil.showError(oError);
+                            var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                            if(error.type === 'WARNING'){
+                                _this.showConfirmationDialog(error, function(){
+                                    _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                                    _this.onGenehmigungZurueckziehenButtonPress();
+                                });
+                            }
+                            else {
+                                ErrorMessageUtil.show(error);
+                            }
                         })
                         .done();
 
@@ -1240,7 +1272,8 @@ sap.ui.define([
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
                 Anmerkung: StaticData.ANMERKUNG.KE.NICHT_GENEHMIGT,
-                Bemerkung: ke.Bemerkung
+                Bemerkung: ke.Bemerkung,
+                Confirmation: ke.Confirmation
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_NICHT_GENEHMIGT_SUCCESS"), {
@@ -1250,7 +1283,17 @@ sap.ui.define([
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
-                ErrorMessageUtil.showError(oError);
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                        _this.onNichtGenehmigenButtonPress();
+                    });
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
             })
             .done();
         },
@@ -1263,7 +1306,8 @@ sap.ui.define([
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
                 Anmerkung: StaticData.ANMERKUNG.KE.GENEHMIGT,
-                Bemerkung: ke.Bemerkung
+                Bemerkung: ke.Bemerkung,
+                Confirmation: ke.Confirmation
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_GENEHMIGT_SUCCESS"), {
@@ -1273,7 +1317,17 @@ sap.ui.define([
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
-                ErrorMessageUtil.showError(oError);
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                        _this.onGenehmigenButtonPress();
+                    });
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
             })
             .done();
         },
@@ -1286,7 +1340,8 @@ sap.ui.define([
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
                 Anmerkung: StaticData.ANMERKUNG.KE.REEDIT,
-                Bemerkung: ke.Bemerkung
+                Bemerkung: ke.Bemerkung,
+                Confirmation: ke.Confirmation
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_REEDIT_SUCCESS"), {
@@ -1296,7 +1351,17 @@ sap.ui.define([
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
-                ErrorMessageUtil.showError(oError);
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                        _this.onReeditButtonPress();
+                    });
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
             })
             .done();
         },
@@ -1309,7 +1374,8 @@ sap.ui.define([
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
                 Anmerkung: StaticData.ANMERKUNG.KE.REAKTIVIERT,
-                Bemerkung: ke.Bemerkung
+                Bemerkung: ke.Bemerkung,
+                Confirmation: ke.Confirmation
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_REACTIVATION_SUCCESS"), {
@@ -1319,7 +1385,17 @@ sap.ui.define([
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
-                ErrorMessageUtil.showError(oError);
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                        _this.onReaktivierenButtonPress();
+                    });
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
             })
             .done();
         },
@@ -1332,7 +1408,8 @@ sap.ui.define([
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 
                 Anmerkung: StaticData.ANMERKUNG.KE.GELOESCHT,
-                Bemerkung: ke.Bemerkung
+                Bemerkung: ke.Bemerkung,
+                Confirmation: ke.Confirmation
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_DELETE_SUCCESS"), {
@@ -1342,7 +1419,17 @@ sap.ui.define([
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
-                ErrorMessageUtil.showError(oError);
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                        _this.onLoeschenButtonPress();
+                    });
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
             })
             .done();
         },
