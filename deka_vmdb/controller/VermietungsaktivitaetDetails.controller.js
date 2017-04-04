@@ -14,6 +14,7 @@ sap.ui.define([
             var _this = this;
             
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
+            this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
 			
             // View nach oben Scrollen, da die Scrollposition von vorherigen Anzeigen übernommen wird
             this.getView().addEventDelegate({
@@ -42,9 +43,7 @@ sap.ui.define([
                 nutzungsarten: null,
                 vermietungsarten: null,
 
-                viewsettings: null,
-
-                nutzungsartMapping: null
+                viewsettings: null
             };
             
             var formModel = new sap.ui.model.json.JSONModel(form);
@@ -57,17 +56,32 @@ sap.ui.define([
 
             return Q.Promise(function(resolve, reject, notify) {
 
-                var viewsettings = {
-                    zeitspannen: StaticData.ZEITSPANNEN
-                };
+                var viewsettings = {};
 
-                viewsettings.zeitspanneSelectedKey = viewsettings.zeitspannen[0].key;
-                viewsettings.zeitspanneSelected = viewsettings.zeitspannen[0];
-
+                var ausgangsZeitspanneKey = vermietungsaktivitaet.MonatJahr;
                 var ausgangsWaehrungKey = vermietungsaktivitaet.Currency;
                 var ausgangsFlaecheneinheitKey = vermietungsaktivitaet.Unit;
 
-                DataProvider.readExchangeRateSetAsync(ausgangsWaehrungKey).then(function(waehrungen){
+                Q.when(StaticData.ZEITSPANNEN)
+                .then(function(zeitspannen){
+
+                    viewsettings.zeitspannen = zeitspannen;
+
+                    if(viewsettings.zeitspannen.length > 0){
+                        var ausgangsZeitspanne = _.find(viewsettings.zeitspannen, function(zeitspanne){
+                            return zeitspanne.Id === ausgangsZeitspanneKey;
+                        });
+
+                        if(!ausgangsZeitspanne){
+                            ausgangsZeitspanne = viewsettings.zeitspannen[0];
+                        }
+
+                        viewsettings.zeitspanneSelected = ausgangsZeitspanne;
+                    }
+
+                    return DataProvider.readExchangeRateSetAsync(ausgangsWaehrungKey);
+                })
+                .then(function(waehrungen){
 
                     viewsettings.waehrungen = waehrungen;
 
@@ -144,15 +158,19 @@ sap.ui.define([
                 return Q.when(StaticData.ANMERKUNGEN);
             })
             .then(function(anmerkungen){
-                _this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
+                var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+                var filteredAnmerkungen = _.filter(anmerkungen, function(anmerkung){
+                    return anmerkung.Stid === va.Status;
+                });
+
+                _this.getView().getModel("form").setProperty("/anmerkungen", filteredAnmerkungen);
                 return Q.when(StaticData.NUTZUNGSARTEN);
             })
             .then(function(nutzungsarten){
-                var nutzungsartMapping = _.object(_.map(nutzungsarten, function(nutzungsart){
-                    return [nutzungsart.NaId, nutzungsart.TextSh];
-                }));
-                _this.getView().getModel("form").setProperty("/nutzungsartMapping", nutzungsartMapping);
-                _this.getView().getModel("form").setProperty("/nutzungsarten", nutzungsarten);
+                var nutzungsartenNew = _.clone(nutzungsarten);
+                nutzungsartenNew.unshift({NaId: '', TextSh: ''});
+                _this.getView().getModel("form").setProperty("/nutzungsarten", nutzungsartenNew);
                 return Q.when(StaticData.VERMIETUNGSARTEN);
             })
             .then(function(vermietungsarten){
@@ -168,9 +186,9 @@ sap.ui.define([
         onVermietungsaktivitaetAnlegenRegelvermietung: function(oEvent){
             var _this = this;
 
-            var konditioneneinigungen = NavigationPayloadUtil.takePayload();
+            var keKeys = NavigationPayloadUtil.takePayload();
 
-            if(!konditioneneinigungen){
+            if(!keKeys){
                 this.onBack(null);
                 return;
             }
@@ -180,8 +198,8 @@ sap.ui.define([
             _this.getView().getModel("form").setProperty("/modus", "new");
 
             // Einzelnen Konditioneneinigungen laden
-            var promises = _.map(konditioneneinigungen, function(konditioneneinigung){
-                return DataProvider.readKonditioneneinigungAsync(konditioneneinigung.Bukrs, konditioneneinigung.KeId);
+            var promises = _.map(keKeys, function(keKey){
+                return DataProvider.readKonditioneneinigungAsync(keKey.Bukrs, keKey.KeId);
             });
 
             // Wenn alle Konditioneneinigungen erfolgreich geladen wurden
@@ -189,14 +207,19 @@ sap.ui.define([
 
                 var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
                 
-                vermietungsaktivitaet.WeId = konditioneneinigungen[0].WeId;
-                vermietungsaktivitaet.Bukrs = konditioneneinigungen[0].Bukrs;
+                vermietungsaktivitaet.VaToWe = konditioneneinigungen[0].KeToWe;
+                vermietungsaktivitaet.WeId = vermietungsaktivitaet.VaToWe.WeId;
+                vermietungsaktivitaet.Bukrs = vermietungsaktivitaet.VaToWe.Bukrs;
+                vermietungsaktivitaet.Unit = vermietungsaktivitaet.VaToWe.Unit;
+                vermietungsaktivitaet.Currency = vermietungsaktivitaet.VaToWe.Currency;
+
+                vermietungsaktivitaet.Kategorie = StaticData.KATEGORIE.VA.REGELVERMIETUNG;
 
                 // Objekte aller selektierten KEs zur VA hinzufügen. Metadaten bereinigen
                 vermietungsaktivitaet.VaToOb = _.flatten(_.map(konditioneneinigungen, function(konditioneneinigung){
                     return _.map(konditioneneinigung.KeToOb, function(objekt){
                         delete objekt.__metadata;
-                        delete objekt.KeId;
+                        objekt.NutzartAlt = '';
                         return objekt;
                     });
                 }), true);
@@ -225,7 +248,9 @@ sap.ui.define([
                 return Q.when(StaticData.NUTZUNGSARTEN);
             })
             .then(function(nutzungsarten){
-                _this.getView().getModel("form").setProperty("/nutzungsarten", nutzungsarten);
+                var nutzungsartenNew = _.clone(nutzungsarten);
+                nutzungsartenNew.unshift({NaId: '', TextSh: ''});
+                _this.getView().getModel("form").setProperty("/nutzungsarten", nutzungsartenNew);
                 return Q.when(StaticData.VERMIETUNGSARTEN);
             })
             .then(function(vermietungsarten){
@@ -241,55 +266,133 @@ sap.ui.define([
 		onVermietungsaktivitaetAnlegenKleinvermietung: function(oEvent){
             var _this = this;
 
-            var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
+            var weKey = NavigationPayloadUtil.takePayload();
 
-            if(!wirtschaftseinheit){
+            if(!weKey){
                 _this.onBack(null);
                 return;
             }
 
-            this.initializeEmptyModel();
+            _this.initializeValidationState();
+            _this.initializeEmptyModel();
+            _this.getView().getModel("form").setProperty("/modus", "new");
 
-            var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
-            this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-            this.getView().getModel("form").setProperty("/modus", "new");
+            DataProvider.readWirtschaftseinheitAsync(weKey.Bukrs, weKey.WeId)
+            .then(function(wirtschaftseinheit){
 
-            this.initializeViewsettingsAsync(vermietungsaktivitaet)
+                var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
+                
+                vermietungsaktivitaet.VaToWe = wirtschaftseinheit;
+                vermietungsaktivitaet.WeId = vermietungsaktivitaet.VaToWe.WeId;
+                vermietungsaktivitaet.Bukrs = vermietungsaktivitaet.VaToWe.Bukrs;
+                vermietungsaktivitaet.Unit = vermietungsaktivitaet.VaToWe.Unit;
+                vermietungsaktivitaet.Currency = vermietungsaktivitaet.VaToWe.Currency;
+
+                vermietungsaktivitaet.Kategorie = StaticData.KATEGORIE.VA.KLEINVERMIETUNG;
+
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+
+                return _this.initializeViewsettingsAsync(vermietungsaktivitaet);
+            })
             .then(function(){
-                // TODO
+                return Q.when(StaticData.STATUSWERTE);
+            })
+            .then(function(statuswerte){
+                _this.getView().getModel("form").setProperty("/statuswerte", _.filter(statuswerte, function(statuswert){
+                    return statuswert.FlgKeVa === 'VA';
+                }));
+                return Q.when(StaticData.ANMERKUNGEN);
+            })
+            .then(function(anmerkungen){
+                var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+                var filteredAnmerkungen = _.filter(anmerkungen, function(anmerkung){
+                    return anmerkung.Stid === va.Status;
+                });
+
+                _this.getView().getModel("form").setProperty("/anmerkungen", filteredAnmerkungen);
+                return Q.when(StaticData.NUTZUNGSARTEN);
+            })
+            .then(function(nutzungsarten){
+                var nutzungsartenNew = _.clone(nutzungsarten);
+                nutzungsartenNew.unshift({NaId: '', TextSh: ''});
+                _this.getView().getModel("form").setProperty("/nutzungsarten", nutzungsartenNew);
+                return Q.when(StaticData.VERMIETUNGSARTEN);
+            })
+            .then(function(vermietungsarten){
+                _this.getView().getModel("form").setProperty("/vermietungsarten", vermietungsarten);
             })
             .catch(function(oError){
                 console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
-
 		},
 
         onVermietungsaktivitaetAnlegenExterneVermietung: function(oEvent){
             var _this = this;
-            
-            var wirtschaftseinheit = NavigationPayloadUtil.takePayload();
 
-            if(!wirtschaftseinheit){
+            var weKey = NavigationPayloadUtil.takePayload();
+
+            if(!weKey){
                 _this.onBack(null);
                 return;
             }
 
-            this.initializeEmptyModel();
+            _this.initializeValidationState();
+            _this.initializeEmptyModel();
+            _this.getView().getModel("form").setProperty("/modus", "new");
 
-            var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
-            this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-            this.getView().getModel("form").setProperty("/modus", "new");
+            DataProvider.readWirtschaftseinheitAsync(weKey.Bukrs, weKey.WeId)
+            .then(function(wirtschaftseinheit){
 
-            this.initializeViewsettingsAsync(vermietungsaktivitaet)
+                var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
+                
+                vermietungsaktivitaet.VaToWe = wirtschaftseinheit;
+                vermietungsaktivitaet.WeId = vermietungsaktivitaet.VaToWe.WeId;
+                vermietungsaktivitaet.Bukrs = vermietungsaktivitaet.VaToWe.Bukrs;
+                vermietungsaktivitaet.Unit = vermietungsaktivitaet.VaToWe.Unit;
+                vermietungsaktivitaet.Currency = vermietungsaktivitaet.VaToWe.Currency;
+
+                vermietungsaktivitaet.Kategorie = StaticData.KATEGORIE.VA.EXTERNE_VERMIETUNG;
+
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+
+                return _this.initializeViewsettingsAsync(vermietungsaktivitaet);
+            })
             .then(function(){
-                // TODO
+                return Q.when(StaticData.STATUSWERTE);
+            })
+            .then(function(statuswerte){
+                _this.getView().getModel("form").setProperty("/statuswerte", _.filter(statuswerte, function(statuswert){
+                    return statuswert.FlgKeVa === 'VA';
+                }));
+                return Q.when(StaticData.ANMERKUNGEN);
+            })
+            .then(function(anmerkungen){
+                var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+                var filteredAnmerkungen = _.filter(anmerkungen, function(anmerkung){
+                    return anmerkung.Stid === va.Status;
+                });
+
+                _this.getView().getModel("form").setProperty("/anmerkungen", filteredAnmerkungen);
+                return Q.when(StaticData.NUTZUNGSARTEN);
+            })
+            .then(function(nutzungsarten){
+                var nutzungsartenNew = _.clone(nutzungsarten);
+                nutzungsartenNew.unshift({NaId: '', TextSh: ''});
+                _this.getView().getModel("form").setProperty("/nutzungsarten", nutzungsartenNew);
+                return Q.when(StaticData.VERMIETUNGSARTEN);
+            })
+            .then(function(vermietungsarten){
+                _this.getView().getModel("form").setProperty("/vermietungsarten", vermietungsarten);
             })
             .catch(function(oError){
                 console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
-
         },
 
         onVermietungsaktivitaetAnlegenExcelImport: function(oEvent){
@@ -303,19 +406,7 @@ sap.ui.define([
                 return;
             }
 
-            this.initializeEmptyModel();
-
-            this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-            this.getView().getModel("form").setProperty("/modus", "new");
-
-            this.initializeViewsettingsAsync(vermietungsaktivitaet)
-            .then(function(){
-                // TODO
-            })
-            .catch(function(oError){
-                console.log(oError);
-            })
-            .done();
+            // TODO
         },
 
         readKonditioneneinigungSetAsync: function(){
@@ -331,28 +422,13 @@ sap.ui.define([
                     },
 
                     success: function(oData){
-                        console.log(oData);
-                        resolve(oData.results);
-                    },
 
-                    error: function(oError){
-                        reject(oError);
-                    }
-                });
+                        oData.results = _.map(oData.results, function(ke){
+                            ke.KeToOb = ke.KeToOb.results;
+                            return ke;
+                        });
 
-            });
-        },
-
-        readDebitorenSetAsync: function(){
-
-            return Q.Promise(function(resolve, reject, notify) {
-
-                var oDataModel = sap.ui.getCore().getModel("odata");
-
-                oDataModel.read("/DebitorSet", {
-
-                    success: function(oData){
-                        console.log(oData);
+                        console.log(oData.results);
                         resolve(oData.results);
                     },
 
@@ -404,13 +480,22 @@ sap.ui.define([
             });
         },
         
-		onBearbeitenButtonPress: function(evt){
-            
-            // Alten Zustand sichern für eventuelle Wiederherstellung
-            var formData = this.getView().getModel("form").getData();
-            this._formDataBackup = jQuery.extend(true, {}, formData);
+		onBearbeitenButtonPress: function(oEvent){
+            var _this = this;
 
-            this.getView().getModel("form").setProperty("/modus", "edit");
+            var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+            DataProvider.createSperreAsync({VaId: va.VaId})
+            .then(function(){
+                // Alten Zustand sichern für eventuelle Wiederherstellung
+                var formData = _this.getView().getModel("form").getData();
+                _this._formDataBackup = jQuery.extend(true, {}, formData);
+                _this.getView().getModel("form").setProperty("/modus", "edit");
+            })
+            .catch(function(oError){
+                ErrorMessageUtil.showError(oError);
+            })
+            .done();
         },
 
         onBack: function(oEvent) {
@@ -421,7 +506,7 @@ sap.ui.define([
 
             // create popover
 			if (! this._tableViewSettingsPopover) {
-				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenViewSettingsPopover", this);
+				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetUnitsPopover", this);
                 this._tableViewSettingsPopover.setModel( this.getView().getModel("form"), "form" );
 				this.getView().addDependent(this._tableViewSettingsPopover);
 			}
@@ -546,11 +631,13 @@ sap.ui.define([
                 Bukrs: va.Bukrs,
                 WeId: va.WeId,
 
+                Kategorie: va.Kategorie,
+
                 Vermietungsart: va.Vermietungsart,
                 Debitor: (va.Debitor !== '') ? va.Debitor : null,
                 Debitorname: va.Debitorname,
                 Mietbeginn: va.Mietbeginn,
-                LzFirstbreak: va.Mietbeginn,
+                LzFirstbreak: va.LzFirstbreak,
                 
                 MzMonate: (va.MzMonate !== '') ? va.MzMonate : null,
                 MzErsterMonat: va.MzErsterMonat,
@@ -577,14 +664,15 @@ sap.ui.define([
                 Status: va.Status,
                 Anmerkung: va.Anmerkung,
                 Bemerkung: va.Bemerkung,
-                Budgetstp: va.Budgetstp,
                 
                 MonatJahr: va.MonatJahr,
                 Currency: va.Currency,
                 Unit: va.Unit,
 
                 VaToOb: _.map(va.VaToOb, function(objekt){
+                    objekt.KeId = (objekt.KeId !== '') ? objekt.KeId : null;
                     objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt : null;
+                    objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt : null;
                     objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete : null;
                     objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten : null;
                     objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten : null;
@@ -610,7 +698,52 @@ sap.ui.define([
 
             var validationResult = true;
 
-            // TODO
+            var idMietername = this.getView().byId("idMietername");
+            if(idMietername.getValue() === ""){
+                idMietername.setValueState(sap.ui.core.ValueState.Error);
+                idMietername.setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+
+
+            var idMietbeginn = this.getView().byId("idMietbeginn");
+            if(idMietbeginn.getDateValue() === null){
+                idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
+                idMietbeginn.setValueStateText("Bitte geben Sie ein Datum ein.");
+                validationResult = false;
+            }
+            else if(idMietbeginn.getDateValue() < Date.now())
+            {
+                idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
+                idMietbeginn.setValueStateText("Das Datum muss in der Zukunft liegen.");
+                validationResult = false;
+            }
+
+
+            var idLzFirstbreak = this.getView().byId("idLzFirstbreak");
+            if(idLzFirstbreak.getValue() === ""){
+                idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
+                idLzFirstbreak.setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+            else if(parseFloat(idLzFirstbreak.getValue()) <= 0){
+                idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
+                idLzFirstbreak.setValueStateText("Bitte geben Sie Wert größer 0 ein.");
+                validationResult = false;
+            }
+
+
+            var idIdxWeitergabe = this.getView().byId("idIdxWeitergabe");
+            if(idIdxWeitergabe.getValue() === ""){
+                idIdxWeitergabe.setValueState(sap.ui.core.ValueState.Error);
+                idIdxWeitergabe.setValueStateText("Bitte geben Sie einen Wert ein.");
+                validationResult = false;
+            }
+            else if(parseFloat(idIdxWeitergabe.getValue()) <= 0){
+                idIdxWeitergabe.setValueState(sap.ui.core.ValueState.Error);
+                idIdxWeitergabe.setValueStateText("Bitte geben Sie Wert größer 0 ein.");
+                validationResult = false;
+            }
             
             return validationResult;
         },
@@ -621,9 +754,8 @@ sap.ui.define([
             this.getView().byId("idLzFirstbreak").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idIdxWeitergabe").setValueState(sap.ui.core.ValueState.None);
         },
-		
 
-        onAbbrechenButtonPress: function(evt){            
+        onAbbrechenButtonPress: function(oEvent){            
             this.initializeValidationState();
             
             var modus = this.getView().getModel("form").getProperty("/modus");           
@@ -821,7 +953,7 @@ sap.ui.define([
                     var mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden = true;
 
                     // Prüfen ob die Konditioneneinigung Mietflächen enthält, die noch nicht in der Liste sind
-                    konditioneneinigung.KeToOb.results.forEach(function(objekt){
+                    konditioneneinigung.KeToOb.forEach(function(objekt){
                         if(jQuery.inArray(objekt.MoId, vorhandeneMoIds) === -1){
                             mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden = false;
                         }
@@ -964,7 +1096,7 @@ sap.ui.define([
             
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
-                if((mietflaechenangabe.NutzartAlt === verteilung.nutzungsart) || (mietflaechenangabe.Nutzart === verteilung.nutzungsart))
+                if((mietflaechenangabe.Nutzart === verteilung.nutzungsart) || (mietflaechenangabe.NutzartAlt === verteilung.nutzungsart))
                 {				
 					if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
 					{
@@ -979,17 +1111,17 @@ sap.ui.define([
             
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
-                if((mietflaechenangabe.NutzartAlt === verteilung.nutzungsart) || (mietflaechenangabe.Nutzart === verteilung.nutzungsart))
+                if((mietflaechenangabe.Nutzart === verteilung.nutzungsart) || (mietflaechenangabe.NutzartAlt === verteilung.nutzungsart))
                 {
 					if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
 					{
-						mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen) * verteilung.grundausbaukosten;
-						mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen) * verteilung.mietausbaukosten;
+                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100).toString();
+                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100).toString();
 					}
 					else
 					{
-						mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.grundausbaukosten;
-						mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen) * verteilung.mietausbaukosten;
+                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100).toString();
+                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100).toString();
 					}
                 }
             });
@@ -1015,25 +1147,24 @@ sap.ui.define([
         },
         
         onFavoritButtonPress: function(oEvent){
-            
-            var favorit = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Favorit");
+            var _this = this;
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
 
-            if(favorit)
-            {
-                this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Favorit", false);
-                
-                MessageBox.information("Die Vermietungsaktivität wurde von den Favoriten entfernt.", {
-                    title:"{i18n>HINWEIS}"
+            var promise = va.Favorit ? DataProvider.deleteFavoritAsync('', va.VaId) : DataProvider.createFavoritAsync({VaId: va.VaId});
+
+            promise.then(function(){
+                var message = va.Favorit ? TranslationUtil.translate("VA_VON_FAVORITEN_ENTFERNT") : TranslationUtil.translate("VA_ZU_FAVORITEN_HINZUGEFUEGT");
+                MessageBox.information(message, {
+                    title: TranslationUtil.translate("HINWEIS")
                 });
-            }
-            else
-            {
-                this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Favorit", true);
-                
-                MessageBox.information("Die Vermietungsaktivität wurde zu den Favoriten hinzugefügt.", {
-                    title:"{i18n>HINWEIS}"
-                });
-            }
+            })
+            .catch(function(oError){
+                ErrorMessageUtil.showError(oError);
+            })
+            .fin(function(){
+                _this.vermietungsaktivitaetAnzeigen(va.VaId, va.Bukrs);
+            })
+            .done();
         },
         
         onDebitorAuswahlButtonPress: function(oEvent){
@@ -1043,7 +1174,7 @@ sap.ui.define([
                 this._debitorSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.DebitorSelektion", this);
             }
 
-            this.readDebitorenSetAsync()
+            DataProvider.readDebitorenSetAsync()
             .then(function(debitoren){
 
                 var debitorSelektionDialogModel = new sap.ui.model.json.JSONModel({
@@ -1102,10 +1233,9 @@ sap.ui.define([
                 IdxWeitergabe: "",
                 PLRelevant: false,
 
-                Status: StaticData.STATUS.VA.ABGEBROCHEN,
-                Anmerkung: StaticData.ANMERKUNG.VA.ABGEBROCHEN,
+                Status: StaticData.STATUS.VA.AUSBAUPLANUNG,
+                Anmerkung: StaticData.ANMERKUNG.VA.ABSTIMMUG_DER_MIETERAUSBAUPLANUNG,
                 Bemerkung: "",
-                Budgetstp: false,
                 
                 MonatJahr: "M",
                 Currency: "",
@@ -1124,7 +1254,6 @@ sap.ui.define([
                 Bukrs: this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Bukrs")
             }, true);
         }
-
 
 	});
 });
