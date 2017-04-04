@@ -45,11 +45,6 @@ sap.ui.define([
 			this.getOwnerComponent().getRouter().navTo("budgetstopp");
 		},
 		
-		onBeriTilePress: function(evt) {
-			// Navigation zur der View
-			this.getOwnerComponent().getRouter().navTo("berichte");
-		},
-		
 		onSperTilePress: function(evt) {
 			// Navigation zur der View
 			this.getOwnerComponent().getRouter().navTo("sperren");

@@ -133,12 +133,6 @@
 					"targetAggregation" : "pages"
 				},
 				{
-					"pattern": "Berichte",
-					"name" : "berichte",
-					"view" : "Berichte",
-					"targetAggregation" : "pages"
-				},
-				{
 					"pattern": "Sperren",
 					"name" : "sperren",
 					"view" : "Sperren",
