@@ -9,7 +9,6 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
         KATEGORIEN: null,
         STOCKWERKE: null,
         VERTRAGSARTEN: null,
-        DIENSTLEISTER: null,
         USER: null,
 
         VERMIETUNGSARTEN: [
@@ -95,7 +94,6 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
             this.KATEGORIEN = DataProvider.readKategorieSetAsync();
             this.STOCKWERKE = DataProvider.readStockwerkSetAsync();
             this.VERTRAGSARTEN = DataProvider.readVertragsArtSetAsync();
-            this.DIENSTLEISTER = DataProvider.readDienstleisterSetAsync();
         }
 
     };
