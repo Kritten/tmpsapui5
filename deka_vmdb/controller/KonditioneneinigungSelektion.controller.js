@@ -265,6 +265,10 @@ sap.ui.define([
 							case "Anmerkung":
 								itemFilters.push( new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
+					
+							case "Ersteller":
+								itemFilters.push( new Filter("Ersteller", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
 																
 							default:
 							break;

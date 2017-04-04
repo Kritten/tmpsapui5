@@ -105,6 +105,11 @@ sap.ui.define([
 			var oDataModel = sap.ui.getCore().getModel("odata");
 
 			oDataModel.read("/KonditioneneinigungSet", {
+
+				urlParameters: {
+					$filter: "Anmerkung eq '03'"
+				},
+
 				success: function(oData){
 					console.log(oData);
 
@@ -112,11 +117,11 @@ sap.ui.define([
 						_this._selectDialogRegelvermietung = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialogRegelvermietung", _this);
 					}
 
-					var jsonData = {
-						data: oData.results
+					var formData = {
+						konditioneneinigungen: oData.results
 					};
 					
-					_this._selectDialogRegelvermietung.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
+					_this._selectDialogRegelvermietung.setModel(new sap.ui.model.json.JSONModel(formData), "form");
 					
 					// clear the old search filter
 					_this._selectDialogRegelvermietung.getBinding("items").filter([]);
@@ -138,11 +143,11 @@ sap.ui.define([
 						_this._selectDialogKleinvermietung = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialogKleinvermietung", _this);
 					}
 
-					var jsonData = {
-						data: oData.results
+					var formData = {
+						wirtschaftseinheiten: oData.results
 					};
 					
-					_this._selectDialogKleinvermietung.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
+					_this._selectDialogKleinvermietung.setModel(new sap.ui.model.json.JSONModel(formData), "form");
 					
 					// clear the old search filter
 					_this._selectDialogKleinvermietung.getBinding("items").filter([]);
@@ -164,11 +169,11 @@ sap.ui.define([
 						_this._selectDialogExterneVermietung = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialogExterneVermietung", _this);
 					}
 
-					var jsonData = {
-						data: oData.results
+					var formData = {
+						wirtschaftseinheiten: oData.results
 					};
 					
-					_this._selectDialogExterneVermietung.setModel( new sap.ui.model.json.JSONModel(jsonData) , "selektionsModel");
+					_this._selectDialogExterneVermietung.setModel(new sap.ui.model.json.JSONModel(formData), "form");
 					
 					// clear the old search filter
 					_this._selectDialogExterneVermietung.getBinding("items").filter([]);
@@ -230,8 +235,8 @@ sap.ui.define([
 			{
 				var keKeys = _.map(selectedItems, function(item){
 					return {
-						KeId: item.getBindingContext("selektionsModel").getObject().KeId,
-						Bukrs: item.getBindingContext("selektionsModel").getObject().Bukrs
+						KeId: item.getBindingContext("form").getObject().KeId,
+						Bukrs: item.getBindingContext("form").getObject().Bukrs
 					};
 				});
 
@@ -240,17 +245,22 @@ sap.ui.define([
 			}
 		},
 
-		onRegelvermietungSelectDialogSearch : function(oEvent) {				
+		onRegelvermietungSelectDialogSearch : function(oEvent) {	
 			var sValue = oEvent.getParameter("value");
-			var oFilter = new Filter("KeId", sap.ui.model.FilterOperator.Contains, sValue);
+
+			var combinedOrFilter = new Filter([
+				new Filter("Bukrs", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("KeId", sap.ui.model.FilterOperator.Contains, sValue),
+			], false);
+
 			var oBinding = oEvent.getSource().getBinding("items");
-			oBinding.filter([oFilter]);
+			oBinding.filter([combinedOrFilter]);
 		},
 
 		onKleinvermietungSelectDialogConfirm: function(oEvent){
 
 			var selectedItem = oEvent.getParameter("selectedItem");
-			var we = selectedItem.getBindingContext("selektionsModel").getObject();
+			var we = selectedItem.getBindingContext("form").getObject();
 
 			NavigationPayloadUtil.putPayload({
 				WeId: we.WeId,
@@ -262,15 +272,23 @@ sap.ui.define([
 
 		onKleinvermietungSelectDialogSearch: function(oEvent){
 			var sValue = oEvent.getParameter("value");
-			var oFilter = new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue);
+
+			var combinedOrFilter = new Filter([
+				new Filter("Bukrs", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("Plz", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("Ort", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("StrHnum", sap.ui.model.FilterOperator.Contains, sValue)
+			], false);
+
 			var oBinding = oEvent.getSource().getBinding("items");
-			oBinding.filter([oFilter]);
+			oBinding.filter([combinedOrFilter]);
 		},
 
 		onExterneVermietungSelectDialogConfirm: function(oEvent){
 
 			var selectedItem = oEvent.getParameter("selectedItem");
-			var we = selectedItem.getBindingContext("selektionsModel").getObject();
+			var we = selectedItem.getBindingContext("form").getObject();
 
 			NavigationPayloadUtil.putPayload({
 				WeId: we.WeId,
@@ -282,9 +300,17 @@ sap.ui.define([
 
 		onExterneVermietungSelectDialogSearch: function(oEvent){
 			var sValue = oEvent.getParameter("value");
-			var oFilter = new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue);
+
+			var combinedOrFilter = new Filter([
+				new Filter("Bukrs", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("Plz", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("Ort", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("StrHnum", sap.ui.model.FilterOperator.Contains, sValue)
+			], false);
+
 			var oBinding = oEvent.getSource().getBinding("items");
-			oBinding.filter([oFilter]);
+			oBinding.filter([combinedOrFilter]);
 		},
 
 		
@@ -293,13 +319,10 @@ sap.ui.define([
 			
 			var vermietungsaktivitaet = oEvent.getParameter("listItem").getBindingContext('vermSel').getObject();
 			
-			this.getOwnerComponent().getRouter().navTo(
-				"vermietungsaktivitaetDetails", 
-				{
-					VaId: vermietungsaktivitaet.VaId,
-					Bukrs: vermietungsaktivitaet.Bukrs
-				}
-			);
+			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetDetails", {
+				VaId: vermietungsaktivitaet.VaId,
+				Bukrs: vermietungsaktivitaet.Bukrs
+			});
 
 		},
 		
@@ -360,14 +383,22 @@ sap.ui.define([
 								itemFilters.push( new Filter("Status", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 
-							case "Externer Dienstleister":
+							case "Dienstleister":
 								itemFilters.push( new Filter("Dienstleister", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 						
 							case "Vermietungsart":
 								itemFilters.push( new Filter("Vermietungsart", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
-																
+
+							case "Kategorie":
+								itemFilters.push( new Filter("Kategorie", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+
+							case "Ersteller":
+								itemFilters.push( new Filter("Ersteller", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+
 							default:
 							break;
 						}
