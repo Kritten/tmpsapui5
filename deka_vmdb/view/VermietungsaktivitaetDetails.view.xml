@@ -20,7 +20,7 @@
                         <items>
                             <ObjectHeader title="{i18n>VERMIETUNGSAKTIVITAET} {form>/vermietungsaktivitaet/VaId}" >
                                 <attributes>
-                                    <ObjectAttribute title="{i18n>KATEGORIE}" text="{= ${form>/kategorieMapping}[${form>/vermietungsaktivitaet/Kategorie}] }" />
+                                    <ObjectAttribute title="{i18n>KATEGORIE}" text="{= ${text>/kategorie}[${form>/vermietungsaktivitaet/Kategorie}] }" />
                                     <ObjectAttribute title="{i18n>DIENSTLEISTER}" text="{form>/vermietungsaktivitaet/Dienstleister}" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '03' }" />
                                     <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/Bukrs}" />
                                     <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/vermietungsaktivitaet/WeId}" />
@@ -114,7 +114,7 @@
                         <cells>
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="{form>Bezei}" />
-                            <Text text="{= ${form>/nutzungsartMapping}[${form>Nutzart}] }" />
+                            <Text text="{= ${text>/nutzungsart}[${form>Nutzart}] }" />
                             <Select selectedKey="{form>NutzartAlt}" items="{path: 'form>/nutzungsarten', templateShareable: true}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                                 <items>
                                     <core:Item key="{form>NaId}" text="{form>TextSh}" />
@@ -140,8 +140,12 @@
                 <items>
                     <FlexBox>
                         <items>
-                            <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onKonditioneneinigungHinzufuegenButtonPress" class="sapUiSmallMarginEnd" />
-                            <Button text="{i18n>KONDITIONENEINIGUNG_ENTFERNEN}" icon="sap-icon://sys-minus" press="onKonditioneneinigungLoeschenButtonPress" class="sapUiSmallMarginEnd" />
+                            <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onKonditioneneinigungHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" class="sapUiSmallMarginEnd" />
+                            <Button text="{i18n>KONDITIONENEINIGUNG_ENTFERNEN}" icon="sap-icon://sys-minus" press="onKonditioneneinigungLoeschenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" />
+                            <!--
+                            <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} !== '01' }" class="sapUiSmallMarginEnd" />
+                            <Button text="{i18n>MIETFLAECHE_ENTFERNEN}" icon="sap-icon://sys-minus" press="onMietflaechenAngabenLoeschenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} !== '01' }" />
+                            -->
                         </items>
                         <layoutData>
 							<FlexItemData growFactor="1" />
