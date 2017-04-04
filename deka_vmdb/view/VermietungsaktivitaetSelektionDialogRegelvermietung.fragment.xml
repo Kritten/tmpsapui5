@@ -1,42 +1,54 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<TableSelectDialog
+	<TableSelectDialog 
 		noDataText="{i18n>KEINE_DATEN_VORHANDEN}"
-		title="{i18n>KONDITIONENEINIGUNGEN}"
+		title="{i18n>VERM_SEL_ANLAGE_REGELVERMIETUNG_TITLE}"
 		search="onRegelvermietungSelectDialogSearch"
 		confirm="onRegelvermietungSelectDialogConfirm"
-		items="{selektionsModel>/data}"
+		items="{form>/konditioneneinigungen}"
 		multiSelect="true" >
 		
 		<columns>
 			<Column>
 				<header>
-					<Text text="{i18n>ID}" />
+					<Text text="{i18n>VERM_SEL_ANLAGE_REGELVERMIETUNG_COL_BUCHUNGSKREIS}" />
 				</header>
 			</Column>
 			<Column>
 				<header>
-					<Text text="{i18n>BUCHUNGSKREIS}" />
+					<Text text="{i18n>VERM_SEL_ANLAGE_REGELVERMIETUNG_COL_KONDITIONENEINIGUNG}" />
 				</header>
 			</Column>
 			<Column>
 				<header>
-					<Text text="{i18n>MIETBEGINN}" />
+					<Text text="{i18n>VERM_SEL_ANLAGE_REGELVERMIETUNG_COL_MIETBEGINN}" />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{i18n>VERM_SEL_ANLAGE_REGELVERMIETUNG_COL_LAUFZEIT}" />
 				</header>
 			</Column>
 		</columns>
 		
 		<ColumnListItem>
 			<cells>
-				<Text text="{selektionsModel>KeId}" />
-				<Text text="{selektionsModel>Bukrs}" />
+				<Text text="{form>Bukrs}" />
+				<Text text="{form>KeId}" />
 				<Text text="{
-					path: 'selektionsModel>Mietbeginn', 
-					type: 'sap.ui.model.type.Date', 
-					formatOptions: { 
-						style: 'short' 
-					} 
+						path: 'form>Mietbeginn',
+						type: 'sap.ui.model.type.Date',
+						formatOptions: {
+							style: 'short'
+						}
+				}" />
+				<Text text="{
+						path: 'form>LzFirstbreak',
+						type: 'sap.ui.model.type.Integer',
+						formatOptions: {
+							maxIntegerDigits: 5
+						}
 				}" />
 			</cells>
 		</ColumnListItem>

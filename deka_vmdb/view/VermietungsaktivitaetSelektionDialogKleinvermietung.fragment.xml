@@ -1,37 +1,36 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<TableSelectDialog
+	<TableSelectDialog 
 		noDataText="{i18n>KEINE_DATEN_VORHANDEN}"
-		title="{i18n>WIRTSCHAFTSEINHEITEN}"
+		title="{i18n>VERM_SEL_ANLAGE_KLEINVERMIETUNG_TITLE}"
 		search="onKleinvermietungSelectDialogSearch"
 		confirm="onKleinvermietungSelectDialogConfirm"
-		items="{selektionsModel>/data}"
-		multiSelect="false" >
-		
+		items="{form>/wirtschaftseinheiten}" >
+
 		<columns>
 			<Column>
 				<header>
-					<Text text="{i18n>ID}" />
+					<Text text="{i18n>VERM_SEL_ANLAGE_KLEINVERMIETUNG_COL_BUCHUNGSKREIS}" />
 				</header>
 			</Column>
 			<Column>
 				<header>
-					<Text text="{i18n>BUCHUNGSKREIS}" />
+					<Text text="{i18n>VERM_SEL_ANLAGE_KLEINVERMIETUNG_COL_WIRTSCHAFTSEINHEIT}" />
 				</header>
 			</Column>
 			<Column>
 				<header>
-					<Text text="{i18n>ORT}" />
+					<Text text="{i18n>VERM_SEL_ANLAGE_KLEINVERMIETUNG_COL_BESCHREIBUNG}" />
 				</header>
 			</Column>
 		</columns>
 		
 		<ColumnListItem>
 			<cells>
-				<Text text="{selektionsModel>WeId}" />
-				<Text text="{selektionsModel>Bukrs}" />
-				<Text text="{selektionsModel>StrHnum}, {selektionsModel>Plz} {selektionsModel>Ort}" />
+				<Text text="{form>Bukrs}" />
+				<Text text="{form>WeId}" />
+				<Text text="{form>Plz} {form>Ort} {form>StrHnum}" />
 			</cells>
 		</ColumnListItem>
 
