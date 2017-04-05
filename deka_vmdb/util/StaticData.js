@@ -1,3 +1,9 @@
+/*
+ * @Author: Christian Hoff (best practice consulting AG) 
+ * @Date: 2017-04-05 21:45:23 
+ * @Last Modified by:   Christian Hoff (best practice consulting AG) 
+ * @Last Modified time: 2017-04-05 21:45:23 
+ */
 sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
 
     "use strict";
@@ -9,6 +15,8 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
         KATEGORIEN: null,
         STOCKWERKE: null,
         VERTRAGSARTEN: null,
+        KOSTENARTEN: null,
+        ERTRAGSARTEN: null,
         USER: null,
 
         VERMIETUNGSARTEN: [
@@ -69,18 +77,6 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
             }
         },
 
-        KOSTENARTEN: [
-            {Id: '01', Text: 'Sonstige Kostenart 1'},
-            {Id: '02', Text: 'Sonstige Kostenart 2'},
-            {Id: '03', Text: 'Sonstige Kostenart 3'}
-        ],
-
-        ERTRAGSARTEN: [
-            {Id: '01', Text: 'Sonstige Ertragsart 1'},
-            {Id: '02', Text: 'Sonstige Ertragsart 2'},
-            {Id: '03', Text: 'Sonstige Ertragsart 3'}
-        ],
-
         ZEITSPANNEN: [
             {Id: 'M', Text: 'Monatsmiete'},
             {Id: 'J', Text: 'Jahresmiete'}
@@ -94,6 +90,8 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
             this.KATEGORIEN = DataProvider.readKategorieSetAsync();
             this.STOCKWERKE = DataProvider.readStockwerkSetAsync();
             this.VERTRAGSARTEN = DataProvider.readVertragsArtSetAsync();
+            this.KOSTENARTEN = DataProvider.readKostenartSetAsync();
+            this.ERTRAGSARTEN = DataProvider.readErtragsartSetAsync();
         }
 
     };

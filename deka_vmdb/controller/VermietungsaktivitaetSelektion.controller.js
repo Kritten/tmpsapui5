@@ -1,3 +1,9 @@
+/*
+ * @Author: Christian Hoff (best practice consulting AG) 
+ * @Date: 2017-04-05 21:44:08 
+ * @Last Modified by:   Christian Hoff (best practice consulting AG) 
+ * @Last Modified time: 2017-04-05 21:44:08 
+ */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller", 
 	"sap/ui/model/Filter", 
@@ -102,32 +108,27 @@ sap.ui.define([
 		showSelectDialogRegelvermietung: function(){
 			var _this = this;
 
-			var oDataModel = sap.ui.getCore().getModel("odata");
+			DataProvider.readKonditioneneinigungSetAsync(null, "Anmerkung eq '03'")
+			.then(function(konditioneneinigungen){
 
-			oDataModel.read("/KonditioneneinigungSet", {
-
-				urlParameters: {
-					$filter: "Anmerkung eq '03'"
-				},
-
-				success: function(oData){
-					console.log(oData);
-
-					if (! _this._selectDialogRegelvermietung) {
-						_this._selectDialogRegelvermietung = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialogRegelvermietung", _this);
-					}
-
-					var formData = {
-						konditioneneinigungen: oData.results
-					};
-					
-					_this._selectDialogRegelvermietung.setModel(new sap.ui.model.json.JSONModel(formData), "form");
-					
-					// clear the old search filter
-					_this._selectDialogRegelvermietung.getBinding("items").filter([]);
-					_this._selectDialogRegelvermietung.open();
+				if (! _this._selectDialogRegelvermietung) {
+					_this._selectDialogRegelvermietung = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialogRegelvermietung", _this);
 				}
-			});
+
+				var formData = {
+					konditioneneinigungen: konditioneneinigungen
+				};
+				
+				_this._selectDialogRegelvermietung.setModel(new sap.ui.model.json.JSONModel(formData), "form");
+				
+				// clear the old search filter
+				_this._selectDialogRegelvermietung.getBinding("items").filter([]);
+				_this._selectDialogRegelvermietung.open();
+			})
+            .catch(function(oError){
+                console.log(oError);
+            })
+            .done();
 		},
 
 		showSelectDialogKleinvermietung: function(){

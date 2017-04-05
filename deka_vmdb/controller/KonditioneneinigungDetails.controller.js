@@ -1,3 +1,9 @@
+/*
+ * @Author: Christian Hoff (best practice consulting AG) 
+ * @Date: 2017-04-05 21:39:31 
+ * @Last Modified by:   Christian Hoff (best practice consulting AG) 
+ * @Last Modified time: 2017-04-05 21:39:31 
+ */
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
     "sap/m/MessageBox", 
@@ -41,8 +47,8 @@ sap.ui.define([
                 konditioneneinigung: null,
 
                 statuswerte: null,
-                artkosten: null,
-                artertraege: null,
+                kostenarten: null,
+                ertragsarten: null,
 
                 anmerkungen: null,
                 viewsettings: null
@@ -169,11 +175,11 @@ sap.ui.define([
                 return Q.when(StaticData.ERTRAGSARTEN);
             })
             .then(function(ertragsarten){
-                _this.getView().getModel("form").setProperty("/artertraege", ertragsarten);
+                _this.getView().getModel("form").setProperty("/ertragsarten", ertragsarten);
                 return Q.when(StaticData.KOSTENARTEN);
             })
             .then(function(kostenarten){
-                _this.getView().getModel("form").setProperty("/artkosten", kostenarten);
+                _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
                 return Q.when(StaticData.ANMERKUNGEN);
             })
             .then(function(anmerkungen){
@@ -227,11 +233,11 @@ sap.ui.define([
                 return Q.when(StaticData.ERTRAGSARTEN);
             })
             .then(function(ertragsarten){
-                _this.getView().getModel("form").setProperty("/artertraege", ertragsarten);
+                _this.getView().getModel("form").setProperty("/ertragsarten", ertragsarten);
                 return Q.when(StaticData.KOSTENARTEN);
             })
             .then(function(kostenarten){
-                _this.getView().getModel("form").setProperty("/artkosten", kostenarten);
+                _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
                 return Q.when(StaticData.ANMERKUNGEN);
             })
             .then(function(anmerkungen){
@@ -314,11 +320,11 @@ sap.ui.define([
                 return Q.when(StaticData.ERTRAGSARTEN);
             })
             .then(function(ertragsarten){
-                _this.getView().getModel("form").setProperty("/artertraege", ertragsarten);
+                _this.getView().getModel("form").setProperty("/ertragsarten", ertragsarten);
                 return Q.when(StaticData.KOSTENARTEN);
             })
             .then(function(kostenarten){
-                _this.getView().getModel("form").setProperty("/artkosten", kostenarten);
+                _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
                 return Q.when(StaticData.ANMERKUNGEN);
             })
             .then(function(anmerkungen){
@@ -403,11 +409,11 @@ sap.ui.define([
                 return Q.when(StaticData.ERTRAGSARTEN);
             })
             .then(function(ertragsarten){
-                _this.getView().getModel("form").setProperty("/artertraege", ertragsarten);
+                _this.getView().getModel("form").setProperty("/ertragsarten", ertragsarten);
                 return Q.when(StaticData.KOSTENARTEN);
             })
             .then(function(kostenarten){
-                _this.getView().getModel("form").setProperty("/artkosten", kostenarten);
+                _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
                 return Q.when(StaticData.ANMERKUNGEN);
             })
             .then(function(anmerkungen){
@@ -916,9 +922,9 @@ sap.ui.define([
                 this.getView().addDependent(this._mietflaechenSelektionDialog);
             }
 
-            var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs"); 
-            var WeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/WeId"); 
-            var MvId = _this.getView().getModel("form").getProperty("/konditioneneinigung/MvId"); 
+            var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
+            var WeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/WeId");
+            var MvId = _this.getView().getModel("form").getProperty("/konditioneneinigung/MvId");
 
             var expand = (MvId !== undefined) ? 'MvToMo' : 'WeToMo';
             var promise = (MvId !== undefined) ? DataProvider.readMietvertragAsync(WeId, Bukrs, MvId) : DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId);

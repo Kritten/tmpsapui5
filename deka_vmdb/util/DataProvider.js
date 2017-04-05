@@ -1,3 +1,9 @@
+/*
+ * @Author: Christian Hoff (best practice consulting AG) 
+ * @Date: 2017-04-05 21:44:44 
+ * @Last Modified by:   Christian Hoff (best practice consulting AG) 
+ * @Last Modified time: 2017-04-05 21:44:44 
+ */
 sap.ui.define([], function() {
 
     "use strict";
@@ -617,7 +623,7 @@ sap.ui.define([], function() {
             var _this = this;
             
             var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
-                return _.isUndefined(val);
+                return _.isUndefined(val) || _.isNull(val);
             });
 
             return Q.Promise(function(resolve, reject, notify) {
@@ -638,7 +644,7 @@ sap.ui.define([], function() {
             var _this = this;
             
             var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
-                return _.isUndefined(val);
+                return _.isUndefined(val) || _.isNull(val);
             });
 
             return Q.Promise(function(resolve, reject, notify) {
@@ -659,12 +665,44 @@ sap.ui.define([], function() {
             var _this = this;
             
             var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
-                return _.isUndefined(val);
+                return _.isUndefined(val) || _.isNull(val);
             });
 
             return Q.Promise(function(resolve, reject, notify) {
                 _this.oDataModel.read("/KonditioneneinigungSet", {
                     urlParameters: urlParameters,
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readErtragsartSetAsync: function(){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/ErtragsartSet", {
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        readKostenartSetAsync: function(){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/KostenartSet", {
                     success: function(oData){
                         console.log(oData.results);
                         resolve(oData.results);

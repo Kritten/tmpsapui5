@@ -1,3 +1,9 @@
+/*
+ * @Author: Christian Hoff (best practice consulting AG) 
+ * @Date: 2017-04-05 21:45:06 
+ * @Last Modified by:   Christian Hoff (best practice consulting AG) 
+ * @Last Modified time: 2017-04-05 21:45:06 
+ */
 sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
 
     "use strict";

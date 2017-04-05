@@ -1,0 +1,17 @@
+[
+    {
+        "ErId": "00",
+        "Txtsh": "Sonstige Erträge",
+        "Txtmd": "Sonstige Erträge"
+    },
+    {
+        "ErId": "01",
+        "Txtsh": "Umsatzmiete",
+        "Txtmd": "Umsatzmiete"
+    },
+    {
+        "ErId": "02",
+        "Txtsh": "Erträge aus Vw.Koste",
+        "Txtmd": "Erträge aus Verwaltungskosten"
+    }
+]

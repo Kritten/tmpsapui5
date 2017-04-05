@@ -1,3 +1,9 @@
+/*
+ * @Author: Christian Hoff (best practice consulting AG) 
+ * @Date: 2017-04-05 21:45:36 
+ * @Last Modified by:   Christian Hoff (best practice consulting AG) 
+ * @Last Modified time: 2017-04-05 21:45:36 
+ */
 sap.ui.define([
 	"sap/ui/core/UIComponent", 
 	"sap/ui/model/resource/ResourceModel", 
@@ -52,7 +58,7 @@ sap.ui.define([
 				});
 
 				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				mockserver.simulate(sPath + "/model/service-v13.xml", {
+				mockserver.simulate(sPath + "/model/service-v14.xml", {
 					sMockdataBaseUrl: sPath + "/model/mockdata",
 					bGenerateMissingMockData: true
 				});

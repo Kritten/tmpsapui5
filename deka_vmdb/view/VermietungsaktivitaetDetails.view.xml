@@ -194,7 +194,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
-                    <Button text="{i18n>DIENSTLEISTER_WAEHLEN}" visible="{= (${form>/vermietungsaktivitaet/Kategorie} === '03') &amp;&amp; (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" press="onDienstleisterAuswahlButtonPress">
+                    <Button text="{i18n>DIENSTLEISTER_WAEHLEN}" visible="{= (${form>/vermietungsaktivitaet/Kategorie} === '03')  &amp;&amp; ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) }" press="onDienstleisterAuswahlButtonPress">
                         <layoutData>
                             <l:GridData span="L3 M3 S12" />
                         </layoutData>
@@ -284,11 +284,9 @@
 
                     <!-- Sonstige Kosten -->
                     <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtKosten}">
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtKosten}" items="{form>/kostenarten}">
                         <items>
-                            <core:Item key="00" text="Sonstige Kostenart 00" />
-                            <core:Item key="01" text="Sonstige Kostenart 01" />
-                            <core:Item key="02" text="Sonstige Kostenart 02" />
+                            <core:Item key="{form>KoId}" text="{form>Txtmd}" />
                         </items>
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
@@ -302,11 +300,9 @@
 
                     <!-- Sonstige Erträge  -->
                     <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtErtrag}">
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtErtrag}" items="{form>/ertragsarten}">
                         <items>
-                            <core:Item key="00" text="Sonstige Ertragsart 00" />
-                            <core:Item key="01" text="Sonstige Ertragsart 01" />
-                            <core:Item key="02" text="Sonstige Ertragsart 02" />
+                            <core:Item key="{form>ErId}" text="{form>Txtmd}" />
                         </items>
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />

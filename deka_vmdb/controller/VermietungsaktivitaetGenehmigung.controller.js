@@ -1,3 +1,9 @@
+/*
+ * @Author: Christian Hoff (best practice consulting AG) 
+ * @Date: 2017-04-05 21:43:54 
+ * @Last Modified by:   Christian Hoff (best practice consulting AG) 
+ * @Last Modified time: 2017-04-05 21:43:54 
+ */
 sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
 	
 	"use strict";

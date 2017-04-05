@@ -220,9 +220,9 @@
 
                     <!-- Sonstige Kosten -->
                     <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtKosten}" items="{form>/artkosten}" >
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtKosten}" items="{form>/kostenarten}" >
                         <items>
-                            <core:Item key="{form>Id}" text="{form>Text}" />
+                            <core:Item key="{form>KoId}" text="{form>Txtmd}" />
                         </items>
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
@@ -236,9 +236,9 @@
 
                     <!-- Sonstige Erträge  -->
                     <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtErtrag}" items="{form>/artertraege}" >
+                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtErtrag}" items="{form>/ertragsarten}" >
                         <items>
-                            <core:Item key="{form>Id}" text="{form>Text}" />
+                            <core:Item key="{form>ErId}" text="{form>Txtmd}" />
                         </items>
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />

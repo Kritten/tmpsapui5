@@ -1,3 +1,9 @@
+/*
+ * @Author: Christian Hoff (best practice consulting AG) 
+ * @Date: 2017-04-05 21:43:47 
+ * @Last Modified by:   Christian Hoff (best practice consulting AG) 
+ * @Last Modified time: 2017-04-05 21:43:47 
+ */
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
     "sap/m/MessageBox", 
@@ -42,6 +48,8 @@ sap.ui.define([
                 anmerkungen: null,
                 nutzungsarten: null,
                 vermietungsarten: null,
+                kostenarten: null,
+                ertragsarten: null,
 
                 viewsettings: null
             };
@@ -175,6 +183,14 @@ sap.ui.define([
             })
             .then(function(vermietungsarten){
                 _this.getView().getModel("form").setProperty("/vermietungsarten", vermietungsarten);
+                return Q.when(StaticData.ERTRAGSARTEN);
+            })
+            .then(function(ertragsarten){
+                _this.getView().getModel("form").setProperty("/ertragsarten", ertragsarten);
+                return Q.when(StaticData.KOSTENARTEN);
+            })
+            .then(function(kostenarten){
+                _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
             })
             .catch(function(oError){
                 console.log(oError);
@@ -255,6 +271,14 @@ sap.ui.define([
             })
             .then(function(vermietungsarten){
                 _this.getView().getModel("form").setProperty("/vermietungsarten", vermietungsarten);
+                return Q.when(StaticData.ERTRAGSARTEN);
+            })
+            .then(function(ertragsarten){
+                _this.getView().getModel("form").setProperty("/ertragsarten", ertragsarten);
+                return Q.when(StaticData.KOSTENARTEN);
+            })
+            .then(function(kostenarten){
+                _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
             })
             .catch(function(oError){
                 console.log(oError);
@@ -321,6 +345,14 @@ sap.ui.define([
             })
             .then(function(vermietungsarten){
                 _this.getView().getModel("form").setProperty("/vermietungsarten", vermietungsarten);
+                return Q.when(StaticData.ERTRAGSARTEN);
+            })
+            .then(function(ertragsarten){
+                _this.getView().getModel("form").setProperty("/ertragsarten", ertragsarten);
+                return Q.when(StaticData.KOSTENARTEN);
+            })
+            .then(function(kostenarten){
+                _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
             })
             .catch(function(oError){
                 console.log(oError);
@@ -387,6 +419,14 @@ sap.ui.define([
             })
             .then(function(vermietungsarten){
                 _this.getView().getModel("form").setProperty("/vermietungsarten", vermietungsarten);
+                return Q.when(StaticData.ERTRAGSARTEN);
+            })
+            .then(function(ertragsarten){
+                _this.getView().getModel("form").setProperty("/ertragsarten", ertragsarten);
+                return Q.when(StaticData.KOSTENARTEN);
+            })
+            .then(function(kostenarten){
+                _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
             })
             .catch(function(oError){
                 console.log(oError);
@@ -407,37 +447,6 @@ sap.ui.define([
             }
 
             // TODO
-        },
-
-        readKonditioneneinigungSetAsync: function(){
-
-            return Q.Promise(function(resolve, reject, notify) {
-
-                var oDataModel = sap.ui.getCore().getModel("odata");
-
-                oDataModel.read("/KonditioneneinigungSet", {
-
-                    urlParameters:{
-                        "$expand": "KeToOb"
-                    },
-
-                    success: function(oData){
-
-                        oData.results = _.map(oData.results, function(ke){
-                            ke.KeToOb = ke.KeToOb.results;
-                            return ke;
-                        });
-
-                        console.log(oData.results);
-                        resolve(oData.results);
-                    },
-
-                    error: function(oError){
-                        reject(oError);
-                    }
-                });
-
-            });
         },
 
         readMietobjektSetAsync: function(Bukrs, WeId){
@@ -603,6 +612,7 @@ sap.ui.define([
         },
 		
         speichern: function(){
+
             var modus = this.getView().getModel("form").getProperty("/modus");   
 
             switch(modus)
@@ -634,8 +644,12 @@ sap.ui.define([
                 Kategorie: va.Kategorie,
 
                 Vermietungsart: va.Vermietungsart,
+
+                Dienstleister: va.Dienstleister !== '' ? va.Dienstleister : null,
+                
                 Debitor: (va.Debitor !== '') ? va.Debitor : null,
                 Debitorname: va.Debitorname,
+
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak,
                 
@@ -677,20 +691,151 @@ sap.ui.define([
                     objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten : null;
                     objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten : null;
                     return objekt;
-                })
+                }),
+
+                Confirmation: va.Confirmation
             };
 
             DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){
                 _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
             })
             .catch(function(oError){
-                ErrorMessageUtil.showError(oError);
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Confirmation", true);
+                        _this.speichern();
+                    });
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
             })
             .done();
         },
 
         vermietungsaktivitaetAktualisieren: function(){
-            // TODO
+            var _this = this;
+
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+            var payload = {
+                Action: 'UPD',
+
+                VaId: va.VaId,
+                Bukrs: va.Bukrs,
+                WeId: va.WeId,
+
+                Kategorie: va.Kategorie,
+
+                Vermietungsart: va.Vermietungsart,
+
+                Dienstleister: va.Dienstleister !== '' ? va.Dienstleister : null,
+                
+                Debitor: (va.Debitor !== '') ? va.Debitor : null,
+                Debitorname: va.Debitorname,
+
+                Mietbeginn: va.Mietbeginn,
+                LzFirstbreak: va.LzFirstbreak,
+                
+                MzMonate: (va.MzMonate !== '') ? va.MzMonate : null,
+                MzErsterMonat: va.MzErsterMonat,
+                MzAnzahlJ: (va.MzAnzahlJ !== '') ? va.MzAnzahlJ : null,
+
+                MkMonate: (va.MkMonate !== '') ? va.MkMonate : null,
+                MkAbsolut: (va.MkAbsolut !== '') ? va.MkAbsolut : null,
+
+                BkMonate: (va.BkMonate !== '') ? va.BkMonate : null,
+                BkAbsolut: (va.BkAbsolut !== '') ? va.BkAbsolut : null,
+
+                ArtKosten: va.ArtKosten,
+                SonstK: (va.SonstK !== '') ? va.SonstK : null,
+                ArtErtrag: va.ArtErtrag,
+                SonstE: (va.SonstE !== '') ? va.SonstE : null,
+
+                AkErsterMonat: va.AkErsterMonat,
+                AkAnzahlM: (va.AkAnzahlM !== '') ? va.AkAnzahlM : null,
+
+                Poenale: (va.Poenale !== '') ? va.Poenale : null,
+                IdxWeitergabe: va.IdxWeitergabe,
+                PLRelevant: va.PLRelevant,
+
+                Status: va.Status,
+                Anmerkung: va.Anmerkung,
+                Bemerkung: va.Bemerkung,
+                
+                MonatJahr: va.MonatJahr,
+                Currency: va.Currency,
+                Unit: va.Unit,
+
+                VaToOb: _.map(va.VaToOb, function(objekt){
+                    delete object.__metadata;
+                    objekt.KeId = (objekt.KeId !== '') ? objekt.KeId : null;
+                    objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt : null;
+                    objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt : null;
+                    objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete : null;
+                    objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten : null;
+                    objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten : null;
+                    return objekt;
+                }),
+
+                Confirmation: va.Confirmation
+            };
+
+            DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){
+                _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
+            })
+            .catch(function(oError){
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Confirmation", true);
+                        _this.speichern();
+                    });
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
+            })
+            .done();
+        },
+
+        showConfirmationDialog: function(oError, onProceed, onAbort){
+            var _this = this;
+
+            var dialog = new sap.m.Dialog({
+				title: TranslationUtil.translate("WARNUNG"),
+				type: sap.m.DialogType.Message,
+                state: sap.ui.core.ValueState.Warning,
+                content: new sap.m.Text({
+                    text: oError.text
+                }),
+                beginButton: new sap.m.Button({
+                    text: TranslationUtil.translate("FORTFAHREN"),
+                    press: function () {
+                        dialog.close();
+                        if(typeof onProceed === 'function'){
+                            onProceed();
+                        }
+                    }
+                }),
+				endButton: new sap.m.Button({
+                    text: TranslationUtil.translate("ABBRECHEN"),
+					press: function () {
+						dialog.close();
+                        if(typeof onAbort === 'function'){
+                            onAbort();
+                        }
+					}
+				}),
+                afterClose: function() {
+                    dialog.destroy();
+                }
+            });
+
+            dialog.open();
         },
 
         validateForm: function(){
@@ -929,8 +1074,9 @@ sap.ui.define([
                 this.getView().addDependent(this._konditioneneinigungHinzufuegenDialog);
             }
 
-            this.readKonditioneneinigungSetAsync()
+            DataProvider.readKonditioneneinigungSetAsync("KeToOb")
             .then(function(konditioneneinigungen){
+                konditioneneinigungen.KeToOb = konditioneneinigungen.KeToOb.results;
 
                 var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
                 var vorhandeneMoIds = _.map(mietflaechenangaben, function(mietflaechenangaben){
@@ -1251,6 +1397,7 @@ sap.ui.define([
                 WeId: "",
                 
                 Vermietungsart: "",
+                Dienstleister: "",
                 Debitor: "",
                 Debitorname: "",
                 Mietbeginn: null,

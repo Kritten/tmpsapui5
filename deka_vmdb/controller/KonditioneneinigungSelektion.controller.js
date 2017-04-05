@@ -1,3 +1,9 @@
+/*
+ * @Author: Christian Hoff (best practice consulting AG) 
+ * @Date: 2017-04-05 21:39:45 
+ * @Last Modified by:   Christian Hoff (best practice consulting AG) 
+ * @Last Modified time: 2017-04-05 21:39:45 
+ */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller", 
 	"sap/ui/model/Filter",

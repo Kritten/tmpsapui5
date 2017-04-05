@@ -1,0 +1,17 @@
+[
+    {
+        "KoId": "00",
+        "Txtsh": "Cash-Incentive",
+        "Txtmd": "Cash-Incentive"
+    },
+    {
+        "KoId": "01",
+        "Txtsh": "Entmietungskosten",
+        "Txtmd": "Entmietungskosten"
+    },
+    {
+        "KoId": "02",
+        "Txtsh": "Sonstige Kosten",
+        "Txtmd": "Sonstige Kosten"
+    }
+]
