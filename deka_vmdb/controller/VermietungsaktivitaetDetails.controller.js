@@ -2,7 +2,7 @@
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:43:47 
  * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-04-06 10:36:19
+ * @Last Modified time: 2017-04-06 12:48:18
  */
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
@@ -11,7 +11,8 @@ sap.ui.define([
     "ag/bpc/Deka/util/NavigationPayloadUtil",
     "ag/bpc/Deka/util/DataProvider",
     "ag/bpc/Deka/util/StaticData",
-    "ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil) {
+    "ag/bpc/Deka/util/ErrorMessageUtil",
+    "ag/bpc/Deka/util/TranslationUtil"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
