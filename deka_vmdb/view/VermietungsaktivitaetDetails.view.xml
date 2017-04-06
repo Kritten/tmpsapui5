@@ -141,10 +141,8 @@
                         <items>
                             <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onKonditioneneinigungHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" class="sapUiSmallMarginEnd" />
                             <Button text="{i18n>KONDITIONENEINIGUNG_ENTFERNEN}" icon="sap-icon://sys-minus" press="onKonditioneneinigungLoeschenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" />
-                            <!--
                             <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} !== '01' }" class="sapUiSmallMarginEnd" />
                             <Button text="{i18n>MIETFLAECHE_ENTFERNEN}" icon="sap-icon://sys-minus" press="onMietflaechenAngabenLoeschenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} !== '01' }" />
-                            -->
                         </items>
                         <layoutData>
 							<FlexItemData growFactor="1" />
