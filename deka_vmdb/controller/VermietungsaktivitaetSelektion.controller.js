@@ -1,8 +1,8 @@
 /*
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:44:08 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:44:08 
+ * @Last Modified by: Christian Hoff (best practice consulting AG)
+ * @Last Modified time: 2017-04-06 12:59:36
  */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller", 

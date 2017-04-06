@@ -2,7 +2,7 @@
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:43:47 
  * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-04-06 12:48:18
+ * @Last Modified time: 2017-04-06 12:58:37
  */
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
@@ -1048,7 +1048,11 @@ sap.ui.define([
 
             DataProvider.readKonditioneneinigungSetAsync("KeToOb")
             .then(function(konditioneneinigungen){
-                konditioneneinigungen.KeToOb = konditioneneinigungen.KeToOb.results;
+                
+                konditioneneinigungen = _.map(konditioneneinigungen, function(ke){
+                    ke.KeToOb = ke.KeToOb.results;
+                    return ke;
+                });
 
                 var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
                 var vorhandeneMoIds = _.map(mietflaechenangaben, function(mietflaechenangaben){
