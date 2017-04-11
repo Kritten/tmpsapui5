@@ -807,6 +807,8 @@ sap.ui.define([
                 idMietflaechenangabenErrorBox.setText("Bitte fügen Sie mindestens eine Mietfläche hinzu");
                 idMietflaechenangabenErrorBox.setVisible(true);
             }
+
+            // TODO: mietfläche (alternativ) < hauptnutzfläche * 1,2
             
             
             return validationResult;

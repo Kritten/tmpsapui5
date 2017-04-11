@@ -440,14 +440,98 @@ sap.ui.define([
             var _this = this;
 
             var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
-            vermietungsaktivitaet = _this.newVermietungsaktivitaet();
 
             if(!vermietungsaktivitaet){
                 this.onBack(null);
                 return;
             }
+            
+            _this.initializeEmptyModel();
+            _this.getView().getModel("form").setProperty("/modus", "edit"); 
+            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);            
+         
+            DataProvider.readWirtschaftseinheitAsync(vermietungsaktivitaet.Bukrs, vermietungsaktivitaet.WeId)
+            .then(function(wirtschaftseinheit){                
+                vermietungsaktivitaet.VaToWe = wirtschaftseinheit;
+                vermietungsaktivitaet.Unit = vermietungsaktivitaet.VaToWe.Unit;
+                vermietungsaktivitaet.Currency = vermietungsaktivitaet.VaToWe.Currency; 
 
-            // TODO
+                return _this.initializeViewsettingsAsync(vermietungsaktivitaet);             
+            })
+            .then(function(){
+                return Q.when(StaticData.STATUSWERTE);
+            })
+            .then(function(statuswerte){
+                _this.getView().getModel("form").setProperty("/statuswerte", _.filter(statuswerte, function(statuswert){
+                    return statuswert.FlgKeVa === 'VA';
+                }));
+                return Q.when(StaticData.ANMERKUNGEN);
+            })
+            .then(function(anmerkungen){
+                var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+                var filteredAnmerkungen = _.filter(anmerkungen, function(anmerkung){
+                    return anmerkung.Stid === va.Status;
+                });
+
+                _this.getView().getModel("form").setProperty("/anmerkungen", filteredAnmerkungen);
+                return Q.when(StaticData.NUTZUNGSARTEN);
+            })
+            .then(function(nutzungsarten){
+                var nutzungsartenNew = _.clone(nutzungsarten);
+                nutzungsartenNew.unshift({NaId: '', TextSh: ''});
+                _this.getView().getModel("form").setProperty("/nutzungsarten", nutzungsartenNew);
+                return Q.when(StaticData.VERMIETUNGSARTEN);
+            })
+            .then(function(vermietungsarten){
+                _this.getView().getModel("form").setProperty("/vermietungsarten", vermietungsarten);
+                return Q.when(StaticData.ERTRAGSARTEN);
+            })
+            .then(function(ertragsarten){
+                _this.getView().getModel("form").setProperty("/ertragsarten", ertragsarten);
+                return Q.when(StaticData.KOSTENARTEN);
+            })
+            .then(function(kostenarten){
+                _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
+            })
+            .catch(function(oError){
+                console.log(oError);
+                ErrorMessageUtil.showError(oError);
+            })
+            .done();
+            
+            // Vermietungsobjekte auslesen und mit importierten Daten ergänzen          
+            var bukr = vermietungsaktivitaet.Bukrs;
+            var weId = vermietungsaktivitaet.WeId;
+           
+            this.readMietobjektSetAsync(bukr,weId)
+            .then(function(mietobjekte) {
+                var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+                var vorhandeneMoIds = _.map(mietflaechenangaben, function(mietflaechenangabe){
+                    return mietflaechenangabe.MoId;
+                });
+
+                var jsonData = {
+                    mietflaechen: []
+                };
+                jsonData.mietflaechen = _.filter(mietobjekte, function(mietobjekt){
+                    return (_.indexOf(vorhandeneMoIds, mietobjekt.MoId) === -1);
+                });
+
+                for(var i = 0; i < jsonData.mietflaechen.length; i++){        
+                    mietflaechenangaben[i].Bukrs = jsonData.mietflaechen[i].Bukrs;
+                    mietflaechenangaben[i].WeId = jsonData.mietflaechen[i].WeId;            
+                    mietflaechenangaben[i].Mietflche = jsonData.mietflaechen[i].Mietflche;
+                    mietflaechenangaben[i].Nutzart = jsonData.mietflaechen[i].Nutzart;
+                    mietflaechenangaben[i].NhMiete = jsonData.mietflaechen[i].NhMiete;
+                    mietflaechenangaben[i].Bezei = jsonData.mietflaechen[i].Bezei;
+                    mietflaechenangaben[i].Hnfl = jsonData.mietflaechen[i].Hnfl;
+                    mietflaechenangaben[i].HnflUnit = jsonData.mietflaechen[i].HnflUnit;                    
+                }
+
+                _this.getView().getModel("form").setProperty("vermietungsaktivitaet/VaToOb", mietflaechenangaben);
+            })
+            .done();            
         },
 
         readMietobjektSetAsync: function(Bukrs, WeId){
@@ -474,7 +558,7 @@ sap.ui.define([
 
             });
 
-        },
+        },        
 
         onStatusSelektionChange: function(oEvent){
             var _this = this;
@@ -845,7 +929,7 @@ sap.ui.define([
             var idMietername = this.getView().byId("idMietername");
             if(idMietername.getValue() === ""){
                 idMietername.setValueState(sap.ui.core.ValueState.Error);
-                idMietername.setValueStateText("Bitte geben Sie einen Wert ein.");
+                idMietername.setValueStateText("{i18n>ERR_FEHLENDER_WERT}."); 
                 validationResult = false;
             }
 
@@ -853,26 +937,28 @@ sap.ui.define([
             var idMietbeginn = this.getView().byId("idMietbeginn");
             if(idMietbeginn.getDateValue() === null){
                 idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
-                idMietbeginn.setValueStateText("Bitte geben Sie ein Datum ein.");
+                idMietbeginn.setValueStateText("{i18n>ERR_FEHLENDES_DATUM}.");
                 validationResult = false;
             }
             else if(idMietbeginn.getDateValue() < Date.now())
             {
                 idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
-                idMietbeginn.setValueStateText("Das Datum muss in der Zukunft liegen.");
+                idMietbeginn.setValueStateText("{i18n>ERR_UNGUELTIGES_DATUM}"); 
                 validationResult = false;
             }
 
+            // TODO: mietfläche (alternativ) < hauptnutzfläche * 1,2
+            
 
             var idLzFirstbreak = this.getView().byId("idLzFirstbreak");
             if(idLzFirstbreak.getValue() === ""){
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
-                idLzFirstbreak.setValueStateText("Bitte geben Sie einen Wert ein.");
+                idLzFirstbreak.setValueStateText("{i18n>ERR_FEHLENDER_WERT}.");
                 validationResult = false;
             }
-            else if(parseFloat(idLzFirstbreak.getValue()) <= 0){
+            else if(parseFloat(idLzFirstbreak.getValue()) < 0){
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
-                idLzFirstbreak.setValueStateText("Bitte geben Sie Wert größer 0 ein.");
+                idLzFirstbreak.setValueStateText("{i18n>ERR_WERT_IST_NEGATIV}.");
                 validationResult = false;
             }
 
@@ -880,12 +966,12 @@ sap.ui.define([
             var idIdxWeitergabe = this.getView().byId("idIdxWeitergabe");
             if(idIdxWeitergabe.getValue() === ""){
                 idIdxWeitergabe.setValueState(sap.ui.core.ValueState.Error);
-                idIdxWeitergabe.setValueStateText("Bitte geben Sie einen Wert ein.");
+                idIdxWeitergabe.setValueStateText("{i18n>ERR_FEHLENDER_WERT}.");
                 validationResult = false;
             }
             else if(parseFloat(idIdxWeitergabe.getValue()) <= 0){
                 idIdxWeitergabe.setValueState(sap.ui.core.ValueState.Error);
-                idIdxWeitergabe.setValueStateText("Bitte geben Sie Wert größer 0 ein.");
+                idIdxWeitergabe.setValueStateText("{i18n>ERR_WERT_GROESSER_NULL}.");
                 validationResult = false;
             }
             
