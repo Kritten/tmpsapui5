@@ -931,7 +931,7 @@ sap.ui.define([
             var idMietername = this.getView().byId("idMietername");
             if(idMietername.getValue() === ""){
                 idMietername.setValueState(sap.ui.core.ValueState.Error);
-                idMietername.setValueStateText("Bitte geben Sie einen Wert ein."); // TODO: in i18n übernehmen
+                idMietername.setValueStateText("{i18n>ERR_FEHLENDER_WERT}."); 
                 validationResult = false;
             }
 
@@ -939,28 +939,28 @@ sap.ui.define([
             var idMietbeginn = this.getView().byId("idMietbeginn");
             if(idMietbeginn.getDateValue() === null){
                 idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
-                idMietbeginn.setValueStateText("Bitte geben Sie ein Datum ein.");
+                idMietbeginn.setValueStateText("{i18n>ERR_FEHLENDES_DATUM}.");
                 validationResult = false;
             }
             else if(idMietbeginn.getDateValue() < Date.now())
             {
                 idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
-                idMietbeginn.setValueStateText("Das Datum muss in der Zukunft liegen."); // TODO i18n
+                idMietbeginn.setValueStateText("{i18n>ERR_UNGUELTIGES_DATUM}"); 
                 validationResult = false;
             }
 
             // TODO: mietfläche (alternativ) < hauptnutzfläche * 1,2
-
+            
 
             var idLzFirstbreak = this.getView().byId("idLzFirstbreak");
             if(idLzFirstbreak.getValue() === ""){
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
-                idLzFirstbreak.setValueStateText("Bitte geben Sie einen Wert ein.");
+                idLzFirstbreak.setValueStateText("{i18n>ERR_FEHLENDER_WERT}.");
                 validationResult = false;
             }
             else if(parseFloat(idLzFirstbreak.getValue()) < 0){
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
-                idLzFirstbreak.setValueStateText("Bitte geben Sie einen positiven Wert ein."); // TODO i18n
+                idLzFirstbreak.setValueStateText("{i18n>ERR_WERT_IST_NEGATIV}.");
                 validationResult = false;
             }
 
@@ -968,12 +968,12 @@ sap.ui.define([
             var idIdxWeitergabe = this.getView().byId("idIdxWeitergabe");
             if(idIdxWeitergabe.getValue() === ""){
                 idIdxWeitergabe.setValueState(sap.ui.core.ValueState.Error);
-                idIdxWeitergabe.setValueStateText("Bitte geben Sie einen Wert ein.");
+                idIdxWeitergabe.setValueStateText("{i18n>ERR_FEHLENDER_WERT}.");
                 validationResult = false;
             }
             else if(parseFloat(idIdxWeitergabe.getValue()) <= 0){
                 idIdxWeitergabe.setValueState(sap.ui.core.ValueState.Error);
-                idIdxWeitergabe.setValueStateText("Bitte geben Sie Wert größer 0 ein.");
+                idIdxWeitergabe.setValueStateText("{i18n>ERR_WERT_GROESSER_NULL}.");
                 validationResult = false;
             }
             
