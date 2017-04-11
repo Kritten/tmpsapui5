@@ -306,6 +306,7 @@
                 <Property Name="Currency" sap:filterable="false" sap:sortable="false" sap:label="Währung" sap:unicode="false" MaxLength="5" Nullable="false" Type="Edm.String" sap:semantics="currency-code"/>
                 <Property Name="Unit" sap:filterable="false" sap:sortable="false" sap:label="Mengeneinheit" sap:unicode="false" MaxLength="3" Nullable="false" Type="Edm.String" sap:semantics="unit-of-measure"/>
                 <Property Name="Favorit" sap:filterable="false" sap:sortable="false" sap:label="Favorit (true/false)" sap:unicode="false" Nullable="false" Type="Edm.Boolean"/>
+                <Property Name="LaufzeitKe" sap:filterable="false" sap:sortable="false" sap:label="Laufzeit KE" sap:unicode="false" Type="Edm.Decimal" sap:unit="Currency" Scale="3" Precision="18"/>
                 <NavigationProperty Name="VaToMap" ToRole="ToRole_VermietungsaktivitaetToMapping" FromRole="FromRole_VermietungsaktivitaetToMapping" Relationship="ZIP_VMDB_SRV.VermietungsaktivitaetToMapping"/>
                 <NavigationProperty Name="VaToWe" ToRole="ToRole_VermietungsaktivitaetToWirtschaftseinhei" FromRole="FromRole_VermietungsaktivitaetToWirtschaftseinhei" Relationship="ZIP_VMDB_SRV.VermietungsaktivitaetToWirtschaftseinhei"/>
                 <NavigationProperty Name="VaToOb" ToRole="ToRole_VermietungsaktivitaetToObjekt" FromRole="FromRole_VermietungsaktivitaetToObjekt" Relationship="ZIP_VMDB_SRV.VermietungsaktivitaetToObjekt"/>
