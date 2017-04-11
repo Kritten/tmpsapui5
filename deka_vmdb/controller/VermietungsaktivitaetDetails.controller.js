@@ -448,7 +448,7 @@ sap.ui.define([
             
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "edit"); 
-            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);            
          
             DataProvider.readWirtschaftseinheitAsync(vermietungsaktivitaet.Bukrs, vermietungsaktivitaet.WeId)
             .then(function(wirtschaftseinheit){                
@@ -518,7 +518,9 @@ sap.ui.define([
                     return (_.indexOf(vorhandeneMoIds, mietobjekt.MoId) === -1);
                 });
 
-                for(var i = 0; i < jsonData.mietflaechen.length; i++){                    
+                for(var i = 0; i < jsonData.mietflaechen.length; i++){        
+                    mietflaechenangaben[i].Bukrs = jsonData.mietflaechen[i].Bukrs;
+                    mietflaechenangaben[i].WeId = jsonData.mietflaechen[i].WeId;            
                     mietflaechenangaben[i].Mietflche = jsonData.mietflaechen[i].Mietflche;
                     mietflaechenangaben[i].Nutzart = jsonData.mietflaechen[i].Nutzart;
                     mietflaechenangaben[i].NhMiete = jsonData.mietflaechen[i].NhMiete;
