@@ -2,7 +2,7 @@
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:43:47 
  * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-04-06 09:32:58
+ * @Last Modified time: 2017-04-06 12:58:37
  */
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
@@ -11,7 +11,8 @@ sap.ui.define([
     "ag/bpc/Deka/util/NavigationPayloadUtil",
     "ag/bpc/Deka/util/DataProvider",
     "ag/bpc/Deka/util/StaticData",
-    "ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil) {
+    "ag/bpc/Deka/util/ErrorMessageUtil",
+    "ag/bpc/Deka/util/TranslationUtil"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
@@ -1052,98 +1053,69 @@ sap.ui.define([
                 this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenSelektion", this);
             }
 
-            var WeId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId"); 
             var Bukrs = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Bukrs");
+            var WeId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId"); 
 
-            this.readMietobjektSetAsync(WeId, Bukrs)
-            .then(function(mietobjekte){
+            DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId)
+            .then(function(wirtschaftseinheit){
 
-                var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
-                var vorhandeneMoIds = _.map(mietflaechenangaben, function(mietflaechenangaben){
-                    return mietflaechenangaben.MoId;
-                });
-
-                var wirtschaftseinheitId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId");
+                var mietobjekte = wirtschaftseinheit.WeToMo;
+                var objekte = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
 
                 var jsonData = {
-                    mietflaechen: []
+                    mietflaechen: _.reject(mietobjekte, function(mietobjekt){
+                        return _.some(objekte, function(objekt){
+                            return mietobjekt.MoId === objekt.MoId;
+                        });
+                    })
                 };
 
-                jsonData.mietflaechen = _.filter(mietobjekte, function(mietobjekt){
-                    return (_.indexOf(vorhandeneMoIds, mietobjekt.MoId) === -1) && (mietobjekt.WeId === wirtschaftseinheitId);
-                });
-
                 var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
-
                 _this._mietflaechenSelektionDialog.setModel(jsonModel);
                 _this._mietflaechenSelektionDialog.open();
             })
             .catch(function(oError){
-                console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
-
-            /*
-            var oDataModel = sap.ui.getCore().getModel("odata");
-
-            oDataModel.read("/MietobjektSet", {
-
-                urlParameters: {
-                    "$filter": "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'"
-                },
-
-                success: function(oData){
-                    console.log(oData);
-
-                    var aVorhandeneMoIds = [];
-                    var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
-                    
-                    mietflaechenangaben.forEach(function(mietflaechenangabe){
-                        aVorhandeneMoIds.push( mietflaechenangabe.MoId );
-                    });
-
-                    var wirtschaftseinheitId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId");
-
-                    var jsonData = {
-                        mietflaechen: []
-                    };
-
-                    oData.results.forEach(function(objekt){
-
-                        // nur Objekte Anzeigen, die noch nicht in der Liste sind
-                        if(jQuery.inArray(objekt.MoId, aVorhandeneMoIds) === -1)
-                        {
-                            // nur Mietflächen der selben Wirtschaftseinheit anzeigen
-                            if(objekt.WeId === wirtschaftseinheitId)
-                            {
-                                jsonData.mietflaechen.push( objekt );
-                            }
-                        }
-
-                    });
-
-                    var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
-
-                    _this._mietflaechenSelektionDialog.setModel(jsonModel);
-                    _this._mietflaechenSelektionDialog.open();
-                }
-            });
-            */
         },
 		
-        onMietflaechenSelektionDialogConfirm: function(oEvent){            
+        onMietflaechenSelektionDialogConfirm: function(oEvent){
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
             var selectedItems = oEvent.getParameter("selectedItems");        
 
             if(selectedItems.length > 0)
             {
-                var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+                var objekte = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
 
                 selectedItems.forEach(function(item){
-                    var mietflaechenangabe = item.getBindingContext().getObject();
-                    mietflaechenangaben.push(mietflaechenangabe);
+                    var mietobjekt = item.getBindingContext().getObject();
+
+                    // Umwandlung Mietobjekt -> Objekt
+                    objekte.push({
+                        WeId: mietobjekt.WeId,
+                        MoId: mietobjekt.MoId,
+                        Bukrs: mietobjekt.Bukrs,
+                        Bezei: mietobjekt.Bezei,
+                        Nutzart: mietobjekt.Nutzart,
+                        NutzartAlt: mietobjekt.NutzartAlt,
+                        Hnfl: mietobjekt.Hnfl,
+                        HnflAlt: mietobjekt.HnflAlt,
+                        HnflUnit: mietobjekt.HnflUnit,
+                        NhMiete: mietobjekt.NhMiete,
+                        AnMiete: mietobjekt.AnMiete,
+                        GaKosten: mietobjekt.GaKosten,
+                        MaKosten: mietobjekt.MaKosten,
+                        Whrung: mietobjekt.Whrung,
+                        MfSplit: false,
+                        VaId: va.VaId,
+                        MonatJahr: va.MonatJahr
+                    });
+
                 });
                 
-                this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
+                this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
             }
         },
         
@@ -1160,7 +1132,11 @@ sap.ui.define([
 
             DataProvider.readKonditioneneinigungSetAsync("KeToOb")
             .then(function(konditioneneinigungen){
-                konditioneneinigungen.KeToOb = konditioneneinigungen.KeToOb.results;
+                
+                konditioneneinigungen = _.map(konditioneneinigungen, function(ke){
+                    ke.KeToOb = ke.KeToOb.results;
+                    return ke;
+                });
 
                 var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
                 var vorhandeneMoIds = _.map(mietflaechenangaben, function(mietflaechenangaben){
