@@ -1,8 +1,8 @@
 /*
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:45:36 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:45:36 
+ * @Last Modified by: Christian Hoff (best practice consulting AG)
+ * @Last Modified time: 2017-04-10 17:16:46
  */
 sap.ui.define([
 	"sap/ui/core/UIComponent", 
@@ -159,7 +159,7 @@ sap.ui.define([
 
 			Q.when(StaticData.STOCKWERKE).then(function(stockwerke){
                 var stockwerkMapping = _.object(_.map(stockwerke, function(stockwerk){
-                    return [stockwerk.FlId, stockwerk.Txtsh];
+                    return [stockwerk.FlId, stockwerk.Txtmd];
                 }));
 				textModel.setProperty("/stockwerk", stockwerkMapping);
 			}).done();
