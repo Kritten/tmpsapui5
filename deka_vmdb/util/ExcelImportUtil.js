@@ -36,7 +36,9 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                     // var data = e.target.result;
                     var workbook = XLSX.read(data, {type: 'binary'});
 
+                    // Vermietungsaktivitäten
                     var vaSheetName = workbook.SheetNames[0];
+                    // Mietflächen
                     var mfSheetName = workbook.SheetNames[1];
 
                     var vaWorksheet = workbook.Sheets[vaSheetName];
@@ -93,7 +95,32 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                         }
                     }
                     
-                    vermietungsaktivitaet.Mietbeginn = new Date(vermietungsaktivitaet.Mietbeginn);
+                    // Datum-Strings übersetzen
+
+                    // Mietbeginn
+                    var dateString = vermietungsaktivitaet.Mietbeginn;
+                    var splitString = dateString.split(".");
+                    vermietungsaktivitaet.Mietbeginn = new Date(splitString[2],splitString[1]-1,splitString[0]);
+
+                    console.log(vermietungsaktivitaet);
+                    // Erster Monat mietfrei
+                    dateString = vermietungsaktivitaet.MzErsterMonat;
+                    splitString = dateString.split(".");
+                    if(splitString.length > 2){
+                        vermietungsaktivitaet.MzErsterMonat = new Date(splitString[2],splitString[1]-1,splitString[0]);
+                    }else{
+                        vermietungsaktivitaet.MzErsterMonat = new Date(splitString[1]-1,splitString[0]);
+                    }
+
+                    // 1. Monat der Verteilung der Ausbaukosten
+                    dateString = vermietungsaktivitaet.AkErsterMonat;
+                    splitString = dateString.split(".");
+                    if(splitString.length > 2){
+                        vermietungsaktivitaet.AkErsterMonat = new Date(splitString[2],splitString[1]-1,splitString[0]);
+                    }else{
+                        vermietungsaktivitaet.AkErsterMonat = new Date(splitString[1]-1,splitString[0]);
+                    }
+                    
                     resolve(vermietungsaktivitaet);
                 };
 
