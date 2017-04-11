@@ -26,6 +26,9 @@
                 <Text text="{i18n>LEERSTAND}" />
             </Column>
             <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>MIETERNAME}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
                 <Text text="{i18n>GESCHOSS}" />
             </Column>
             <Column minScreenWidth="Tablet" demandPopin="true">
@@ -39,6 +42,7 @@
                 <Text text="{Bezei}" />
                 <Text text="{= ${text>/nutzungsart}[${Nutzart}] }" />
                 <CheckBox selected="{Leerstand}" editable="false" />
+                <Text text="{Mietername}" />
                 <Text text="{= ${text>/stockwerk}[${Dmgeschos}] }" />
                 <Text text="{Hnfl} {HnflUnit}" />
 			</cells>
