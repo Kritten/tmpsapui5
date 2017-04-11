@@ -2,7 +2,7 @@
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:43:47 
  * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-04-06 12:58:37
+ * @Last Modified time: 2017-04-10 21:56:24
  */
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
@@ -685,7 +685,6 @@ sap.ui.define([
                 Unit: va.Unit,
 
                 VaToOb: _.map(va.VaToOb, function(objekt){
-                    objekt.KeId = (objekt.KeId !== '') ? objekt.KeId : null;
                     objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt : null;
                     objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt : null;
                     objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete : null;
@@ -772,7 +771,6 @@ sap.ui.define([
 
                 VaToOb: _.map(va.VaToOb, function(objekt){
                     delete objekt.__metadata;
-                    objekt.KeId = (objekt.KeId !== '') ? objekt.KeId : null;
                     objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt : null;
                     objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt : null;
                     objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete : null;
