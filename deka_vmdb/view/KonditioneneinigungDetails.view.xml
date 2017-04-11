@@ -112,8 +112,8 @@
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" type="Number" editable="false" />
                             <Input value="{form>AnMiete}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>GaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>MaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>GaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
+                            <Input value="{form>MaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
                         </cells>
                     </ColumnListItem>
                     
