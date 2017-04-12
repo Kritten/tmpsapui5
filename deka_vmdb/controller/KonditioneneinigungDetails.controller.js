@@ -757,13 +757,13 @@ sap.ui.define([
             var idGueltigkKe = this.getView().byId("idGueltigkKe");
             if(idGueltigkKe.getDateValue() === null){
                 idGueltigkKe.setValueState(sap.ui.core.ValueState.Error);
-                idGueltigkKe.setValueStateText("Bitte geben Sie ein Datum ein.");
+                idGueltigkKe.setValueStateText(TranslationUtil.translate("ERR_FEHLENDES_DATUM"));
                 validationResult = false;
             }
             else if(idGueltigkKe.getDateValue() < Date.now())
             {
                 idGueltigkKe.setValueState(sap.ui.core.ValueState.Error);
-                idGueltigkKe.setValueStateText("Das Datum muss in der Zukunft liegen.");
+                idGueltigkKe.setValueStateText(TranslationUtil.translate("ERR_UNGUELTIGES_DATUM"));
                 validationResult = false;
             }
 
@@ -771,7 +771,7 @@ sap.ui.define([
             var idMietbeginn = this.getView().byId("idMietbeginn");
             if(idMietbeginn.getDateValue() === null){
                 idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
-                idMietbeginn.setValueStateText("Bitte geben Sie ein Datum ein.");
+                idMietbeginn.setValueStateText(TranslationUtil.translate("ERR_FEHLENDES_DATUM"));
                 validationResult = false;
             }
 
@@ -779,12 +779,12 @@ sap.ui.define([
             var idLzFirstbreak = this.getView().byId("idLzFirstbreak");
             if(idLzFirstbreak.getValue() === ""){
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
-                idLzFirstbreak.setValueStateText("Bitte geben Sie einen Wert ein.");
+                idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
             else if(parseFloat(idLzFirstbreak.getValue()) <= 0){
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
-                idLzFirstbreak.setValueStateText("Bitte geben Sie Wert größer 0 ein.");
+                idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                 validationResult = false;
             }
             
@@ -792,12 +792,12 @@ sap.ui.define([
             var idMzMonate = this.getView().byId("idMzMonate");
             if(idMzMonate.getValue() === ""){
                 idMzMonate.setValueState(sap.ui.core.ValueState.Error);
-                idMzMonate.setValueStateText("Bitte geben Sie einen Wert ein.");
+                idMzMonate.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
             else if(parseFloat(idMzMonate.getValue()) <= 0){
                 idMzMonate.setValueState(sap.ui.core.ValueState.Error);
-                idMzMonate.setValueStateText("Bitte geben Sie Wert größer 0 ein.");
+                idMzMonate.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                 validationResult = false;
             }
             
@@ -808,8 +808,28 @@ sap.ui.define([
                 idMietflaechenangabenErrorBox.setVisible(true);
             }
 
-            // TODO: mietfläche (alternativ) < hauptnutzfläche * 1,2
-            
+            var ketoob = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
+            var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
+            var rows = mietflaechenangabenTable.getItems();
+            var i;
+            for(i = 0; i < rows.length; i = i+1){
+                var row = rows[i];
+                var cells = row.getAggregation("cells");
+
+                // TODO: dynamisch machen (spaltenindex aus "Columns" aggregation der table berechnen)
+                var mfAltCell = cells[5];                
+                var mfAltValue = mfAltCell.getProperty("value");
+                var hnflValue = ketoob[i].Hnfl;
+
+                // TODO: parseFloat error abfangen, wenn mfAltValue buchstaben enthält
+                if(parseFloat(mfAltValue) > parseFloat(hnflValue)*1.2) {
+                    mfAltCell.setValueState(sap.ui.core.ValueState.Error);
+                    var errText = TranslationUtil.translate("ERR_MFALT_MAX");
+                    mfAltCell.setValueStateText(errText);
+
+                    validationResult = false;
+                }
+            }
             
             return validationResult;
         },

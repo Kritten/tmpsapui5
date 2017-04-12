@@ -447,7 +447,7 @@ sap.ui.define([
             }
             
             _this.initializeEmptyModel();
-            _this.getView().getModel("form").setProperty("/modus", "edit"); 
+            _this.getView().getModel("form").setProperty("/modus", "new"); 
             _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);            
          
             DataProvider.readWirtschaftseinheitAsync(vermietungsaktivitaet.Bukrs, vermietungsaktivitaet.WeId)
@@ -867,6 +867,8 @@ sap.ui.define([
             };
 
             DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){
+                return DataProvider.deleteSperreAsync('', va.VaId);
+            }).then(function(){
                 _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
             })
             .catch(function(oError){
@@ -940,12 +942,12 @@ sap.ui.define([
                 idMietbeginn.setValueStateText(TranslationUtil.translate("ERR_FEHLENDES_DATUM"));
                 validationResult = false;
             }
-            else if(idMietbeginn.getDateValue() < Date.now())
-            {
-                idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
-                idMietbeginn.setValueStateText(TranslationUtil.translate("ERR_UNGUELTIGES_DATUM")); 
-                validationResult = false;
-            }
+            // else if(idMietbeginn.getDateValue() < Date.now())
+            // {
+            //     idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
+            //     idMietbeginn.setValueStateText(TranslationUtil.translate("ERR_UNGUELTIGES_DATUM")); 
+            //     validationResult = false;
+            // }
 
             // Bei externer Vermietung muss ein Dienstleister angegeben werden
             var idDienstleister = this.getView().byId("idDienstleister");
@@ -969,10 +971,6 @@ sap.ui.define([
                 var mfAltCell = cells[5];                
                 var mfAltValue = mfAltCell.getProperty("value");
                 var hnflValue = vatoob[i].Hnfl;
-
-                console.log(i);
-                console.log(parseFloat(hnflValue));
-                console.log(parseFloat(mfAltValue));
 
                 // TODO: parseFloat error abfangen, wenn mfAltValue buchstaben enthält
                 if(parseFloat(mfAltValue) > parseFloat(hnflValue)*1.2) {
@@ -1289,26 +1287,30 @@ sap.ui.define([
                 MessageBox.error("Eine Verteilung ohne Mietflächen ist nicht möglich.");
 			} else {
                 Q.when(StaticData.NUTZUNGSARTEN).then(function(nutzungsarten){
-
                     var vorhandeneNutzungsarten = _.filter(nutzungsarten, function(nutzungsart){
                         return _.find(mietflaechenangaben, function(mietflaechenangabe){
-                            if(mietflaechenangabe.NutzartAlt !== ""){
+                            if(mietflaechenangabe.NutzartAlt !== "" && mietflaechenangabe.NutzartAlt !== "0700" && mietflaechenangabe.NutzartAlt !== "0750"){
                                 return nutzungsart.NaId === mietflaechenangabe.NutzartAlt;
                             } else {
-                                return nutzungsart.NaId === mietflaechenangabe.Nutzart;
+                                if(mietflaechenangabe.Nutzart !== "0700" && mietflaechenangabe.Nutzart !== "0750"){
+                                    return nutzungsart.NaId === mietflaechenangabe.Nutzart;
+                                }
                             }
                         });
                     });
+                    if(vorhandeneNutzungsarten.length == 0){
+                        MessageBox.information(TranslationUtil.translate("ERR_KEINE_GUELTIGEN_NUTZUNGSARTEN"));
+                    }else{
+                        var dialogModel = new sap.ui.model.json.JSONModel({
+                            nutzungsarten: vorhandeneNutzungsarten,
+                            nutzungsart: vorhandeneNutzungsarten[0].NaId,
+                            grundausbaukosten: 100,
+                            mietausbaukosten: 50
+                        });
 
-                    var dialogModel = new sap.ui.model.json.JSONModel({
-                        nutzungsarten: vorhandeneNutzungsarten,
-                        nutzungsart: vorhandeneNutzungsarten[0].NaId,
-                        grundausbaukosten: 100,
-                        mietausbaukosten: 50
-                    });
-
-                    _this._ausbaukostenVerteilenDialog.setModel(dialogModel);
-                    _this._ausbaukostenVerteilenDialog.open();
+                        _this._ausbaukostenVerteilenDialog.setModel(dialogModel);
+                        _this._ausbaukostenVerteilenDialog.open();
+                    }
                 })
                 .catch(function(oError){
                     ErrorMessageUtil.showError(oError);
