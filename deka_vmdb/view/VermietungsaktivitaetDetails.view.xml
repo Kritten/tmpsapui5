@@ -124,8 +124,8 @@
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" type="Number" editable="false" />
                             <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
+                            <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
                         </cells>
                     </ColumnListItem>
                     
@@ -186,7 +186,7 @@
 						</layoutData>
                     </Select>
 
-                    <Label text="{i18n>DIENSTLEISTER}" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '03' }" />
+                    <Label text="{i18n>DIENSTLEISTER}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '03' }" />
                     <Input id="idDienstleister" value="{form>/vermietungsaktivitaet/Dienstleister}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '03' }" class="sapUiSmallMarginBottom">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
@@ -404,6 +404,9 @@
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>BEZEICHNUNG}" />
                     </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>LAUFZEIT}" />
+                    </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
                         <Text text="{i18n>VERMIETUNGSAKTIVITAET}" />
                     </Column>
@@ -419,6 +422,13 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>MIETE_GESAMT}" />
+                            <Text text="{
+                                    path: 'form>/vermietungsaktivitaet/LaufzeitKe',
+                                    type: 'sap.ui.model.type.Integer',
+                                    formatOptions: {
+                                        maxIntegerDigits: 5
+                                    }
+                            }" />
                             <Text text="{form>/vermietungsaktivitaet/GesErtrag} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{form>/vermietungsaktivitaet/GesKeErtrag} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesErtrag} * 100 - ${form>/vermietungsaktivitaet/GesKeErtrag} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }">
@@ -433,6 +443,13 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>KOSTEN_GESAMT}" />
+                            <Text text="{
+                                    path: 'form>/vermietungsaktivitaet/LaufzeitKe',
+                                    type: 'sap.ui.model.type.Integer',
+                                    formatOptions: {
+                                        maxIntegerDigits: 5
+                                    }
+                            }" />
                             <Text text="{form>/vermietungsaktivitaet/GesKosten} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{form>/vermietungsaktivitaet/GesKeKosten} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesKosten} * 100 - ${form>/vermietungsaktivitaet/GesKeKosten} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }">
