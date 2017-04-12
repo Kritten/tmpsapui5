@@ -931,7 +931,7 @@ sap.ui.define([
             var idMietername = this.getView().byId("idMietername");
             if(idMietername.getValue() === ""){
                 idMietername.setValueState(sap.ui.core.ValueState.Error);
-                idMietername.setValueStateText("{i18n>ERR_FEHLENDER_WERT}."); 
+                idMietername.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT")); 
                 validationResult = false;
             }
 
@@ -939,28 +939,62 @@ sap.ui.define([
             var idMietbeginn = this.getView().byId("idMietbeginn");
             if(idMietbeginn.getDateValue() === null){
                 idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
-                idMietbeginn.setValueStateText("{i18n>ERR_FEHLENDES_DATUM}.");
+                idMietbeginn.setValueStateText(TranslationUtil.translate("ERR_FEHLENDES_DATUM"));
                 validationResult = false;
             }
             else if(idMietbeginn.getDateValue() < Date.now())
             {
                 idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
-                idMietbeginn.setValueStateText("{i18n>ERR_UNGUELTIGES_DATUM}"); 
+                idMietbeginn.setValueStateText(TranslationUtil.translate("ERR_UNGUELTIGES_DATUM")); 
                 validationResult = false;
             }
 
-            // TODO: mietfläche (alternativ) < hauptnutzfläche * 1,2
-            
+            // Bei externer Vermietung muss ein Dienstleister angegeben werden
+            var idDienstleister = this.getView().byId("idDienstleister");
+            var vermietungsart = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Vermietungsart");
+            var extVermietung = "03";
+            if(vermietungsart === extVermietung && idDienstleister.getValue() === "") {
+                idDienstleister.setValueState(sap.ui.core.ValueState.Error);
+                idDienstleister.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                validationResult = false;
+            }
+
+            var vatoob = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+            var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
+            var rows = mietflaechenangabenTable.getItems();
+            var i;
+            for(i = 0; i < rows.length; i = i+1){
+                var row = rows[i];
+                var cells = row.getAggregation("cells");
+
+                // TODO: dynamisch machen (spaltenindex aus "Columns" aggregation der table berechnen)
+                var mfAltCell = cells[5];                
+                var mfAltValue = mfAltCell.getProperty("value");
+                var hnflValue = vatoob[i].Hnfl;
+
+                console.log(i);
+                console.log(parseFloat(hnflValue));
+                console.log(parseFloat(mfAltValue));
+
+                // TODO: parseFloat error abfangen, wenn mfAltValue buchstaben enthält
+                if(parseFloat(mfAltValue) > parseFloat(hnflValue)*1.2) {
+                    mfAltCell.setValueState(sap.ui.core.ValueState.Error);
+                    var errText = TranslationUtil.translate("ERR_MFALT_MAX");
+                    mfAltCell.setValueStateText(errText);
+
+                    validationResult = false;
+                }
+            }
 
             var idLzFirstbreak = this.getView().byId("idLzFirstbreak");
             if(idLzFirstbreak.getValue() === ""){
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
-                idLzFirstbreak.setValueStateText("{i18n>ERR_FEHLENDER_WERT}.");
+                idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
             else if(parseFloat(idLzFirstbreak.getValue()) < 0){
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
-                idLzFirstbreak.setValueStateText("{i18n>ERR_WERT_IST_NEGATIV}.");
+                idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                 validationResult = false;
             }
 
@@ -968,12 +1002,12 @@ sap.ui.define([
             var idIdxWeitergabe = this.getView().byId("idIdxWeitergabe");
             if(idIdxWeitergabe.getValue() === ""){
                 idIdxWeitergabe.setValueState(sap.ui.core.ValueState.Error);
-                idIdxWeitergabe.setValueStateText("{i18n>ERR_FEHLENDER_WERT}.");
+                idIdxWeitergabe.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
             else if(parseFloat(idIdxWeitergabe.getValue()) <= 0){
                 idIdxWeitergabe.setValueState(sap.ui.core.ValueState.Error);
-                idIdxWeitergabe.setValueStateText("{i18n>ERR_WERT_GROESSER_NULL}.");
+                idIdxWeitergabe.setValueStateText(TranslationUtil.translate("ERR_WERT_GROESSER_NULL"));
                 validationResult = false;
             }
             
