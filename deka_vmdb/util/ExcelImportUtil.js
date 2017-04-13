@@ -57,11 +57,15 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                         keyCellAddress = XLSX.utils.encode_cell({c:0, r:row});
                         valCellAddress = XLSX.utils.encode_cell({c:1, r:row});
 
-                        if((vaWorksheet[keyCellAddress] === undefined) || (vaWorksheet[valCellAddress] === undefined)){
+                        if(vaWorksheet[keyCellAddress] === undefined){
                             break;
                         }
-
-                        vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = vaWorksheet[valCellAddress].v;
+                        
+                        if(vaWorksheet[valCellAddress] === undefined){
+                            vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = "";
+                        }else{
+                            vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = vaWorksheet[valCellAddress].v;
+                        }
                     }
 
 

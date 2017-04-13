@@ -692,7 +692,7 @@ sap.ui.define([
                 this.speichern();
             }
             else {
-                MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre eingaben.");
+                MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
             }
         },
 		
@@ -720,6 +720,30 @@ sap.ui.define([
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
 
+            var objekte = [];
+            // Umwandlung Mietobjekt -> Objekt
+            va.VaToOb.forEach(function(mietobjekt){
+                objekte.push({
+                    WeId: mietobjekt.WeId,
+                    MoId: mietobjekt.MoId,
+                    Bukrs: mietobjekt.Bukrs,
+                    Bezei: mietobjekt.Bezei,
+                    Nutzart: mietobjekt.Nutzart,
+                    NutzartAlt: mietobjekt.NutzartAlt,
+                    Hnfl: mietobjekt.Hnfl,
+                    HnflAlt: mietobjekt.HnflAlt,
+                    HnflUnit: mietobjekt.HnflUnit,
+                    NhMiete: mietobjekt.NhMiete,
+                    AnMiete: mietobjekt.AnMiete,
+                    GaKosten: mietobjekt.GaKosten,
+                    MaKosten: mietobjekt.MaKosten,
+                    Whrung: mietobjekt.Whrung,
+                    MfSplit: false,
+                    VaId: va.VaId,
+                    MonatJahr: va.MonatJahr
+                });
+            });
+            
             var payload = {
                 Action: 'CRE',
 
@@ -758,7 +782,7 @@ sap.ui.define([
 
                 Poenale: (va.Poenale !== '') ? va.Poenale : null,
                 IdxWeitergabe: va.IdxWeitergabe,
-                PLRelevant: va.PLRelevant,
+                PLRelevant: (va.PLRelevant == 'X') ? true : false,
 
                 Status: va.Status,
                 Anmerkung: va.Anmerkung,
@@ -768,14 +792,7 @@ sap.ui.define([
                 Currency: va.Currency,
                 Unit: va.Unit,
 
-                VaToOb: _.map(va.VaToOb, function(objekt){
-                    objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt : null;
-                    objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt : null;
-                    objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete : null;
-                    objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten : null;
-                    objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten : null;
-                    return objekt;
-                }),
+                VaToOb: objekte,
 
                 Confirmation: va.Confirmation
             };

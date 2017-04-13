@@ -782,7 +782,7 @@ sap.ui.define([
                 idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
-            else if(parseFloat(idLzFirstbreak.getValue()) <= 0){
+            else if(parseFloat(idLzFirstbreak.getValue()) < 0){
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
                 idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                 validationResult = false;
@@ -795,7 +795,7 @@ sap.ui.define([
                 idMzMonate.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
-            else if(parseFloat(idMzMonate.getValue()) <= 0){
+            else if(parseFloat(idMzMonate.getValue()) < 0){
                 idMzMonate.setValueState(sap.ui.core.ValueState.Error);
                 idMzMonate.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                 validationResult = false;

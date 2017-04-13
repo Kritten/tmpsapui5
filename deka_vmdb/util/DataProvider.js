@@ -498,6 +498,27 @@ sap.ui.define([], function() {
             });
         },
 
+        readGenehmigerSetAsync: function(moeglicheGenehmiger, stufe){
+            var _this = this;
+
+            var urlParamters = {};
+
+            urlParamters.$filter = "Moegliche_Genehmiger eq '" + moeglicheGenehmiger + "' and Stufe eq '" + stufe + "'";
+            
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.read("/GenehmigerSet", {
+                    urlParameters: urlParamters,
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
         readGenehmigungsprozessSetAsync: function(KeId, VaId){
             var _this = this;
             
