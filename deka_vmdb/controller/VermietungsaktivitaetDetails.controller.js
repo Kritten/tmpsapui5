@@ -518,7 +518,7 @@ sap.ui.define([
                     return (_.indexOf(vorhandeneMoIds, mietobjekt.MoId) === -1);
                 });
 
-                for(var i = 0; i < jsonData.mietflaechen.length; i++){        
+                for(var i = 0; i < jsonData.mietflaechen.length; i++){
                     mietflaechenangaben[i].Bukrs = jsonData.mietflaechen[i].Bukrs;
                     mietflaechenangaben[i].WeId = jsonData.mietflaechen[i].WeId;            
                     mietflaechenangaben[i].Mietflche = jsonData.mietflaechen[i].Mietflche;
@@ -528,6 +528,32 @@ sap.ui.define([
                     mietflaechenangaben[i].Hnfl = jsonData.mietflaechen[i].Hnfl;
                     mietflaechenangaben[i].HnflUnit = jsonData.mietflaechen[i].HnflUnit;                    
                 }
+
+                var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+                var objekte = [];
+                // Umwandlung Mietobjekt -> Objekt
+                mietflaechenangaben.forEach(function(mietobjekt){
+                    objekte.push({
+                        WeId: mietobjekt.WeId,
+                        MoId: mietobjekt.MoId,
+                        KeId: "",
+                        Bukrs: mietobjekt.Bukrs,
+                        Bezei: (mietobjekt.Bezei !== '') ? mietobjekt.Bezei : null,
+                        Nutzart: mietobjekt.Nutzart,
+                        NutzartAlt: (mietobjekt.NutzartAlt !== '') ? mietobjekt.NutzartAlt : null,
+                        Hnfl: mietobjekt.Hnfl,
+                        HnflAlt: (mietobjekt.HnflAlt !== '') ? mietobjekt.HnflAlt : null,
+                        HnflUnit: mietobjekt.HnflUnit,
+                        NhMiete: mietobjekt.NhMiete,
+                        AnMiete: mietobjekt.AnMiete,
+                        GaKosten: mietobjekt.GaKosten,
+                        MaKosten: mietobjekt.MaKosten,
+                        Whrung: mietobjekt.Whrung,
+                        MfSplit: (mietobjekt.MfSplit == 'X') ? true : false,
+                        VaId: va.VaId,
+                        MonatJahr: va.MonatJahr
+                    });
+                });
 
                 _this.getView().getModel("form").setProperty("vermietungsaktivitaet/VaToOb", mietflaechenangaben);
             })
@@ -719,30 +745,6 @@ sap.ui.define([
             var _this = this;
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
-
-            var objekte = [];
-            // Umwandlung Mietobjekt -> Objekt
-            va.VaToOb.forEach(function(mietobjekt){
-                objekte.push({
-                    WeId: mietobjekt.WeId,
-                    MoId: mietobjekt.MoId,
-                    Bukrs: mietobjekt.Bukrs,
-                    Bezei: (mietobjekt.Bezei !== '') ? mietobjekt.Bezei : null,
-                    Nutzart: mietobjekt.Nutzart,
-                    NutzartAlt: (mietobjekt.NutzartAlt !== '') ? mietobjekt.NutzartAlt : null,
-                    Hnfl: mietobjekt.Hnfl,
-                    HnflAlt: (mietobjekt.HnflAlt !== '') ? mietobjekt.HnflAlt : null,
-                    HnflUnit: mietobjekt.HnflUnit,
-                    NhMiete: mietobjekt.NhMiete,
-                    AnMiete: mietobjekt.AnMiete,
-                    GaKosten: mietobjekt.GaKosten,
-                    MaKosten: mietobjekt.MaKosten,
-                    Whrung: mietobjekt.Whrung,
-                    MfSplit: false,
-                    VaId: va.VaId,
-                    MonatJahr: va.MonatJahr
-                });
-            });
             
             var payload = {
                 Action: 'CRE',
@@ -792,7 +794,7 @@ sap.ui.define([
                 Currency: va.Currency,
                 Unit: va.Unit,
 
-                VaToOb: objekte,
+                VaToOb: va.VaToOb,
 
                 Confirmation: va.Confirmation
             };
