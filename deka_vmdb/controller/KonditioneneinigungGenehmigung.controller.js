@@ -54,10 +54,10 @@ sap.ui.define([
                     stufen: stufen
                 };
 
-                console.log(stufen);
-
                 var formModel = new sap.ui.model.json.JSONModel(form);
                 _this.getView().setModel(formModel, "form");
+
+                _this.ladeMoeglicheGenehmiger();
             })
             .catch(function(oError){
                 ErrorMessageUtil.showError(oError);
@@ -66,12 +66,75 @@ sap.ui.define([
 
         },
 
+        ladeMoeglicheGenehmiger: function(){
+            var _this = this;
+            var form = _this.getView().getModel("form");
+
+            var stufen = form.oData.stufen;
+
+            for(var i = 0; i < stufen.length; i++){
+                var genehmigungen = stufen[i].genehmigungen;
+
+                for(var j = 0; j < genehmigungen.length; j++){
+                    var aktGenehmigung = genehmigungen[j];
+                    var aktGenehmiger = genehmigungen[j].Genehmiger;
+                    var aktStufe = stufen[i].Stufe;
+
+                    DataProvider.readGenehmigerSetAsync(aktGenehmiger, aktStufe)
+                    .then(function(genehmigerSet){                      
+                        aktGenehmigung.available = genehmigerSet;
+                        // var slist = _this.getView().byId("stufenList");
+                        // var sItem = slist.getAggregation("items");
+                        // console.log(sItem, "sitem");
+                        // var tItem = sItem.getAggregation("content")[0].getItems()[j].getAggregation("cells")[0];
+
+                        // console.log(tItem, "tItem");
+                    }).done();
+                }
+            }
+
+            console.log(form, "form");
+        },
+
         onBearbeitenButtonPress: function(oEvent){
             this.getView().getModel("form").setProperty("/modus", "edit");
+            
+            var stufen = this.getView().byId("stufenList");
+            var numStufen = stufen.getItems().length;
+            var sTables;
+
+            // Über Stufen iterieren
+            for(var i = 0; i < numStufen; i = i + 1){
+                var stufenItem = stufen.getItems()[i];
+                sTables = stufenItem.getAggregation("content");
+                
+                // Wahrscheinlich ist sTables.length immer = 1
+                for(var j=0; j < sTables.length; j = j+1){
+                    var table = sTables[j];
+                    var tableItems = table.getItems();
+
+                    for(var k=0; k < tableItems.length; k = k + 1){
+                        var tZeile = tableItems[k];
+                        var zCells = tZeile.getAggregation("cells");
+
+                       console.log(zCells[0].getItems(), "zCellItems"); 
+                    }
+                }
+            }
+            // for each (stufe)
+            //    for each (zeile der tabelle)
+            //        moeglicheGenehmiger = request(stufe, aktueller wert der dropdownliste)
+            //        dropdownbox.available = moeglicheGenehmiger
+            //
         },
 
         onSpeichernButtonPress: function(oEvent){
             this.getView().getModel("form").setProperty("/modus", "show");
+
+            // for each (stufe)
+            //    for each (zeile der tabelle)
+            //        speicherRequestAbschicken (updateGenehmigungsprozess)
+            //
         },
 
         onAbbrechenButtonPress: function(oEvent){

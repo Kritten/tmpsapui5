@@ -1,0 +1,32 @@
+[
+      {
+        "__metadata" : {
+          "id" : "http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/GenehmigerSet(Moegliche_Genehmiger='MG1',Stufe='GL')",
+          "uri" : "http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/GenehmigerSet(Moegliche_Genehmiger='MG1',Stufe='GL')",
+          "type" : "ZIP_VMDB_SRV.Genehmiger"
+        },
+        "Moegliche_Genehmiger" : "Genehmiger 1",
+        "Name" : "MG1",
+        "Stufe" : "Stufe 2"
+      },
+      {
+        "__metadata" : {
+          "id" : "http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/GenehmigerSet(Moegliche_Genehmiger='MG2',Stufe='GL')",
+          "uri" : "http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/GenehmigerSet(Moegliche_Genehmiger='MG2',Stufe='GL')",
+          "type" : "ZIP_VMDB_SRV.Genehmiger"
+        },
+        "Moegliche_Genehmiger" : "Genehmiger 2",
+        "Name" : "MG2",
+        "Stufe" : "Stufe 2"
+      },
+      {
+        "__metadata" : {
+          "id" : "http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/GenehmigerSet(Moegliche_Genehmiger='MG2',Stufe='GL')",
+          "uri" : "http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/GenehmigerSet(Moegliche_Genehmiger='MG2',Stufe='GL')",
+          "type" : "ZIP_VMDB_SRV.Genehmiger"
+        },
+        "Moegliche_Genehmiger" : "Genehmiger 2",
+        "Name" : "MG3",
+        "Stufe" : "Stufe 2"
+      }
+]

@@ -15,9 +15,11 @@
                             <core:Item key="{NaId}" text="{TextSh}" />
                         </items>
                     </Select>
-                    <Label text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
+                    <!-- <Label text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />-->
+                    <Label text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} ({i18n>GESAMT})" />
                     <Input value="{/grundausbaukosten}" />
-                    <Label text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
+                    <!--<Label text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />-->
+                    <Label text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} ({i18n>GESAMT})" />
                     <Input value="{/mietausbaukosten}" />
                 </f:content>
             </f:SimpleForm>

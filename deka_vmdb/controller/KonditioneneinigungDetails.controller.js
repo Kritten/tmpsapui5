@@ -786,8 +786,7 @@ sap.ui.define([
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
                 idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                 validationResult = false;
-            }
-            
+            }            
 
             var idMzMonate = this.getView().byId("idMzMonate");
             if(idMzMonate.getValue() === ""){

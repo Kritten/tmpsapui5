@@ -727,11 +727,11 @@ sap.ui.define([
                     WeId: mietobjekt.WeId,
                     MoId: mietobjekt.MoId,
                     Bukrs: mietobjekt.Bukrs,
-                    Bezei: mietobjekt.Bezei,
+                    Bezei: (mietobjekt.Bezei !== '') ? mietobjekt.Bezei : null,
                     Nutzart: mietobjekt.Nutzart,
-                    NutzartAlt: mietobjekt.NutzartAlt,
+                    NutzartAlt: (mietobjekt.NutzartAlt !== '') ? mietobjekt.NutzartAlt : null,
                     Hnfl: mietobjekt.Hnfl,
-                    HnflAlt: mietobjekt.HnflAlt,
+                    HnflAlt: (mietobjekt.HnflAlt !== '') ? mietobjekt.HnflAlt : null,
                     HnflUnit: mietobjekt.HnflUnit,
                     NhMiete: mietobjekt.NhMiete,
                     AnMiete: mietobjekt.AnMiete,
@@ -952,7 +952,18 @@ sap.ui.define([
                 validationResult = false;
             }
 
-
+            var idMzMonate = this.getView().byId("idMzMonate");
+            if(idMzMonate.getValue() === ""){
+                idMzMonate.setValueState(sap.ui.core.ValueState.Error);
+                idMzMonate.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                validationResult = false;
+            }
+            else if(parseFloat(idMzMonate.getValue()) < 0){
+                idMzMonate.setValueState(sap.ui.core.ValueState.Error);
+                idMzMonate.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
+                validationResult = false;
+            }
+            
             var idMietbeginn = this.getView().byId("idMietbeginn");
             if(idMietbeginn.getDateValue() === null){
                 idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
@@ -1374,13 +1385,13 @@ sap.ui.define([
                 {
 					if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
 					{
-                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100).toString();
-                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100).toString();
+                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.Hnfl)).toString();
+                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.Hnfl)).toString();
 					}
 					else
 					{
-                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100).toString();
-                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100).toString();
+                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.HnflAlt)).toString();
+                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.HnflAlt)).toString();
 					}
                 }
             });

@@ -95,7 +95,7 @@
                         <Text text="{i18n>MIETFLAECHENSPLIT}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="{i18n>MARKTUEBLICHE_MIETE} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
+                        <Text text="{i18n>MARKTUEBLICHE_MIETE} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach} {i18n>ODER_STUECK}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) ? '*' : '' }{i18n>ANGEBOTSMIETE} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />

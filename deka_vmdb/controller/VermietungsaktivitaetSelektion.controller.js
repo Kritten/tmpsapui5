@@ -219,6 +219,13 @@ sap.ui.define([
 
 		},
 
+		onExcelImportDialogAnnehmenButtonPress: function(){
+			var _this = this;
+
+			var fu = _this._excelImportDialog.getView().byId("idFileUploader");
+			// TODO?
+		},
+
 		onExcelImportDialogAbbrechenButtonPress: function(oEvent){
 			this._excelImportDialog.close();
 		},
