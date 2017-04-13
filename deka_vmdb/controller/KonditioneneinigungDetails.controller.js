@@ -816,7 +816,7 @@ sap.ui.define([
                 var cells = row.getAggregation("cells");
 
                 // TODO: dynamisch machen (spaltenindex aus "Columns" aggregation der table berechnen)
-                var mfAltCell = cells[5];                
+                var mfAltCell = cells[4];                 
                 var mfAltValue = mfAltCell.getProperty("value");
                 var hnflValue = ketoob[i].Hnfl;
 

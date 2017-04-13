@@ -955,12 +955,7 @@ sap.ui.define([
             }
 
             var idMzMonate = this.getView().byId("idMzMonate");
-            if(idMzMonate.getValue() === ""){
-                idMzMonate.setValueState(sap.ui.core.ValueState.Error);
-                idMzMonate.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
-                validationResult = false;
-            }
-            else if(parseFloat(idMzMonate.getValue()) < 0){
+            if(parseFloat(idMzMonate.getValue()) < 0){
                 idMzMonate.setValueState(sap.ui.core.ValueState.Error);
                 idMzMonate.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                 validationResult = false;
