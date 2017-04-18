@@ -41,8 +41,8 @@
 
                         <items>
                             <ColumnListItem vAlign="Middle">                                
-                                <Select selectedKey="{form>Genehmiger}" items="{ path: 'form>available', templateShareable: true }" enabled="{= ${form>/modus} === 'edit'}" autoAdjustWidth="false" width="100%">
-                                    <core:Item key="{form>Moegliche_Genehmiger}" text="{form>Name}" />
+                                <Select selectedKey="{form>/Genehmiger}" items="{ path: 'form>available', templateShareable: true }" enabled="{= ${form>/modus} === 'edit'}" autoAdjustWidth="false" width="100%">
+                                    <core:Item key="{form>Moegliche_Genehmiger}" text="{form>Moegliche_Genehmiger} - {form>Name}" />
                                     <layoutData>
                                         <l:GridData span="L8 M8 S12" />
                                     </layoutData>
@@ -52,7 +52,7 @@
                                         <l:GridData span="L8 M8 S12" />
                                     </layoutData>
                                 </Text>-->
-                                <Text text="{form>Status}" />
+                                <Text text="{= ${text>/status}[${form>Status}]}" test="{form>Status}"/>
                                 
                             </ColumnListItem>
                         </items>

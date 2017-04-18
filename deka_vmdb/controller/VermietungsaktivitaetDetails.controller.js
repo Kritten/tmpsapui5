@@ -794,13 +794,22 @@ sap.ui.define([
                 Currency: va.Currency,
                 Unit: va.Unit,
 
-                VaToOb: va.VaToOb,
+                VaToOb: _.map(va.VaToOb, function(objekt){
+                    delete objekt.__metadata;
+                    objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt : null;
+                    objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt : null;
+                    objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete : null;
+                    objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten : null;
+                    objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten : null;
+                    return objekt;
+                }),
 
                 Confirmation: va.Confirmation
             };
 
             DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){
                 _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
+                return DataProvider.deleteSperreAsync('', va.VaId);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);

@@ -25,8 +25,18 @@
           "uri" : "http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/GenehmigerSet(Moegliche_Genehmiger='MG2',Stufe='GL')",
           "type" : "ZIP_VMDB_SRV.Genehmiger"
         },
-        "Moegliche_Genehmiger" : "Genehmiger 2",
+        "Moegliche_Genehmiger" : "Genehmiger 3",
         "Name" : "MG3",
+        "Stufe" : "Stufe 2"
+      },
+      {
+        "__metadata" : {
+          "id" : "http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/GenehmigerSet(Moegliche_Genehmiger='MG2',Stufe='GL')",
+          "uri" : "http://sapebh.f.ddk:8000/sap/opu/odata/sap/ZIP_VMDB_SRV/GenehmigerSet(Moegliche_Genehmiger='MG2',Stufe='GL')",
+          "type" : "ZIP_VMDB_SRV.Genehmiger"
+        },
+        "Moegliche_Genehmiger" : "Genehmiger 4",
+        "Name" : "MG4",
         "Stufe" : "Stufe 2"
       }
 ]

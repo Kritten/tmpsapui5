@@ -12,6 +12,7 @@ sap.ui.define([], function() {
         oDataModel: undefined,
 
 		setModel: function(oDataModel){
+            oDataModel.setSizeLimit(1000);
 			this.oDataModel = oDataModel;
 		},
 
@@ -540,6 +541,22 @@ sap.ui.define([], function() {
                     error: function(oError){
                         reject(oError);
                     }
+                });
+            });
+        },
+
+        updateGenehmigungsprozessSetAsync: function(index, KeId, VaId, stufe, payload){
+            var _this = this;
+
+            return Q.Promise(function(resolve, reject, notify){
+                _this.oDataModel.update("/GenehmigungsprozessSet(Index='"+index+"',KeId='"+KeId+"',VaId='" + VaId + "',Stufe='"+stufe+"')", payload, {
+                    success: function(){
+                        resolve();
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+
                 });
             });
         },

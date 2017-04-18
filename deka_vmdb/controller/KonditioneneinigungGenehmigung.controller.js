@@ -7,7 +7,8 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "ag/bpc/Deka/util/DataProvider",
-    "ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, DataProvider, ErrorMessageUtil) {
+    "ag/bpc/Deka/util/StaticData",
+    "ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, DataProvider, StaticData, ErrorMessageUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungGenehmigung", {
@@ -17,17 +18,20 @@ sap.ui.define([
             var _this = this;
 
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
-            
+            this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
+
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("konditioneneinigungGenehmigung").attachPatternMatched(this.onPatternMatched, this);
+        },
+
+        onBeforeRendering: function(){
+            this.ladeGenehmigungen();              
         },
 
         onPatternMatched: function(oEvent){
             // Werte vorhalten für Zurück-Navigation
             this._KeId = oEvent.getParameter("arguments").KeId;
-            this._Bukrs = oEvent.getParameter("arguments").Bukrs;
-
-            this.ladeGenehmigungen();
+            this._Bukrs = oEvent.getParameter("arguments").Bukrs;       
         },
 
         ladeGenehmigungen: function(){
@@ -69,43 +73,57 @@ sap.ui.define([
         ladeMoeglicheGenehmiger: function(){
             var _this = this;
             var form = _this.getView().getModel("form");
+            form.setSizeLimit(1000);
 
             var stufen = form.oData.stufen;
+            var stufenList = this.getView().byId("stufenList");
 
             for(var i = 0; i < stufen.length; i++){
                 var genehmigungen = stufen[i].genehmigungen;
+                var stufenItem = stufenList.getItems()[i];
+                var sTables = stufenItem.getAggregation("content");
+                var table = sTables[0];
+                var tableItems = table.getItems();
 
                 for(var j = 0; j < genehmigungen.length; j++){
                     var aktGenehmigung = genehmigungen[j];
                     var aktGenehmiger = genehmigungen[j].Genehmiger;
-                    var aktStufe = stufen[i].Stufe;
+                    var aktStufe = stufen[i].Stufe;    
+                    var tZeile = tableItems[j];
+                    var zCells = tZeile.getAggregation("cells");
+                    var selectCell = zCells[0];
+                    console.log(selectCell, "selectCell");                
 
+                    console.log(aktGenehmiger, "aktGenehmiger");
                     DataProvider.readGenehmigerSetAsync(aktGenehmiger, aktStufe)
-                    .then(function(genehmigerSet){                      
-                        aktGenehmigung.available = genehmigerSet;
-                        // var slist = _this.getView().byId("stufenList");
-                        // var sItem = slist.getAggregation("items");
-                        // console.log(sItem, "sitem");
-                        // var tItem = sItem.getAggregation("content")[0].getItems()[j].getAggregation("cells")[0];
-
-                        // console.log(tItem, "tItem");
+                    .then(function(genehmigerSet){                     
+                        aktGenehmigung.available = genehmigerSet;  
+                        selectCell.setSelectedKey(aktGenehmiger);                                      
                     }).done();
                 }
             }
 
+           
             console.log(form, "form");
         },
 
         onBearbeitenButtonPress: function(oEvent){
             this.getView().getModel("form").setProperty("/modus", "edit");
-            
-            var stufen = this.getView().byId("stufenList");
-            var numStufen = stufen.getItems().length;
+        },
+
+        onSpeichernButtonPress: function(oEvent){
+            var _this = this;
+            this.getView().getModel("form").setProperty("/modus", "show");
+            var form = this.getView().getModel("form");
+
+            var stufen = form.oData.stufen;
+            var stufenList = this.getView().byId("stufenList");
+            var numStufen = stufenList.getItems().length;
             var sTables;
 
             // Über Stufen iterieren
             for(var i = 0; i < numStufen; i = i + 1){
-                var stufenItem = stufen.getItems()[i];
+                var stufenItem = stufenList.getItems()[i];
                 sTables = stufenItem.getAggregation("content");
                 
                 // Wahrscheinlich ist sTables.length immer = 1
@@ -117,24 +135,24 @@ sap.ui.define([
                         var tZeile = tableItems[k];
                         var zCells = tZeile.getAggregation("cells");
 
-                       console.log(zCells[0].getItems(), "zCellItems"); 
+                        var payload = {
+                            "Index" : stufen[i].genehmigungen[k].Index,
+                            "KeId" : _this._KeId,
+                            "VaId" : '',
+                            "Stufe" : stufen[i].Stufe,
+                            "Genehmiger" : zCells[0].getSelectedKey(),
+                            "Status" : stufen[i].genehmigungen[k].Status,
+                            "Switch" : stufen[i].genehmigungen[k].Switch
+                        }
+
+                        DataProvider.updateGenehmigungsprozessSetAsync(payload.Index, payload.KeId, payload.VaId, payload.Stufe, payload)
+                        .catch(function(oError){
+                            var error = ErrorMessageUtil.parseErrorMessage(oError);
+                            ErrorMessageUtil.show(error);
+                        }).done();
                     }
                 }
             }
-            // for each (stufe)
-            //    for each (zeile der tabelle)
-            //        moeglicheGenehmiger = request(stufe, aktueller wert der dropdownliste)
-            //        dropdownbox.available = moeglicheGenehmiger
-            //
-        },
-
-        onSpeichernButtonPress: function(oEvent){
-            this.getView().getModel("form").setProperty("/modus", "show");
-
-            // for each (stufe)
-            //    for each (zeile der tabelle)
-            //        speicherRequestAbschicken (updateGenehmigungsprozess)
-            //
         },
 
         onAbbrechenButtonPress: function(oEvent){
