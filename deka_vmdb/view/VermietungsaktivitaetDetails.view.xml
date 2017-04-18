@@ -114,18 +114,18 @@
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="{form>Bezei}" />
                             <Text text="{= ${text>/nutzungsart}[${form>Nutzart}] }" />
-                            <Select selectedKey="{form>NutzartAlt}" items="{path: 'form>/nutzungsarten', templateShareable: true}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                            <Select selectedKey="{form>NutzartAlt}" items="{path: 'form>/nutzungsarten', templateShareable: true}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" change="onNutzartAltChange">
                                 <items>
                                     <core:Item key="{form>NaId}" text="{form>TextSh}" />
                                 </items>
                             </Select>
                             <Text text="{= (${form>HnflUnit} === 'ST') ? (${form>Hnfl} + ' ' + ${form>HnflUnit}) : ((Math.round(${form>Hnfl} * ${form>/viewsettings/flaecheneinheitSelected/Multiplikator} * 100) / 100) + ' ' + ${form>/viewsettings/flaecheneinheitSelected/Nach}) }" />
-                            <Input value="{form>HnflAlt}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{ path: 'form>HnflAlt', formatter: '.formatter.toLocalFormat' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" type="Number" editable="false" />
-                            <Input value="{form>AnMiete}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>GaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
-                            <Input value="{form>MaKosten}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
+                            <Input value="{ path: 'form>AnMiete', formatter: '.formatter.toLocalFormat' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" type="Float" />
+                            <Input value="{ path: 'form>GaKosten', formatter: '.formatter.toLocalFormat' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
+                            <Input value="{ path: 'form>MaKosten', formatter: '.formatter.toLocalFormat' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
                         </cells>
                     </ColumnListItem>
                     
@@ -260,21 +260,21 @@
                     </Input>
 
                     <Label text="{i18n>MAKLERKOSTEN} ({i18n>ABSOLUT}) in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Input id="idMkAbsolut" value="{form>/vermietungsaktivitaet/MkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
+                    <Input id="idMkAbsolut" value="{ path: 'form>/vermietungsaktivitaet/MkAbsolut', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>BERATUNGSKOSTEN} {i18n>IN_MONATSMIETEN}" />
-                    <Input id="idBkMonate" value="{form>/vermietungsaktivitaet/BkMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="idBkMonate" value="{ path: 'form>/vermietungsaktivitaet/BkMonate', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>BERATUNGSKOSTEN} ({i18n>ABSOLUT}) in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Input id="idBkAbsolut" value="{form>/vermietungsaktivitaet/BkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
+                    <Input id="idBkAbsolut" value="{ path: 'form>/vermietungsaktivitaet/BkAbsolut', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
@@ -290,7 +290,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="idSonstK" value="{form>/vermietungsaktivitaet/SonstK}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                    <Input id="idSonstK" value="{ path: 'form>/vermietungsaktivitaet/SonstK', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
@@ -306,7 +306,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="idSonstE" value="{form>/vermietungsaktivitaet/SonstE}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
+                    <Input id="idSonstE" value="{ path: 'form>/vermietungsaktivitaet/SonstE', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>

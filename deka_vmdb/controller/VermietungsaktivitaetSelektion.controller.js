@@ -11,12 +11,15 @@ sap.ui.define([
 	"ag/bpc/Deka/util/ExcelImportUtil",
 	"ag/bpc/Deka/util/NavigationPayloadUtil",
 	"ag/bpc/Deka/util/DataProvider",
-	"ag/bpc/Deka/util/StaticData"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider, StaticData) {
+	"ag/bpc/Deka/util/StaticData",
+	"ag/bpc/Deka/util/NumberFormatter"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider, StaticData, NumberFormatter) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
-		
+		formatter: NumberFormatter,
+
 		onInit: function(evt){		
+			console.log(this.formatter, "formatter");
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
 			this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
 
@@ -25,8 +28,8 @@ sap.ui.define([
 		}, 
 		
 		onPatternMatched: function(oEvent){
-			var _this = this;
-
+			var _this = this;			
+			
 			StaticData.USER.then(function(user){
 				_this.getView().byId('idVaAnlagePanel').setVisible(!user.BtnFm);
 				return DataProvider.readVermSelSetAsync();
@@ -217,13 +220,6 @@ sap.ui.define([
 			})
 			.done();
 
-		},
-
-		onExcelImportDialogAnnehmenButtonPress: function(){
-			var _this = this;
-
-			var fu = _this._excelImportDialog.getView().byId("idFileUploader");
-			// TODO?
 		},
 
 		onExcelImportDialogAbbrechenButtonPress: function(oEvent){

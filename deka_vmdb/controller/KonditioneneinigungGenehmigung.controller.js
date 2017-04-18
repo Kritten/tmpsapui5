@@ -8,7 +8,8 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "ag/bpc/Deka/util/DataProvider",
     "ag/bpc/Deka/util/StaticData",
-    "ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, DataProvider, StaticData, ErrorMessageUtil) {
+    "ag/bpc/Deka/util/ErrorMessageUtil",
+    "ag/bpc/Deka/util/TranslationUtil"], function (Controller, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungGenehmigung", {
@@ -25,13 +26,30 @@ sap.ui.define([
         },
 
         onBeforeRendering: function(){
-            this.ladeGenehmigungen();              
+            this.ladeGenehmigungen();            
         },
 
         onPatternMatched: function(oEvent){
             // Werte vorhalten für Zurück-Navigation
             this._KeId = oEvent.getParameter("arguments").KeId;
             this._Bukrs = oEvent.getParameter("arguments").Bukrs;       
+        },
+
+        uebersetzeStufenHeader: function(){
+            var _this = this;
+            var stufenList = this.getView().byId("stufenList");
+            var stufenItems = stufenList.getItems();
+            
+            for(var i=0; i < stufenItems.length; i++){
+                var stufenItem = stufenItems[i];
+                var content = stufenItem.getAggregation("content");
+                var table = content[0];
+                var headerToolbar = table.getAggregation("headerToolbar");
+                var headerText = headerToolbar.getAggregation("content")[0].getProperty("text");
+
+                var i18nText = TranslationUtil.translate(headerText);
+                headerToolbar.getAggregation("content")[0].setProperty("text", i18nText);
+            }
         },
 
         ladeGenehmigungen: function(){
@@ -66,7 +84,9 @@ sap.ui.define([
             .catch(function(oError){
                 ErrorMessageUtil.showError(oError);
             })
-            .done();
+            .done(function(){
+                _this.uebersetzeStufenHeader();
+            });
 
         },
 

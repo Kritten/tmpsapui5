@@ -12,12 +12,14 @@ sap.ui.define([
     "ag/bpc/Deka/util/DataProvider",
     "ag/bpc/Deka/util/StaticData",
     "ag/bpc/Deka/util/ErrorMessageUtil",
-    "ag/bpc/Deka/util/TranslationUtil"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
+    "ag/bpc/Deka/util/TranslationUtil",
+    "ag/bpc/Deka/util/NumberFormatter"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil, NumberFormatter) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
-		
-		onInit: function(evt){
+        formatter: NumberFormatter,
+        
+		onInit: function(evt){            
             var _this = this;
             
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
@@ -711,9 +713,27 @@ sap.ui.define([
             }
         },
 
+        onNutzartAltChange: function(oEvent){
+            var source = oEvent.getSource();
+            var selKey = source.getSelectedKey();
+
+            // Bei Parken die entsprechenden felder leeren
+            if(selKey === "0700" || selKey === "0750") {
+                var parent = source.getParent();
+                var cells = parent.getCells();
+
+                var GaKostenFeld = cells[9];
+                var MaKostenFeld = cells[10];
+
+                // Beide Felder leeren
+                GaKostenFeld.setValue("");
+                MaKostenFeld.setValue("");
+            }
+        },
+
         onSpeichernButtonPress: function(oEvent){                      
             var validationSuccess = this.validateForm();
-            
+        
             if(validationSuccess){
                 this.speichern();
             }
