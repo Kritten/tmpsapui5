@@ -738,7 +738,7 @@ sap.ui.define([
                 this.speichern();
             }
             else {
-                MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
+                MessageBox.error(TranslationUtil.translate("VALIDATION_FAILED"));
             }
         },
 		
