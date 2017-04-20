@@ -27,7 +27,7 @@ sap.ui.define([
 			var _this = this;
 
 			StaticData.USER.then(function(user){
-				_this.getView().byId('idKeAnlagePanel').setVisible(!user.BtnFm);
+				_this.getView().byId('idKeAnlagePanel').setVisible(user.BtnAm);
 				return DataProvider.readKondSelSetAsync();
 			})
 			.then(function(konditioneneinigungen){

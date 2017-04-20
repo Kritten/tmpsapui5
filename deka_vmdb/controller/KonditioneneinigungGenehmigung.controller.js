@@ -25,32 +25,13 @@ sap.ui.define([
             oRouter.getRoute("konditioneneinigungGenehmigung").attachPatternMatched(this.onPatternMatched, this);
         },
 
-        onBeforeRendering: function(){
-            this.ladeGenehmigungen();            
-        },
-
         onPatternMatched: function(oEvent){
             // Werte vorhalten für Zurück-Navigation
             this._KeId = oEvent.getParameter("arguments").KeId;
             this._Bukrs = oEvent.getParameter("arguments").Bukrs;       
-        },
 
-        uebersetzeStufenHeader: function(){
-            var _this = this;
-            var stufenList = this.getView().byId("stufenList");
-            var stufenItems = stufenList.getItems();
-            
-            for(var i=0; i < stufenItems.length; i++){
-                var stufenItem = stufenItems[i];
-                var content = stufenItem.getAggregation("content");
-                var table = content[0];
-                var headerToolbar = table.getAggregation("headerToolbar");
-                var headerText = headerToolbar.getAggregation("content")[0].getProperty("text");
-
-                var i18nText = TranslationUtil.translate(headerText);
-                headerToolbar.getAggregation("content")[0].setProperty("text", i18nText);
-            }
-        },
+            this.ladeGenehmigungen();
+        },       
 
         ladeGenehmigungen: function(){
             var _this = this;
@@ -84,9 +65,7 @@ sap.ui.define([
             .catch(function(oError){
                 ErrorMessageUtil.showError(oError);
             })
-            .done(function(){
-                _this.uebersetzeStufenHeader();
-            });
+            .done();
 
         },
 
@@ -163,7 +142,7 @@ sap.ui.define([
                             "Genehmiger" : zCells[0].getSelectedKey(),
                             "Status" : stufen[i].genehmigungen[k].Status,
                             "Switch" : stufen[i].genehmigungen[k].Switch
-                        }
+                        };
 
                         DataProvider.updateGenehmigungsprozessSetAsync(payload.Index, payload.KeId, payload.VaId, payload.Stufe, payload)
                         .catch(function(oError){

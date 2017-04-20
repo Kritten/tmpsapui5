@@ -26,7 +26,12 @@
 
                         <headerToolbar>
                             <Toolbar>
-                                <Title text="{form>Stufe}" />
+                                <Title text="{= (${form>Stufe} === 'SB') ? ${i18n>SB} : 
+                                                (${form>Stufe} === 'GL') ? ${i18n>GL} :
+                                                (${form>Stufe} === 'AL') ? ${i18n>AL} :
+                                                (${form>Stufe} === 'GS') ? ${i18n>GS} :
+                                                (${form>Stufe} === 'BL') ? ${i18n>BL} :
+                                                ${form>Stufe}}" />
                             </Toolbar>
                         </headerToolbar>
 

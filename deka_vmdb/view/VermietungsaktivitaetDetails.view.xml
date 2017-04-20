@@ -9,7 +9,7 @@
 	<Page id="idVermietungsaktivitaetDetails" title="{i18n>VERM_DET_TITLE}" class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack" >
 
         <headerContent>
-			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" visible="{= ${form>/modus} === 'show' }" press="onBearbeitenButtonPress" />
+			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/vermietungsaktivitaet/Editable}) }" press="onBearbeitenButtonPress" />
 		</headerContent>
                 
 		<content>
@@ -225,14 +225,14 @@
                     </DatePicker>
 
                     <Label text="{i18n>LAUFZEIT_BIS_1ST_BREAK} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="idLzFirstbreak" value="{form>/vermietungsaktivitaet/LzFirstbreak}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >                        
+                    <Input id="idLzFirstbreak" value="{ path: 'form>/vermietungsaktivitaet/LzFirstbreak', formatter: '.formatter.toLocalFormat'}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >                        
                         <layoutData>
                             <l:GridData span="L3 M3 S12" />
                         </layoutData>
                     </Input>
 
                     <Label text="{i18n>MIETFREIE_ZEIT} {i18n>IN_MONATEN}" />
-                    <Input id="idMzMonate" value="{form>/vermietungsaktivitaet/MzMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="idMzMonate" value="{ path: 'form>/vermietungsaktivitaet/MzMonate', formatter: '.formatter.toLocalFormat'}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
@@ -246,14 +246,14 @@
                     </DatePicker>
 
                     <Label text="{i18n>ANZAHL_WIEDERHOLUNGEN} {i18n>IN_JAHREN}" />
-                    <Input id="idMzAnzahlJ" value="{form>/vermietungsaktivitaet/MzAnzahlJ}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
+                    <Input id="idMzAnzahlJ" value="{ path: 'form>/vermietungsaktivitaet/MzAnzahlJ', formatter: '.formatter.toLocalFormat'}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>MAKLERKOSTEN} {i18n>IN_MONATSMIETEN}" />
-                    <Input id="idMkMonate" value="{form>/vermietungsaktivitaet/MkMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="idMkMonate" value="{ path: 'form>/vermietungsaktivitaet/MkMonate', formatter: '.formatter.toLocalFormat'}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
@@ -320,21 +320,21 @@
                     </DatePicker>
 
                     <Label text="{i18n>VERTEILUNG_AUSBAUKOSTEN_MONATE}" />
-                    <Input id="idAkAnzahlM" value="{form>/vermietungsaktivitaet/AkAnzahlM}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
+                    <Input id="idAkAnzahlM" value="{ path: 'form>/vermietungsaktivitaet/AkAnzahlM', formatter: '.formatter.toLocalFormat'}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>POENALE} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Input id="idPoenale" value="{form>/vermietungsaktivitaet/Poenale}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="idPoenale" value="{ path: 'form>/vermietungsaktivitaet/Poenale', formatter: '.formatter.toLocalFormat'}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>INDEXWEITERGABE} {i18n>IN_PROZENT}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="idIdxWeitergabe" value="{form>/vermietungsaktivitaet/IdxWeitergabe}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="idIdxWeitergabe" value="{ path: 'form>/vermietungsaktivitaet/IdxWeitergabe', formatter: '.formatter.toLocalFormat'}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
@@ -429,8 +429,8 @@
                                         maxIntegerDigits: 5
                                     }
                             }" />
-                            <Text text="{form>/vermietungsaktivitaet/GesErtrag} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{form>/vermietungsaktivitaet/GesKeErtrag} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtrag', formatter: '.formatter.toLocalFormat'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeErtrag', formatter: '.formatter.toLocalFormat'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesErtrag} * 100 - ${form>/vermietungsaktivitaet/GesKeErtrag} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }">
                                 <customData>
                                     <core:CustomData key="numberstate" value="positive" writeToDom="{= (${form>/vermietungsaktivitaet/GesErtrag} - ${form>/vermietungsaktivitaet/GesKeErtrag}) &gt;= 0 }" />
@@ -450,8 +450,8 @@
                                         maxIntegerDigits: 5
                                     }
                             }" />
-                            <Text text="{form>/vermietungsaktivitaet/GesKosten} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{form>/vermietungsaktivitaet/GesKeKosten} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesKosten', formatter: '.formatter.toLocalFormat'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeKosten', formatter: '.formatter.toLocalFormat'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesKosten} * 100 - ${form>/vermietungsaktivitaet/GesKeKosten} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }">
                                 <customData>
                                     <core:CustomData key="numberstate" value="negative" writeToDom="{= (${form>/vermietungsaktivitaet/GesKosten} - ${form>/vermietungsaktivitaet/GesKeKosten}) &gt; 0 }" />

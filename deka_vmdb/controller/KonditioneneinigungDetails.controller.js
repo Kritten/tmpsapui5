@@ -13,11 +13,13 @@ sap.ui.define([
     "ag/bpc/Deka/util/DataProvider",
     "ag/bpc/Deka/util/ErrorMessageUtil",
     "ag/bpc/Deka/util/StaticData",
-    "ag/bpc/Deka/util/TranslationUtil"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil) {
+    "ag/bpc/Deka/util/TranslationUtil",
+    "ag/bpc/Deka/util/NumberFormatter"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil, NumberFormatter) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
-
+        formatter: NumberFormatter,
+        
 		onInit: function(oEvent){
             var _this = this;
 
@@ -1063,19 +1065,29 @@ sap.ui.define([
                     
                     var vorhandeneNutzungsarten = _.filter(nutzungsarten, function(nutzungsart){
                         return _.find(mietflaechenangaben, function(mietflaechenangabe){
-                            return nutzungsart.NaId === mietflaechenangabe.Nutzart;
+                           if(mietflaechenangabe.NutzartAlt !== "" && mietflaechenangabe.NutzartAlt !== "0700" && mietflaechenangabe.NutzartAlt !== "0750"){
+                                return nutzungsart.NaId === mietflaechenangabe.NutzartAlt;
+                            } else {
+                                if(mietflaechenangabe.Nutzart !== "0700" && mietflaechenangabe.Nutzart !== "0750"){
+                                    return nutzungsart.NaId === mietflaechenangabe.Nutzart;
+                                }
+                            }
                         });
                     });
 
-                    var dialogModel = new sap.ui.model.json.JSONModel({
-                        nutzungsarten: vorhandeneNutzungsarten,
-                        nutzungsart: vorhandeneNutzungsarten[0].NaId,
-                        grundausbaukosten: 25,
-                        mietausbaukosten: 50
-                    });
-                    
-                    _this._ausbaukostenVerteilenDialog.setModel(dialogModel);
-                    _this._ausbaukostenVerteilenDialog.open();
+                    if(vorhandeneNutzungsarten.length == 0){
+                        MessageBox.information(TranslationUtil.translate("ERR_KEINE_GUELTIGEN_NUTZUNGSARTEN"));
+                    }else{
+                        var dialogModel = new sap.ui.model.json.JSONModel({
+                            nutzungsarten: vorhandeneNutzungsarten,
+                            nutzungsart: vorhandeneNutzungsarten[0].NaId,
+                            grundausbaukosten: 100,
+                            mietausbaukosten: 50
+                        });
+
+                        _this._ausbaukostenVerteilenDialog.setModel(dialogModel);
+                        _this._ausbaukostenVerteilenDialog.open();
+                    }
                 })
                 .catch(function(oError){
                     ErrorMessageUtil.showError(oError);
@@ -1123,13 +1135,13 @@ sap.ui.define([
                 {
                     if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
                     {
-                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100).toString();
-                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100).toString();
+                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.Hnfl)).toString();
+                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.Hnfl)).toString();
                     }
                     else
                     {
-                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100).toString();
-                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100).toString();
+                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.HnflAlt)).toString();
+                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.HnflAlt)).toString();
                     }
                 }
             });

@@ -31,7 +31,7 @@ sap.ui.define([
 			var _this = this;			
 			
 			StaticData.USER.then(function(user){
-				_this.getView().byId('idVaAnlagePanel').setVisible(!user.BtnFm);
+				_this.getView().byId('idVaAnlagePanel').setVisible(user.BtnAm);
 				return DataProvider.readVermSelSetAsync();
 			})
 			.then(function(vermietungsaktivitaeten){

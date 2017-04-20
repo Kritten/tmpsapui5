@@ -25,8 +25,8 @@ sap.ui.define([
 			StaticData.USER.then(function(user){
 				_this.getView().byId('idKonditioneneinigungTile').setVisible(true);
 				_this.getView().byId('idVermietungsaktivitaetTile').setVisible(true);
-				_this.getView().byId('idBudgetstoppTile').setVisible(!user.BtnAm);
-				_this.getView().byId('idSperreTile').setVisible(!user.BtnFm);
+				_this.getView().byId('idBudgetstoppTile').setVisible(user.BtnFm);
+				_this.getView().byId('idSperreTile').setVisible(user.BtnAm);
 			})
             .catch(function(oError){
                 console.log(oError);

@@ -111,9 +111,9 @@
                             <Input value="{form>HnflAlt}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" type="Number" editable="false" />
-                            <Input value="{form>AnMiete}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{form>GaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
-                            <Input value="{form>MaKosten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
+                            <Input value="{ path: 'form>AnMiete', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                            <Input value="{ path: 'form>GaKosten', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
+                            <Input value="{ path: 'form>MaKosten', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
                         </cells>
                     </ColumnListItem>
                     
@@ -177,42 +177,42 @@
                     </DatePicker>
 
                     <Label text="{i18n>LAUFZEIT_BIS_1ST_BREAK} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="idLzFirstbreak" value="{form>/konditioneneinigung/LzFirstbreak}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="idLzFirstbreak" value="{ path: 'form>/konditioneneinigung/LzFirstbreak', formatter: '.formatter.toLocalFormat'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>MIETFREIE_ZEIT} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="idMzMonate" value="{form>/konditioneneinigung/MzMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
+                    <Input id="idMzMonate" value="{ path: 'form>/konditioneneinigung/MzMonate', formatter: '.formatter.toLocalFormat'}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>MAKLERKOSTEN} {i18n>IN_MONATSMIETEN}"  />
-                    <Input id="maklerkostenInMonatsmieten" value="{form>/konditioneneinigung/MkMonate}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="maklerkostenInMonatsmieten" value="{ path: 'form>/konditioneneinigung/MkMonate', formatter: '.formatter.toLocalFormat'}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>MAKLERKOSTEN} ({i18n>ABSOLUT}) in {form>/viewsettings/waehrungSelected/Nach}"  />
-                    <Input id="maklerkostenAbsolut" value="{form>/konditioneneinigung/MkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
+                    <Input id="maklerkostenAbsolut" value="{ path: 'form>/konditioneneinigung/MkAbsolut', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>BERATUNGSKOSTEN} {i18n>IN_MONATSMIETEN}"  />
-                    <Input id="beratungskostenInMonatsmieten" value="{form>/konditioneneinigung/BkMonatsmieten}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="beratungskostenInMonatsmieten" value="{ path: 'form>/konditioneneinigung/BkMonatsmieten', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>BERATUNGSKOSTEN} ({i18n>ABSOLUT}) in {form>/viewsettings/waehrungSelected/Nach}"  />
-                    <Input id="beratungskostenAbsolut" value="{form>/konditioneneinigung/BkAbsolut}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
+                    <Input id="beratungskostenAbsolut" value="{ path: 'form>/konditioneneinigung/BkAbsolut', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
@@ -228,7 +228,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="idSonstK" value="{form>/konditioneneinigung/SonstK}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                    <Input id="idSonstK" value="{ path: 'form>/konditioneneinigung/SonstK', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
@@ -244,7 +244,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="idSonstE" value="{form>/konditioneneinigung/SonstE}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
+                    <Input id="idSonstE" value="{ path: 'form>/konditioneneinigung/SonstE', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
@@ -252,21 +252,21 @@
 
 
                     <Label text="{i18n>KOSTEN_AUS_STEUERSCHADEN} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Input id="idSteuerschaden" value="{form>/konditioneneinigung/Steuerschaden}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="idSteuerschaden" value="{ path: 'form>/konditioneneinigung/Steuerschaden', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>ERTRAG_AUS_MWST} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Input id="idMwstkErtrag" value="{form>/konditioneneinigung/MwstkErtrag}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="idMwstkErtrag" value="{ path: 'form>/konditioneneinigung/MwstkErtrag', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <Label text="{i18n>EINMAL_ERTRAG} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Input id="einmalertrag" value="{form>/konditioneneinigung/Einmalertrag}" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                    <Input id="einmalertrag" value="{ path: 'form>/konditioneneinigung/Einmalertrag', formatter: '.formatter.toLocalFormat' }" type="Number" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
@@ -346,14 +346,14 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="Miete gesamt" />
-                            <Text text="{form>/konditioneneinigung/GesErtrag} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/konditioneneinigung/GesErtrag', formatter: '.formatter.toLocalFormat' } {form>/viewsettings/waehrungSelected/Nach}" />
                         </cells>
                     </ColumnListItem>
                     
                     <ColumnListItem>
                         <cells>
                             <Text text="Kosten gesamt" />
-                            <Text text="{form>/konditioneneinigung/GesKosten} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/konditioneneinigung/GesKosten', formatter: '.formatter.toLocalFormat' } {form>/viewsettings/waehrungSelected/Nach}" />
                         </cells>
                     </ColumnListItem>
                 </items>
