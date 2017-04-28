@@ -17,7 +17,7 @@
         "Leerstand": "",
         "MvId": "",
         "AnMiete": "",
-        "GaKosten": "",
+        "GaKosten": "2.5",
         "MaKosten": "",
         "Whrung": ""
     },
@@ -27,7 +27,7 @@
         "MoId": "1010009",
         "Mietflche": "1010009",
         "Bezei": "Mo2",
-        "Nutzart": "0700",
+        "Nutzart": "0750",
         "Hnfl": "180",
         "HnflUnit": "M2",
         "NhMiete": "100",
@@ -39,7 +39,7 @@
         "Leerstand": "",
         "MvId": "",
         "AnMiete": "",
-        "GaKosten": "",
+        "GaKosten": "10000",
         "MaKosten": "",
         "Whrung": ""
     },
@@ -49,7 +49,7 @@
         "MoId": "1010010",
         "Mietflche": "1010010",
         "Bezei": "Mo3",
-        "Nutzart": "0700",
+        "Nutzart": "0800",
         "Hnfl": "90",
         "HnflUnit": "M2",
         "NhMiete": "100",
@@ -61,7 +61,7 @@
         "Leerstand": "",
         "MvId": "",
         "AnMiete": "",
-        "GaKosten": "",
+        "GaKosten": "5.4",
         "MaKosten": "",
         "Whrung": ""
     }

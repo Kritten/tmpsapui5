@@ -7,7 +7,7 @@
         },
         "Moegliche_Genehmiger" : "Genehmiger 1",
         "Name" : "MG1",
-        "Stufe" : "Stufe 2"
+        "Stufe" : "Stufe 1"
       },
       {
         "__metadata" : {
@@ -17,7 +17,7 @@
         },
         "Moegliche_Genehmiger" : "Genehmiger 2",
         "Name" : "MG2",
-        "Stufe" : "Stufe 2"
+        "Stufe" : "Stufe 1"
       },
       {
         "__metadata" : {
@@ -27,7 +27,7 @@
         },
         "Moegliche_Genehmiger" : "Genehmiger 3",
         "Name" : "MG3",
-        "Stufe" : "Stufe 2"
+        "Stufe" : "Stufe 1"
       },
       {
         "__metadata" : {
@@ -37,6 +37,6 @@
         },
         "Moegliche_Genehmiger" : "Genehmiger 4",
         "Name" : "MG4",
-        "Stufe" : "Stufe 2"
+        "Stufe" : "Stufe 1"
       }
 ]

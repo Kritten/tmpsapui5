@@ -52,58 +52,37 @@ sap.ui.define([
                     };
                 });
 
-                var form = {
-                    modus: ["show", "edit"][0],
-                    stufen: stufen
-                };
+                // Lade moegliche Genehmiger 
+                var promises = [];
+                _.map(stufen, function(stufe){
+                    _.map(stufe.genehmigungen, function(genehmigung){
+                        var genehmiger = genehmigung.Genehmiger;
+                        var stufenId = stufe.Stufe;
 
-                var formModel = new sap.ui.model.json.JSONModel(form);
-                _this.getView().setModel(formModel, "form");
+                        var promise = DataProvider.readGenehmigerSetAsync(genehmiger, stufenId);
+                        promise.then(function(genehmigerSet){
+                            genehmigung.available = genehmigerSet;                            
+                        });
+                        promises.push(promise);
+                    });
+                });    
 
-                _this.ladeMoeglicheGenehmiger();
+                Q.all(promises).then(function(){
+                    var form = {
+                        modus: ["show", "edit"][0],
+                        stufen: stufen
+                    };
+                    var formModel = new sap.ui.model.json.JSONModel(form);
+                    formModel.setSizeLimit(1000);
+                    console.log(formModel, "formModel");
+                    _this.getView().setModel(formModel, "form");   
+                });                       
             })
             .catch(function(oError){
                 ErrorMessageUtil.showError(oError);
             })
             .done();
 
-        },
-
-        ladeMoeglicheGenehmiger: function(){
-            var _this = this;
-            var form = _this.getView().getModel("form");
-            form.setSizeLimit(1000);
-
-            var stufen = form.oData.stufen;
-            var stufenList = this.getView().byId("stufenList");
-
-            for(var i = 0; i < stufen.length; i++){
-                var genehmigungen = stufen[i].genehmigungen;
-                var stufenItem = stufenList.getItems()[i];
-                var sTables = stufenItem.getAggregation("content");
-                var table = sTables[0];
-                var tableItems = table.getItems();
-
-                for(var j = 0; j < genehmigungen.length; j++){
-                    var aktGenehmigung = genehmigungen[j];
-                    var aktGenehmiger = genehmigungen[j].Genehmiger;
-                    var aktStufe = stufen[i].Stufe;    
-                    var tZeile = tableItems[j];
-                    var zCells = tZeile.getAggregation("cells");
-                    var selectCell = zCells[0];
-                    console.log(selectCell, "selectCell");                
-
-                    console.log(aktGenehmiger, "aktGenehmiger");
-                    DataProvider.readGenehmigerSetAsync(aktGenehmiger, aktStufe)
-                    .then(function(genehmigerSet){                     
-                        aktGenehmigung.available = genehmigerSet;  
-                        selectCell.setSelectedKey(aktGenehmiger);                                      
-                    }).done();
-                }
-            }
-
-           
-            console.log(form, "form");
         },
 
         onBearbeitenButtonPress: function(oEvent){
@@ -116,7 +95,28 @@ sap.ui.define([
             var form = this.getView().getModel("form");
 
             var stufen = form.oData.stufen;
-            var stufenList = this.getView().byId("stufenList");
+
+            _.map(stufen, function(stufe){
+                _.map(stufe.genehmigungen, function(genehmigung){
+                    var payload = {
+                        "Index": genehmigung.Index,
+                        "KeId": _this._KeId,
+                        "VaId": '',
+                        "Stufe": stufe.Stufe,
+                        "Genehmiger": genehmigung.Genehmiger,
+                        "Status": genehmigung.Status,
+                        "Switch": genehmigung.Switch
+                    };
+
+                    DataProvider.updateGenehmigungsprozessSetAsync(payload.Index, payload.KeId, payload.VaId, payload.Stufe, payload)
+                    .catch(function(oError){
+                        var error = ErrorMessageUtil.parseErrorMessage(oError);
+                        ErrorMessageUtil.show(error);
+                    }).done();
+                });
+            });
+
+            /*var stufenList = this.getView().byId("stufenList");
             var numStufen = stufenList.getItems().length;
             var sTables;
 
@@ -151,7 +151,7 @@ sap.ui.define([
                         }).done();
                     }
                 }
-            }
+            }*/
         },
 
         onAbbrechenButtonPress: function(oEvent){

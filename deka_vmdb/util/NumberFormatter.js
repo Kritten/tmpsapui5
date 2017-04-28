@@ -8,66 +8,26 @@ sap.ui.define(["ag/bpc/Deka/util/NumberFormatter"], function (NumberFormatter) {
 	
 	"use strict";
 	return {
-		toLocalFormat: function(number){
-            var lang = sap.ui.getCore().getConfiguration().getLanguage();
-
-            var groupSep;
-            var decSep;
-
-            switch(lang){
-                case "de-DE":
-                    groupSep = ".";
-                    decSep   = ",";
-                    break;
-                case "en-EN":
-                    groupSep = ",";
-                    decSep   = ".";
-                    break;
-                default:
-                    // Standard: deutsch
-                    groupSep = ".";
-                    decSep   = ",";
-            }
+		toLocalFormat: function(number){   
+            if(number === ""){
+                return "";
+            }        
 
             var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
-                maxFractionDigits: 2,
-                groupingEnabled: true,
-                groupingSeparator: groupSep,
-                decimalSeparator: decSep
-            });            
+                style: 'Standard'
+            });
+            console.log(oNumberFormat, "oFormat");
 
             return oNumberFormat.format(number);
         },
 
-        parseNumber: function(number){
-            var lang = sap.ui.getCore().getConfiguration().getLanguage();
-
-            var groupSep;
-            var decSep;
-
-            switch(lang){
-                case "de-DE":
-                    groupSep = ".";
-                    decSep   = ",";
-                    break;
-                case "en-EN":
-                    groupSep = ",";
-                    decSep   = ".";
-                    break;
-                default:
-                    // Standard: deutsch
-                    groupSep = ".";
-                    decSep   = ",";
-            }
-
+        parseNumber: function(numberString){
             var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
-                maxFractionDigits: 2,
-                groupingEnabled: true,
-                groupingSeparator: groupSep,
-                decimalSeparator: decSep
-            });            
-            
-            return oNumberFormat.parse(number);
+                style: 'Standard'
+            });
+            console.log(oNumberFormat, "oFormat");
+
+            return oNumberFormat.parse(numberString);
         }        
 	};
 });

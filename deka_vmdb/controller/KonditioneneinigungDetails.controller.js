@@ -143,6 +143,14 @@ sap.ui.define([
             this.getView().byId("idLzFirstbreak").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMzMonate").setValueState(sap.ui.core.ValueState.None);
 
+            var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
+            _.map(mietflaechenangabenTable.getItems(), function(item){
+                var cells = item.getCells();
+                var anMieteCell = cells[7];
+
+                anMieteCell.setValueState(sap.ui.core.ValueState.None);      
+            });
+
             this.getView().byId("idMietflaechenangabenErrorBox").setVisible(false);
 
             // Verteilen Button normal stylen
@@ -165,6 +173,8 @@ sap.ui.define([
             DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
             .then(function(konditioneneinigung){
                 _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
+               // DataProvider.deleteSperreAsync(KeId, '');
+               console.log("DeleteSperre");
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
             .then(function(){
@@ -286,7 +296,6 @@ sap.ui.define([
                         Bukrs: mietobjekt.Bukrs,
                         Bezei: mietobjekt.Bezei,
                         Nutzart: mietobjekt.Nutzart,
-                        NutzartAlt: mietobjekt.NutzartAlt,
                         Hnfl: mietobjekt.Hnfl,
                         HnflAlt: mietobjekt.HnflAlt,
                         HnflUnit: mietobjekt.HnflUnit,
@@ -538,14 +547,15 @@ sap.ui.define([
         },
 
         onSpeichernButtonPress: function(oEvent){
-                      
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
+            console.log(ke, "ke");
+
             var validationSuccess = this.validateForm();
             
             if(validationSuccess){
                 this.speichern();
-            }
-            else {
-                MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre eingaben.");
+            }else {
+                 MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre eingaben.");
             }
         },
 
@@ -581,23 +591,23 @@ sap.ui.define([
 
                 GueltigkKe: ke.GueltigkKe,
                 Mietbeginn: ke.Mietbeginn,
-                LzFirstbreak: ke.LzFirstbreak,
-                MzMonate: ke.MzMonate,
+                LzFirstbreak: _this.formatter.parseNumber(ke.LzFirstbreak),
+                MzMonate: _this.formatter.parseNumber(ke.MzMonate),
                 
-                MkMonate: (ke.MkMonate !== '') ? ke.MkMonate : null,
-                MkAbsolut: (ke.MkAbsolut !== '') ? ke.MkAbsolut : null,
+                MkMonate: (ke.MkMonate !== '') ? _this.formatter.parseNumber(ke.MkMonate) : null,
+                MkAbsolut: (ke.MkAbsolut !== '') ? _this.formatter.parseNumber(ke.MkAbsolut) : null,
 
-                BkMonatsmieten: (ke.BkMonatsmieten !== '') ? ke.BkMonatsmieten : null,
-                BkAbsolut: (ke.BkAbsolut !== '') ? ke.BkAbsolut : null,
+                BkMonatsmieten: (ke.BkMonatsmieten !== '') ? _this.formatter.parseNumber(ke.BkMonatsmieten) : null,
+                BkAbsolut: (ke.BkAbsolut !== '') ? _this.formatter.parseNumber(ke.BkAbsolut) : null,
 
                 ArtKosten: ke.ArtKosten,
-                SonstK: (ke.SonstK !== '') ? ke.SonstK : null,
+                SonstK: (ke.SonstK !== '') ? _this.formatter.parseNumber(ke.SonstK) : null,
                 ArtErtrag: ke.ArtErtrag,
-                SonstE: (ke.SonstE !== '') ? ke.SonstE : null,
+                SonstE: (ke.SonstE !== '') ? _this.formatter.parseNumber(ke.SonstE) : null,
 
-                Steuerschaden: (ke.Steuerschaden !== '') ? ke.Steuerschaden : null,
-                MwstkErtrag: (ke.MwstkErtrag !== '') ? ke.MwstkErtrag : null,
-                Einmalertrag: (ke.Einmalertrag !== '') ? ke.Einmalertrag : null,
+                Steuerschaden: (ke.Steuerschaden !== '') ? _this.formatter.parseNumber(ke.Steuerschaden) : null,
+                MwstkErtrag: (ke.MwstkErtrag !== '') ? _this.formatter.parseNumber(ke.MwstkErtrag) : null,
+                Einmalertrag: (ke.Einmalertrag !== '') ? _this.formatter.parseNumber(ke.Einmalertrag) : null,
 
                 Status: ke.Status,
                 Anmerkung: ke.Anmerkung,
@@ -608,15 +618,18 @@ sap.ui.define([
                 Unit: ke.Unit,
 
                 KeToOb: _.map(ke.KeToOb, function(object){
-                    object.HnflAlt = (object.HnflAlt !== '') ? object.HnflAlt : null;
-                    object.AnMiete = (object.AnMiete !== '') ? object.AnMiete : null;
-                    object.GaKosten = (object.GaKosten !== '') ? object.GaKosten : null;
-                    object.MaKosten = (object.MaKosten !== '') ? object.MaKosten : null;
+                    delete object.__metadata;
+                    object.HnflAlt = (object.HnflAlt !== '') ? _this.formatter.parseNumber(object.HnflAlt) : null;
+                    object.AnMiete = (object.AnMiete !== '') ? _this.formatter.parseNumber(object.AnMiete) : null;
+                    object.NutzartAlt = null;
+                    object.GaKosten = (object.GaKosten !== '') ? _this.formatter.parseNumber(object.GaKosten) : null;
+                    object.MaKosten = (object.MaKosten !== '') ? _this.formatter.parseNumber(object.MaKosten) : null;
                     return object;
                 }),
 
                 Confirmation: ke.Confirmation
             };
+            console.log(payload, "payload");
 
             DataProvider.createKonditioneneinigungAsync(payload).then(function(){
                 _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
@@ -685,6 +698,7 @@ sap.ui.define([
                     delete object.__metadata;
                     object.HnflAlt = (object.HnflAlt !== '') ? object.HnflAlt : null;
                     object.AnMiete = (object.AnMiete !== '') ? object.AnMiete : null;
+                    object.NutzartAlt = null;
                     object.GaKosten = (object.GaKosten !== '') ? object.GaKosten : null;
                     object.MaKosten = (object.MaKosten !== '') ? object.MaKosten : null;
                     return object;
@@ -692,7 +706,7 @@ sap.ui.define([
 
                 Confirmation: ke.Confirmation
             };
-
+            console.log(payload, "payload");
             DataProvider.createKonditioneneinigungAsync(payload).then(function(){
                 return DataProvider.deleteSperreAsync(ke.KeId, '');
             })
@@ -808,9 +822,19 @@ sap.ui.define([
                 idMietflaechenangabenErrorBox.setText("Bitte fügen Sie mindestens eine Mietfläche hinzu");
                 idMietflaechenangabenErrorBox.setVisible(true);
             }
+            
+            _.map(mietflaechenangabenTable.getItems(), function(item){
+                var cells = item.getCells();
+                var anMieteCell = cells[7];
+
+                if(anMieteCell.getValue() === ""){
+                    anMieteCell.setValueState(sap.ui.core.ValueState.Error);
+                    anMieteCell.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                    validationResult = false;
+                }
+            });
 
             var ketoob = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-            var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             var rows = mietflaechenangabenTable.getItems();
             var i;
             for(i = 0; i < rows.length; i = i+1){
@@ -1006,7 +1030,6 @@ sap.ui.define([
                             Bukrs: mietflaechenangabe.Bukrs,
                             Bezei: mietflaechenangabe.Bezei,
                             Nutzart: mietflaechenangabe.Nutzart,
-                            NutzartAlt: mietflaechenangabe.NutzartAlt,
                             Hnfl: mietflaechenangabe.Hnfl,
                             HnflAlt: mietflaechenangabe.HnflAlt,
                             HnflUnit: mietflaechenangabe.HnflUnit,
@@ -1064,18 +1087,14 @@ sap.ui.define([
                 Q.when(StaticData.NUTZUNGSARTEN).then(function(nutzungsarten){
                     
                     var vorhandeneNutzungsarten = _.filter(nutzungsarten, function(nutzungsart){
-                        return _.find(mietflaechenangaben, function(mietflaechenangabe){
-                           if(mietflaechenangabe.NutzartAlt !== "" && mietflaechenangabe.NutzartAlt !== "0700" && mietflaechenangabe.NutzartAlt !== "0750"){
-                                return nutzungsart.NaId === mietflaechenangabe.NutzartAlt;
-                            } else {
-                                if(mietflaechenangabe.Nutzart !== "0700" && mietflaechenangabe.Nutzart !== "0750"){
-                                    return nutzungsart.NaId === mietflaechenangabe.Nutzart;
-                                }
-                            }
+                        return _.find(mietflaechenangaben, function(mietflaechenangabe){                           
+                            if(mietflaechenangabe.Nutzart !== "0700" && mietflaechenangabe.Nutzart !== "0750"){
+                                return nutzungsart.NaId === mietflaechenangabe.Nutzart;
+                            }                            
                         });
                     });
 
-                    if(vorhandeneNutzungsarten.length == 0){
+                    if(vorhandeneNutzungsarten.length === 0){
                         MessageBox.information(TranslationUtil.translate("ERR_KEINE_GUELTIGEN_NUTZUNGSARTEN"));
                     }else{
                         var dialogModel = new sap.ui.model.json.JSONModel({
@@ -1186,6 +1205,7 @@ sap.ui.define([
             var _this = this;
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
 
+            
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
                 KeId: ke.KeId, 
                 Bukrs: ke.Bukrs, 

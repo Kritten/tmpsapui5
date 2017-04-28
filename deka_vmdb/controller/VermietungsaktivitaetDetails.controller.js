@@ -1036,6 +1036,17 @@ sap.ui.define([
                 }
             }
 
+            _.map(mietflaechenangabenTable.getItems(), function(item){
+                var cells = item.getCells();
+                var anMieteCell = cells[8];
+
+                if(anMieteCell.getValue() === ""){
+                    anMieteCell.setValueState(sap.ui.core.ValueState.Error);
+                    anMieteCell.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                    validationResult = false;
+                }
+            });
+
             var idLzFirstbreak = this.getView().byId("idLzFirstbreak");
             if(idLzFirstbreak.getValue() === ""){
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
@@ -1069,6 +1080,14 @@ sap.ui.define([
             this.getView().byId("idMietbeginn").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idLzFirstbreak").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idIdxWeitergabe").setValueState(sap.ui.core.ValueState.None);
+
+            var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
+            _.map(mietflaechenangabenTable.getItems(), function(item){
+                var cells = item.getCells();
+                var anMieteCell = cells[8];
+
+                anMieteCell.setValueState(sap.ui.core.ValueState.None);      
+            });
         },
 
         onAbbrechenButtonPress: function(oEvent){            
@@ -1352,7 +1371,8 @@ sap.ui.define([
                             }
                         });
                     });
-                    if(vorhandeneNutzungsarten.length == 0){
+                    console.log(vorhandeneNutzungsarten, "vhNutzarten");
+                    if(vorhandeneNutzungsarten.length === 0){
                         MessageBox.information(TranslationUtil.translate("ERR_KEINE_GUELTIGEN_NUTZUNGSARTEN"));
                     }else{
                         var dialogModel = new sap.ui.model.json.JSONModel({

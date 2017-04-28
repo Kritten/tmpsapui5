@@ -501,7 +501,6 @@ sap.ui.define([], function() {
 
         readGenehmigerSetAsync: function(moeglicheGenehmiger, stufe){
             var _this = this;
-
             var urlParamters = {};
 
             urlParamters.$filter = "Moegliche_Genehmiger eq '" + moeglicheGenehmiger + "' and Stufe eq '" + stufe + "'";
