@@ -13,12 +13,10 @@ sap.ui.define([
     "ag/bpc/Deka/util/StaticData",
     "ag/bpc/Deka/util/ErrorMessageUtil",
     "ag/bpc/Deka/util/TranslationUtil",
-    "ag/bpc/Deka/util/NumberFormatter"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil, NumberFormatter) {
+    "ag/bpc/Deka/model/CustomNumberType"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
 	
 	"use strict";
-	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
-        formatter: NumberFormatter,
-        
+	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {        
 		onInit: function(evt){            
             var _this = this;
             
@@ -824,7 +822,7 @@ sap.ui.define([
                     return objekt;
                 }),
 
-                Confirmation: va.Confirmation
+                Confirmation: false
             };
 
             DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){

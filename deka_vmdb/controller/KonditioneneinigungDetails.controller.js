@@ -14,12 +14,10 @@ sap.ui.define([
     "ag/bpc/Deka/util/ErrorMessageUtil",
     "ag/bpc/Deka/util/StaticData",
     "ag/bpc/Deka/util/TranslationUtil",
-    "ag/bpc/Deka/util/NumberFormatter"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil, NumberFormatter) {
+    "ag/bpc/Deka/model/CustomNumberType"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil) {
 	
 	"use strict";
-	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
-        formatter: NumberFormatter,
-        
+	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {        
 		onInit: function(oEvent){
             var _this = this;
 
@@ -555,7 +553,7 @@ sap.ui.define([
             if(validationSuccess){
                 this.speichern();
             }else {
-                 MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre eingaben.");
+                 MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
             }
         },
 
@@ -591,23 +589,23 @@ sap.ui.define([
 
                 GueltigkKe: ke.GueltigkKe,
                 Mietbeginn: ke.Mietbeginn,
-                LzFirstbreak: _this.formatter.parseNumber(ke.LzFirstbreak),
-                MzMonate: _this.formatter.parseNumber(ke.MzMonate),
+                LzFirstbreak:  ke.LzFirstbreak,
+                MzMonate:  ke.MzMonate,
                 
-                MkMonate: (ke.MkMonate !== '') ? _this.formatter.parseNumber(ke.MkMonate) : null,
-                MkAbsolut: (ke.MkAbsolut !== '') ? _this.formatter.parseNumber(ke.MkAbsolut) : null,
+                MkMonate: (ke.MkMonate !== '') ?  ke.MkMonate : null,
+                MkAbsolut: (ke.MkAbsolut !== '') ?  ke.MkAbsolut : null,
 
-                BkMonatsmieten: (ke.BkMonatsmieten !== '') ? _this.formatter.parseNumber(ke.BkMonatsmieten) : null,
-                BkAbsolut: (ke.BkAbsolut !== '') ? _this.formatter.parseNumber(ke.BkAbsolut) : null,
+                BkMonatsmieten: (ke.BkMonatsmieten !== '') ?  ke.BkMonatsmieten : null,
+                BkAbsolut: (ke.BkAbsolut !== '') ?  ke.BkAbsolut : null,
 
                 ArtKosten: ke.ArtKosten,
-                SonstK: (ke.SonstK !== '') ? _this.formatter.parseNumber(ke.SonstK) : null,
+                SonstK: (ke.SonstK !== '') ?  ke.SonstK : null,
                 ArtErtrag: ke.ArtErtrag,
-                SonstE: (ke.SonstE !== '') ? _this.formatter.parseNumber(ke.SonstE) : null,
+                SonstE: (ke.SonstE !== '') ?  ke.SonstE : null,
 
-                Steuerschaden: (ke.Steuerschaden !== '') ? _this.formatter.parseNumber(ke.Steuerschaden) : null,
-                MwstkErtrag: (ke.MwstkErtrag !== '') ? _this.formatter.parseNumber(ke.MwstkErtrag) : null,
-                Einmalertrag: (ke.Einmalertrag !== '') ? _this.formatter.parseNumber(ke.Einmalertrag) : null,
+                Steuerschaden: (ke.Steuerschaden !== '') ?  ke.Steuerschaden : null,
+                MwstkErtrag: (ke.MwstkErtrag !== '') ?  ke.MwstkErtrag : null,
+                Einmalertrag: (ke.Einmalertrag !== '') ?  ke.Einmalertrag : null,
 
                 Status: ke.Status,
                 Anmerkung: ke.Anmerkung,
@@ -619,15 +617,15 @@ sap.ui.define([
 
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
-                    object.HnflAlt = (object.HnflAlt !== '') ? _this.formatter.parseNumber(object.HnflAlt) : null;
-                    object.AnMiete = (object.AnMiete !== '') ? _this.formatter.parseNumber(object.AnMiete) : null;
+                    object.HnflAlt = (object.HnflAlt !== '') ?  object.HnflAlt : null;
+                    object.AnMiete = (object.AnMiete !== '') ?  object.AnMiete : null;
                     object.NutzartAlt = null;
-                    object.GaKosten = (object.GaKosten !== '') ? _this.formatter.parseNumber(object.GaKosten) : null;
-                    object.MaKosten = (object.MaKosten !== '') ? _this.formatter.parseNumber(object.MaKosten) : null;
+                    object.GaKosten = (object.GaKosten !== '') ?  object.GaKosten : null;
+                    object.MaKosten = (object.MaKosten !== '') ?  object.MaKosten : null;
                     return object;
                 }),
 
-                Confirmation: ke.Confirmation
+                Confirmation: false
             };
             console.log(payload, "payload");
 
