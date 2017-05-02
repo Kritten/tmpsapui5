@@ -14,11 +14,8 @@ sap.ui.define([
             return oNumberFormat.format(sValue);
         },
 
-        parseValue: function(sValue, sInternalType){
-            // TODO: Anpassen für internationale Formate
-           // return sValue.replace(",", ".");
-
-           var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
+        parseValue: function(sValue, sInternalType){           
+            var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
                 style: 'Standard',
                 decimals: 2
             });
@@ -26,8 +23,27 @@ sap.ui.define([
             return oNumberFormat.parse(sValue);
         },
 
-        validateValue: function(sValue){
-            //TODO: implement
+        validateValue: function(value){
+            var sValue = value.toString();
+            var digits = sValue.split("");
+
+            digits = digits.reverse();
+
+            if(digits[2] !== "."){
+                // Zahl hat entweder mehr oder weniger als 2 Nachkommastellen
+                return false;
+            }else{
+                // Punkt entfernen
+                digits.splice(2,1);
+            }
+
+            _.map(digits, function(digit){
+                if( isNaN(parseInt(digit)) ) {
+                    // Zahl enthält einen Buchstaben oder Sonderzeichen
+                    return false;
+                }
+            });
+
             return true;
         }
     });
