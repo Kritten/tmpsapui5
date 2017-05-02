@@ -15,7 +15,15 @@ sap.ui.define([
         },
 
         parseValue: function(sValue, sInternalType){
-            return sValue.replace(",", ".");
+            // TODO: Anpassen für internationale Formate
+           // return sValue.replace(",", ".");
+
+           var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
+                style: 'Standard',
+                decimals: 2
+            });
+
+            return oNumberFormat.parse(sValue);
         },
 
         validateValue: function(sValue){

@@ -11,15 +11,11 @@ sap.ui.define([
 	"ag/bpc/Deka/util/ExcelImportUtil",
 	"ag/bpc/Deka/util/NavigationPayloadUtil",
 	"ag/bpc/Deka/util/DataProvider",
-	"ag/bpc/Deka/util/StaticData",
-	"ag/bpc/Deka/util/NumberFormatter"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider, StaticData, NumberFormatter) {
+	"ag/bpc/Deka/util/StaticData"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider, StaticData) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
-		formatter: NumberFormatter,
-
 		onInit: function(evt){		
-			console.log(this.formatter, "formatter");
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
 			this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
 

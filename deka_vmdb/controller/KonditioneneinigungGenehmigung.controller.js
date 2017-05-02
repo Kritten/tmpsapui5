@@ -93,6 +93,7 @@ sap.ui.define([
             var _this = this;
             this.getView().getModel("form").setProperty("/modus", "show");
             var form = this.getView().getModel("form");
+            console.log(form, "form");
 
             var stufen = form.oData.stufen;
 
@@ -103,11 +104,11 @@ sap.ui.define([
                         "KeId": _this._KeId,
                         "VaId": '',
                         "Stufe": stufe.Stufe,
-                        "Genehmiger": genehmigung.Genehmiger,
+                        "Genehmiger": (genehmigung.newKey) ? genehmigung.newKey : genehmigung.Genehmiger,
                         "Status": genehmigung.Status,
                         "Switch": genehmigung.Switch
                     };
-
+                    
                     DataProvider.updateGenehmigungsprozessSetAsync(payload.Index, payload.KeId, payload.VaId, payload.Stufe, payload)
                     .catch(function(oError){
                         var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -115,43 +116,6 @@ sap.ui.define([
                     }).done();
                 });
             });
-
-            /*var stufenList = this.getView().byId("stufenList");
-            var numStufen = stufenList.getItems().length;
-            var sTables;
-
-            // Über Stufen iterieren
-            for(var i = 0; i < numStufen; i = i + 1){
-                var stufenItem = stufenList.getItems()[i];
-                sTables = stufenItem.getAggregation("content");
-                
-                // Wahrscheinlich ist sTables.length immer = 1
-                for(var j=0; j < sTables.length; j = j+1){
-                    var table = sTables[j];
-                    var tableItems = table.getItems();
-
-                    for(var k=0; k < tableItems.length; k = k + 1){
-                        var tZeile = tableItems[k];
-                        var zCells = tZeile.getAggregation("cells");
-
-                        var payload = {
-                            "Index" : stufen[i].genehmigungen[k].Index,
-                            "KeId" : _this._KeId,
-                            "VaId" : '',
-                            "Stufe" : stufen[i].Stufe,
-                            "Genehmiger" : zCells[0].getSelectedKey(),
-                            "Status" : stufen[i].genehmigungen[k].Status,
-                            "Switch" : stufen[i].genehmigungen[k].Switch
-                        };
-
-                        DataProvider.updateGenehmigungsprozessSetAsync(payload.Index, payload.KeId, payload.VaId, payload.Stufe, payload)
-                        .catch(function(oError){
-                            var error = ErrorMessageUtil.parseErrorMessage(oError);
-                            ErrorMessageUtil.show(error);
-                        }).done();
-                    }
-                }
-            }*/
         },
 
         onAbbrechenButtonPress: function(oEvent){
