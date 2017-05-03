@@ -2,7 +2,7 @@
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:45:36 
  * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-04-10 17:16:46
+ * @Last Modified time: 2017-05-03 22:42:57
  */
 sap.ui.define([
 	"sap/ui/core/UIComponent", 
@@ -24,7 +24,9 @@ sap.ui.define([
 			UIComponent.prototype.init.apply(this, arguments);
 			var _this = this;
 
-			AppInitHelper.loadExternalFiles(function(){
+			var appBasePath = jQuery.sap.getModulePath("ag.bpc.Deka");
+
+			AppInitHelper.loadExternalFiles(appBasePath, function(){
 
 				console.log(".. external files loaded .. init app");
 
@@ -33,7 +35,8 @@ sap.ui.define([
 				_this.initNavigationModel();
 
 				_this.initDataProvider({
-					useMockServer: (document.location.hostname === 'localhost')
+					useMockServer: (document.location.hostname === 'localhost'),
+					appBasePath: appBasePath
 				});
 
 				StaticData.init();
@@ -57,9 +60,8 @@ sap.ui.define([
 					rootUri: serviceURL
 				});
 
-				var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
-				mockserver.simulate(sPath + "/model/service-v14.xml", {
-					sMockdataBaseUrl: sPath + "/model/mockdata",
+				mockserver.simulate(options.appBasePath + "/model/service-v14.xml", {
+					sMockdataBaseUrl: options.appBasePath + "/model/mockdata",
 					bGenerateMissingMockData: true
 				});
 				mockserver.start();
