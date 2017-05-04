@@ -822,7 +822,7 @@ sap.ui.define([
                     return objekt;
                 }),
 
-                Confirmation: false
+                Confirmation: va.Confirmation ? va.Confirmation : false
             };
 
             DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){

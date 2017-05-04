@@ -3,7 +3,7 @@ sap.ui.define([
 ], function(SimpleType, ValidateException) {
     return SimpleType.extend("model.CustomNumberType", {
         formatValue: function(sValue, sInternalType){
-            if(sValue === ""){
+            if(sValue === "" || sValue === null || sValue === "null") {
                 return "";
             }         
             var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
@@ -14,7 +14,10 @@ sap.ui.define([
             return oNumberFormat.format(sValue);
         },
 
-        parseValue: function(sValue, sInternalType){           
+        parseValue: function(sValue, sInternalType){ 
+            if(sValue === "" || sValue === null || sValue === "null") {
+                return "";
+            }           
             var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
                 style: 'Standard',
                 decimals: 2
@@ -24,13 +27,18 @@ sap.ui.define([
         },
 
         validateValue: function(value){
+            // Validierung:
+            // 1. Anzahl Nachkommastellen überprüfen            
+            // 2. Überprüfen, dass nur Zahlen eingegeben wurden
+            /*var nachkommastellen = 2; 
+
             var sValue = value.toString();
             var digits = sValue.split("");
 
             digits = digits.reverse();
 
-            if(digits[2] !== "."){
-                // Zahl hat entweder mehr oder weniger als 2 Nachkommastellen
+            if(digits[nachkommastellen] !== "."){
+                // Zahl hat falsche Anzahl Nachkommastellen
                 return false;
             }else{
                 // Punkt entfernen
@@ -42,9 +50,13 @@ sap.ui.define([
                     // Zahl enthält einen Buchstaben oder Sonderzeichen
                     return false;
                 }
-            });
+            });*/
 
-            return true;
+            if(value === "" || value === null){
+                return false;
+            }else{                
+                return true;
+            }
         }
     });
 });

@@ -36,15 +36,15 @@
                         </headerToolbar>
 
                         <columns>
-                            <Column width="20%">
+                            <Column autoAdjustWidth="true">
                                 <Text text="Genehmiger" />
-                            </Column>
-                            <Column width="40%">
-                                <Text text="Neuer Genehmiger" />
-                            </Column>
-                            <Column width="40%">
+                            </Column>    
+                            <Column width="30%" visible="{= (${form>/modus} === 'edit')}">
+                                <Text text="Neuer Genehmiger" visible="{= (${form>/modus} === 'edit')}"/>
+                            </Column>                        
+                            <Column width="50%">
                                 <Text text="Status" />
-                            </Column>
+                            </Column>                            
                         </columns>
 
                         <items>
@@ -53,15 +53,14 @@
                                     <layoutData>
                                         <l:GridData span="L8 M8 S12" />
                                     </layoutData>
-                                </Text>                        
-                                <Select items="{ path: 'form>available', templateShareable: true }" forceSelection="false" selectedKey="{path: 'form>newKey'}" enabled="{= (${form>Status} === '80' &amp;&amp; ${form>/modus} === 'edit')}" autoAdjustWidth="false" width="100%">
+                                </Text>                     
+                                <Select items="{ path: 'form>available', templateShareable: true }" forceSelection="false" selectedKey="{path: 'form>newKey'}" enabled="{= (${form>/modus} === 'edit')}" autoAdjustWidth="false" width="100%">
                                     <core:Item key="{form>Moegliche_Genehmiger}" text="{form>Moegliche_Genehmiger} - {form>Name}" />
                                     <layoutData>
                                         <l:GridData span="L8 M8 S12" />
                                     </layoutData>
-                                </Select>                                
-                                <Text text="{= ${text>/status}[${form>Status}]}"/>
-                                
+                                </Select>      
+                                <Text text="{= ${text>/status}[${form>Status}]}"/>                           
                             </ColumnListItem>
                         </items>
 
