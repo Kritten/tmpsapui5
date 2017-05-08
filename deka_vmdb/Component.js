@@ -2,7 +2,7 @@
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:45:36 
  * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-05-03 22:42:57
+ * @Last Modified time: 2017-05-04 21:16:40
  */
 sap.ui.define([
 	"sap/ui/core/UIComponent", 
@@ -10,7 +10,11 @@ sap.ui.define([
 	"sap/ui/core/util/MockServer",
 	"ag/bpc/Deka/util/DataProvider",
 	"ag/bpc/Deka/util/AppInitHelper",
-	"ag/bpc/Deka/util/StaticData"], function (UIComponent, ResourceModel, MockServer, DataProvider, AppInitHelper, StaticData) {
+	"ag/bpc/Deka/util/StaticData",
+	
+	"ag/bpc/Deka/ext/js/q",
+	"ag/bpc/Deka/ext/js/underscore-min",
+	"ag/bpc/Deka/ext/js/SheetJS/xlsx.core.min"], function (UIComponent, ResourceModel, MockServer, DataProvider, AppInitHelper, StaticData) {
 	
 	"use strict";
 	return UIComponent.extend("ag.bpc.Deka.Component", {
@@ -24,33 +28,25 @@ sap.ui.define([
 			UIComponent.prototype.init.apply(this, arguments);
 			var _this = this;
 
-			var appBasePath = jQuery.sap.getModulePath("ag.bpc.Deka");
+			_this.initI18nModel();
 
-			AppInitHelper.loadExternalFiles(appBasePath, function(){
+			_this.initNavigationModel();
 
-				console.log(".. external files loaded .. init app");
-
-				_this.initI18nModel();
-
-				_this.initNavigationModel();
-
-				_this.initDataProvider({
-					useMockServer: (document.location.hostname === 'localhost'),
-					appBasePath: appBasePath
-				});
-
-				StaticData.init();
-
-				_this.initTextModel();
-
-				_this.getRouter().initialize();
-
+			_this.initDataProvider({
+				useMockServer: (document.location.hostname === 'localhost')
 			});
+
+			StaticData.init();
+
+			_this.initTextModel();
+
+			_this.getRouter().initialize();
 		},
 
 		initDataProvider: function(options){
 
 			var serviceURL;
+			var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
 
 			if(options.useMockServer)
 			{
@@ -60,8 +56,8 @@ sap.ui.define([
 					rootUri: serviceURL
 				});
 
-				mockserver.simulate(options.appBasePath + "/model/service-v14.xml", {
-					sMockdataBaseUrl: options.appBasePath + "/model/mockdata",
+				mockserver.simulate(sPath + "/model/service-v14.xml", {
+					sMockdataBaseUrl: sPath + "/model/mockdata",
 					bGenerateMissingMockData: true
 				});
 				mockserver.start();
