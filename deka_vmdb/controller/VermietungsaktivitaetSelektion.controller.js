@@ -11,7 +11,8 @@ sap.ui.define([
 	"ag/bpc/Deka/util/ExcelImportUtil",
 	"ag/bpc/Deka/util/NavigationPayloadUtil",
 	"ag/bpc/Deka/util/DataProvider",
-	"ag/bpc/Deka/util/StaticData"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider, StaticData) {
+	"ag/bpc/Deka/util/StaticData",
+	"ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {

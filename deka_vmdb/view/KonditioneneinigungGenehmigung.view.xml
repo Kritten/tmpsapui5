@@ -49,7 +49,7 @@
 
                         <items>
                             <ColumnListItem vAlign="Middle"> 
-                                <Text text="{form>Genehmiger}">
+                                <Text text="{form>Genehmiger} - {form>Name}">
                                     <layoutData>
                                         <l:GridData span="L8 M8 S12" />
                                     </layoutData>

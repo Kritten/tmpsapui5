@@ -780,28 +780,28 @@ sap.ui.define([
                 Debitorname: va.Debitorname,
 
                 Mietbeginn: va.Mietbeginn,
-                LzFirstbreak: va.LzFirstbreak,
+                LzFirstbreak: va.LzFirstbreak.toString(),
                 
-                MzMonate: (va.MzMonate !== '') ? va.MzMonate : null,
-                MzErsterMonat: va.MzErsterMonat,
-                MzAnzahlJ: (va.MzAnzahlJ !== '') ? va.MzAnzahlJ : null,
+                MzMonate: (va.MzMonate !== '') ? va.MzMonate.toString() : null,
+                MzErsterMonat: va.MzErsterMonat.toString(),
+                MzAnzahlJ: (va.MzAnzahlJ !== '') ? va.MzAnzahlJ.toString() : null,
 
-                MkMonate: (va.MkMonate !== '') ? va.MkMonate : null,
-                MkAbsolut: (va.MkAbsolut !== '') ? va.MkAbsolut : null,
+                MkMonate: (va.MkMonate !== '') ? va.MkMonate.toString() : null,
+                MkAbsolut: (va.MkAbsolut !== '') ? va.MkAbsolut.toString() : null,
 
-                BkMonate: (va.BkMonate !== '') ? va.BkMonate : null,
-                BkAbsolut: (va.BkAbsolut !== '') ? va.BkAbsolut : null,
+                BkMonate: (va.BkMonate !== '') ? va.BkMonate.toString() : null,
+                BkAbsolut: (va.BkAbsolut !== '') ? va.BkAbsolut.toString() : null,
 
                 ArtKosten: va.ArtKosten,
-                SonstK: (va.SonstK !== '') ? va.SonstK : null,
+                SonstK: (va.SonstK !== '') ? va.SonstK.toString() : null,
                 ArtErtrag: va.ArtErtrag,
-                SonstE: (va.SonstE !== '') ? va.SonstE : null,
+                SonstE: (va.SonstE !== '') ? va.SonstE.toString() : null,
 
                 AkErsterMonat: va.AkErsterMonat,
-                AkAnzahlM: (va.AkAnzahlM !== '') ? va.AkAnzahlM : null,
+                AkAnzahlM: (va.AkAnzahlM !== '') ? va.AkAnzahlM.toString() : null,
 
-                Poenale: (va.Poenale !== '') ? va.Poenale : null,
-                IdxWeitergabe: va.IdxWeitergabe,
+                Poenale: (va.Poenale !== '') ? va.Poenale.toString() : null,
+                IdxWeitergabe: va.IdxWeitergabe.toString(),
                 PLRelevant: (va.PLRelevant == 'X') ? true : false,
 
                 Status: va.Status,
@@ -814,11 +814,11 @@ sap.ui.define([
 
                 VaToOb: _.map(va.VaToOb, function(objekt){
                     delete objekt.__metadata;
-                    objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt : null;
-                    objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt : null;
-                    objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete : null;
-                    objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten : null;
-                    objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten : null;
+                    objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt.toString() : null;
+                    objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt.toString() : null;
+                    objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete.toString() : null;
+                    objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten.toString() : null;
+                    objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten.toString() : null;
                     return objekt;
                 }),
 
@@ -867,28 +867,28 @@ sap.ui.define([
                 Debitorname: va.Debitorname,
 
                 Mietbeginn: va.Mietbeginn,
-                LzFirstbreak: va.LzFirstbreak,
+                LzFirstbreak: va.LzFirstbreak.toString(),
                 
-                MzMonate: (va.MzMonate !== '') ? va.MzMonate : null,
+                MzMonate: (va.MzMonate !== '') ? va.MzMonate.toString() : null,
                 MzErsterMonat: va.MzErsterMonat,
-                MzAnzahlJ: (va.MzAnzahlJ !== '') ? va.MzAnzahlJ : null,
+                MzAnzahlJ: (va.MzAnzahlJ !== '') ? va.MzAnzahlJ.toString() : null,
 
-                MkMonate: (va.MkMonate !== '') ? va.MkMonate : null,
-                MkAbsolut: (va.MkAbsolut !== '') ? va.MkAbsolut : null,
+                MkMonate: (va.MkMonate !== '') ? va.MkMonate.toString() : null,
+                MkAbsolut: (va.MkAbsolut !== '') ? va.MkAbsolut.toString() : null,
 
-                BkMonate: (va.BkMonate !== '') ? va.BkMonate : null,
-                BkAbsolut: (va.BkAbsolut !== '') ? va.BkAbsolut : null,
+                BkMonate: (va.BkMonate !== '') ? va.BkMonate.toString() : null,
+                BkAbsolut: (va.BkAbsolut !== '') ? va.BkAbsolut.toString() : null,
 
                 ArtKosten: va.ArtKosten,
-                SonstK: (va.SonstK !== '') ? va.SonstK : null,
+                SonstK: (va.SonstK !== '') ? va.SonstK.toString() : null,
                 ArtErtrag: va.ArtErtrag,
-                SonstE: (va.SonstE !== '') ? va.SonstE : null,
+                SonstE: (va.SonstE !== '') ? va.SonstE.toString() : null,
 
                 AkErsterMonat: va.AkErsterMonat,
-                AkAnzahlM: (va.AkAnzahlM !== '') ? va.AkAnzahlM : null,
+                AkAnzahlM: (va.AkAnzahlM !== '') ? va.AkAnzahlM.toString() : null,
 
-                Poenale: (va.Poenale !== '') ? va.Poenale : null,
-                IdxWeitergabe: va.IdxWeitergabe,
+                Poenale: (va.Poenale !== '') ? va.Poenale.toString() : null,
+                IdxWeitergabe: va.IdxWeitergabe.toString(),
                 PLRelevant: va.PLRelevant,
 
                 Status: va.Status,
@@ -901,11 +901,11 @@ sap.ui.define([
 
                 VaToOb: _.map(va.VaToOb, function(objekt){
                     delete objekt.__metadata;
-                    objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt : null;
-                    objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt : null;
-                    objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete : null;
-                    objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten : null;
-                    objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten : null;
+                    objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt.toString() : null;
+                    objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt.toString() : null;
+                    objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete.toString() : null;
+                    objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten.toString() : null;
+                    objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten.toString() : null;
                     return objekt;
                 }),
 

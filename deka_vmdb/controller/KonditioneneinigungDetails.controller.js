@@ -594,24 +594,24 @@ sap.ui.define([
                 LzFirstbreak:  ke.LzFirstbreak.toString(),
                 MzMonate:  ke.MzMonate.toString(),
                 
-                MkMonate: (ke.MkMonate !== '') ?  ke.MkMonate.toString() : null,
-                MkAbsolut: (ke.MkAbsolut !== '') ?  ke.MkAbsolut.toString() : null,
+                MkMonate: ke.MkMonate ?  ke.MkMonate.toString() : null,
+                MkAbsolut: ke.MkAbsolut ?  ke.MkAbsolut.toString() : null,
 
-                BkMonatsmieten: (ke.BkMonatsmieten !== '') ?  ke.BkMonatsmieten.toString() : null,
-                BkAbsolut: (ke.BkAbsolut !== '') ?  ke.BkAbsolut.toString() : null,
+                BkMonatsmieten: ke.BkMonatsmieten ?  ke.BkMonatsmieten.toString() : null,
+                BkAbsolut: ke.BkAbsolut ?  ke.BkAbsolut.toString() : null,
 
                 ArtKosten: ke.ArtKosten,
-                SonstK: (ke.SonstK !== '') ?  ke.SonstK.toString() : null,
+                SonstK: ke.SonstK ?  ke.SonstK.toString() : null,
                 ArtErtrag: ke.ArtErtrag,
-                SonstE: (ke.SonstE !== '') ?  ke.SonstE.toString() : null,
+                SonstE: ke.SonstE ?  ke.SonstE.toString() : null,
 
-                Steuerschaden: (ke.Steuerschaden !== '') ?  ke.Steuerschaden.toString() : null,
-                MwstkErtrag: (ke.MwstkErtrag !== '') ?  ke.MwstkErtrag.toString() : null,
-                Einmalertrag: (ke.Einmalertrag !== '') ?  ke.Einmalertrag.toString() : null,
+                Steuerschaden: ke.Steuerschaden ?  ke.Steuerschaden.toString() : null,
+                MwstkErtrag: ke.MwstkErtrag ?  ke.MwstkErtrag.toString() : null,
+                Einmalertrag: ke.Einmalertrag ?  ke.Einmalertrag.toString() : null,
 
                 Status: ke.Status,
                 Anmerkung: ke.Anmerkung,
-                Bemerkung: (ke.Bemerkung !== '') ? ke.Bemerkung : null,
+                Bemerkung: ke.Bemerkung ? ke.Bemerkung : null,
 
                 MonatJahr: ke.MonatJahr,
                 Currency: ke.Currency,
@@ -619,11 +619,11 @@ sap.ui.define([
 
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
-                    object.HnflAlt = (object.HnflAlt !== '') ?  object.HnflAlt.toString() : null;
-                    object.AnMiete = (object.AnMiete !== '') ?  object.AnMiete.toString() : null;
+                    object.HnflAlt = object.HnflAlt ?  object.HnflAlt.toString() : null;
+                    object.AnMiete = object.AnMiete ?  object.AnMiete.toString() : null;
                     object.NutzartAlt = null;
-                    object.GaKosten = (object.GaKosten !== '') ?  object.GaKosten.toString() : null;
-                    object.MaKosten = (object.MaKosten !== '') ?  object.MaKosten.toString() : null;
+                    object.GaKosten = object.GaKosten ?  object.GaKosten.toString() : null;
+                    object.MaKosten = object.MaKosten ?  object.MaKosten.toString() : null;
                     return object;
                 }),
 
@@ -664,27 +664,27 @@ sap.ui.define([
 
                 GueltigkKe: ke.GueltigkKe,
                 Mietbeginn: ke.Mietbeginn,
-                LzFirstbreak: ke.LzFirstbreak,
-                MzMonate: ke.MzMonate,
+                LzFirstbreak: ke.LzFirstbreak.toString(),
+                MzMonate: ke.MzMonate.toString(),
                 
-                MkMonate: (ke.MkMonate !== '') ? ke.MkMonate : null,
-                MkAbsolut: (ke.MkAbsolut !== '') ? ke.MkAbsolut : null,
+                MkMonate: ke.MkMonate ? ke.MkMonate.toString() : null,
+                MkAbsolut: ke.MkAbsolut ? ke.MkAbsolut.toString() : null,
 
-                BkMonatsmieten: (ke.BkMonatsmieten !== '') ? ke.BkMonatsmieten : null,
-                BkAbsolut: (ke.BkAbsolut !== '') ? ke.BkAbsolut : null,
+                BkMonatsmieten: ke.BkMonatsmieten ? ke.BkMonatsmieten.toString() : null,
+                BkAbsolut: ke.BkAbsolut ? ke.BkAbsolut.toString() : null,
 
                 ArtKosten: ke.ArtKosten,
-                SonstK: (ke.SonstK !== '') ? ke.SonstK : null,
+                SonstK: ke.SonstK ? ke.SonstK.toString() : null,
                 ArtErtrag: ke.ArtErtrag,
-                SonstE: (ke.SonstE !== '') ? ke.SonstE : null,
+                SonstE: ke.SonstE ? ke.SonstE.toString() : null,
 
-                Steuerschaden: (ke.Steuerschaden !== '') ? ke.Steuerschaden : null,
-                MwstkErtrag: (ke.MwstkErtrag !== '') ? ke.MwstkErtrag : null,
-                Einmalertrag: (ke.Einmalertrag !== '') ? ke.Einmalertrag : null,
+                Steuerschaden: ke.Steuerschaden ? ke.Steuerschaden.toString() : null,
+                MwstkErtrag: ke.MwstkErtrag ? ke.MwstkErtrag.toString() : null,
+                Einmalertrag: ke.Einmalertrag ? ke.Einmalertrag.toString() : null,
 
                 Status: ke.Status,
                 Anmerkung: ke.Anmerkung,
-                Bemerkung: (ke.Bemerkung !== '') ? ke.Bemerkung : null,
+                Bemerkung: ke.Bemerkung ? ke.Bemerkung : null,
                 Budgetstp: ke.Budgetstp,
 
                 MonatJahr: ke.MonatJahr,
@@ -696,11 +696,11 @@ sap.ui.define([
                 
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
-                    object.HnflAlt = (object.HnflAlt !== '') ? object.HnflAlt : null;
-                    object.AnMiete = (object.AnMiete !== '') ? object.AnMiete : null;
+                    object.HnflAlt = object.HnflAlt ? object.HnflAlt.toString() : null;
+                    object.AnMiete = object.AnMiete ? object.AnMiete.toString() : null;
                     object.NutzartAlt = null;
-                    object.GaKosten = (object.GaKosten !== '') ? object.GaKosten : null;
-                    object.MaKosten = (object.MaKosten !== '') ? object.MaKosten : null;
+                    object.GaKosten = object.GaKosten ? object.GaKosten.toString() : null;
+                    object.MaKosten = object.MaKosten ? object.MaKosten.toString() : null;
                     return object;
                 }),
 

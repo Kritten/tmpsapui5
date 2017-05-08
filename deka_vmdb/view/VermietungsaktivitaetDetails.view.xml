@@ -119,10 +119,10 @@
                                     <core:Item key="{form>NaId}" text="{form>TextSh}" />
                                 </items>
                             </Select>
-                            <Text text="{= (${form>HnflUnit} === 'ST') ? (${form>Hnfl} + ' ' + ${form>HnflUnit}) : ((Math.round(${form>Hnfl} * ${form>/viewsettings/flaecheneinheitSelected/Multiplikator} * 100) / 100) + ' ' + ${form>/viewsettings/flaecheneinheitSelected/Nach}) }" />
+                            <Text text="{= (${form>HnflUnit} === 'ST') ? (${form>Hnfl} + ' ' + ${form>HnflUnit}) : ((Math.round(${form>Hnfl} * ${form>/viewsettings/flaecheneinheitSelected/Multiplikator} * 100) / 100) + ' ' + ${form>/viewsettings/flaecheneinheitSelected/Nach}) }" type="model.CustomNumberType"  />
                             <Input value="{ path: 'form>HnflAlt', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" type="Number" editable="false" />
+                            <Input value="{= Math.round(${form>NhMiete} * ${form>/viewsettings/waehrungSelected/Multiplikator} * 100) / 100 }" type="model.CustomNumberType" editable="false" />
                             <Input value="{ path: 'form>AnMiete', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" type="Float" />
                             <Input value="{ path: 'form>GaKosten', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
                             <Input value="{ path: 'form>MaKosten', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />

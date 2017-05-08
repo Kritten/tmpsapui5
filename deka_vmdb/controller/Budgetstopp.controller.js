@@ -6,9 +6,11 @@
  */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
+	"sap/m/MessageBox",
 	"ag/bpc/Deka/util/DataProvider",
 	"ag/bpc/Deka/util/ErrorMessageUtil",
-	"ag/bpc/Deka/util/StaticData"], function (Controller, DataProvider, ErrorMessageUtil, StaticData) {
+	"ag/bpc/Deka/util/StaticData",
+	"ag/bpc/Deka/util/TranslationUtil"], function (Controller, MessageBox, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.Budgetstopp", {
@@ -67,26 +69,79 @@ sap.ui.define([
 			var _this = this;
 
 			var items = _this.getView().byId("konditioneneinigungenTable").getSelectedItems();
-			var konditioneneinigungen = _.map(items, function(item){
-				return item.getBindingContext("form").getObject();
-			});
 
-			Q.all(_.map(konditioneneinigungen, function(ke){
-				
-				return DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-					KeId: ke.KeId, 
-					Bukrs: ke.Bukrs, 
-					Anmerkung: StaticData.ANMERKUNG.KE.AUS_WICHTIGEM_GRUND_ZURUECKGEZOGEN
+			if(items.length > 0){				
+				var konditioneneinigungen = _.map(items, function(item){
+					return item.getBindingContext("form").getObject();
 				});
 
-			}))
-			.catch(function(oError){
-				ErrorMessageUtil.showError(oError);
-			})
-			.fin(function(){
-				_this.ladeKonditioneneinigungen();
-			})
-			.done();
+				var dialog = new sap.m.Dialog({
+					title: TranslationUtil.translate("HINWEIS"),
+					type: sap.m.DialogType.Message,
+					icon: "sap-icon://message-warning",
+					state: sap.ui.core.ValueState.Warning,
+					content: [
+						new sap.m.Text({
+							text: TranslationUtil.translate("KE_GENEHMIGUNG_ZURUECKZIEHEN_GRUND")
+						}),
+						new sap.m.TextArea('idGenehmigungZurueckziehenBegruendungTextArea', {
+							liveChange: function(oEvent) {
+								var sText = oEvent.getParameter('value');
+								var parent = oEvent.getSource().getParent();
+								parent.getBeginButton().setEnabled(sText.length > 0);
+							},
+							width: "100%",
+							placeholder: TranslationUtil.translate("BEGRUENDUNG")
+						})
+					],
+					beginButton: new sap.m.Button({
+						text: TranslationUtil.translate("AKZEPTIEREN"),
+						enabled: false,
+						press: function () {
+
+							var sText = sap.ui.getCore().byId('idGenehmigungZurueckziehenBegruendungTextArea').getValue();
+							
+							Q.all(_.map(konditioneneinigungen, function(ke){
+					
+								return DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
+									KeId: ke.KeId, 
+									Bukrs: ke.Bukrs, 
+									Anmerkung: StaticData.ANMERKUNG.KE.AUS_WICHTIGEM_GRUND_ZURUECKGEZOGEN,
+									Bemerkung: sText,
+									Budgetstopp: true
+								});
+
+							}))
+							.then(function(){
+								MessageBox.information(TranslationUtil.translate("KE_GENEHMIGUNG_ZURUECKGEZOGEN"), {
+									title: TranslationUtil.translate("HINWEIS")
+								});
+							})
+							.catch(function(oError){
+								ErrorMessageUtil.showError(oError);
+							})
+							.fin(function(){
+								dialog.close();
+								
+								_this.ladeKonditioneneinigungen();
+							});	                      
+
+							
+						}
+					}),
+					endButton: new sap.m.Button({
+						text: TranslationUtil.translate("ABBRECHEN"),
+						press: function () {
+							dialog.close();
+						}
+					}),
+					afterClose: function() {
+						dialog.destroy();
+					}
+				});
+	
+				dialog.open();	
+			}		
 		},
 
 		onBack: function(evt){
