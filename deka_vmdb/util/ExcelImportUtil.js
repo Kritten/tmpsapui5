@@ -59,15 +59,14 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
 
                         if(vaWorksheet[keyCellAddress] === undefined){
                             break;
-                        }
+                        }                        
                         
                         if(vaWorksheet[valCellAddress] === undefined){
                             vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = "";
                         }else{
                             vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = vaWorksheet[valCellAddress].v;
                         }
-                    }
-
+                    }                    
 
                     var mfWorksheet = workbook.Sheets[mfSheetName];
 
@@ -80,14 +79,15 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                         {
                             keyCellAddress = XLSX.utils.encode_cell({c:col, r:0});
                             valCellAddress = XLSX.utils.encode_cell({c:col, r:row});
-
+                            
                             // Wenn KeyCell leer ist, dann ist die Schleife am Ende der Spalten angelangt
                             // Die Mietfläche wird hierbei der VA hinzugefügt und die Schleife unterbrochen
                             if(mfWorksheet[keyCellAddress] === undefined){
                                 vermietungsaktivitaet.VaToOb.push(mietflaeche);
                                 break;
                             }
-                            // Wenn die ValCell leer ist, wird angenommen, dass man keine weiteren Reihen befüllt sind
+                            
+                            // Wenn die ValCell leer ist, wird angenommen, dass keine weiteren Reihen befüllt sind
                             // Die Schleife wird unterbrochen
                             if(mfWorksheet[valCellAddress] === undefined)
                             {
@@ -97,8 +97,8 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                             //console.log( mfWorksheet[keyCellAddress].v + " = " + mfWorksheet[valCellAddress].v );
                             mietflaeche[mfWorksheet[keyCellAddress].v] = mfWorksheet[valCellAddress].v;
                         }
-                    }
-                    
+                    }                    
+
                     // Datum-Strings übersetzen
 
                     // Mietbeginn
@@ -106,7 +106,6 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                     var splitString = dateString.split(".");
                     vermietungsaktivitaet.Mietbeginn = new Date(splitString[2],splitString[1]-1,splitString[0]);
 
-                    console.log(vermietungsaktivitaet);
                     // Erster Monat mietfrei
                     dateString = vermietungsaktivitaet.MzErsterMonat;
                     splitString = dateString.split(".");

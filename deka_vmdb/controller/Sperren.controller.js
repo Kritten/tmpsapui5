@@ -70,11 +70,7 @@ sap.ui.define([
 				console.log(oError);
 			})
 			.done();
-		},
-		
-		onDruckenButtonPress: function(oEvent){
-			jQuery.sap.log.info(".. ag.bpc.Deka.controller.Sperren .. onDruckenButtonPress");
-		}        
+		}
         
 	});
 });

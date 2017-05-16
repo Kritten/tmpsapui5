@@ -70,6 +70,10 @@ sap.ui.define([
 
 			var items = _this.getView().byId("konditioneneinigungenTable").getSelectedItems();
 
+			var fondItem = _this.getView().byId("idSelectFond").getSelectedItem();
+			var fond = fondItem.getBindingContext("form").getObject();
+			var dmFonds = fond.Dmfonds;
+
 			if(items.length > 0){				
 				var konditioneneinigungen = _.map(items, function(item){
 					return item.getBindingContext("form").getObject();
@@ -108,7 +112,7 @@ sap.ui.define([
 									Bukrs: ke.Bukrs, 
 									Anmerkung: StaticData.ANMERKUNG.KE.AUS_WICHTIGEM_GRUND_ZURUECKGEZOGEN,
 									Bemerkung: sText,
-									Budgetstopp: true
+									FondsBgtstp: dmFonds
 								});
 
 							}))

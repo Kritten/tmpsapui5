@@ -440,7 +440,7 @@ sap.ui.define([
             var _this = this;
 
             var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
-
+            
             if(!vermietungsaktivitaet){
                 this.onBack(null);
                 return;
@@ -507,27 +507,20 @@ sap.ui.define([
             this.readMietobjektSetAsync(bukr,weId)
             .then(function(mietobjekte) {
                 var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
-                var vorhandeneMoIds = _.map(mietflaechenangaben, function(mietflaechenangabe){
-                    return mietflaechenangabe.MoId;
-                });
 
-                var jsonData = {
-                    mietflaechen: []
-                };
-                jsonData.mietflaechen = _.filter(mietobjekte, function(mietobjekt){
-                    return (_.indexOf(vorhandeneMoIds, mietobjekt.MoId) === -1);
+                _.map(mietflaechenangaben, function(mietflaechenangabe){
+                    _.map(mietobjekte, function(mietobjekt){
+                        if(mietobjekt.MoId === mietflaechenangabe.MoId){
+                            mietflaechenangabe.Bukrs = mietobjekt.Bukrs;
+                            mietflaechenangabe.WeId = mietobjekt.WeId;
+                            mietflaechenangabe.Nutzart = mietobjekt.Nutzart;
+                            mietflaechenangabe.NhMiete = mietobjekt.NhMiete;
+                            mietflaechenangabe.Bezei = mietobjekt.Bezei;
+                            mietflaechenangabe.Hnfl = mietobjekt.Hnfl;
+                            mietflaechenangabe.HnflUnit = mietobjekt.HnflUnit;
+                        }
+                    });
                 });
-
-                for(var i = 0; i < jsonData.mietflaechen.length; i++){
-                    mietflaechenangaben[i].Bukrs = jsonData.mietflaechen[i].Bukrs;
-                    mietflaechenangaben[i].WeId = jsonData.mietflaechen[i].WeId;            
-                    mietflaechenangaben[i].Mietflche = jsonData.mietflaechen[i].Mietflche;
-                    mietflaechenangaben[i].Nutzart = jsonData.mietflaechen[i].Nutzart;
-                    mietflaechenangaben[i].NhMiete = jsonData.mietflaechen[i].NhMiete;
-                    mietflaechenangaben[i].Bezei = jsonData.mietflaechen[i].Bezei;
-                    mietflaechenangaben[i].Hnfl = jsonData.mietflaechen[i].Hnfl;
-                    mietflaechenangaben[i].HnflUnit = jsonData.mietflaechen[i].HnflUnit;                    
-                }
 
                 var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
                 var objekte = [];
@@ -538,24 +531,24 @@ sap.ui.define([
                         MoId: mietobjekt.MoId,
                         KeId: "",
                         Bukrs: mietobjekt.Bukrs,
-                        Bezei: (mietobjekt.Bezei !== '') ? mietobjekt.Bezei : null,
+                        Bezei: mietobjekt.Bezei ? mietobjekt.Bezei : null,
                         Nutzart: mietobjekt.Nutzart,
-                        NutzartAlt: (mietobjekt.NutzartAlt !== '') ? mietobjekt.NutzartAlt : null,
+                        NutzartAlt: mietobjekt.NutzartAlt ? mietobjekt.NutzartAlt : null,
                         Hnfl: mietobjekt.Hnfl,
-                        HnflAlt: (mietobjekt.HnflAlt !== '') ? mietobjekt.HnflAlt : null,
+                        HnflAlt: mietobjekt.HnflAlt ? mietobjekt.HnflAlt : null,
                         HnflUnit: mietobjekt.HnflUnit,
                         NhMiete: mietobjekt.NhMiete,
                         AnMiete: mietobjekt.AnMiete,
                         GaKosten: mietobjekt.GaKosten,
                         MaKosten: mietobjekt.MaKosten,
                         Whrung: mietobjekt.Whrung,
-                        MfSplit: (mietobjekt.MfSplit == 'X') ? true : false,
+                        MfSplit: (mietobjekt.MfSplit === "X") ? true : false,
                         VaId: va.VaId,
                         MonatJahr: va.MonatJahr
                     });
                 });
 
-                _this.getView().getModel("form").setProperty("vermietungsaktivitaet/VaToOb", mietflaechenangaben);
+                _this.getView().getModel("form").setProperty("vermietungsaktivitaet/VaToOb", objekte);
             })
             .done();            
         },
@@ -774,35 +767,35 @@ sap.ui.define([
 
                 Vermietungsart: va.Vermietungsart,
 
-                Dienstleister: va.Dienstleister !== '' ? va.Dienstleister : null,
+                Dienstleister: va.Dienstleister ? va.Dienstleister : null,
                 
-                Debitor: (va.Debitor !== '') ? va.Debitor : null,
+                Debitor: va.Debitor ? va.Debitor : null,
                 Debitorname: va.Debitorname,
 
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak.toString(),
                 
-                MzMonate: (va.MzMonate !== '') ? va.MzMonate.toString() : null,
-                MzErsterMonat: va.MzErsterMonat.toString(),
-                MzAnzahlJ: (va.MzAnzahlJ !== '') ? va.MzAnzahlJ.toString() : null,
+                MzMonate: va.MzMonate ? va.MzMonate.toString() : null,
+                MzErsterMonat: va.MzErsterMonat,
+                MzAnzahlJ: va.MzAnzahlJ ? va.MzAnzahlJ.toString() : null,
 
-                MkMonate: (va.MkMonate !== '') ? va.MkMonate.toString() : null,
-                MkAbsolut: (va.MkAbsolut !== '') ? va.MkAbsolut.toString() : null,
+                MkMonate: va.MkMonate ? va.MkMonate.toString() : null,
+                MkAbsolut: va.MkAbsolut ? va.MkAbsolut.toString() : null,
 
-                BkMonate: (va.BkMonate !== '') ? va.BkMonate.toString() : null,
-                BkAbsolut: (va.BkAbsolut !== '') ? va.BkAbsolut.toString() : null,
+                BkMonate: va.BkMonate ? va.BkMonate.toString() : null,
+                BkAbsolut: va.BkAbsolu ? va.BkAbsolut.toString() : null,
 
                 ArtKosten: va.ArtKosten,
-                SonstK: (va.SonstK !== '') ? va.SonstK.toString() : null,
+                SonstK: va.SonstK ? va.SonstK.toString() : null,
                 ArtErtrag: va.ArtErtrag,
-                SonstE: (va.SonstE !== '') ? va.SonstE.toString() : null,
+                SonstE: va.SonstE ? va.SonstE.toString() : null,
 
                 AkErsterMonat: va.AkErsterMonat,
-                AkAnzahlM: (va.AkAnzahlM !== '') ? va.AkAnzahlM.toString() : null,
+                AkAnzahlM: va.AkAnzahlM ? va.AkAnzahlM.toString() : null,
 
-                Poenale: (va.Poenale !== '') ? va.Poenale.toString() : null,
-                IdxWeitergabe: va.IdxWeitergabe.toString(),
-                PLRelevant: (va.PLRelevant == 'X') ? true : false,
+                Poenale: va.Poenale ? va.Poenale.toString() : null,
+                IdxWeitergabe: va.IdxWeitergabe ? va.IdxWeitergabe.toString() : null,
+                PLRelevant: va.PLRelevant ? true : false,
 
                 Status: va.Status,
                 Anmerkung: va.Anmerkung,
@@ -814,11 +807,11 @@ sap.ui.define([
 
                 VaToOb: _.map(va.VaToOb, function(objekt){
                     delete objekt.__metadata;
-                    objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt.toString() : null;
-                    objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt.toString() : null;
-                    objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete.toString() : null;
-                    objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten.toString() : null;
-                    objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten.toString() : null;
+                    objekt.HnflAlt = objekt.HnflAlt ? objekt.HnflAlt.toString() : null;
+                    objekt.NutzartAlt = objekt.NutzartAlt ? objekt.NutzartAlt.toString() : null;
+                    objekt.AnMiete = objekt.AnMiete ? objekt.AnMiete.toString() : null;
+                    objekt.GaKosten = objekt.GaKosten ? objekt.GaKosten.toString() : null;
+                    objekt.MaKosten = objekt.MaKosten ? objekt.MaKosten.toString() : null;
                     return objekt;
                 }),
 
@@ -827,7 +820,6 @@ sap.ui.define([
 
             DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){
                 _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
-                return DataProvider.deleteSperreAsync('', va.VaId);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -861,34 +853,34 @@ sap.ui.define([
 
                 Vermietungsart: va.Vermietungsart,
 
-                Dienstleister: va.Dienstleister !== '' ? va.Dienstleister : null,
+                Dienstleister: va.Dienstleister ? va.Dienstleister : null,
                 
-                Debitor: (va.Debitor !== '') ? va.Debitor : null,
+                Debitor: va.Debitor ? va.Debitor : null,
                 Debitorname: va.Debitorname,
 
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak.toString(),
                 
-                MzMonate: (va.MzMonate !== '') ? va.MzMonate.toString() : null,
+                MzMonate: va.MzMonate ? va.MzMonate.toString() : null,
                 MzErsterMonat: va.MzErsterMonat,
-                MzAnzahlJ: (va.MzAnzahlJ !== '') ? va.MzAnzahlJ.toString() : null,
+                MzAnzahlJ: va.MzAnzahlJ ? va.MzAnzahlJ.toString() : null,
 
-                MkMonate: (va.MkMonate !== '') ? va.MkMonate.toString() : null,
-                MkAbsolut: (va.MkAbsolut !== '') ? va.MkAbsolut.toString() : null,
+                MkMonate: va.MkMonate ? va.MkMonate.toString() : null,
+                MkAbsolut: va.MkAbsolut ? va.MkAbsolut.toString() : null,
 
-                BkMonate: (va.BkMonate !== '') ? va.BkMonate.toString() : null,
-                BkAbsolut: (va.BkAbsolut !== '') ? va.BkAbsolut.toString() : null,
+                BkMonate: va.BkMonate ? va.BkMonate.toString() : null,
+                BkAbsolut: va.BkAbsolut ? va.BkAbsolut.toString() : null,
 
                 ArtKosten: va.ArtKosten,
-                SonstK: (va.SonstK !== '') ? va.SonstK.toString() : null,
+                SonstK: va.SonstK ? va.SonstK.toString() : null,
                 ArtErtrag: va.ArtErtrag,
-                SonstE: (va.SonstE !== '') ? va.SonstE.toString() : null,
+                SonstE: va.SonstE ? va.SonstE.toString() : null,
 
                 AkErsterMonat: va.AkErsterMonat,
-                AkAnzahlM: (va.AkAnzahlM !== '') ? va.AkAnzahlM.toString() : null,
+                AkAnzahlM: va.AkAnzahlM ? va.AkAnzahlM.toString() : null,
 
-                Poenale: (va.Poenale !== '') ? va.Poenale.toString() : null,
-                IdxWeitergabe: va.IdxWeitergabe.toString(),
+                Poenale: va.Poenale ? va.Poenale.toString() : null,
+                IdxWeitergabe: va.IdxWeitergabe ? va.IdxWeitergabe.toString() : null,
                 PLRelevant: va.PLRelevant,
 
                 Status: va.Status,
@@ -901,11 +893,11 @@ sap.ui.define([
 
                 VaToOb: _.map(va.VaToOb, function(objekt){
                     delete objekt.__metadata;
-                    objekt.HnflAlt = (objekt.HnflAlt !== '') ? objekt.HnflAlt.toString() : null;
-                    objekt.NutzartAlt = (objekt.NutzartAlt !== '') ? objekt.NutzartAlt.toString() : null;
-                    objekt.AnMiete = (objekt.AnMiete !== '') ? objekt.AnMiete.toString() : null;
-                    objekt.GaKosten = (objekt.GaKosten !== '') ? objekt.GaKosten.toString() : null;
-                    objekt.MaKosten = (objekt.MaKosten !== '') ? objekt.MaKosten.toString() : null;
+                    objekt.HnflAlt = objekt.HnflAlt ? objekt.HnflAlt.toString() : null;
+                    objekt.NutzartAlt = objekt.NutzartAlt ? objekt.NutzartAlt.toString() : null;
+                    objekt.AnMiete = objekt.AnMiete ? objekt.AnMiete.toString() : null;
+                    objekt.GaKosten = objekt.GaKosten ? objekt.GaKosten.toString() : null;
+                    objekt.MaKosten = objekt.MaKosten ? objekt.MaKosten.toString() : null;
                     return objekt;
                 }),
 
@@ -970,6 +962,7 @@ sap.ui.define([
         },
 
         validateForm: function(){
+            var that = this;
             this.initializeValidationState();
 
             var validationResult = true;
@@ -1043,6 +1036,20 @@ sap.ui.define([
                     anMieteCell.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                     validationResult = false;
                 }
+
+                var hnflAltCell = cells[5];
+                validationResult = that.checkNotNegative(hnflAltCell) && validationResult;
+
+                var nhMieteCell = cells[7];
+                validationResult = that.checkNotNegative(nhMieteCell) && validationResult;
+
+                validationResult = that.checkNotNegative(anMieteCell) && validationResult;
+
+                var gaKostenCell = cells[9];
+                validationResult = that.checkNotNegative(gaKostenCell) && validationResult;
+
+                var maKostenCell = cells[10];
+                validationResult = that.checkNotNegative(maKostenCell) && validationResult;
             });
 
             var idLzFirstbreak = this.getView().byId("idLzFirstbreak");
@@ -1070,7 +1077,49 @@ sap.ui.define([
                 validationResult = false;
             }
             
+            var idMzAnzahlJ = this.getView().byId("idMzAnzahlJ");
+            validationResult = this.checkNotNegative(idMzAnzahlJ) && validationResult;
+
+            var idMkMonate = this.getView().byId("idMkMonate");
+            validationResult = this.checkNotNegative(idMkMonate) && validationResult;
+
+            var idMkAbsolut = this.getView().byId("idMkAbsolut");
+            validationResult = this.checkNotNegative(idMkAbsolut) && validationResult;
+
+            var idBkMonate = this.getView().byId("idBkMonate");
+            validationResult = this.checkNotNegative(idBkMonate) && validationResult;
+
+            var idBkAbsolut = this.getView().byId("idBkAbsolut");
+            validationResult = this.checkNotNegative(idBkAbsolut) && validationResult;
+
+            var idSonstK = this.getView().byId("idSonstK");
+            validationResult = this.checkNotNegative(idSonstK) && validationResult;
+
+            var idSonstE = this.getView().byId("idSonstE");
+            validationResult = this.checkNotNegative(idSonstE) && validationResult;
+
+            var idAkAnzahlM = this.getView().byId("idAkAnzahlM");
+            validationResult = this.checkNotNegative(idAkAnzahlM) && validationResult;
+
+            var idPoenale = this.getView().byId("idPoenale");
+            validationResult = this.checkNotNegative(idPoenale) && validationResult;
+
             return validationResult;
+        },
+
+        checkNotNegative: function(view) {
+            var value = view.getValue();
+            var result = true;
+
+            if(value){
+                if(parseFloat(value) < 0){
+                    view.setValueState(sap.ui.core.ValueState.Error);
+                    view.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
+                    result = false;
+                }
+            }
+
+            return result;
         },
 		
 		initializeValidationState: function(){
@@ -1078,13 +1127,35 @@ sap.ui.define([
             this.getView().byId("idMietbeginn").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idLzFirstbreak").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idIdxWeitergabe").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idMzMonate").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idMzAnzahlJ").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idMkAbsolut").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idMkMonate").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idBkMonate").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idBkAbsolut").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idSonstK").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idSonstE").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idAkAnzahlM").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idPoenale").setValueState(sap.ui.core.ValueState.None);
 
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             _.map(mietflaechenangabenTable.getItems(), function(item){
                 var cells = item.getCells();
-                var anMieteCell = cells[8];
 
-                anMieteCell.setValueState(sap.ui.core.ValueState.None);      
+                var anMieteCell = cells[8];
+                anMieteCell.setValueState(sap.ui.core.ValueState.None);  
+
+                var hnflAltCell = cells[5];
+                hnflAltCell.setValueState(sap.ui.core.ValueState.None);
+
+                var nhMieteCell = cells[7];
+                nhMieteCell.setValueState(sap.ui.core.ValueState.None);
+
+                var gaKostenCell = cells[9];
+                gaKostenCell.setValueState(sap.ui.core.ValueState.None);
+
+                var maKostenCell = cells[10];
+                maKostenCell.setValueState(sap.ui.core.ValueState.None);   
             });
         },
 

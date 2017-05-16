@@ -429,8 +429,8 @@
                                         maxIntegerDigits: 5
                                     }
                             }" />
-                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtrag'} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeErtrag'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesErtrag} * 100 - ${form>/vermietungsaktivitaet/GesKeErtrag} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }">
                                 <customData>
                                     <core:CustomData key="numberstate" value="positive" writeToDom="{= (${form>/vermietungsaktivitaet/GesErtrag} - ${form>/vermietungsaktivitaet/GesKeErtrag}) &gt;= 0 }" />
@@ -450,8 +450,8 @@
                                         maxIntegerDigits: 5
                                     }
                             }" />
-                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesKosten'} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeKosten'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesKosten} * 100 - ${form>/vermietungsaktivitaet/GesKeKosten} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }">
                                 <customData>
                                     <core:CustomData key="numberstate" value="negative" writeToDom="{= (${form>/vermietungsaktivitaet/GesKosten} - ${form>/vermietungsaktivitaet/GesKeKosten}) &gt; 0 }" />

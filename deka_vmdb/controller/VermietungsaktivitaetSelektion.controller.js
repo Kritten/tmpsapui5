@@ -127,6 +127,21 @@ sap.ui.define([
 			})
             .catch(function(oError){
                 console.log(oError);
+				console.log("catchblock");	
+
+				if (! _this._selectDialogRegelvermietung) {
+					_this._selectDialogRegelvermietung = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialogRegelvermietung", _this);
+				}
+
+				var formData = {
+					konditioneneinigungen: []
+				};
+				
+				_this._selectDialogRegelvermietung.setModel(new sap.ui.model.json.JSONModel(formData), "form");
+				
+				// clear the old search filter
+				_this._selectDialogRegelvermietung.getBinding("items").filter([]);
+				_this._selectDialogRegelvermietung.open();
             })
             .done();
 		},

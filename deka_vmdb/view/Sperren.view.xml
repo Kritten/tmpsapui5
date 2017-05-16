@@ -63,8 +63,7 @@
 	
         <footer>
             <OverflowToolbar>
-                <Button text="{i18n>SPERRE_AUFHEBEN}" icon="sap-icon://unlocked" press="onSperreAufhebenButtonPress" />
-                <Button text="{i18n>DRUCKEN}" icon="sap-icon://print" press="onDruckenButtonPress" />                
+                <Button text="{i18n>SPERRE_AUFHEBEN}" icon="sap-icon://unlocked" press="onSperreAufhebenButtonPress" />           
             </OverflowToolbar>
 		</footer>
 

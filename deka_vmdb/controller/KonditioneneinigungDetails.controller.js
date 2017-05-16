@@ -140,13 +140,44 @@ sap.ui.define([
             this.getView().byId("idMietbeginn").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idLzFirstbreak").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMzMonate").setValueState(sap.ui.core.ValueState.None);
+            var mkMonate = this.getView().byId("maklerkostenInMonatsmieten");
+            mkMonate.setValueState(sap.ui.core.ValueState.None);
+
+            var mkAbsolut = this.getView().byId("maklerkostenAbsolut");
+            mkAbsolut.setValueState(sap.ui.core.ValueState.None);
+
+            var bkMonate = this.getView().byId("beratungskostenInMonatsmieten");
+            bkMonate.setValueState(sap.ui.core.ValueState.None);
+
+            var bkAbsolut = this.getView().byId("beratungskostenAbsolut");
+            bkAbsolut.setValueState(sap.ui.core.ValueState.None);
+
+            var sonstK = this.getView().byId("idSonstK");
+            sonstK.setValueState(sap.ui.core.ValueState.None);
+
+            var sonstE = this.getView().byId("idSonstE");
+            sonstE.setValueState(sap.ui.core.ValueState.None);
+
+            var steuerschaden = this.getView().byId("idSteuerschaden");
+            steuerschaden.setValueState(sap.ui.core.ValueState.None);
+
+            var mwstkErtrag = this.getView().byId("idMwstkErtrag");
+            mwstkErtrag.setValueState(sap.ui.core.ValueState.None);
+
+            var einmalertrag = this.getView().byId("einmalertrag");
+            einmalertrag.setValueState(sap.ui.core.ValueState.None);
+
 
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             _.map(mietflaechenangabenTable.getItems(), function(item){
                 var cells = item.getCells();
                 var anMieteCell = cells[7];
 
-                anMieteCell.setValueState(sap.ui.core.ValueState.None);      
+                anMieteCell.setValueState(sap.ui.core.ValueState.None);  
+                cells[8].setValueState(sap.ui.core.ValueState.None);  
+                cells[9].setValueState(sap.ui.core.ValueState.None);  
+                cells[6].setValueState(sap.ui.core.ValueState.None);  
+                cells[4].setValueState(sap.ui.core.ValueState.None);      
             });
 
             this.getView().byId("idMietflaechenangabenErrorBox").setVisible(false);
@@ -765,7 +796,23 @@ sap.ui.define([
             dialog.open();
         },
 
+        checkNotNegative: function(view) {
+            var value = view.getValue();
+            var result = true;
+
+            if(value){
+                if(parseFloat(value) < 0){
+                    view.setValueState(sap.ui.core.ValueState.Error);
+                    view.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
+                    result = false;
+                }
+            }
+
+            return result;
+        },
+
         validateForm: function(){
+            var that = this;
             this.initializeValidationState();
 
             var validationResult = true;
@@ -832,6 +879,13 @@ sap.ui.define([
                     anMieteCell.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                     validationResult = false;
                 }
+
+                validationResult = that.checkNotNegative(anMieteCell) && validationResult;
+                validationResult = that.checkNotNegative(cells[8]) && validationResult; // gaKosten
+                validationResult = that.checkNotNegative(cells[9]) && validationResult; // maKosten
+                validationResult = that.checkNotNegative(cells[6]) && validationResult; // nhMiete
+                validationResult = that.checkNotNegative(cells[4]) && validationResult; // hnflAlt
+                                
             });
 
             var ketoob = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
@@ -856,6 +910,33 @@ sap.ui.define([
                 }
             }
             
+            var mkMonate = this.getView().byId("maklerkostenInMonatsmieten");
+            validationResult = this.checkNotNegative(mkMonate) && validationResult;
+
+            var mkAbsolut = this.getView().byId("maklerkostenAbsolut");
+            validationResult = this.checkNotNegative(mkAbsolut) && validationResult;
+
+            var bkMonate = this.getView().byId("beratungskostenInMonatsmieten");
+            validationResult = this.checkNotNegative(bkMonate) && validationResult;
+
+            var bkAbsolut = this.getView().byId("beratungskostenAbsolut");
+            validationResult = this.checkNotNegative(bkAbsolut) && validationResult;
+
+            var sonstK = this.getView().byId("idSonstK");
+            validationResult = this.checkNotNegative(sonstK) && validationResult;
+
+            var sonstE = this.getView().byId("idSonstE");
+            validationResult = this.checkNotNegative(sonstE) && validationResult;
+
+            var steuerschaden = this.getView().byId("idSteuerschaden");
+            validationResult = this.checkNotNegative(steuerschaden) && validationResult;
+
+            var mwstkErtrag = this.getView().byId("idMwstkErtrag");
+            validationResult = this.checkNotNegative(mwstkErtrag) && validationResult;
+
+            var einmalertrag = this.getView().byId("einmalertrag");
+            validationResult = this.checkNotNegative(einmalertrag) && validationResult;
+
             return validationResult;
         },
 
