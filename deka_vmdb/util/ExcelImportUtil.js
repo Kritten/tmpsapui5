@@ -55,7 +55,7 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                     for(row=0; row<100; row++){
 
                         keyCellAddress = XLSX.utils.encode_cell({c:0, r:row});
-                        valCellAddress = XLSX.utils.encode_cell({c:1, r:row});
+                        valCellAddress = XLSX.utils.encode_cell({c:2, r:row});
 
                         if(vaWorksheet[keyCellAddress] === undefined){
                             break;
@@ -71,7 +71,7 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                     var mfWorksheet = workbook.Sheets[mfSheetName];
 
                     // Mietflächenobjekte erstellen
-                    for(row=1; row<100; row++)
+                    for(row=2; row<100; row++)
                     {
                         var mietflaeche = {};
 
