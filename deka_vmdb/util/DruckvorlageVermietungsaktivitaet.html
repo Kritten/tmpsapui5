@@ -1,51 +1,236 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Konditioneneinigung @@KeId@@</title>
+<style type="text/css">
+.greyBG {
+	background-color: #888888;
+}
+.greyBGPad {
+	background-color: #888888;
+	font-size:small;
+	padding: 5px;
+}
 
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+.auto-style2 {
+	font-size: small;
+}
+.auto-style3 {
+	font-size: small;
+	background-color: #888888;
+}
+table {
+	border-collapse:seperate;
+	border-spacing: 5;
+}
+table thead {
+	border-bottom: 1px solid #000;
+}
+.cellSpacedTable {
+	border-collapse:separate;
+	border-spacing: 20;
+	width: 100%;
+}
+.auto-style4 {
+	background-color: #FFFFFF;
+}
 
-        table, th, td {
-            border: 1px solid black;
-        }
-    </style>
+</style>
 </head>
+<body>
+<h2>Vermietungsaktivität <span class="greyBG">@@VaId@@</span></h2>
+<table style="width: 100%">
+	<tr>
+		<td style="width: 60%; height: 40px;">
+		<table style="width: 100%">
+			<tr>
+				<td class="auto-style2" style="width: 68px; "><strong>Bukr</strong></td>
+				<td class="auto-style2" style="width: 65px; "><strong>WE</strong></td>
+				<td class="auto-style2"><strong>Bezeichnung</strong></td>
+			</tr>
+			<tr>
+				<td style="width: 68px; height: 13px;"><span class="auto-style3">@@Bukrs@@</span></td>
+				<td class="auto-style2" style="width: 65px; height: 13px;"><span class="auto-style3">@@WeId@@</span></td>
+				<td class="auto-style2" style="height: 13px"><span class="auto-style3">@@VaBezeichnung@@</span></td>
+			</tr>
+		</table>
+		</td>
+		<td style="height: 40px">
+		<table style="width: 100%">
+			<tr>
+				<td style="width: 230px; height: 5px;" class="auto-style2">Währungsangaben in: </td>
+				<td style="height: 5px"><span class="auto-style3">@@Currency@@</span></td>
+			</tr>
+			<tr>
+				<td style="width: 211px" class="auto-style2">Flächenangaben in: </td>
+				<td><span class="auto-style3">@@Unit@@</span></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
 
-<html>
-    <body>
-        <h1>Vermietungsaktivität @@VaId@@</h1>
-        Buchungskreis: @@Bukrs@@ <br/>
-        Wirtschaftseinheit: @@WeId@@ <br/>
-        Bezeichnung: @@Bezeichnung@@
 
-        <h2>Mietflächenangaben</h2>
-        @@Mietflaechenangaben@@
+<table style="width: 100%">
+	<tr>
+		<td style="width: 213px" class="auto-style2">Vermietungsaktivitäten-Typ:</td>
+		<td style="width: 158px" class="auto-style3">@@VaTyp@@</td>
+		<td style="width: 258px" class="auto-style2">&nbsp;&nbsp; BudgetStop:</td>
+		<td class="auto-style3">@@Budgetstp@@</td>
+	</tr>
+	<tr>
+		<td style="width: 213px" class="auto-style2">Vermietungsart:</td>
+		<td style="width: 158px" class="auto-style3">@@VaArt@@</td>
+		<td style="width: 258px" class="auto-style2">&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+<br />
+<table style="width: 100%">
+	<tr>
+		<td style="width: 211px" class="auto-style2">Mietername:</td>
+		<td style="width: 160px" class="auto-style3">@@Debitorname@@</td>
+		<td style="width: 256px" class="auto-style2">&nbsp; Debitor:</td>
+		<td class="auto-style3">@@Debitor@@</td>
+	</tr>
+	<tr>
+		<td style="width: 211px" class="auto-style2">Mietbeginn:</td>
+		<td style="width: 160px" class="auto-style3">@@Mietbeginn@@</td>
+		<td style="width: 256px" class="auto-style2">&nbsp; Laufzeit bis 1st break option in Monaten:</td>
+		<td class="auto-style3">@@LzFirstbreak@@</td>
+	</tr>
+	<tr>
+		<td style="width: 211px; height: 17px;" class="auto-style2">Indexweitergabe in %:</td>
+		<td style="width: 160px; height: 17px;" class="auto-style3">
+		@@IdxWeitergabe@@</td>
+		<td style="width: 256px; height: 17px;" class="auto-style2">&nbsp; Pönale:</td>
+		<td class="auto-style3" style="height: 17px">@@Poenale@@</td>
+	</tr>
+</table>
+<table style="width: 100%">
+	<tr>
+		<td style="width: 210px; height: 21px;" class="auto-style2">Mietfreie Zeiten in Monaten:</td>
+		<td style="width: 160px; height: 21px;" class="auto-style3">@@MzMonate@@</td>
+		<td style="width: 256px; height: 21px;" class="auto-style2">&nbsp; Einmalertrag:</td>
+		<td class="auto-style3" style="height: 21px">@@Einmalertrag@@</td>
+	</tr>
+	<tr>
+		<td style="width: 210px" class="auto-style2">Erster Monat der mietfreien Zeit:</td>
+		<td style="width: 160px" class="auto-style3">@@MzErsterMonat@@</td>
+		<td style="width: 256px" class="auto-style2">&nbsp; 1. Monat Verteilung der Ausbaukosten:</td>
+		<td class="auto-style3">@@AkErsterMonat@@</td>
+	</tr>
+	<tr>
+		<td style="width: 210px" class="auto-style2">Anzahl Wiederholungen in Jahren:</td>
+		<td style="width: 160px" class="auto-style3">@@MzAnzahlJ@@</td>
+		<td style="width: 256px" class="auto-style2">&nbsp; Anzahl Monate Verteilung Ausbaukosten:</td>
+		<td class="auto-style3">@@AkAnzahlM@@</td>
+	</tr>
+</table>
+<table style="width: 100%">
+	<tr>
+		<td class="auto-style2" style="height: 22px; width: 209px">Maklerkosten: 
+		<span class="greyBG">@@MkMonate@@</span><span class="auto-style4"> </span> Monatsmieten:</td>
+		<td class="auto-style3" style="height: 22px; width: 161px">@@MkMAbs@@</td>
+		<td class="auto-style2" style="height: 22px; width: 255px">
+		&nbsp;
+		Beratungskosten: <span class="greyBG">@@BkMonate@@</span> Monatsmieten:</td>
+		<td style="height: 22px" class="auto-style3">@@BkMAbs@@</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 209px">Maklerkosten Absolutwert:</td>
+		<td class="auto-style3" style="width: 161px">@@MkAbsolut@@</td>
+		<td class="auto-style2" style="width: 255px">&nbsp; Beratungskosten 
+		Absolutwert:</td>
+		<td class="auto-style3">@@BkAbsolut@@</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 209px; height: 17px;">Gesamt:</td>
+		<td class="auto-style3" style="width: 161px; height: 17px;">@@MkGesamt@@</td>
+		<td class="auto-style2" style="width: 255px; height: 17px;">&nbsp; Gesamt:</td>
+		<td class="auto-style3" style="height: 17px">@@BkGesamt@@</td>
+	</tr>
+</table>
+<br />
+<table style="width: 100%">
+	<tr>
+		<td class="auto-style2" style="width: 175px">Sonstige Ertragsart:</td>
+		<td class="auto-style3" style="width: 129px">@@ArtErtrag@@</td>
+		<td class="auto-style2" style="width: 266px; text-align: right">Sonstige Kostenart:</td>
+		<td class="auto-style3">@@ArtKosten@@</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 175px">Sonstige Erträge:</td>
+		<td class="auto-style3" style="width: 129px">@@SonstE@@</td>
+		<td class="auto-style2" style="width: 266px; text-align: right">Sonstige Kosten:</td>
+		<td class="auto-style3">@@SonstK@@</td>
+	</tr>
+</table>
+<table style="width: 100%">
+	<tr>
+		<td class="auto-style2" style="width: 175px">Kennzeichen 
+		Steuerschädling:</td>
+		<td class="auto-style3" style="width: 96px">@@KennzSt@@</td>
+		<td class="auto-style2" style="width: 268px">&nbsp;</td>
+		<td class="auto-style2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 175px">Kosten aus Steuerschaden:</td>
+		<td class="auto-style3" style="width: 96px">@@Steuerschaden@@</td>
+		<td class="auto-style2" style="width: 268px; text-align: right">Ertrag aus 
+		MwSt-Kompensation:</td>
+		<td class="auto-style3">@@MwstkErtrag@@</td>
+	</tr>
+</table>
 
-        <h2>Gemeinsame Angaben</h2>
-        Mietbeginn: @@Mietbeginn@@ <br/>
-        Laufzeit bis 1st break option in Monaten: @@LzFirstbreak@@ <br/>
-        Gültigkeit Konditioneneinigung: @@Mietbeginn@@ <br/>
-        Vermietungsart: @@Vermietungsart@@ <br/>
-        Pönale in Währung: @@Poenale@@ <br/>
-        Indexweitergabe in %: @@IdxWeitergabe@@ <br/>
-        Planungsrelevanz: @@PLRelevant@@ <br/>
-        Mietfreie Zeiten in Monaten: @@MzMonate@@ <br/>
-        Maklerkosten in Monatsmieten: @@MkMonate@@ <br/>
-        Beratungskosten in Monatsmieten: @@BkMonate@@
+<p>@@Mietflaechenangaben@@</p>
 
-        <h2>Sonstige Angaben</h2>
-        Debitorennummer: @@Debitor@@ <br/>
-        Mietername: @@Debitorname@@ <br/>
-        Bonität: @@Bonitaet@@ <br/>
-        Status: @@Status@@ <br/>
-        Anmerkung: @@Anmerkung@@ <br/>
-        Bemerkung: @@Bemerkung@@
 
-        <h2>Miete und Kosten</h2>
+<table style="width: 100%">
+	<tr>
+		<td style="width: 104px; height: 12px;" class="auto-style2">Gesamtmiete:</td>
+		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@GesErtrag@@</span></td>
+		<td style="height: 12px"></td>
+	</tr>
+	<tr>
+		<td style="width: 104px; " class="auto-style2">Gesamtkosten:</td>
+		<td style="width: 116px;" class="auto-style3"><span class="auto-style3">@@GesKosten@@</span></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td style="width: 104px; height: 23px;" class="auto-style2">Differenz:</td>
+		<td class="auto-style3" style="width: 116px; height: 23px"><span class="auto-style3">@@GesDiff@@</span></td>
+		<td style="height: 23px"></td>
+	</tr>
+</table>
 
-    </body>
+<table style="width: 100%">
+	<tr>
+		<td style="vertical-align: bottom; height: 26px;">Bemerkung</td>
+	</tr>
+	<tr>
+		<td class="greyBG" style="height: 60px">@@Bemerkung@@</td>
+	</tr>
+</table>
+
+
+<table style="width: 100%">
+	<tr>
+		<td style="vertical-align:bottom; width: 92px; height: 26px;" class="auto-style2">Anmerkung:</td>
+		<td style="vertical-align:bottom; height: 26px;">
+		<span class="auto-style3">@@Anmerkung@@ @@AnmerkungText@@</span></td>
+	</tr>
+	<tr>
+		<td style="width: 92px" class="auto-style2">Status:</td>
+		<td><span class="auto-style3">@@Status@@ </span>
+		<span class="auto-style2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		Planungsrelevanz: </span> <span class="auto-style3">@@PLRelevant@@</span></td>
+	</tr>
+	</table>
+<p><span class="auto-style2">Druckdatum:&nbsp; </span> <span class="auto-style3">@@Druckdatum@@</span></p>
+
+</body>
+
 </html>

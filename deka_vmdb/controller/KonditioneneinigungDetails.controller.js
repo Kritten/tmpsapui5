@@ -591,7 +591,6 @@ sap.ui.define([
         },
 
         speichern: function(){
-
             var modus = this.getView().getModel("form").getProperty("/modus");   
 
             switch(modus)
@@ -651,10 +650,10 @@ sap.ui.define([
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
                     object.HnflAlt = object.HnflAlt ?  object.HnflAlt.toString() : null;
-                    object.AnMiete = object.AnMiete ?  object.AnMiete.toString() : null;
+                    object.AnMiete = object.AnMiete ?  object.AnMiete.toString() : "0,00";
                     object.NutzartAlt = null;
-                    object.GaKosten = object.GaKosten ?  object.GaKosten.toString() : null;
-                    object.MaKosten = object.MaKosten ?  object.MaKosten.toString() : null;
+                    object.GaKosten = object.GaKosten ?  object.GaKosten.toString() : "0,00";
+                    object.MaKosten = object.MaKosten ?  object.MaKosten.toString() : "0,00";
                     return object;
                 }),
 
@@ -663,7 +662,9 @@ sap.ui.define([
             console.log(payload, "payload");
 
             DataProvider.createKonditioneneinigungAsync(payload).then(function(){
-                _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+               // _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+               _this.getView().getModel("form").setProperty("/modus", "show");
+
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -728,10 +729,10 @@ sap.ui.define([
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
                     object.HnflAlt = object.HnflAlt ? object.HnflAlt.toString() : null;
-                    object.AnMiete = object.AnMiete ? object.AnMiete.toString() : null;
+                    object.AnMiete = object.AnMiete ? object.AnMiete.toString() : "0,00";
                     object.NutzartAlt = null;
-                    object.GaKosten = object.GaKosten ? object.GaKosten.toString() : null;
-                    object.MaKosten = object.MaKosten ? object.MaKosten.toString() : null;
+                    object.GaKosten = object.GaKosten ? object.GaKosten.toString() : "0,00";
+                    object.MaKosten = object.MaKosten ? object.MaKosten.toString() : "0,00";
                     return object;
                 }),
 
@@ -797,13 +798,31 @@ sap.ui.define([
         },
 
         checkNotNegative: function(view) {
+            if(this.checkIsNumber(view)){
+                var value = view.getValue();
+                var result = true;
+
+                if(value){
+                    if(parseFloat(value) < 0){
+                        view.setValueState(sap.ui.core.ValueState.Error);
+                        view.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
+                        result = false;
+                    }
+                }
+                return result;
+            }else{
+                return false;
+            }              
+        },
+
+        checkIsNumber: function(view) {
             var value = view.getValue();
             var result = true;
 
             if(value){
-                if(parseFloat(value) < 0){
+                if(isNaN(parseFloat(value))){
                     view.setValueState(sap.ui.core.ValueState.Error);
-                    view.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
+                    view.setValueStateText(TranslationUtil.translate("ERR_NAN"));
                     result = false;
                 }
             }
@@ -845,11 +864,9 @@ sap.ui.define([
                 idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
-            else if(parseFloat(idLzFirstbreak.getValue()) < 0){
-                idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
-                idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
-                validationResult = false;
-            }            
+            else{
+                validationResult = this.checkNotNegative(idLzFirstbreak) && validationResult;
+            }        
 
             var idMzMonate = this.getView().byId("idMzMonate");
             if(idMzMonate.getValue() === ""){
@@ -857,10 +874,8 @@ sap.ui.define([
                 idMzMonate.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
-            else if(parseFloat(idMzMonate.getValue()) < 0){
-                idMzMonate.setValueState(sap.ui.core.ValueState.Error);
-                idMzMonate.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
-                validationResult = false;
+            else{
+                validationResult = this.checkNotNegative(idMzMonate) && validationResult;
             }
             
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
@@ -885,10 +900,15 @@ sap.ui.define([
                 validationResult = that.checkNotNegative(cells[9]) && validationResult; // maKosten
                 validationResult = that.checkNotNegative(cells[6]) && validationResult; // nhMiete
                 validationResult = that.checkNotNegative(cells[4]) && validationResult; // hnflAlt
-                                
+
+                if(parseFloat(anMieteCell.getValue()) === 0){
+                    anMieteCell.setValueState(sap.ui.core.ValueState.Error);
+                    anMieteCell.setValueStateText(TranslationUtil.translate("ERR_WERT_GROESSER_NULL"));
+                    validationResult = false;
+                }                                
             });
 
-            var ketoob = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
+            var ketoob = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");           
             var rows = mietflaechenangabenTable.getItems();
             var i;
             for(i = 0; i < rows.length; i = i+1){
@@ -897,11 +917,11 @@ sap.ui.define([
 
                 // TODO: dynamisch machen (spaltenindex aus "Columns" aggregation der table berechnen)
                 var mfAltCell = cells[4];                 
-                var mfAltValue = mfAltCell.getProperty("value");
+                //var mfAltValue = mfAltCell.getProperty("value");
+                var mfAltValue = ketoob[i].HnflAlt;
                 var hnflValue = ketoob[i].Hnfl;
 
-                // TODO: parseFloat error abfangen, wenn mfAltValue buchstaben enthält
-                if(parseFloat(mfAltValue) > parseFloat(hnflValue)*1.2) {
+                if(!isNaN(mfAltValue) && !isNaN(hnflValue) && (mfAltValue > (hnflValue*1.2))) {
                     mfAltCell.setValueState(sap.ui.core.ValueState.Error);
                     var errText = TranslationUtil.translate("ERR_MFALT_MAX");
                     mfAltCell.setValueStateText(errText);
@@ -988,7 +1008,8 @@ sap.ui.define([
         onAbbrechenButtonPress: function(evt){
             var _this = this;
             
-            var modus = this.getView().getModel("form").getProperty("/modus");           
+            var modus = this.getView().getModel("form").getProperty("/modus");   
+            var konditioneneinigung = _this.getView().getModel("form").getProperty("/konditioneneinigung");        
             
             if(modus === "new")
             {                
@@ -1007,9 +1028,20 @@ sap.ui.define([
             }
             else if(modus === "edit")
             {
+                DataProvider.deleteSperreAsync({KeId: konditioneneinigung.KeId})
+                .then(function(){
+                    var formDataBackup = _this._formDataBackup;
+                    _this.getView().getModel("form").setData(formDataBackup);
+                    _this.getView().getModel("form").setProperty("/modus", "show");
+                    /*
                 var Bukrs = this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
                 var KeId = this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
-                _this.konditioneneinigungAnzeigen(KeId, Bukrs);
+                _this.konditioneneinigungAnzeigen(KeId, Bukrs);*/
+                })
+                .catch(function(oError){
+                     ErrorMessageUtil.showError(oError);
+                })
+                .done();            
             }
         },
 
@@ -1258,7 +1290,10 @@ sap.ui.define([
 
         onDruckenButtonPress: function(oEvent){
             var konditioneneinigung = this.getView().getModel("form").getProperty("/konditioneneinigung");
-            PrinterUtil.printKonditioneneinigung(konditioneneinigung);
+            var kostenarten = this.getView().getModel("form").getProperty("/kostenarten");
+            var ertragsarten = this.getView().getModel("form").getProperty("/ertragsarten");
+            
+            PrinterUtil.printKonditioneneinigung(konditioneneinigung, kostenarten, ertragsarten);
         },
 
         onFavoritButtonPress: function(oEvent){

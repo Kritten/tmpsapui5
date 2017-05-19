@@ -87,6 +87,31 @@ sap.ui.define([
 
         onBearbeitenButtonPress: function(oEvent){
             this.getView().getModel("form").setProperty("/modus", "edit");
+
+            var stufenList = this.getView().byId("stufenList");
+            var items = stufenList.getItems();
+
+
+            _.map(items, function(item){
+                var content = item.getAggregation("content");
+                _.map(content, function(contItem){
+                    var rows = contItem.getItems();
+
+                    _.map(rows, function(row){
+                        console.log(row,"row");
+                        var cells = row.getCells();
+                        var dropdown = cells[1];
+                        var status = cells[2];
+
+                        var text = status.getText();
+                        var split = text.split(" - ");
+
+                        if(split[0] === "80"){
+                            dropdown.setEnabled(false);
+                        }
+                    });
+                });
+            });
         },
 
         onSpeichernButtonPress: function(oEvent){
@@ -99,21 +124,23 @@ sap.ui.define([
 
             _.map(stufen, function(stufe){
                 _.map(stufe.genehmigungen, function(genehmigung){
-                    var payload = {
-                        "Index": genehmigung.Index,
-                        "KeId": _this._KeId,
-                        "VaId": '',
-                        "Stufe": stufe.Stufe,
-                        "Genehmiger": (genehmigung.newKey) ? genehmigung.newKey : genehmigung.Genehmiger,
-                        "Status": genehmigung.Status,
-                        "Switch": genehmigung.Switch
-                    };
-                    
-                    DataProvider.updateGenehmigungsprozessSetAsync(payload.Index, payload.KeId, payload.VaId, payload.Stufe, payload)
-                    .catch(function(oError){
-                        var error = ErrorMessageUtil.parseErrorMessage(oError);
-                        ErrorMessageUtil.show(error);
-                    }).done();
+                    if(genehmigung.Status === "80"){
+                        var payload = {
+                            "Index": genehmigung.Index,
+                            "KeId": _this._KeId,
+                            "VaId": '',
+                            "Stufe": stufe.Stufe,
+                            "Genehmiger": (genehmigung.newKey) ? genehmigung.newKey : genehmigung.Genehmiger,
+                            "Status": genehmigung.Status,
+                            "Switch": genehmigung.Switch
+                        };
+                        
+                        DataProvider.updateGenehmigungsprozessSetAsync(payload.Index, payload.KeId, payload.VaId, payload.Stufe, payload)
+                        .catch(function(oError){
+                            var error = ErrorMessageUtil.parseErrorMessage(oError);
+                            ErrorMessageUtil.show(error);
+                        }).done();
+                    }
                 });
             });
         },
@@ -128,8 +155,5 @@ sap.ui.define([
                 Bukrs: this._Bukrs
             });
         }
-
-
     });
-
 });

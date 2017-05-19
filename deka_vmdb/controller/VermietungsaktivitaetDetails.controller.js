@@ -596,7 +596,7 @@ sap.ui.define([
 		onBearbeitenButtonPress: function(oEvent){
             var _this = this;
 
-            var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
 
             DataProvider.createSperreAsync({VaId: va.VaId})
             .then(function(){
@@ -819,7 +819,8 @@ sap.ui.define([
             };
 
             DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){
-                _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
+                // _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
+                _this.getView().getModel("form").setProperty("/modus", "show");
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -1014,11 +1015,11 @@ sap.ui.define([
 
                 // TODO: dynamisch machen (spaltenindex aus "Columns" aggregation der table berechnen)
                 var mfAltCell = cells[5];                
-                var mfAltValue = mfAltCell.getProperty("value");
+                // var mfAltValue = mfAltCell.getProperty("value");
+                var mfAltValue = vatoob[i].HnflAlt;
                 var hnflValue = vatoob[i].Hnfl;
-
-                // TODO: parseFloat error abfangen, wenn mfAltValue buchstaben enthält
-                if(parseFloat(mfAltValue) > parseFloat(hnflValue)*1.2) {
+               
+                if(!isNaN(mfAltValue) && !isNaN(hnflValue) && (mfAltValue > (hnflValue*1.2))) {
                     mfAltCell.setValueState(sap.ui.core.ValueState.Error);
                     var errText = TranslationUtil.translate("ERR_MFALT_MAX");
                     mfAltCell.setValueStateText(errText);
@@ -1034,6 +1035,11 @@ sap.ui.define([
                 if(anMieteCell.getValue() === ""){
                     anMieteCell.setValueState(sap.ui.core.ValueState.Error);
                     anMieteCell.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                    validationResult = false;
+                }
+                if(parseFloat(anMieteCell.getValue()) === 0){
+                    anMieteCell.setValueState(sap.ui.core.ValueState.Error);
+                    anMieteCell.setValueStateText(TranslationUtil.translate("ERR_WERT_GROESSER_NULL"));
                     validationResult = false;
                 }
 
@@ -1058,12 +1064,9 @@ sap.ui.define([
                 idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
-            else if(parseFloat(idLzFirstbreak.getValue()) < 0){
-                idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
-                idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
-                validationResult = false;
+            else{
+                validationResult = this.checkNotNegative(idLzFirstbreak) && validationResult;
             }
-
 
             var idIdxWeitergabe = this.getView().byId("idIdxWeitergabe");
             if(idIdxWeitergabe.getValue() === ""){
@@ -1071,10 +1074,8 @@ sap.ui.define([
                 idIdxWeitergabe.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
-            else if(parseFloat(idIdxWeitergabe.getValue()) <= 0){
-                idIdxWeitergabe.setValueState(sap.ui.core.ValueState.Error);
-                idIdxWeitergabe.setValueStateText(TranslationUtil.translate("ERR_WERT_GROESSER_NULL"));
-                validationResult = false;
+            else{
+                validationResult = this.checkNotNegative(idIdxWeitergabe) && validationResult;
             }
             
             var idMzAnzahlJ = this.getView().byId("idMzAnzahlJ");
@@ -1107,19 +1108,37 @@ sap.ui.define([
             return validationResult;
         },
 
-        checkNotNegative: function(view) {
+        checkIsNumber: function(view) {
             var value = view.getValue();
             var result = true;
 
             if(value){
-                if(parseFloat(value) < 0){
+                if(isNaN(parseFloat(value))){
                     view.setValueState(sap.ui.core.ValueState.Error);
-                    view.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
+                    view.setValueStateText(TranslationUtil.translate("ERR_NAN"));
                     result = false;
                 }
             }
 
             return result;
+        },
+
+        checkNotNegative: function(view) {
+            if(this.checkIsNumber(view)){
+                var value = view.getValue();
+                var result = true;
+
+                if(value){
+                    if(parseFloat(value) < 0){
+                        view.setValueState(sap.ui.core.ValueState.Error);
+                        view.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
+                        result = false;
+                    }
+                }
+                return result;
+            }else{
+                return false;
+            }              
         },
 		
 		initializeValidationState: function(){
@@ -1162,7 +1181,8 @@ sap.ui.define([
         onAbbrechenButtonPress: function(oEvent){            
             this.initializeValidationState();
             
-            var modus = this.getView().getModel("form").getProperty("/modus");           
+            var modus = this.getView().getModel("form").getProperty("/modus");  
+            var va =  this.getView().getModel("form").getProperty("/vermietungsaktivitaet");       
             
             if(modus === "new")
             {
@@ -1187,9 +1207,14 @@ sap.ui.define([
                 // wenn modus == edit
                 // -> Änderungen Verwerfen
                 // -> modus = show
-
-                this.getView().getModel("form").setData(this._formDataBackup);
-                this.getView().getModel("form").setProperty("/modus", "show");
+                DataProvider.deleteSperreAsync({VaId: va.VaId}).then(function(){
+                    this.getView().getModel("form").setData(this._formDataBackup);
+                    this.getView().getModel("form").setProperty("/modus", "show");
+                })
+                .catch(function(oError){
+                    ErrorMessageUtil.showError(oError);
+                })
+                .done();
             }
 
         },
@@ -1518,12 +1543,15 @@ sap.ui.define([
             this._ausbaukostenVerteilenDialog.close();
         },
         
-        onDruckenButtonPress: function(oEvent){
-                        
+        onDruckenButtonPress: function(oEvent){                        
             var vermietungsaktivitaet = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
-            var printableHtml = PrinterUtil.generatePrintableHtmlForVermietungsaktivitaet(vermietungsaktivitaet);
+            console.log(vermietungsaktivitaet, "va");
+            var kostenarten = this.getView().getModel("form").getProperty("/kostenarten");
+            var ertragsarten = this.getView().getModel("form").getProperty("/ertragsarten");
+            
+            var printableHtml = PrinterUtil.generatePrintableHtmlForVermietungsaktivitaet(vermietungsaktivitaet, kostenarten, ertragsarten);
 
-            var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+            var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=1,status=0');
             printWindow.document.write(printableHtml);
             printWindow.document.close();
             printWindow.focus();
