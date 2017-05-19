@@ -688,10 +688,10 @@ sap.ui.define([
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
                     object.HnflAlt = object.HnflAlt ?  object.HnflAlt.toString() : null;
-                    object.AnMiete = object.AnMiete ?  object.AnMiete.toString() : "0,00";
+                    object.AnMiete = object.AnMiete ?  object.AnMiete.toString() : "0.00";
                     object.NutzartAlt = null;
-                    object.GaKosten = object.GaKosten ?  object.GaKosten.toString() : "0,00";
-                    object.MaKosten = object.MaKosten ?  object.MaKosten.toString() : "0,00";
+                    object.GaKosten = object.GaKosten ?  object.GaKosten.toString() : "0.00";
+                    object.MaKosten = object.MaKosten ?  object.MaKosten.toString() : "0.00";
                     return object;
                 }),
 
@@ -767,10 +767,10 @@ sap.ui.define([
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
                     object.HnflAlt = object.HnflAlt ? object.HnflAlt.toString() : null;
-                    object.AnMiete = object.AnMiete ? object.AnMiete.toString() : "0,00";
+                    object.AnMiete = object.AnMiete ? object.AnMiete.toString() : "0.00";
                     object.NutzartAlt = null;
-                    object.GaKosten = object.GaKosten ? object.GaKosten.toString() : "0,00";
-                    object.MaKosten = object.MaKosten ? object.MaKosten.toString() : "0,00";
+                    object.GaKosten = object.GaKosten ? object.GaKosten.toString() : "0.00";
+                    object.MaKosten = object.MaKosten ? object.MaKosten.toString() : "0.00";
                     return object;
                 }),
 
