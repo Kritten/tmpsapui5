@@ -844,9 +844,9 @@ sap.ui.define([
                     delete objekt.__metadata;
                     objekt.HnflAlt = objekt.HnflAlt ? objekt.HnflAlt.toString() : null;
                     objekt.NutzartAlt = objekt.NutzartAlt ? objekt.NutzartAlt.toString() : null;
-                    objekt.AnMiete = objekt.AnMiete ? objekt.AnMiete.toString() : null;
-                    objekt.GaKosten = objekt.GaKosten ? objekt.GaKosten.toString() : null;
-                    objekt.MaKosten = objekt.MaKosten ? objekt.MaKosten.toString() : null;
+                    objekt.AnMiete = objekt.AnMiete ? objekt.AnMiete.toString() : "0.00";
+                    objekt.GaKosten = objekt.GaKosten ? objekt.GaKosten.toString() : "0.00";
+                    objekt.MaKosten = objekt.MaKosten ? objekt.MaKosten.toString() : "0.00";
                     return objekt;
                 }),
 
