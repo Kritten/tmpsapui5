@@ -526,10 +526,10 @@ sap.ui.define([
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             _.map(KeToOb, function(object){
                 if(zeitspanne.Id === "J"){
-                    object.AnMiete = object.AnMiete / 12;
+                    object.AnMiete = object.NhMiete * 12;
                 }
                 if(zeitspanne.Id === "M"){
-                    object.AnMiete = object.AnMiete * 12;
+                    object.AnMiete = object.NhMiete / 12;
                 }
             });
 
