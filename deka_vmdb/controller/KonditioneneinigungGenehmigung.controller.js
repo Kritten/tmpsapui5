@@ -87,6 +87,7 @@ sap.ui.define([
 
         onBearbeitenButtonPress: function(oEvent){
             this.getView().getModel("form").setProperty("/modus", "edit");
+            var form = this.getView().getModel("form");
 
             var stufenList = this.getView().byId("stufenList");
             var items = stufenList.getItems();
@@ -94,19 +95,18 @@ sap.ui.define([
 
             _.map(items, function(item){
                 var content = item.getAggregation("content");
-                _.map(content, function(contItem){
+                _.map(content, function(contItem, stufenIndex){
                     var rows = contItem.getItems();
 
-                    _.map(rows, function(row){
+                    _.map(rows, function(row, genIndex){
                         console.log(row,"row");
                         var cells = row.getCells();
                         var dropdown = cells[1];
                         var status = cells[2];
 
-                        var text = status.getText();
-                        var split = text.split(" - ");
+                        var statusValue = form.oData.stufen[stufenIndex].genehmigungen[genIndex].Status;
 
-                        if(split[0] === "80"){
+                        if(statusValue.toString() === "80"){
                             dropdown.setEnabled(false);
                         }
                     });
