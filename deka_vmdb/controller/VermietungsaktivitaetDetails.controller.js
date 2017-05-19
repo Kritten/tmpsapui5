@@ -651,10 +651,10 @@ sap.ui.define([
             var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             _.map(VaToOb, function(object){
                 if(zeitspanne.Id === "J"){
-                    object.AnMiete = object.AnMiete / 12;
+                    object.NhMiete = object.NhMiete / 12;
                 }
                 if(zeitspanne.Id === "M"){
-                    object.AnMiete = object.AnMiete * 12;
+                    object.NhMiete = object.NhMiete * 12;
                 }
             });
 
@@ -1214,6 +1214,8 @@ sap.ui.define([
         },
 
         onAbbrechenButtonPress: function(oEvent){            
+            
+            var _this = this;
             this.initializeValidationState();
             
             var modus = this.getView().getModel("form").getProperty("/modus");  
@@ -1245,8 +1247,8 @@ sap.ui.define([
                 // -> Änderungen Verwerfen
                 // -> modus = show
                 DataProvider.deleteSperreAsync('',vaid).then(function(){
-                    this.getView().getModel("form").setData(this._formDataBackup);
-                    this.getView().getModel("form").setProperty("/modus", "show");
+                    _this.getView().getModel("form").setData(_this._formDataBackup);
+                    _this.getView().getModel("form").setProperty("/modus", "show");
                 })
                 .catch(function(oError){
                     ErrorMessageUtil.showError(oError);
