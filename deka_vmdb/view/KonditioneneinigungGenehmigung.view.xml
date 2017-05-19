@@ -60,7 +60,7 @@
                                         <l:GridData span="L8 M8 S12" />
                                     </layoutData>
                                 </Select>      
-                                <Text text="{= ${form>Status} - ${text>/status}[${form>Status}]}"/>                           
+                                <Text text="{= ${text>/status}[${form>Status}]}"/>                           
                             </ColumnListItem>
                         </items>
 
