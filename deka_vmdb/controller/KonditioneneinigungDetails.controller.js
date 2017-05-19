@@ -699,9 +699,9 @@ sap.ui.define([
             };
             console.log(payload, "payload");
 
-            DataProvider.createKonditioneneinigungAsync(payload).then(function(){
+            DataProvider.createKonditioneneinigungAsync(payload).then(function(oData){
                // _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
-               _this.getView().getModel("form").setProperty("/modus", "show");
+               _this.konditioneneinigungAnzeigen(oData.KeId, oData.Bukrs);
 
             })
             .catch(function(oError){

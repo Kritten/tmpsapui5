@@ -853,9 +853,9 @@ sap.ui.define([
                 Confirmation: va.Confirmation ? va.Confirmation : false
             };
 
-            DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){
+            DataProvider.createVermietungsaktivitaetAsync(payload).then(function(oData){
                 // _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
-                _this.getView().getModel("form").setProperty("/modus", "show");
+                _this.vermietungsaktivitaetAnzeigen(oData.VaId, oData.Bukrs);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
