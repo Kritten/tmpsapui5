@@ -651,10 +651,10 @@ sap.ui.define([
             var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             _.map(VaToOb, function(object){
                 if(zeitspanne.Id === "J"){
-                    object.NhMiete = object.NhMiete / 12;
+                    object.NhMiete = object.NhMiete * 12;
                 }
                 if(zeitspanne.Id === "M"){
-                    object.NhMiete = object.NhMiete * 12;
+                    object.NhMiete = object.NhMiete / 12;
                 }
             });
 
