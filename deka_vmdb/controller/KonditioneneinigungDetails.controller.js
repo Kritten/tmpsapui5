@@ -521,21 +521,59 @@ sap.ui.define([
             var item = oEvent.getParameter("selectedItem");
             var zeitspanne = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/zeitspanneSelected", zeitspanne);
+
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
+            var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
+            _.map(KeToOb, function(object){
+                if(zeitspanne.Id === "J"){
+                    object.AnMiete = object.AnMiete / 12;
+                }
+                if(zeitspanne.Id === "M"){
+                    object.AnMiete = object.AnMiete * 12;
+                }
+            });
+
+            this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", KeToOb);
         },
 
         onPopoverWaehrungSelect: function(oEvent){
             var item = oEvent.getParameter("selectedItem");
             var waehrung = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
+
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
+            var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
+
+            _.map(KeToOb, function(object){
+                var neueMiete = Math.round(object.NhMiete * waehrung.Multiplikator * 100) / 100;
+                object.NhMiete = neueMiete;
+                object.Whrung = waehrung.Nach;
+            });
         },
 
         onPopoverFlaecheneinheitSelect: function(oEvent){
             var item = oEvent.getParameter("selectedItem");
             var flaecheneinheit = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/flaecheneinheitSelected", flaecheneinheit);
+
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
+            var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
+            _.map(KeToOb, function(object){
+                var neueFlaeche = (Math.round(object.Hnfl * flaecheneinheit.Multiplikator * 100) / 100);
+                object.Hnfl = neueFlaeche;
+                object.HnflUnit = flaecheneinheit.Nach;
+            });
+
         },
 
-        onBack : function(oEvent) {
+        onBack: function(oEvent) {
+            var modus = this.getView().getModel("form").getProperty("/modus"); 
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
+
+            if(modus === "edit") {
+                DataProvider.deleteSperreAsync(ke.KeId, '');
+            }
+
             this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
         },
         
@@ -1009,7 +1047,8 @@ sap.ui.define([
             var _this = this;
             
             var modus = this.getView().getModel("form").getProperty("/modus");   
-            var konditioneneinigung = _this.getView().getModel("form").getProperty("/konditioneneinigung");        
+            var konditioneneinigung = _this.getView().getModel("form").getProperty("/konditioneneinigung");    
+            var keid = konditioneneinigung.KeId;    
             
             if(modus === "new")
             {                
@@ -1028,7 +1067,7 @@ sap.ui.define([
             }
             else if(modus === "edit")
             {
-                DataProvider.deleteSperreAsync({KeId: konditioneneinigung.KeId})
+                DataProvider.deleteSperreAsync(keid, '')
                 .then(function(){
                     var formDataBackup = _this._formDataBackup;
                     _this.getView().getModel("form").setData(formDataBackup);

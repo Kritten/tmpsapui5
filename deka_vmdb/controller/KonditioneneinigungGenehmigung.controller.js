@@ -116,7 +116,6 @@ sap.ui.define([
 
         onSpeichernButtonPress: function(oEvent){
             var _this = this;
-            this.getView().getModel("form").setProperty("/modus", "show");
             var form = this.getView().getModel("form");
             console.log(form, "form");
 
@@ -143,6 +142,15 @@ sap.ui.define([
                     }
                 });
             });
+
+            this.refreshView();
+        },
+
+        refreshView: function(){
+            var oModel = this.getView().getModel("form");
+
+            oModel.refresh();
+            this.getView().getModel("form").setProperty("/modus", "show");
         },
 
         onAbbrechenButtonPress: function(oEvent){

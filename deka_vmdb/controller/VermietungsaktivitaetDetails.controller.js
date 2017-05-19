@@ -612,6 +612,13 @@ sap.ui.define([
         },
 
         onBack: function(oEvent) {
+            var modus = this.getView().getModel("form").getProperty("/modus"); 
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+            if(modus === "edit") {
+                DataProvider.deleteSperreAsync('', va.VaId);
+            }
+
             this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
         },
 
@@ -639,20 +646,48 @@ sap.ui.define([
             var zeitspanne = item.getBindingContext("form").getObject();
 
             this.getView().getModel("form").setProperty("/viewsettings/zeitspanneSelected", zeitspanne);
+
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+            var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+            _.map(VaToOb, function(object){
+                if(zeitspanne.Id === "J"){
+                    object.AnMiete = object.AnMiete / 12;
+                }
+                if(zeitspanne.Id === "M"){
+                    object.AnMiete = object.AnMiete * 12;
+                }
+            });
+
+            this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", VaToOb);
         },
 
         onPopoverFlaecheneinheitSelect: function(oEvent){
             var item = oEvent.getParameter("selectedItem");
             var flaecheneinheit = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/flaecheneinheitSelected", flaecheneinheit);
+
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+            var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+            _.map(VaToOb, function(object){
+                var neueFlaeche = (Math.round(object.Hnfl * flaecheneinheit.Multiplikator * 100) / 100);
+                object.Hnfl = neueFlaeche;
+                object.HnflUnit = flaecheneinheit.Nach;
+            });
         },
 
         onPopoverWaehrungSelect: function(oEvent){
-
             var item = oEvent.getParameter("selectedItem");
             var waehrung = item.getBindingContext("form").getObject();
 
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
+
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+            var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+            _.map(VaToOb, function(object){
+                var neueMiete = Math.round(object.NhMiete * waehrung.Multiplikator * 100) / 100;
+                object.NhMiete = neueMiete;
+                object.Whrung = waehrung.Nach;
+            });
         },
 
         // Deprecated
@@ -1182,7 +1217,9 @@ sap.ui.define([
             this.initializeValidationState();
             
             var modus = this.getView().getModel("form").getProperty("/modus");  
-            var va =  this.getView().getModel("form").getProperty("/vermietungsaktivitaet");       
+            var va =  this.getView().getModel("form").getProperty("/vermietungsaktivitaet");  
+            var vaid = va.VaId;     
+            console.log(vaid, "VaId");
             
             if(modus === "new")
             {
@@ -1207,7 +1244,7 @@ sap.ui.define([
                 // wenn modus == edit
                 // -> Änderungen Verwerfen
                 // -> modus = show
-                DataProvider.deleteSperreAsync({VaId: va.VaId}).then(function(){
+                DataProvider.deleteSperreAsync('',vaid).then(function(){
                     this.getView().getModel("form").setData(this._formDataBackup);
                     this.getView().getModel("form").setProperty("/modus", "show");
                 })

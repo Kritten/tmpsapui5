@@ -64,7 +64,7 @@
                         <Title text="{i18n>MIETFLAECHENANGABEN}" level="H2"/>
                         <ToolbarSpacer />
                         <Text text="{form>/viewsettings/zeitspanneSelected/Text} | {form>/viewsettings/waehrungSelected/Nach} | {form>/viewsettings/flaecheneinheitSelected/Nach}" />
-                        <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" />
+                        <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" visible="{= (${form>/modus} === 'edit')}" />
                     </Toolbar>
                 </headerToolbar>
                 
