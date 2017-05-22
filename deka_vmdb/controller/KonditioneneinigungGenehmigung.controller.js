@@ -87,28 +87,6 @@ sap.ui.define([
 
         onBearbeitenButtonPress: function(oEvent){
             this.getView().getModel("form").setProperty("/modus", "edit");
-            var form = this.getView().getModel("form");
-
-            var stufenList = this.getView().byId("stufenList");
-            var items = stufenList.getItems();
-
-
-            _.map(items, function(item){
-                var content = item.getAggregation("content");
-                _.map(content, function(contItem, stufenIndex){
-                    var rows = contItem.getItems();
-
-                    _.map(rows, function(row, genIndex){
-                        console.log(row,"row");
-                        var cells = row.getCells();
-                        var dropdown = cells[1];
-                        var status = cells[2];
-
-                        var statusValue = form.oData.stufen[stufenIndex].genehmigungen[genIndex].Status;
-                        dropdown.setEnabled(statusValue.toString() === "80");
-                    });
-                });
-            });
         },
 
         onSpeichernButtonPress: function(oEvent){

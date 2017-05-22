@@ -540,6 +540,8 @@ sap.ui.define([
             var item = oEvent.getParameter("selectedItem");
             var waehrung = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
+            var _this = this;
+            var viewsettings = this.getView().getModel("form").getProperty("/viewsettings");
 
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
@@ -549,20 +551,71 @@ sap.ui.define([
                 object.NhMiete = neueMiete;
                 object.Whrung = waehrung.Nach;
             });
+            var ausgangsWaehrungKey = waehrung.Nach;
+            DataProvider.readExchangeRateSetAsync(ausgangsWaehrungKey).then(function(waehrungen){
+                viewsettings.waehrungen = waehrungen;
+
+                if(viewsettings.waehrungen.length > 0){
+                    var ausgangsWaehrung = _.find(viewsettings.waehrungen, function(waehrung){
+                        return waehrung.Nach === ausgangsWaehrungKey;
+                    });
+
+                    if(!ausgangsWaehrung){
+                        ausgangsWaehrung = viewsettings.waehrungen[0];
+                    }
+
+                    viewsettings.waehrungSelectedKey = ausgangsWaehrung.Nach;
+                    viewsettings.waehrungSelected = ausgangsWaehrung;
+                }
+                _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
+
+            })
+            .catch(function(oError){
+            })
+            .done();
         },
 
         onPopoverFlaecheneinheitSelect: function(oEvent){
             var item = oEvent.getParameter("selectedItem");
             var flaecheneinheit = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/flaecheneinheitSelected", flaecheneinheit);
+            var viewsettings = this.getView().getModel("form").getProperty("/viewsettings");
+            var _this = this;
 
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             _.map(KeToOb, function(object){
                 var neueFlaeche = (Math.round(object.Hnfl * flaecheneinheit.Multiplikator * 100) / 100);
+                var neueMiete = (Math.round(object.NhMiete *  1 / flaecheneinheit.Multiplikator * 100) / 100);
                 object.Hnfl = neueFlaeche;
                 object.HnflUnit = flaecheneinheit.Nach;
+                object.NhMiete = neueMiete;
             });
+
+            var ausgangsFlaecheneinheitKey = flaecheneinheit.Nach;
+
+             DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheitKey).then(function(flaecheneinheiten){
+
+                    viewsettings.flaecheneinheiten = flaecheneinheiten;
+
+                    if(viewsettings.flaecheneinheiten.length > 0){
+                        var ausgangsFlaecheneinheit = _.find(viewsettings.flaecheneinheiten, function(flaecheneinheit){
+                            return flaecheneinheit.Nach === ausgangsFlaecheneinheitKey;
+                        });
+
+                        if(!ausgangsFlaecheneinheit){
+                            ausgangsFlaecheneinheit = viewsettings.flaecheneinheiten[0];
+                        }
+
+                        viewsettings.flaecheneinheitSelectedKey = ausgangsFlaecheneinheit.Nach;
+                        viewsettings.flaecheneinheitSelected = ausgangsFlaecheneinheit;
+                    }
+
+                    _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
+                })
+                .catch(function(oError){
+                })
+                .done();
 
         },
 
@@ -688,6 +741,7 @@ sap.ui.define([
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
                     object.HnflAlt = object.HnflAlt ?  object.HnflAlt.toString() : null;
+                    object.Hnfl = object.Hnfl ?  object.Hnfl.toString() : "0.00";
                     object.AnMiete = object.AnMiete ?  object.AnMiete.toString() : "0.00";
                     object.NutzartAlt = null;
                     object.GaKosten = object.GaKosten ?  object.GaKosten.toString() : "0.00";
@@ -768,6 +822,7 @@ sap.ui.define([
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
                     object.HnflAlt = object.HnflAlt ? object.HnflAlt.toString() : null;
+                    object.Hnfl = object.Hnfl ?  object.Hnfl.toString() : "0.00";
                     object.AnMiete = object.AnMiete ? object.AnMiete.toString() : "0.00";
                     object.NutzartAlt = null;
                     object.GaKosten = object.GaKosten ? object.GaKosten.toString() : "0.00";

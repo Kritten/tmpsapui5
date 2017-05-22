@@ -42,9 +42,10 @@
                                 <StandardListItem 
                                     type="Active"
                                     title="{form>VaId}"
-                                    icon="{= ${form>Aktiv} ? './img/iconmonstr-circle-1-active.png' : './img/iconmonstr-circle-1-inactive.png' }"
+                                    icon="{= ${form>Aktiv} ? 'sap-icon://accept' : 'sap-icon://decline' }"
                                     iconDensityAware="false"
                                     iconInset="false" 
+                                    valueState="{= ${form>Aktiv} ? 'Success' : 'None' }"
                                     press="onMappingPressed">
                                 </StandardListItem>
                             </List>

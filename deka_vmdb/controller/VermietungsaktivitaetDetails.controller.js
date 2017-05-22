@@ -664,24 +664,59 @@ sap.ui.define([
 
         onPopoverFlaecheneinheitSelect: function(oEvent){
             var item = oEvent.getParameter("selectedItem");
+
+            var _this = this;
+            
             var flaecheneinheit = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/flaecheneinheitSelected", flaecheneinheit);
+
+            var viewsettings = this.getView().getModel("form").getProperty("/viewsettings");
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             _.map(VaToOb, function(object){
                 var neueFlaeche = (Math.round(object.Hnfl * flaecheneinheit.Multiplikator * 100) / 100);
+                var neueMiete = (Math.round(object.NhMiete *  1 / flaecheneinheit.Multiplikator * 100) / 100);
                 object.Hnfl = neueFlaeche;
                 object.HnflUnit = flaecheneinheit.Nach;
+                object.NhMiete = neueMiete;
             });
+
+            var ausgangsFlaecheneinheitKey = flaecheneinheit.Nach;
+
+             DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheitKey).then(function(flaecheneinheiten){
+
+                    viewsettings.flaecheneinheiten = flaecheneinheiten;
+
+                    if(viewsettings.flaecheneinheiten.length > 0){
+                        var ausgangsFlaecheneinheit = _.find(viewsettings.flaecheneinheiten, function(flaecheneinheit){
+                            return flaecheneinheit.Nach === ausgangsFlaecheneinheitKey;
+                        });
+
+                        if(!ausgangsFlaecheneinheit){
+                            ausgangsFlaecheneinheit = viewsettings.flaecheneinheiten[0];
+                        }
+
+                        viewsettings.flaecheneinheitSelectedKey = ausgangsFlaecheneinheit.Nach;
+                        viewsettings.flaecheneinheitSelected = ausgangsFlaecheneinheit;
+                    }
+
+                    _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
+                })
+                .catch(function(oError){
+                })
+                .done();
+
+
         },
 
         onPopoverWaehrungSelect: function(oEvent){
             var item = oEvent.getParameter("selectedItem");
             var waehrung = item.getBindingContext("form").getObject();
+            var _this = this;
 
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
-
+            var viewsettings = this.getView().getModel("form").getProperty("/viewsettings");
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             _.map(VaToOb, function(object){
@@ -689,6 +724,28 @@ sap.ui.define([
                 object.NhMiete = neueMiete;
                 object.Whrung = waehrung.Nach;
             });
+            var ausgangsWaehrungKey = waehrung.Nach;
+            DataProvider.readExchangeRateSetAsync(ausgangsWaehrungKey).then(function(waehrungen){
+                viewsettings.waehrungen = waehrungen;
+
+                if(viewsettings.waehrungen.length > 0){
+                    var ausgangsWaehrung = _.find(viewsettings.waehrungen, function(waehrung){
+                        return waehrung.Nach === ausgangsWaehrungKey;
+                    });
+
+                    if(!ausgangsWaehrung){
+                        ausgangsWaehrung = viewsettings.waehrungen[0];
+                    }
+
+                    viewsettings.waehrungSelectedKey = ausgangsWaehrung.Nach;
+                    viewsettings.waehrungSelected = ausgangsWaehrung;
+                }
+                _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
+
+            })
+            .catch(function(oError){
+            })
+            .done();
         },
 
         // Deprecated
@@ -844,6 +901,7 @@ sap.ui.define([
                 VaToOb: _.map(va.VaToOb, function(objekt){
                     delete objekt.__metadata;
                     objekt.HnflAlt = objekt.HnflAlt ? objekt.HnflAlt.toString() : null;
+                    objekt.Hnfl = objekt.Hnfl ?  objekt.Hnfl.toString() : "0.00";
                     objekt.NutzartAlt = objekt.NutzartAlt ? objekt.NutzartAlt.toString() : null;
                     objekt.AnMiete = objekt.AnMiete ? objekt.AnMiete.toString() : "0.00";
                     objekt.GaKosten = objekt.GaKosten ? objekt.GaKosten.toString() : "0.00";
@@ -932,6 +990,7 @@ sap.ui.define([
                 VaToOb: _.map(va.VaToOb, function(objekt){
                     delete objekt.__metadata;
                     objekt.HnflAlt = objekt.HnflAlt ? objekt.HnflAlt.toString() : null;
+                    objekt.Hnfl = objekt.Hnfl ?  objekt.Hnfl.toString() : "0.00";
                     objekt.NutzartAlt = objekt.NutzartAlt ? objekt.NutzartAlt.toString() : null;
                     objekt.AnMiete = objekt.AnMiete ? objekt.AnMiete.toString() : "0.00";
                     objekt.GaKosten = objekt.GaKosten ? objekt.GaKosten.toString() : "0.00";
@@ -1429,6 +1488,10 @@ sap.ui.define([
             })
             .catch(function(oError){
                 console.log(oError);
+                var jsonModel = new sap.ui.model.json.JSONModel({konditioneneinigungen:[]});
+
+                _this._konditioneneinigungHinzufuegenDialog.setModel(jsonModel);
+                _this._konditioneneinigungHinzufuegenDialog.open();
             })
             .done();
 
