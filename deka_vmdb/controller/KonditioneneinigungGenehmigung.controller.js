@@ -105,10 +105,7 @@ sap.ui.define([
                         var status = cells[2];
 
                         var statusValue = form.oData.stufen[stufenIndex].genehmigungen[genIndex].Status;
-
-                        if(statusValue.toString() === "80"){
-                            dropdown.setEnabled(false);
-                        }
+                        dropdown.setEnabled(statusValue.toString() === "80");
                     });
                 });
             });
