@@ -110,7 +110,7 @@ sap.ui.define([
 								return DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
 									KeId: ke.KeId, 
 									Bukrs: ke.Bukrs, 
-									Anmerkung: StaticData.ANMERKUNG.KE.AUS_WICHTIGEM_GRUND_ZURUECKGEZOGEN,
+									Anmerkung: StaticData.ANMERKUNG.KE.BUDGETSTOPP,
 									Bemerkung: sText,
 									FondsBgtstp: dmFonds
 								});
