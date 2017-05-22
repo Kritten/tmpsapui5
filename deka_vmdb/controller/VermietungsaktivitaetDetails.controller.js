@@ -847,6 +847,7 @@ sap.ui.define([
                     objekt.AnMiete = objekt.AnMiete ? objekt.AnMiete.toString() : "0.00";
                     objekt.GaKosten = objekt.GaKosten ? objekt.GaKosten.toString() : "0.00";
                     objekt.MaKosten = objekt.MaKosten ? objekt.MaKosten.toString() : "0.00";
+                    objekt.NhMiete = objekt.NhMiete ?  objekt.NhMiete.toString() : "0.00";
                     return objekt;
                 }),
 
@@ -932,8 +933,9 @@ sap.ui.define([
                     objekt.HnflAlt = objekt.HnflAlt ? objekt.HnflAlt.toString() : null;
                     objekt.NutzartAlt = objekt.NutzartAlt ? objekt.NutzartAlt.toString() : null;
                     objekt.AnMiete = objekt.AnMiete ? objekt.AnMiete.toString() : "0.00";
-                    objekt.GaKosten = objekt.GaKosten ? objekt.GaKosten.toString() : "0.00";;
-                    objekt.MaKosten = objekt.MaKosten ? objekt.MaKosten.toString() : "0.00";;
+                    objekt.GaKosten = objekt.GaKosten ? objekt.GaKosten.toString() : "0.00";
+                    objekt.MaKosten = objekt.MaKosten ? objekt.MaKosten.toString() : "0.00";
+                    objekt.NhMiete = objekt.NhMiete ?  objekt.NhMiete.toString() : "0.00";
                     return objekt;
                 }),
 

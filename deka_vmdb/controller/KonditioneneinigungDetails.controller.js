@@ -692,6 +692,7 @@ sap.ui.define([
                     object.NutzartAlt = null;
                     object.GaKosten = object.GaKosten ?  object.GaKosten.toString() : "0.00";
                     object.MaKosten = object.MaKosten ?  object.MaKosten.toString() : "0.00";
+                    object.NhMiete = object.NhMiete ?  object.NhMiete.toString() : "0.00";
                     return object;
                 }),
 
@@ -771,6 +772,7 @@ sap.ui.define([
                     object.NutzartAlt = null;
                     object.GaKosten = object.GaKosten ? object.GaKosten.toString() : "0.00";
                     object.MaKosten = object.MaKosten ? object.MaKosten.toString() : "0.00";
+                    object.NhMiete = object.NhMiete ?  object.NhMiete.toString() : "0.00";
                     return object;
                 }),
 
