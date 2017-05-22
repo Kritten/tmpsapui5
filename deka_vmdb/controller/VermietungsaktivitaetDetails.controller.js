@@ -8,12 +8,13 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller", 
     "sap/m/MessageBox", 
     "ag/bpc/Deka/util/PrinterUtil",
+    "sap/ui/model/Filter",
     "ag/bpc/Deka/util/NavigationPayloadUtil",
     "ag/bpc/Deka/util/DataProvider",
     "ag/bpc/Deka/util/StaticData",
     "ag/bpc/Deka/util/ErrorMessageUtil",
     "ag/bpc/Deka/util/TranslationUtil",
-    "ag/bpc/Deka/model/CustomNumberType"], function (Controller, MessageBox, PrinterUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
+    "ag/bpc/Deka/model/CustomNumberType"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {        
@@ -1360,6 +1361,15 @@ sap.ui.define([
         },
         
         onMietflaechenSelektionDialogSearch: function(oEvent){
+            var sValue = oEvent.getParameter("value");
+
+            var combinedOrFilter = new Filter([
+                new Filter("MoId", sap.ui.model.FilterOperator.Contains, sValue),
+                new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue)
+            ], false);
+
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([combinedOrFilter]);
         },
 
         onKonditioneneinigungHinzufuegenButtonPress: function(oEvent){
