@@ -1439,7 +1439,7 @@ sap.ui.define([
                 this.getView().addDependent(this._konditioneneinigungHinzufuegenDialog);
             }
 
-            DataProvider.readKonditioneneinigungSetAsync("KeToOb")
+            DataProvider.readKonditioneneinigungSetAsync("KeToOb", "Anmerkung eq '03'")
             .then(function(konditioneneinigungen){
                 
                 konditioneneinigungen = _.map(konditioneneinigungen, function(ke){
