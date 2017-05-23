@@ -1005,7 +1005,7 @@ sap.ui.define([
             DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){
                 return DataProvider.deleteSperreAsync('', va.VaId);
             }).then(function(){
-                _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
+                _this.vermietungsaktivitaetAnzeigen(va.VaId, va.Bukrs);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
