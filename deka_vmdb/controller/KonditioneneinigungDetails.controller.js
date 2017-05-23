@@ -1032,9 +1032,9 @@ sap.ui.define([
                 validationResult = that.checkNotNegative(cells[6]) && validationResult; // nhMiete
                 validationResult = that.checkNotNegative(cells[4]) && validationResult; // hnflAlt
 
-                if(parseFloat(anMieteCell.getValue()) === 0){
+                if(parseFloat(anMieteCell.getValue()) < 0){
                     anMieteCell.setValueState(sap.ui.core.ValueState.Error);
-                    anMieteCell.setValueStateText(TranslationUtil.translate("ERR_WERT_GROESSER_NULL"));
+                    anMieteCell.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                     validationResult = false;
                 }                                
             });

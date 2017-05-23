@@ -1134,9 +1134,9 @@ sap.ui.define([
                     anMieteCell.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                     validationResult = false;
                 }
-                if(parseFloat(anMieteCell.getValue()) === 0){
+                if(parseFloat(anMieteCell.getValue()) < 0){
                     anMieteCell.setValueState(sap.ui.core.ValueState.Error);
-                    anMieteCell.setValueStateText(TranslationUtil.translate("ERR_WERT_GROESSER_NULL"));
+                    anMieteCell.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                     validationResult = false;
                 }
 
