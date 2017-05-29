@@ -110,6 +110,10 @@ sap.ui.define([
                         };
                         
                         DataProvider.updateGenehmigungsprozessSetAsync(payload.Index, payload.KeId, payload.VaId, payload.Stufe, payload)
+                        .then(function(){
+                            _this.refreshView();
+                            _this.ladeGenehmigungen();
+                        })
                         .catch(function(oError){
                             var error = ErrorMessageUtil.parseErrorMessage(oError);
                             ErrorMessageUtil.show(error);
@@ -117,8 +121,7 @@ sap.ui.define([
                     }
                 });
             });
-
-            this.refreshView();
+            
         },
 
         refreshView: function(){
