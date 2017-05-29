@@ -44,7 +44,16 @@ sap.ui.define([
             var form = {
                 modus: null, // show, new, edit
 
-                konditioneneinigung: null,
+                konditioneneinigung: {
+                    BtnVorlegen: false,
+                    BtnGpAr: false,
+                    BtnReaktiv: false,
+                    BtnZurueck: false,
+                    BtnGp: false,
+                    BtnReedit: false,
+                    BtnLoeschen: false,
+                    
+                },
 
                 statuswerte: null,
                 kostenarten: null,
