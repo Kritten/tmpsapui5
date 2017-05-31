@@ -1418,6 +1418,12 @@ sap.ui.define([
                     }
                 }
             });
+
+            // Runden
+            mietflaechenangaben.forEach(function(mietflaechenangabe) {
+                mietflaechenangabe.GaKosten = (Math.floor(mietflaechenangabe.GaKosten * 100) / 100).toFixed(2);
+                mietflaechenangabe.MaKosten = (Math.floor(mietflaechenangabe.MaKosten * 100) / 100).toFixed(2);
+            });
             
             this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
             
@@ -1475,7 +1481,8 @@ sap.ui.define([
                     title: TranslationUtil.translate("HINWEIS")
                 });
 
-                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -1596,7 +1603,8 @@ sap.ui.define([
                     title: TranslationUtil.translate("HINWEIS")
                 });
 
-                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
