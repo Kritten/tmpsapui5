@@ -1481,8 +1481,7 @@ sap.ui.define([
                     title: TranslationUtil.translate("HINWEIS")
                 });
 
-                //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
-                this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);                
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -1604,7 +1603,7 @@ sap.ui.define([
                 });
 
                 //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
-                this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+                _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -1638,7 +1637,8 @@ sap.ui.define([
                     title: TranslationUtil.translate("HINWEIS")
                 });
 
-                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
