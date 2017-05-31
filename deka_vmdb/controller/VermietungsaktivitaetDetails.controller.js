@@ -628,7 +628,7 @@ sap.ui.define([
             // create popover
 			if (! this._tableViewSettingsPopover) {
 				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetUnitsPopover", this);
-                this._tableViewSettingsPopover.setModel( this.getView().getModel("form"), "form" );
+                //this._tableViewSettingsPopover.setModel( this.getView().getModel("form"), "form" );
 				this.getView().addDependent(this._tableViewSettingsPopover);
 			}
 
