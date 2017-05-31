@@ -642,10 +642,8 @@ sap.ui.define([
         },
 
         onPopoverZeitspanneSelect: function(oEvent){
-
             var item = oEvent.getParameter("selectedItem");
             var zeitspanne = item.getBindingContext("form").getObject();
-
             this.getView().getModel("form").setProperty("/viewsettings/zeitspanneSelected", zeitspanne);
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
@@ -663,14 +661,11 @@ sap.ui.define([
         },
 
         onPopoverFlaecheneinheitSelect: function(oEvent){
-            var item = oEvent.getParameter("selectedItem");
-
-            var _this = this;
-            
+            var item = oEvent.getParameter("selectedItem");          
             var flaecheneinheit = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/flaecheneinheitSelected", flaecheneinheit);
-
             var viewsettings = this.getView().getModel("form").getProperty("/viewsettings");
+            var _this = this;  
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
@@ -712,11 +707,11 @@ sap.ui.define([
 
         onPopoverWaehrungSelect: function(oEvent){
             var item = oEvent.getParameter("selectedItem");
-            var waehrung = item.getBindingContext("form").getObject();
-            var _this = this;
-
+            var waehrung = item.getBindingContext("form").getObject();            
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
+            var _this = this;
             var viewsettings = this.getView().getModel("form").getProperty("/viewsettings");
+
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             _.map(VaToOb, function(object){

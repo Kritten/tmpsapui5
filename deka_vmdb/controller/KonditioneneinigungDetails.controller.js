@@ -554,7 +554,6 @@ sap.ui.define([
 
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-
             _.map(KeToOb, function(object){
                 var neueMiete = Math.round(object.NhMiete * waehrung.Multiplikator * 100) / 100;
                 object.NhMiete = neueMiete;
