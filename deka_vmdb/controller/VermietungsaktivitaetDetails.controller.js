@@ -848,7 +848,7 @@ sap.ui.define([
             
             va.Mietbeginn.setHours(12);
             va.Mietbeginn.setMinutes(0);
-            va.MzErsterMonat.setHour(12);
+            va.MzErsterMonat.setHours(12);
             va.MzErsterMonat.setMinutes(0);
             va.AkErsterMonat.setHours(12);
             va.AkErsterMonat.setMinutes(0);
@@ -943,7 +943,7 @@ sap.ui.define([
 
             va.Mietbeginn.setHours(12);
             va.Mietbeginn.setMinutes(0);
-            va.MzErsterMonat.setHour(12);
+            va.MzErsterMonat.setHours(12);
             va.MzErsterMonat.setMinutes(0);
             va.AkErsterMonat.setHours(12);
             va.AkErsterMonat.setMinutes(0);
