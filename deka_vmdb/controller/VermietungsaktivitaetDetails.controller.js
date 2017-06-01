@@ -810,7 +810,8 @@ sap.ui.define([
             }
         },
 
-        onSpeichernButtonPress: function(oEvent){                      
+        onSpeichernButtonPress: function(oEvent){  
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");  
             var validationSuccess = this.validateForm();
         
             if(validationSuccess){
@@ -845,6 +846,13 @@ sap.ui.define([
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             
+            va.Mietbeginn.setHours(12);
+            va.Mietbeginn.setMinutes(0);
+            va.MzErsterMonat.setHour(12);
+            va.MzErsterMonat.setMinutes(0);
+            va.AkErsterMonat.setHours(12);
+            va.AkErsterMonat.setMinutes(0);
+
             var payload = {
                 Action: 'CRE',
 
@@ -932,6 +940,13 @@ sap.ui.define([
             var _this = this;
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+            va.Mietbeginn.setHours(12);
+            va.Mietbeginn.setMinutes(0);
+            va.MzErsterMonat.setHour(12);
+            va.MzErsterMonat.setMinutes(0);
+            va.AkErsterMonat.setHours(12);
+            va.AkErsterMonat.setMinutes(0);
 
             var payload = {
                 Action: 'UPD',

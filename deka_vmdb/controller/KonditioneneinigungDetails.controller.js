@@ -678,7 +678,7 @@ sap.ui.define([
 
         onSpeichernButtonPress: function(oEvent){
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
-            console.log(ke, "ke");
+            console.log(ke, "ke");       
 
             var validationSuccess = this.validateForm();
             
@@ -711,6 +711,11 @@ sap.ui.define([
             var _this = this;
 
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
+
+            ke.GueltigkKe.setHours(12);
+            ke.GueltigkKe.setMinutes(0);
+            ke.Mietbeginn.setHours(12);
+            ke.Mietbeginn.setMinutes(0);
 
             var payload = {
                 Action: 'CRE',
@@ -788,6 +793,11 @@ sap.ui.define([
 
             var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");
             
+            ke.GueltigkKe.setHours(12);
+            ke.GueltigkKe.setMinutes(0);
+            ke.Mietbeginn.setHours(12);
+            ke.Mietbeginn.setMinutes(0);
+
             var payload = {
                 Action: 'UPD',
 
@@ -1598,11 +1608,14 @@ sap.ui.define([
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_NICHT_GENEHMIGT_SUCCESS"), {
-                    title: TranslationUtil.translate("HINWEIS")
+                    title: TranslationUtil.translate("HINWEIS"),
+                    onClose: function(oAction){
+                        _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+                    }
+
                 });
 
                 //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
-                _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -1633,11 +1646,14 @@ sap.ui.define([
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_GENEHMIGT_SUCCESS"), {
-                    title: TranslationUtil.translate("HINWEIS")
+                    title: TranslationUtil.translate("HINWEIS"),
+                    onClose: function(oAction){
+                        _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+                    }
                 });
 
                 //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
-                _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+                
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
