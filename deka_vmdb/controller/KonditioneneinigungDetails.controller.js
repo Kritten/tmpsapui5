@@ -1240,7 +1240,9 @@ sap.ui.define([
                         return _.some(vorhandeneMietflaechenangaben, function(vorhandeneMietflaechenangabe){
                             return mietflaechenangabe.MoId === vorhandeneMietflaechenangabe.MoId;
                         });
-                    })
+                    }),
+                    WeCurrency: wirtschaftseinheit.Currency,
+                    WeUnit: wirtschaftseinheit.Unit
                 };
 
                 var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
@@ -1276,34 +1278,157 @@ sap.ui.define([
                 {
                     var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
 
-                    selectedItems.forEach(function(item){
-                        var mietflaechenangabe = item.getBindingContext().getObject();
-                        mietflaechenangaben.push({
-                            WeId: mietflaechenangabe.WeId,
-                            MoId: mietflaechenangabe.MoId,
-                            Bukrs: mietflaechenangabe.Bukrs,
-                            Bezei: mietflaechenangabe.Bezei,
-                            Nutzart: mietflaechenangabe.Nutzart,
-                            Hnfl: mietflaechenangabe.Hnfl,
-                            HnflAlt: mietflaechenangabe.HnflAlt,
-                            HnflUnit: mietflaechenangabe.HnflUnit,
-                            NhMiete: mietflaechenangabe.NhMiete,
-                            AnMiete: mietflaechenangabe.AnMiete,
-                            GaKosten: mietflaechenangabe.GaKosten,
-                            MaKosten: mietflaechenangabe.MaKosten,
-                            Whrung: mietflaechenangabe.Whrung,
+                    var zeitMultiplikator = 1;
+                    var zeitspannenId = this.getView().getModel("form").getProperty("/viewsettings/zeitspanneSelected/Id");
+                    if(zeitspannenId === "J") {
+                        zeitMultiplikator = 12;
+                    }
+                    var KeWaehrung = this.getView().getModel("form").getProperty("/viewsettings/waehrungSelectedKey");
+                    var KeUnit = this.getView().getModel("form").getProperty("/viewsettings/flaecheneinheitSelectedKey");
+                    var dialogModel = this._mietflaechenSelektionDialog.getModel();
+                    var WeCurrency = dialogModel.getProperty("/WeCurrency");
+                    var WeUnit = dialogModel.getProperty("/WeUnit");
+                    if( WeCurrency !== KeWaehrung || WeUnit !== KeUnit) {
+                        var _this = this;
 
-                            MfSplit: false,
-                            KeId: ke.KeId,
-                            MonatJahr: ke.MonatJahr
+                        var currenyMultiplicator = 1;
+                        var unitMultiplicator    = 1;
+
+                        function resolveFunction() {
+                            selectedItems.forEach(function(item){
+                                var mietflaechenangabe = item.getBindingContext().getObject();
+
+                                var neueMiete = mietflaechenangabe.NhMiete *  currenyMultiplicator * zeitMultiplikator;
+                                var neueFlaeche = mietflaechenangabe.Hnfl;
+                                var neueEinheit = mietflaechenangabe.HnflUnit;
+
+                                if( mietobjekt.HnflUnit !== StaticData.UNIT.STUECK )
+                                {
+                                    neueEinheit = KeUnit;
+                                    neueMiete   = neueMiete * 1 / unitMultiplicator;
+                                    neueFlaeche = neueFlaeche * unitMultiplicator;
+                                }
+
+                                mietflaechenangaben.push({
+                                    WeId: mietflaechenangabe.WeId,
+                                    MoId: mietflaechenangabe.MoId,
+                                    Bukrs: mietflaechenangabe.Bukrs,
+                                    Bezei: mietflaechenangabe.Bezei,
+                                    Nutzart: mietflaechenangabe.Nutzart,
+                                    Hnfl: mietflaechenangabe.neueFlaeche,
+                                    HnflAlt: mietflaechenangabe.HnflAlt,
+                                    HnflUnit: mietflaechenangabe.neueEinheit,
+                                    NhMiete: mietflaechenangabe.neueMiete,
+                                    AnMiete: mietflaechenangabe.AnMiete,
+                                    GaKosten: mietflaechenangabe.GaKosten,
+                                    MaKosten: mietflaechenangabe.MaKosten,
+                                    Whrung: mietflaechenangabe.Whrung,
+
+                                    MfSplit: false,
+                                    KeId: ke.KeId,
+                                    MonatJahr: ke.MonatJahr
+                                });
+                            });
+                            _this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
+
+                            // Verteilen Button rot hervorheben
+                            _this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
+                        }
+                        if( WeCurrency !== KeWaehrung && WeUnit !== KeUnit ) { //Beides umrechnen
+                            DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
+                                if(waehrungen.length > 0){
+                                    var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
+                                        return waehrung.Nach === KeWaehrung;
+                                    });
+
+                                    if(ausgangsWaehrung){
+                                        currenyMultiplicator = ausgangsWaehrung.Multiplikator;
+                                    }
+                                }
+                                return DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheitKey);
+                            })
+                            .then(function(flaecheneinheiten){
+                                if(flaecheneinheiten.length > 0){
+                                    var ausgangsFlaecheneinheit = _.find(flaecheneinheiten, function(flaecheneinheit){
+                                        return flaecheneinheit.Nach === KeUnit;
+                                    });
+
+                                    if(ausgangsFlaecheneinheit){
+                                        unitMultiplicator = ausgangsFlaecheneinheit.Multiplikator;
+                                    }
+                                }
+                                resolveFunction();
+                            })
+                            .catch(function(oError){
+                            })
+                            .done();
+                        }
+                        else if( WeCurrency !== KeWaehrung ) { // Waehrung umrechnen
+                            DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
+                                if(waehrungen.length > 0){
+                                    var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
+                                        return waehrung.Nach === KeWaehrung;
+                                    });
+
+                                    if(ausgangsWaehrung){
+                                        currenyMultiplicator = ausgangsWaehrung.Multiplikator;
+                                    }
+                                }
+                                resolveFunction();
+                            })
+                            .catch(function(oError){
+                            })
+                            .done();
+                        }
+                        else { // fläche umrechnen
+                            DataProvider.readFlaecheSetAsync(WeUnit).then(function(flaecheneinheiten){
+                                if(flaecheneinheiten.length > 0){
+                                    var ausgangsFlaecheneinheit = _.find(flaecheneinheiten, function(flaecheneinheit){
+                                        return flaecheneinheit.Nach === KeUnit;
+                                    });
+
+                                    if(ausgangsFlaecheneinheit){
+                                        unitMultiplicator = ausgangsFlaecheneinheit.Multiplikator;
+                                    }
+                                }
+                                resolveFunction();
+                            })
+                            .catch(function(oError){
+                            })
+                            .done();
+                        }
+                    }
+                    else
+                    {
+                        selectedItems.forEach(function(item){
+                            var mietflaechenangabe = item.getBindingContext().getObject();
+                            mietflaechenangaben.push({
+                                WeId: mietflaechenangabe.WeId,
+                                MoId: mietflaechenangabe.MoId,
+                                Bukrs: mietflaechenangabe.Bukrs,
+                                Bezei: mietflaechenangabe.Bezei,
+                                Nutzart: mietflaechenangabe.Nutzart,
+                                Hnfl: mietflaechenangabe.Hnfl,
+                                HnflAlt: mietflaechenangabe.HnflAlt,
+                                HnflUnit: mietflaechenangabe.HnflUnit,
+                                NhMiete: mietflaechenangabe.NhMiete,
+                                AnMiete: mietflaechenangabe.AnMiete,
+                                GaKosten: mietflaechenangabe.GaKosten,
+                                MaKosten: mietflaechenangabe.MaKosten,
+                                Whrung: mietflaechenangabe.Whrung,
+
+                                MfSplit: false,
+                                KeId: ke.KeId,
+                                MonatJahr: ke.MonatJahr
+                            });
+
                         });
+                        
+                        this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
 
-                    });
-                    
-                    this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
-
-                    // Verteilen Button rot hervorheben
-                    this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
+                        // Verteilen Button rot hervorheben
+                        this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
+                    }
                 }
                 else
                 {
