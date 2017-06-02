@@ -110,6 +110,7 @@ sap.ui.define([
                             ausgangsWaehrung = viewsettings.waehrungen[0];
                         }
 
+                        viewsettings.waehrungSelectedKey = ausgangsWaehrung.Nach;
                         viewsettings.waehrungSelected = ausgangsWaehrung;
                     }
 
@@ -127,8 +128,9 @@ sap.ui.define([
                         if(!ausgangsFlaecheneinheit){
                             ausgangsFlaecheneinheit = viewsettings.flaecheneinheiten[0];
                         }
-
+                        viewsettings.flaecheneinheitSelectedKey = ausgangsFlaecheneinheit.Nach;
                         viewsettings.flaecheneinheitSelected = ausgangsFlaecheneinheit;
+                        
                     }
 
                     _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
@@ -1308,7 +1310,7 @@ sap.ui.define([
                 if(auswahlValide)
                 {
                     var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-
+                    
                     var zeitMultiplikator = 1;
                     var zeitspannenId = this.getView().getModel("form").getProperty("/viewsettings/zeitspanneSelected/Id");
                     if(zeitspannenId === "J") {
@@ -1360,6 +1362,7 @@ sap.ui.define([
                                     MonatJahr: ke.MonatJahr
                                 });
                             });
+
                             _this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
 
                             // Verteilen Button rot hervorheben
@@ -1454,7 +1457,6 @@ sap.ui.define([
                             });
 
                         });
-                        
                         this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
 
                         // Verteilen Button rot hervorheben
