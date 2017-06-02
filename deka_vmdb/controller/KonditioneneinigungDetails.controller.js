@@ -554,7 +554,6 @@ sap.ui.define([
 
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-
             _.map(KeToOb, function(object){
                 var neueMiete = object.NhMiete * waehrung.Multiplikator;
                 object.NhMiete = neueMiete;
@@ -679,7 +678,7 @@ sap.ui.define([
 
         onSpeichernButtonPress: function(oEvent){
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
-            console.log(ke, "ke");
+            console.log(ke, "ke");       
 
             var validationSuccess = this.validateForm();
             
@@ -712,6 +711,11 @@ sap.ui.define([
             var _this = this;
 
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
+
+            ke.GueltigkKe.setHours(12);
+            ke.GueltigkKe.setMinutes(0);
+            ke.Mietbeginn.setHours(12);
+            ke.Mietbeginn.setMinutes(0);
 
             var payload = {
                 Action: 'CRE',
@@ -789,6 +793,11 @@ sap.ui.define([
 
             var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");
             
+            ke.GueltigkKe.setHours(12);
+            ke.GueltigkKe.setMinutes(0);
+            ke.Mietbeginn.setHours(12);
+            ke.Mietbeginn.setMinutes(0);
+
             var payload = {
                 Action: 'UPD',
 
@@ -1543,6 +1552,12 @@ sap.ui.define([
                     }
                 }
             });
+
+            // Runden
+            mietflaechenangaben.forEach(function(mietflaechenangabe) {
+                mietflaechenangabe.GaKosten = (Math.floor(mietflaechenangabe.GaKosten * 100) / 100).toFixed(2);
+                mietflaechenangabe.MaKosten = (Math.floor(mietflaechenangabe.MaKosten * 100) / 100).toFixed(2);
+            });
             
             this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
             
@@ -1600,7 +1615,7 @@ sap.ui.define([
                     title: TranslationUtil.translate("HINWEIS")
                 });
 
-                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);                
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -1718,10 +1733,14 @@ sap.ui.define([
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_NICHT_GENEHMIGT_SUCCESS"), {
-                    title: TranslationUtil.translate("HINWEIS")
+                    title: TranslationUtil.translate("HINWEIS"),
+                    onClose: function(oAction){
+                        _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+                    }
+
                 });
 
-                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -1752,10 +1771,14 @@ sap.ui.define([
             })
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_GENEHMIGT_SUCCESS"), {
-                    title: TranslationUtil.translate("HINWEIS")
+                    title: TranslationUtil.translate("HINWEIS"),
+                    onClose: function(oAction){
+                        _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+                    }
                 });
 
-                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);

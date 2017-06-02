@@ -15,6 +15,8 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
         druckvorlageKonditioneneinigung: "/deka_vmdb/util/DruckvorlageKonditioneneinigung.html",
 
         generatePrintableHtmlForVermietungsaktivitaet: function(vermietungsaktivitaet, kostenarten, ertragsarten){
+            this.ladeDruckVorlagen();
+
             jQuery.ajaxSetup({async:false});
             var res;
             var textModel = sap.ui.getCore().getModel("text");
@@ -161,6 +163,8 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
         },
         
         generatePrintableHtmlForKonditioneneinigung: function(konditioneneinigung, kostenarten, ertragsarten){
+            this.ladeDruckVorlagen();
+
             jQuery.ajaxSetup({async:false});
             var res;
             var textModel = sap.ui.getCore().getModel("text");
@@ -284,11 +288,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
             printWindow.close();                    
         },
 
-        ladeDruckVorlage: function(dateiPfad){
-            var res; 
-            jQuery.get(dateiPfad, function(data) {
-                return data;
-            });
+        ladeDruckVorlagen: function(dateiPfad){
+            var utilPath = $.sap.getModulePath("ag.bpc.Deka", "/util");
+
+            this.druckvorlageKonditioneneinigung = utilPath + "/DruckvorlageKonditioneneinigung.html";
+            this.druckvorlageVermietungsaktivitaet = utilPath + "/DruckvorlageVermietungsaktivitaet.html";
         }
 	};
 });

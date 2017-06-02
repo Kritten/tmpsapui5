@@ -346,14 +346,14 @@
                 <items>
                     <ColumnListItem>
                         <cells>
-                            <Text text="Miete gesamt" />
+                            <Text text="{i18n>MIETE_GESAMT}" />
                             <Text text="{ path: 'form>/konditioneneinigung/GesErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                         </cells>
                     </ColumnListItem>
                     
                     <ColumnListItem>
                         <cells>
-                            <Text text="Kosten gesamt" />
+                            <Text text="{i18n>KOSTEN_GESAMT}" />
                             <Text text="{ path: 'form>/konditioneneinigung/GesKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                         </cells>
                     </ColumnListItem>
