@@ -1367,7 +1367,9 @@ sap.ui.define([
                         return _.some(objekte, function(objekt){
                             return mietobjekt.MoId === objekt.MoId;
                         });
-                    })
+                    }),
+                    WeCurrency: wirtschaftseinheit.Currency,
+                    WeUnit: wirtschaftseinheit.Unit
                 };
 
                 var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
@@ -1388,34 +1390,156 @@ sap.ui.define([
             if(selectedItems.length > 0)
             {
                 var objekte = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+                var zeitMultiplikator = 1;
+                var zeitspannenId = this.getView().getModel("form").getProperty("/viewsettings/zeitspanneSelected/Id");
+                if(zeitspannenId === "J") {
+                    zeitMultiplikator = 12;
+                }
 
-                selectedItems.forEach(function(item){
-                    var mietobjekt = item.getBindingContext().getObject();
+                var VaWaehrung = this.getView().getModel("form").getProperty("/viewsettings/waehrungSelectedKey");
+                var VaUnit = this.getView().getModel("form").getProperty("/viewsettings/flaecheneinheitSelectedKey");
+                var dialogModel = this._mietflaechenSelektionDialog.getModel();
+                var WeCurrency = dialogModel.getProperty("/WeCurrency");
+                var WeUnit = dialogModel.getProperty("/WeUnit");
 
-                    // Umwandlung Mietobjekt -> Objekt
-                    objekte.push({
-                        WeId: mietobjekt.WeId,
-                        MoId: mietobjekt.MoId,
-                        Bukrs: mietobjekt.Bukrs,
-                        Bezei: mietobjekt.Bezei,
-                        Nutzart: mietobjekt.Nutzart,
-                        NutzartAlt: mietobjekt.NutzartAlt,
-                        Hnfl: mietobjekt.Hnfl,
-                        HnflAlt: mietobjekt.HnflAlt,
-                        HnflUnit: mietobjekt.HnflUnit,
-                        NhMiete: mietobjekt.NhMiete,
-                        AnMiete: mietobjekt.AnMiete,
-                        GaKosten: mietobjekt.GaKosten,
-                        MaKosten: mietobjekt.MaKosten,
-                        Whrung: mietobjekt.Whrung,
-                        MfSplit: false,
-                        VaId: va.VaId,
-                        MonatJahr: va.MonatJahr
+                if( WeCurrency !== VaWaehrung || WeUnit !== VaUnit) {
+                    var _this = this;
+
+                    var currenyMultiplicator = 1;
+                    var unitMultiplicator    = 1;
+
+                    function resolveFunction() {
+
+                        selectedItems.forEach(function(item){
+
+                            var mietobjekt = item.getBindingContext().getObject();
+                            var neueMiete = mietobjekt.NhMiete *  currenyMultiplicator * zeitMultiplikator;
+                            var neueFlaeche = mietobjekt.Hnfl;
+                            var neueEinheit = mietobjekt.HnflUnit;
+                            if( mietobjekt.HnflUnit !== StaticData.UNIT.STUECK )
+                            {
+                                neueEinheit = VaUnit;
+                                neueMiete   = neueMiete * 1 / unitMultiplicator;
+                                neueFlaeche = neueFlaeche * unitMultiplicator;
+                            }
+                            objekte.push({
+                                WeId: mietobjekt.WeId,
+                                MoId: mietobjekt.MoId,
+                                Bukrs: mietobjekt.Bukrs,
+                                Bezei: mietobjekt.Bezei,
+                                Nutzart: mietobjekt.Nutzart,
+                                NutzartAlt: mietobjekt.NutzartAlt,
+                                Hnfl: neueFlaeche,
+                                HnflAlt: neueEinheit,
+                                HnflUnit: mietobjekt.HnflUnit,
+                                NhMiete: neueMiete,
+                                AnMiete: mietobjekt.AnMiete,
+                                GaKosten: mietobjekt.GaKosten,
+                                MaKosten: mietobjekt.MaKosten,
+                                Whrung: mietobjekt.Whrung,
+                                MfSplit: false,
+                                VaId: va.VaId,
+                                MonatJahr: va.MonatJahr
+                            });
+
+                        });
+                        _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
+                    };
+
+                    if( WeCurrency !== VaWaehrung && WeUnit !== VaUnit ) { //Beides umrechnen
+                        DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
+                            if(waehrungen.length > 0){
+                                var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
+                                    return waehrung.Nach === VaWaehrung;
+                                });
+
+                                if(ausgangsWaehrung){
+                                    currenyMultiplicator = ausgangsWaehrung.Multiplikator;
+                                }
+                            }
+                             return DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheitKey);
+                        })
+                        .then(function(flaecheneinheiten){
+                            if(flaecheneinheiten.length > 0){
+                                var ausgangsFlaecheneinheit = _.find(flaecheneinheiten, function(flaecheneinheit){
+                                    return flaecheneinheit.Nach === VaUnit;
+                                });
+
+                                if(ausgangsFlaecheneinheit){
+                                    unitMultiplicator = ausgangsFlaecheneinheit.Multiplikator;
+                                }
+                            }
+                            resolveFunction();
+                        })
+                        .catch(function(oError){
+                        })
+                        .done();
+                    }
+                    else if( WeCurrency !== VaWaehrung ) { // Waehrung umrechnen
+                        DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
+                            if(waehrungen.length > 0){
+                                var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
+                                    return waehrung.Nach === VaWaehrung;
+                                });
+
+                                if(ausgangsWaehrung){
+                                    currenyMultiplicator = ausgangsWaehrung.Multiplikator;
+                                }
+                            }
+                            resolveFunction();
+                        })
+                        .catch(function(oError){
+                        })
+                        .done();
+                    }
+                    else { // fläche umrechnen
+                        DataProvider.readFlaecheSetAsync(WeUnit).then(function(flaecheneinheiten){
+                            if(flaecheneinheiten.length > 0){
+                                var ausgangsFlaecheneinheit = _.find(flaecheneinheiten, function(flaecheneinheit){
+                                    return flaecheneinheit.Nach === VaUnit;
+                                });
+
+                                if(ausgangsFlaecheneinheit){
+                                    unitMultiplicator = ausgangsFlaecheneinheit.Multiplikator;
+                                }
+                            }
+                            resolveFunction();
+                        })
+                        .catch(function(oError){
+                        })
+                        .done();
+                    }
+ 
+                }
+                else {
+                    selectedItems.forEach(function(item){
+                        var mietobjekt = item.getBindingContext().getObject();
+                        objekte.push({
+                            WeId: mietobjekt.WeId,
+                            MoId: mietobjekt.MoId,
+                            Bukrs: mietobjekt.Bukrs,
+                            Bezei: mietobjekt.Bezei,
+                            Nutzart: mietobjekt.Nutzart,
+                            NutzartAlt: mietobjekt.NutzartAlt,
+                            Hnfl: mietobjekt.Hnfl,
+                            HnflAlt: mietobjekt.HnflUnit,
+                            HnflUnit: mietobjekt.HnflUnit,
+                            NhMiete: mietobjekt.NhMiete * zeitMultiplikator,
+                            AnMiete: mietobjekt.AnMiete,
+                            GaKosten: mietobjekt.GaKosten,
+                            MaKosten: mietobjekt.MaKosten,
+                            Whrung: mietobjekt.Whrung,
+                            MfSplit: false,
+                            VaId: va.VaId,
+                            MonatJahr: va.MonatJahr
+                        });
+
                     });
+                    
+                    this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
+                }
 
-                });
                 
-                this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
             }
         },
         
