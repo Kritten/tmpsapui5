@@ -558,17 +558,17 @@ sap.ui.define([
 
             return Q.Promise(function(resolve, reject, notify) {
 
-                var oDataModel = sap.ui.getCore().getModel("odata");
+                var KeUnitModel = sap.ui.getCore().getModel("KeUnit");
 
-                oDataModel.read("/MietobjektSet", {
+                KeUnitModel.read("/MietobjektSet", {
 
                     urlParameters: {
                         "$filter": "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'"
                     },
 
-                    success: function(oData){
-                        console.log(oData);
-                        resolve(oData.results);
+                    success: function(KeUnit){
+                        console.log(KeUnit);
+                        resolve(KeUnit.results);
                     },
 
                     error: function(oError){
@@ -850,15 +850,24 @@ sap.ui.define([
                 va.Mietbeginn.setHours(12);
                 va.Mietbeginn.setMinutes(0);
             }
+            else {
+                va.Mietbeginn = null;
+            }
 
             if( va.MzErsterMonat && Object.prototype.toString.call(va.MzErsterMonat) === "[object Date]" ){
                 va.MzErsterMonat.setHours(12);
                 va.MzErsterMonat.setMinutes(0);
             }
+            else {
+                va.MzErsterMonat = null;
+            }
 
             if( va.AkErsterMonat && Object.prototype.toString.call(va.AkErsterMonat) === "[object Date]" ){
                 va.AkErsterMonat.setHours(12);
                 va.AkErsterMonat.setMinutes(0);
+            }
+            else {
+                va.AkErsterMonat = null;
             }
 
             var payload = {
@@ -924,9 +933,9 @@ sap.ui.define([
                 Confirmation: va.Confirmation ? va.Confirmation : false
             };
 
-            DataProvider.createVermietungsaktivitaetAsync(payload).then(function(oData){
+            DataProvider.createVermietungsaktivitaetAsync(payload).then(function(KeUnit){
                 // _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
-                _this.vermietungsaktivitaetAnzeigen(oData.VaId, oData.Bukrs);
+                _this.vermietungsaktivitaetAnzeigen(KeUnit.VaId, KeUnit.Bukrs);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -949,12 +958,29 @@ sap.ui.define([
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
 
-            va.Mietbeginn.setHours(12);
-            va.Mietbeginn.setMinutes(0);
-            va.MzErsterMonat.setHours(12);
-            va.MzErsterMonat.setMinutes(0);
-            va.AkErsterMonat.setHours(12);
-            va.AkErsterMonat.setMinutes(0);
+            if( va.Mietbeginn && Object.prototype.toString.call(va.Mietbeginn) === "[object Date]" ){
+                va.Mietbeginn.setHours(12);
+                va.Mietbeginn.setMinutes(0);
+            }
+            else {
+                va.Mietbeginn = null;
+            }
+
+            if( va.MzErsterMonat && Object.prototype.toString.call(va.MzErsterMonat) === "[object Date]" ){
+                va.MzErsterMonat.setHours(12);
+                va.MzErsterMonat.setMinutes(0);
+            }
+            else {
+                va.MzErsterMonat = null;
+            }
+
+            if( va.AkErsterMonat && Object.prototype.toString.call(va.AkErsterMonat) === "[object Date]" ){
+                va.AkErsterMonat.setHours(12);
+                va.AkErsterMonat.setMinutes(0);
+            }
+            else {
+                va.AkErsterMonat = null;
+            }
 
             var payload = {
                 Action: 'UPD',
