@@ -1445,7 +1445,7 @@ sap.ui.define([
                                 Hnfl: mietflaechenangabe.Hnfl,
                                 HnflAlt: mietflaechenangabe.HnflAlt,
                                 HnflUnit: mietflaechenangabe.HnflUnit,
-                                NhMiete: mietflaechenangabe.NhMiete,
+                                NhMiete: mietflaechenangabe.NhMiete * zeitMultiplikator,
                                 AnMiete: mietflaechenangabe.AnMiete,
                                 GaKosten: mietflaechenangabe.GaKosten,
                                 MaKosten: mietflaechenangabe.MaKosten,
