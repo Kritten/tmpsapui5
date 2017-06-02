@@ -712,10 +712,15 @@ sap.ui.define([
 
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
-            ke.GueltigkKe.setHours(12);
-            ke.GueltigkKe.setMinutes(0);
-            ke.Mietbeginn.setHours(12);
-            ke.Mietbeginn.setMinutes(0);
+            if( ke.GueltigkKe && Object.prototype.toString.call(ke.GueltigkKe) === "[object Date]" ){
+                ke.GueltigkKe.setHours(12);
+                ke.GueltigkKe.setMinutes(0);
+            }
+
+            if( ke.Mietbeginn && Object.prototype.toString.call(ke.Mietbeginn) === "[object Date]" ){
+                ke.Mietbeginn.setHours(12);
+                ke.Mietbeginn.setMinutes(0);
+            }
 
             var payload = {
                 Action: 'CRE',

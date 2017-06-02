@@ -845,13 +845,21 @@ sap.ui.define([
             var _this = this;
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
-            
-            va.Mietbeginn.setHours(12);
-            va.Mietbeginn.setMinutes(0);
-            va.MzErsterMonat.setHours(12);
-            va.MzErsterMonat.setMinutes(0);
-            va.AkErsterMonat.setHours(12);
-            va.AkErsterMonat.setMinutes(0);
+
+            if( va.Mietbeginn && Object.prototype.toString.call(va.Mietbeginn) === "[object Date]" ){
+                va.Mietbeginn.setHours(12);
+                va.Mietbeginn.setMinutes(0);
+            }
+
+            if( va.MzErsterMonat && Object.prototype.toString.call(va.MzErsterMonat) === "[object Date]" ){
+                va.MzErsterMonat.setHours(12);
+                va.MzErsterMonat.setMinutes(0);
+            }
+
+            if( va.AkErsterMonat && Object.prototype.toString.call(va.AkErsterMonat) === "[object Date]" ){
+                va.AkErsterMonat.setHours(12);
+                va.AkErsterMonat.setMinutes(0);
+            }
 
             var payload = {
                 Action: 'CRE',
