@@ -1335,7 +1335,7 @@ sap.ui.define([
                                 var neueFlaeche = mietflaechenangabe.Hnfl;
                                 var neueEinheit = mietflaechenangabe.HnflUnit;
 
-                                if( mietobjekt.HnflUnit !== StaticData.UNIT.STUECK )
+                                if( mietflaechenangabe.HnflUnit !== StaticData.UNIT.STUECK )
                                 {
                                     neueEinheit = KeUnit;
                                     neueMiete   = neueMiete * 1 / unitMultiplicator;
