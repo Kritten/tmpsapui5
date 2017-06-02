@@ -675,8 +675,8 @@ sap.ui.define([
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             _.map(VaToOb, function(object){
-                var neueFlaeche = (Math.round(object.Hnfl * flaecheneinheit.Multiplikator * 100) / 100);
-                var neueMiete = (Math.round(object.NhMiete *  1 / flaecheneinheit.Multiplikator * 100) / 100);
+                var neueFlaeche = object.Hnfl * flaecheneinheit.Multiplikator;
+                var neueMiete = object.NhMiete *  1 / flaecheneinheit.Multiplikator;
                 object.Hnfl = neueFlaeche;
                 object.HnflUnit = flaecheneinheit.Nach;
                 object.NhMiete = neueMiete;
@@ -720,7 +720,7 @@ sap.ui.define([
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             _.map(VaToOb, function(object){
-                var neueMiete = Math.round(object.NhMiete * waehrung.Multiplikator * 100) / 100;
+                var neueMiete = object.NhMiete * waehrung.Multiplikator;
                 object.NhMiete = neueMiete;
                 object.Whrung = waehrung.Nach;
             });
@@ -1639,13 +1639,13 @@ sap.ui.define([
                 {
 					if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
 					{
-                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.Hnfl)).toString();
-                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.Hnfl)).toString();
+                        mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.grundausbaukosten / parseFloat(mietflaechenangabe.Hnfl)).toString();
+                        mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.mietausbaukosten  / parseFloat(mietflaechenangabe.Hnfl)).toString();
 					}
 					else
 					{
-                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.HnflAlt)).toString();
-                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.HnflAlt)).toString();
+                        mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.grundausbaukosten / parseFloat(mietflaechenangabe.HnflAlt)).toString();
+                        mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.mietausbaukosten  / parseFloat(mietflaechenangabe.HnflAlt)).toString();
 					}
                 }
             });
