@@ -1255,8 +1255,8 @@ sap.ui.define([
                             return mietflaechenangabe.MoId === vorhandeneMietflaechenangabe.MoId;
                         });
                     }),
-                    WeCurrency: wirtschaftseinheit.Currency,
-                    WeUnit: wirtschaftseinheit.Unit
+                    WeCurrency: oData.Currency,
+                    WeUnit: oData.Unit
                 };
 
                 var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
