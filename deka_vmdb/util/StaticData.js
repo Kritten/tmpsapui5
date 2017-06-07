@@ -4,7 +4,8 @@
  * @Last Modified by:   Christian Hoff (best practice consulting AG) 
  * @Last Modified time: 2017-04-05 21:45:23 
  */
-sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
+sap.ui.define(["ag/bpc/Deka/util/DataProvider",
+"ag/bpc/Deka/util/TranslationUtil"], function(DataProvider, TranslationUtil) {
 
     "use strict";
     return {
@@ -21,12 +22,7 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
 
         UNIT: {
             STUECK: "ST"
-        },
-
-        VERMIETUNGSARTEN: [
-            {key: "01", text: "Anschlussvermietung"},
-            {key: "02", text: "Neuvermietung"}
-        ],
+        },        
 
         ANMERKUNG: {
             KE: {
@@ -81,12 +77,7 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
             }
         },
 
-        ZEITSPANNEN: [
-            {Id: 'M', Text: 'Monatsmiete'},
-            {Id: 'J', Text: 'Jahresmiete'}
-        ],
-
-        init: function(){
+        init: function(){            
             this.USER = DataProvider.readUserAsync();
             this.ANMERKUNGEN = DataProvider.readAnmerkungSetAsync();
             this.STATUSWERTE = DataProvider.readStatusSetAsync();
@@ -96,6 +87,16 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
             this.VERTRAGSARTEN = DataProvider.readVertragsArtSetAsync();
             this.KOSTENARTEN = DataProvider.readKostenartSetAsync();
             this.ERTRAGSARTEN = DataProvider.readErtragsartSetAsync();
+
+            this.ZEITSPANNEN = [
+                {Id: 'M', Text: TranslationUtil.translate("MONATSMIETE")},
+                {Id: 'J', Text: TranslationUtil.translate("JAHRESMIETE")}
+            ];
+
+            this.VERMIETUNGSARTEN = [
+               {key: "01", text: TranslationUtil.translate("ANSCHLUSSVERMIETUNG")},
+               {key: "02", text: TranslationUtil.translate("NEUVERMIETUNG")}
+            ];
         }
 
     };
