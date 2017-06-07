@@ -19,6 +19,10 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider"], function(DataProvider) {
         ERTRAGSARTEN: null,
         USER: null,
 
+        UNIT: {
+            STUECK: "ST"
+        },
+
         VERMIETUNGSARTEN: [
             {key: "01", text: "Anschlussvermietung"},
             {key: "02", text: "Neuvermietung"}

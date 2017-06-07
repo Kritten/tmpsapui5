@@ -110,6 +110,7 @@ sap.ui.define([
                             ausgangsWaehrung = viewsettings.waehrungen[0];
                         }
 
+                        viewsettings.waehrungSelectedKey = ausgangsWaehrung.Nach;
                         viewsettings.waehrungSelected = ausgangsWaehrung;
                     }
 
@@ -127,8 +128,9 @@ sap.ui.define([
                         if(!ausgangsFlaecheneinheit){
                             ausgangsFlaecheneinheit = viewsettings.flaecheneinheiten[0];
                         }
-
+                        viewsettings.flaecheneinheitSelectedKey = ausgangsFlaecheneinheit.Nach;
                         viewsettings.flaecheneinheitSelected = ausgangsFlaecheneinheit;
+                        
                     }
 
                     _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
@@ -555,7 +557,7 @@ sap.ui.define([
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             _.map(KeToOb, function(object){
-                var neueMiete = Math.round(object.NhMiete * waehrung.Multiplikator * 100) / 100;
+                var neueMiete = object.NhMiete * waehrung.Multiplikator;
                 object.NhMiete = neueMiete;
                 object.Whrung = waehrung.Nach;
             });
@@ -593,8 +595,8 @@ sap.ui.define([
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             _.map(KeToOb, function(object){
-                var neueFlaeche = (Math.round(object.Hnfl * flaecheneinheit.Multiplikator * 100) / 100);
-                var neueMiete = (Math.round(object.NhMiete *  1 / flaecheneinheit.Multiplikator * 100) / 100);
+                var neueFlaeche = object.Hnfl * flaecheneinheit.Multiplikator;
+                var neueMiete = object.NhMiete *  1 / flaecheneinheit.Multiplikator;
                 object.Hnfl = neueFlaeche;
                 object.HnflUnit = flaecheneinheit.Nach;
                 object.NhMiete = neueMiete;
@@ -712,10 +714,21 @@ sap.ui.define([
 
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
-            ke.GueltigkKe.setHours(12);
-            ke.GueltigkKe.setMinutes(0);
-            ke.Mietbeginn.setHours(12);
-            ke.Mietbeginn.setMinutes(0);
+            if( ke.GueltigkKe && Object.prototype.toString.call(ke.GueltigkKe) === "[object Date]" ){
+                ke.GueltigkKe.setHours(12);
+                ke.GueltigkKe.setMinutes(0);
+            }
+            else{
+                ke.GueltigkKe = null;
+            }
+
+            if( ke.Mietbeginn && Object.prototype.toString.call(ke.Mietbeginn) === "[object Date]" ){
+                ke.Mietbeginn.setHours(12);
+                ke.Mietbeginn.setMinutes(0);
+            }
+            else{
+                ke.Mietbeginn = null;
+            }
 
             var payload = {
                 Action: 'CRE',
@@ -793,10 +806,21 @@ sap.ui.define([
 
             var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");
             
-            ke.GueltigkKe.setHours(12);
-            ke.GueltigkKe.setMinutes(0);
-            ke.Mietbeginn.setHours(12);
-            ke.Mietbeginn.setMinutes(0);
+            if( ke.GueltigkKe && Object.prototype.toString.call(ke.GueltigkKe) === "[object Date]" ){
+                ke.GueltigkKe.setHours(12);
+                ke.GueltigkKe.setMinutes(0);
+            }
+            else{
+                ke.GueltigkKe = null;
+            }
+
+            if( ke.Mietbeginn && Object.prototype.toString.call(ke.Mietbeginn) === "[object Date]" ){
+                ke.Mietbeginn.setHours(12);
+                ke.Mietbeginn.setMinutes(0);
+            }
+            else{
+                ke.Mietbeginn = null;
+            }
 
             var payload = {
                 Action: 'UPD',
@@ -1249,7 +1273,9 @@ sap.ui.define([
                         return _.some(vorhandeneMietflaechenangaben, function(vorhandeneMietflaechenangabe){
                             return mietflaechenangabe.MoId === vorhandeneMietflaechenangabe.MoId;
                         });
-                    })
+                    }),
+                    WeCurrency: oData.Currency,
+                    WeUnit: oData.Unit
                 };
 
                 var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
@@ -1284,35 +1310,158 @@ sap.ui.define([
                 if(auswahlValide)
                 {
                     var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-
-                    selectedItems.forEach(function(item){
-                        var mietflaechenangabe = item.getBindingContext().getObject();
-                        mietflaechenangaben.push({
-                            WeId: mietflaechenangabe.WeId,
-                            MoId: mietflaechenangabe.MoId,
-                            Bukrs: mietflaechenangabe.Bukrs,
-                            Bezei: mietflaechenangabe.Bezei,
-                            Nutzart: mietflaechenangabe.Nutzart,
-                            Hnfl: mietflaechenangabe.Hnfl,
-                            HnflAlt: mietflaechenangabe.HnflAlt,
-                            HnflUnit: mietflaechenangabe.HnflUnit,
-                            NhMiete: mietflaechenangabe.NhMiete,
-                            AnMiete: mietflaechenangabe.AnMiete,
-                            GaKosten: mietflaechenangabe.GaKosten,
-                            MaKosten: mietflaechenangabe.MaKosten,
-                            Whrung: mietflaechenangabe.Whrung,
-
-                            MfSplit: false,
-                            KeId: ke.KeId,
-                            MonatJahr: ke.MonatJahr
-                        });
-
-                    });
                     
-                    this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
+                    var zeitMultiplikator = 1;
+                    var zeitspannenId = this.getView().getModel("form").getProperty("/viewsettings/zeitspanneSelected/Id");
+                    if(zeitspannenId === "J") {
+                        zeitMultiplikator = 12;
+                    }
+                    var KeWaehrung = this.getView().getModel("form").getProperty("/viewsettings/waehrungSelectedKey");
+                    var KeUnit = this.getView().getModel("form").getProperty("/viewsettings/flaecheneinheitSelectedKey");
+                    var dialogModel = this._mietflaechenSelektionDialog.getModel();
+                    var WeCurrency = dialogModel.getProperty("/WeCurrency");
+                    var WeUnit = dialogModel.getProperty("/WeUnit");
+                    if( WeCurrency !== KeWaehrung || WeUnit !== KeUnit) {
+                        var _this = this;
 
-                    // Verteilen Button rot hervorheben
-                    this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
+                        var currenyMultiplicator = 1;
+                        var unitMultiplicator    = 1;
+
+                        function resolveFunction() {
+                            selectedItems.forEach(function(item){
+                                var mietflaechenangabe = item.getBindingContext().getObject();
+
+                                var neueMiete = mietflaechenangabe.NhMiete *  currenyMultiplicator * zeitMultiplikator;
+                                var neueFlaeche = mietflaechenangabe.Hnfl;
+                                var neueEinheit = mietflaechenangabe.HnflUnit;
+
+                                if( mietflaechenangabe.HnflUnit !== StaticData.UNIT.STUECK )
+                                {
+                                    neueEinheit = KeUnit;
+                                    neueMiete   = neueMiete * 1 / unitMultiplicator;
+                                    neueFlaeche = neueFlaeche * unitMultiplicator;
+                                }
+
+                                mietflaechenangaben.push({
+                                    WeId: mietflaechenangabe.WeId,
+                                    MoId: mietflaechenangabe.MoId,
+                                    Bukrs: mietflaechenangabe.Bukrs,
+                                    Bezei: mietflaechenangabe.Bezei,
+                                    Nutzart: mietflaechenangabe.Nutzart,
+                                    Hnfl: neueFlaeche,
+                                    HnflAlt: mietflaechenangabe.HnflAlt,
+                                    HnflUnit: neueEinheit,
+                                    NhMiete: neueMiete,
+                                    AnMiete: mietflaechenangabe.AnMiete,
+                                    GaKosten: mietflaechenangabe.GaKosten,
+                                    MaKosten: mietflaechenangabe.MaKosten,
+                                    Whrung: mietflaechenangabe.Whrung,
+
+                                    MfSplit: false,
+                                    KeId: ke.KeId,
+                                    MonatJahr: ke.MonatJahr
+                                });
+                            });
+
+                            _this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
+
+                            // Verteilen Button rot hervorheben
+                            _this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
+                        }
+                        if( WeCurrency !== KeWaehrung && WeUnit !== KeUnit ) { //Beides umrechnen
+                            DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
+                                if(waehrungen.length > 0){
+                                    var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
+                                        return waehrung.Nach === KeWaehrung;
+                                    });
+
+                                    if(ausgangsWaehrung){
+                                        currenyMultiplicator = ausgangsWaehrung.Multiplikator;
+                                    }
+                                }
+                                return DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheitKey);
+                            })
+                            .then(function(flaecheneinheiten){
+                                if(flaecheneinheiten.length > 0){
+                                    var ausgangsFlaecheneinheit = _.find(flaecheneinheiten, function(flaecheneinheit){
+                                        return flaecheneinheit.Nach === KeUnit;
+                                    });
+
+                                    if(ausgangsFlaecheneinheit){
+                                        unitMultiplicator = ausgangsFlaecheneinheit.Multiplikator;
+                                    }
+                                }
+                                resolveFunction();
+                            })
+                            .catch(function(oError){
+                            })
+                            .done();
+                        }
+                        else if( WeCurrency !== KeWaehrung ) { // Waehrung umrechnen
+                            DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
+                                if(waehrungen.length > 0){
+                                    var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
+                                        return waehrung.Nach === KeWaehrung;
+                                    });
+
+                                    if(ausgangsWaehrung){
+                                        currenyMultiplicator = ausgangsWaehrung.Multiplikator;
+                                    }
+                                }
+                                resolveFunction();
+                            })
+                            .catch(function(oError){
+                            })
+                            .done();
+                        }
+                        else { // fläche umrechnen
+                            DataProvider.readFlaecheSetAsync(WeUnit).then(function(flaecheneinheiten){
+                                if(flaecheneinheiten.length > 0){
+                                    var ausgangsFlaecheneinheit = _.find(flaecheneinheiten, function(flaecheneinheit){
+                                        return flaecheneinheit.Nach === KeUnit;
+                                    });
+
+                                    if(ausgangsFlaecheneinheit){
+                                        unitMultiplicator = ausgangsFlaecheneinheit.Multiplikator;
+                                    }
+                                }
+                                resolveFunction();
+                            })
+                            .catch(function(oError){
+                            })
+                            .done();
+                        }
+                    }
+                    else
+                    {
+                        selectedItems.forEach(function(item){
+                            var mietflaechenangabe = item.getBindingContext().getObject();
+                            mietflaechenangaben.push({
+                                WeId: mietflaechenangabe.WeId,
+                                MoId: mietflaechenangabe.MoId,
+                                Bukrs: mietflaechenangabe.Bukrs,
+                                Bezei: mietflaechenangabe.Bezei,
+                                Nutzart: mietflaechenangabe.Nutzart,
+                                Hnfl: mietflaechenangabe.Hnfl,
+                                HnflAlt: mietflaechenangabe.HnflAlt,
+                                HnflUnit: mietflaechenangabe.HnflUnit,
+                                NhMiete: mietflaechenangabe.NhMiete * zeitMultiplikator,
+                                AnMiete: mietflaechenangabe.AnMiete,
+                                GaKosten: mietflaechenangabe.GaKosten,
+                                MaKosten: mietflaechenangabe.MaKosten,
+                                Whrung: mietflaechenangabe.Whrung,
+
+                                MfSplit: false,
+                                KeId: ke.KeId,
+                                MonatJahr: ke.MonatJahr
+                            });
+
+                        });
+                        this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
+
+                        // Verteilen Button rot hervorheben
+                        this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
+                    }
                 }
                 else
                 {
@@ -1417,13 +1566,13 @@ sap.ui.define([
                 {
                     if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
                     {
-                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.Hnfl)).toString();
-                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.Hnfl)).toString();
+                        mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.grundausbaukosten / parseFloat(mietflaechenangabe.Hnfl)).toString();
+                        mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.Hnfl) / sumNutzflaechen * verteilung.mietausbaukosten  / parseFloat(mietflaechenangabe.Hnfl)).toString();
                     }
                     else
                     {
-                        mietflaechenangabe.GaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.grundausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.HnflAlt)).toString();
-                        mietflaechenangabe.MaKosten = ((Math.round(parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.mietausbaukosten * 100)) / 100 / parseFloat(mietflaechenangabe.HnflAlt)).toString();
+                        mietflaechenangabe.GaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.grundausbaukosten  / parseFloat(mietflaechenangabe.HnflAlt)).toString();
+                        mietflaechenangabe.MaKosten = (parseFloat(mietflaechenangabe.HnflAlt) / sumNutzflaechen * verteilung.mietausbaukosten   / parseFloat(mietflaechenangabe.HnflAlt)).toString();
                     }
                 }
             });
