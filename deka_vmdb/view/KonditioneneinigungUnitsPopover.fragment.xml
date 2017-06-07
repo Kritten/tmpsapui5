@@ -14,7 +14,7 @@
             class="sapUiSmallMarginBottom"
             width="100%">
             <items>
-                <Label text="Zeitspanne:" />
+                <Label text="{i18n>ZEITSPANNE}:" />
                 <Select selectedKey="{form>/konditioneneinigung/MonatJahr}" items="{form>/viewsettings/zeitspannen}" change="onPopoverZeitspanneSelect">
                     <core:Item key="{form>Id}" text="{form>Text}" />
                 </Select>           
@@ -27,7 +27,7 @@
             class="sapUiSmallMarginBottom"
             width="100%">
             <items>
-                <Label text="Währung:" />
+                <Label text="{i18n>WAEHRUNG}:" />
                 <Select selectedKey="{form>/konditioneneinigung/Currency}" items="{form>/viewsettings/waehrungen}" change="onPopoverWaehrungSelect">
                     <core:Item key="{form>Nach}" text="{form>Nach}" />
                 </Select>
@@ -39,7 +39,7 @@
             alignItems="Start"
             width="100%">
             <items>
-                <Label text="Flächeneinheit:" />
+                <Label text="{i18n>FLAECHENEINHEIT}:" />
                 <Select selectedKey="{form>/konditioneneinigung/Unit}" items="{form>/viewsettings/flaecheneinheiten}" change="onPopoverFlaecheneinheitSelect">
                     <core:Item key="{form>Nach}" text="{form>Nach}" />
                 </Select>

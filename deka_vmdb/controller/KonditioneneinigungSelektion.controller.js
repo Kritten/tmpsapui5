@@ -10,7 +10,8 @@ sap.ui.define([
 	"ag/bpc/Deka/util/NavigationPayloadUtil",
 	"ag/bpc/Deka/util/DataProvider",
 	"ag/bpc/Deka/util/ErrorMessageUtil",
-	"ag/bpc/Deka/util/StaticData"], function(Controller, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData) {
+	"ag/bpc/Deka/util/StaticData",
+	"ag/bpc/Deka/util/TranslationUtil"], function(Controller, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil) {
 
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungSelektion", {
@@ -41,7 +42,7 @@ sap.ui.define([
 				var jsonData = {
 					data: konditioneneinigungen,
 					facetfilterValues: {
-						Favorit: _.map(favoritValues, function(Favorit){ return {key: Favorit, text: Favorit ? 'Ja' : 'Nein'}; }),
+						Favorit: _.map(favoritValues, function(Favorit){ return {key: Favorit, text: Favorit ? TranslationUtil.translate("JA") : TranslationUtil.translate("NEIN")}; }),
 						Bukrs: _.map(buchungskreisValues, function(Bukrs){ return {key: Bukrs}; }),
 						WeId: _.map(wirtschaftseinheitValues, function(WeId){ return {key: WeId}; }),
 						Anmerkung: _.map(anmerkungValues, function(Anmerkung){ return {key: Anmerkung}; }),

@@ -58,55 +58,55 @@
 				
 				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" type="Simple" >
 					<lists>
-						<FacetFilterList title="Favorit" items="{path: 'vermSel>/facetfilterValues/Favorit', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERM_SEL_COL_FAVORIT}" items="{path: 'vermSel>/facetfilterValues/Favorit', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{vermSel>text}" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Buchungskreis" items="{path: 'vermSel>/facetfilterValues/Bukrs', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERM_SEL_COL_BUCHUNGSKREIS}" items="{path: 'vermSel>/facetfilterValues/Bukrs', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{vermSel>key}" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Wirtschaftseinheit" items="{path: 'vermSel>/facetfilterValues/WeId', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERM_SEL_COL_WIRTSCHAFTSEINHEIT}" items="{path: 'vermSel>/facetfilterValues/WeId', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{vermSel>key}" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Anmerkung" items="{path: 'vermSel>/facetfilterValues/Anmerkung', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERM_SEL_COL_ANMERKUNG}" items="{path: 'vermSel>/facetfilterValues/Anmerkung', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/anmerkung}[${vermSel>key}] }" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Status" items="{path: 'vermSel>/facetfilterValues/Status', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERM_SEL_COL_STATUS}" items="{path: 'vermSel>/facetfilterValues/Status', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/status}[${vermSel>key}] }" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Dienstleister" items="{path: 'vermSel>/facetfilterValues/Dienstleister', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>DIENSTLEISTER}" items="{path: 'vermSel>/facetfilterValues/Dienstleister', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{vermSel>key}" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Vermietungsart" items="{path: 'vermSel>/facetfilterValues/Vermietungsart', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERMIETUNGSART}" items="{path: 'vermSel>/facetfilterValues/Vermietungsart', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/vermietungsart}[${vermSel>key}] }" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Kategorie" items="{path: 'vermSel>/facetfilterValues/Kategorie', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>KATEGORIE}" items="{path: 'vermSel>/facetfilterValues/Kategorie', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/kategorie}[${vermSel>key}] }" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Ersteller" items="{path: 'vermSel>/facetfilterValues/Ersteller', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERM_SEL_COL_ERSTELLER}" items="{path: 'vermSel>/facetfilterValues/Ersteller', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{vermSel>key}" />
 							</items>

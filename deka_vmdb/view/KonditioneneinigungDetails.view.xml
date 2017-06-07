@@ -336,10 +336,10 @@
                 
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Bezeichnung" />
+                        <Text text="{i18n>BEZEICHNUNG}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
-                        <Text text="Konditioneneinigung" />
+                        <Text text="{i18n>KONDITIONENEINIGUNG}" />
                     </Column>
                 </columns>
                 

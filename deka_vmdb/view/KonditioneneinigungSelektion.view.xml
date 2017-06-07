@@ -5,7 +5,7 @@
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	controllerName="ag.bpc.Deka.controller.KonditioneneinigungSelektion">
 	
-	<Page title="Konditioneneinigung (Selektion)" showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
+	<Page title="{i18n>KOND_SEL_TITLE}" showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
 		<content>
 
 			<Panel id="idKeAnlagePanel" visible="false">
@@ -58,31 +58,31 @@
 
 				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" type="Simple" >
 					<lists>
-						<FacetFilterList title="Favorit" items="{path: 'kondSel>/facetfilterValues/Favorit', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>KOND_SEL_COL_FAVORIT}" items="{path: 'kondSel>/facetfilterValues/Favorit', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{kondSel>key}" text="{kondSel>text}" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Buchungskreis" items="{path: 'kondSel>/facetfilterValues/Bukrs', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>KOND_SEL_COL_BUCHUNGSKREIS}" items="{path: 'kondSel>/facetfilterValues/Bukrs', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Wirtschaftseinheit" items="{path: 'kondSel>/facetfilterValues/WeId', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>KOND_SEL_COL_WIRTSCHAFTSEINHEIT}" items="{path: 'kondSel>/facetfilterValues/WeId', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Anmerkung" items="{path: 'kondSel>/facetfilterValues/Anmerkung', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>KOND_SEL_COL_ANMERKUNG}" items="{path: 'kondSel>/facetfilterValues/Anmerkung', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{kondSel>key}" text="{= ${text>/anmerkung}[${kondSel>key}] }" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="Ersteller" items="{path: 'kondSel>/facetfilterValues/Ersteller', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>KOND_SEL_COL_ERSTELLER}" items="{path: 'kondSel>/facetfilterValues/Ersteller', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
 							</items>

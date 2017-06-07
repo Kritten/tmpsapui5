@@ -5,7 +5,7 @@
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	controllerName="ag.bpc.Deka.controller.Sperren" >
 		
-	<Page title="Sperren" class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack">
+	<Page title="{i18n>SPERREN_TITLE}" class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack">
 	
 		<content>
 	
