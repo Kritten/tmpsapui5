@@ -1,8 +1,8 @@
 /*
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:45:16 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:45:16 
+ * @Last Modified by: Christian Hoff (best practice consulting AG)
+ * @Last Modified time: 2017-06-13 09:29:30
  */
 sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 "ag/bpc/Deka/util/DataProvider"], function (PrinterUtil, DataProvider) {
@@ -10,12 +10,16 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 	"use strict";
 	return {
 		
-        druckvorlageVermietungsaktivitaet: "/deka_vmdb/util/DruckvorlageVermietungsaktivitaet.html",
+        getBasePath: function(){
+            return jQuery.sap.getModulePath("ag.bpc.Deka");
+        },
 
-        druckvorlageKonditioneneinigung: "/deka_vmdb/util/DruckvorlageKonditioneneinigung.html",
+        druckvorlageVermietungsaktivitaet: "/util/DruckvorlageVermietungsaktivitaet.html",
+
+        druckvorlageKonditioneneinigung: "/util/DruckvorlageKonditioneneinigung.html",
 
         generatePrintableHtmlForVermietungsaktivitaet: function(vermietungsaktivitaet, kostenarten, ertragsarten){
-            this.ladeDruckVorlagen();
+            var _this = this;
 
             jQuery.ajaxSetup({async:false});
             var res;
@@ -28,7 +32,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
             var vermietungsarten = textModel.oData.vermietungsart;
             var stati = textModel.oData.status;
 
-            jQuery.get(this.druckvorlageVermietungsaktivitaet, function(result){   
+            jQuery.get(_this.getBasePath() + _this.druckvorlageVermietungsaktivitaet, function(result){   
                 var bezeichnung = vermietungsaktivitaet.VaToWe.Plz + "/" + vermietungsaktivitaet.VaToWe.Ort + "/" + vermietungsaktivitaet.VaToWe.StrHnum;
                 result = result.replace("@@VaBezeichnung@@", bezeichnung);
 
@@ -163,7 +167,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
         },
         
         generatePrintableHtmlForKonditioneneinigung: function(konditioneneinigung, kostenarten, ertragsarten){
-            this.ladeDruckVorlagen();
+            var _this = this;
 
             jQuery.ajaxSetup({async:false});
             var res;
@@ -173,7 +177,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
             var anmerkungen = textModel.oData.anmerkung;
             var nutzarten = textModel.oData.nutzungsart;
             
-            jQuery.get(this.druckvorlageKonditioneneinigung, function(result){
+            jQuery.get(_this.getBasePath() + _this.druckvorlageKonditioneneinigung, function(result){
                 var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
                 result = result.replace("@@KeBezeichnung@@", bezeichnung);
 
@@ -286,13 +290,6 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
             printWindow.focus();
             printWindow.print();
             printWindow.close();                    
-        },
-
-        ladeDruckVorlagen: function(dateiPfad){
-            var utilPath = $.sap.getModulePath("ag.bpc.Deka", "/util");
-
-            this.druckvorlageKonditioneneinigung = utilPath + "/DruckvorlageKonditioneneinigung.html";
-            this.druckvorlageVermietungsaktivitaet = utilPath + "/DruckvorlageVermietungsaktivitaet.html";
         }
 	};
 });
