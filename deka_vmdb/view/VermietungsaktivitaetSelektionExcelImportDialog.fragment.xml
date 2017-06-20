@@ -10,7 +10,7 @@
             
             <FlexBox direction="Column" >
                 <items>
-                    <Label text="Datei auswählen" width="100%" />
+                    <Label text="{i18n>DATEI_AUSWAEHLEN}" width="100%" />
                     <u:FileUploader id="idFileUploader" change="onExcelImportDialogFileUploadChange" icon="sap-icon://upload" width="100%" />
                 </items>
                 <layoutData>
