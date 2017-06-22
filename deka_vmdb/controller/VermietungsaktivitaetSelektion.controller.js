@@ -2,7 +2,7 @@
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:44:08 
  * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-04-06 12:59:36
+ * @Last Modified time: 2017-06-22 18:00:30
  */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller", 
@@ -379,40 +379,40 @@ sap.ui.define([
 						
 						switch(list.getTitle())
 						{
-							case "Favorit":
+							case TranslationUtil.translate("VERM_SEL_COL_FAVORIT"):
 								var boolValue = (item.getKey() === "true") ? true : false;
 								itemFilters.push( new Filter("Favorit", sap.ui.model.FilterOperator.EQ, boolValue) );
 							break;
 							
-							case "Buchungskreis":
+							case TranslationUtil.translate("VERM_SEL_COL_BUCHUNGSKREIS"):
 								itemFilters.push( new Filter("Bukrs", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 							
-							case "Wirtschaftseinheit":
+							case TranslationUtil.translate("VERM_SEL_COL_WIRTSCHAFTSEINHEIT"):
 								itemFilters.push( new Filter("WeId", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 
-							case "Anmerkung":
+							case TranslationUtil.translate("VERM_SEL_COL_ANMERKUNG"):
 								itemFilters.push( new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 
-							case "Status":
+							case TranslationUtil.translate("VERM_SEL_COL_STATUS"):
 								itemFilters.push( new Filter("Status", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 
-							case "Dienstleister":
+							case TranslationUtil.translate("VERM_SEL_COL_DIENSTLEISTER"):
 								itemFilters.push( new Filter("Dienstleister", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 						
-							case "Vermietungsart":
+							case TranslationUtil.translate("VERM_SEL_COL_VERMIETUNGSART"):
 								itemFilters.push( new Filter("Vermietungsart", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 
-							case "Kategorie":
+							case TranslationUtil.translate("VERM_SEL_COL_KATEGORIE"):
 								itemFilters.push( new Filter("Kategorie", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 
-							case "Ersteller":
+							case TranslationUtil.translate("VERM_SEL_COL_ERSTELLER"):
 								itemFilters.push( new Filter("Ersteller", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 

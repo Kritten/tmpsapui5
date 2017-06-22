@@ -1,8 +1,8 @@
 /*
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:39:45 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:39:45 
+ * @Last Modified by: Christian Hoff (best practice consulting AG)
+ * @Last Modified time: 2017-06-22 17:53:30
  */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller", 
@@ -256,27 +256,27 @@ sap.ui.define([
 						
 						switch(list.getTitle())
 						{
-							case "Favorit":
+							case TranslationUtil.translate("KOND_SEL_COL_FAVORIT"):
 								var boolValue = (item.getKey() === "true") ? true : false;
 								itemFilters.push( new Filter("Favorit", sap.ui.model.FilterOperator.EQ, boolValue) );
 							break;
 							
-							case "Buchungskreis":
+							case TranslationUtil.translate("KOND_SEL_COL_BUCHUNGSKREIS"):
 								itemFilters.push( new Filter("Bukrs", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 							
-							case "Wirtschaftseinheit":
+							case TranslationUtil.translate("KOND_SEL_COL_WIRTSCHAFTSEINHEIT"):
 								itemFilters.push( new Filter("WeId", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 							
-							case "Anmerkung":
+							case TranslationUtil.translate("KOND_SEL_COL_ANMERKUNG"):
 								itemFilters.push( new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 					
-							case "Ersteller":
+							case TranslationUtil.translate("KOND_SEL_COL_ERSTELLER"):
 								itemFilters.push( new Filter("Ersteller", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
-																
+
 							default:
 							break;
 						}

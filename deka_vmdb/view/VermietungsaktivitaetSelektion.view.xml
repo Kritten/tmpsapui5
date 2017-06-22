@@ -88,19 +88,19 @@
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="{i18n>DIENSTLEISTER}" items="{path: 'vermSel>/facetfilterValues/Dienstleister', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERM_SEL_COL_DIENSTLEISTER}" items="{path: 'vermSel>/facetfilterValues/Dienstleister', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{vermSel>key}" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="{i18n>VERMIETUNGSART}" items="{path: 'vermSel>/facetfilterValues/Vermietungsart', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERM_SEL_COL_VERMIETUNGSART}" items="{path: 'vermSel>/facetfilterValues/Vermietungsart', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/vermietungsart}[${vermSel>key}] }" />
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="{i18n>KATEGORIE}" items="{path: 'vermSel>/facetfilterValues/Kategorie', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERM_SEL_COL_KATEGORIE}" items="{path: 'vermSel>/facetfilterValues/Kategorie', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/kategorie}[${vermSel>key}] }" />
 							</items>
