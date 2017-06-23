@@ -34,31 +34,44 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
             jQuery.get(_this.getBasePath() + _this.druckvorlageVermietungsaktivitaet, function(result){   
                 var bezeichnung = vermietungsaktivitaet.VaToWe.Plz + "/" + vermietungsaktivitaet.VaToWe.Ort + "/" + vermietungsaktivitaet.VaToWe.StrHnum;
-                result = result.replace("@@VaBezeichnung@@", bezeichnung);
+                if(bezeichnung) {
+                    result = result.replace("@@VaBezeichnung@@", bezeichnung);
+                }
 
                 var mietbeginn = vermietungsaktivitaet.Mietbeginn;
-                result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
+                if(mietbeginn) {
+                    result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
+                }
 
                 var mzErsterMonat = vermietungsaktivitaet.MzErsterMonat;
-                result = result.replace("@@MzErsterMonat@@", mzErsterMonat.toLocaleDateString());
-
+                if(mzErsterMonat) {
+                    result = result.replace("@@MzErsterMonat@@", mzErsterMonat.toLocaleDateString());
+                }
+    
                 var akErsterMonat = vermietungsaktivitaet.AkErsterMonat;
-                result = result.replace("@@AkErsterMonat@@", akErsterMonat.toLocaleDateString());
-
+                if(akErsterMonat){
+                    result = result.replace("@@AkErsterMonat@@", akErsterMonat.toLocaleDateString());
+                }
+                
                 var bdgstp = vermietungsaktivitaet.Budgetstp;
-                result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
-
+                if(bdgstp){
+                    result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
+                }
+                
                 var plr = vermietungsaktivitaet.PLRelevant;
-                result = result.replace("@@PLRelevant@@", plr ? "Ja" : "Nein");
+                var plrString = plr ? "Ja" : "Nein";
+                result = result.replace("@@PLRelevant@@", plrString);                
 
                 var druckDatum = new Date();
-                result = result.replace("@@Druckdatum@@", druckDatum.toLocaleDateString());
+                if(druckDatum) {
+                    result = result.replace("@@Druckdatum@@", druckDatum.toLocaleDateString());
+                }
                 
                 var tmp = vermietungsaktivitaet.Anmerkung;
-                var where = _.findWhere(anmerkungen, {"Id": tmp});
+                var where = anmerkungen[tmp];
                 var text;
                 if(where){
-                    text = where.Txtlg;
+                    text = where;
                     result = result.replace("@@AnmerkungText@@", text);
                 }
 
@@ -97,22 +110,58 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 jQuery.sap.require("sap.ui.core.format.NumberFormat");
                 var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
                     maxFractionDigits: 2,
+                    minFractionDigits: 2,
                     groupingEnabled: true,
                     groupingSeparator: ".",
                     decimalSeparator: ","
                 });
+
+                if(vermietungsaktivitaet.MMiete && vermietungsaktivitaet.MkMonate){
+                    var mMiete = parseFloat(vermietungsaktivitaet.MMiete);
+                    var mkMonate = parseFloat(vermietungsaktivitaet.MkMonate);
+
+                    var mkMAbs = mMiete * mkMonate;
+                    result = result.replace("@@MkMAbs@@", oNumberFormat.format(mkMAbs));
+
+                    if(vermietungsaktivitaet.MkAbsolut){
+                        var mkGesamt = mkMAbs + parseFloat(vermietungsaktivitaet.MkAbsolut);
+                        result = result.replace("@@MkGesamt@@", oNumberFormat.format(mkGesamt));
+                    }
+                }
+
+                if(vermietungsaktivitaet.MMiete && vermietungsaktivitaet.BkMonate){
+                    var mMiete = parseFloat(vermietungsaktivitaet.MMiete);
+                    var bkMonate = parseFloat(vermietungsaktivitaet.BkMonate);
+
+                    var bkMAbs = mMiete * bkMonate;
+                    result = result.replace("@@BkMAbs@@", oNumberFormat.format(bkMAbs));
+
+                    if(vermietungsaktivitaet.BkAbsolut){
+                        var bkGesamt = bkMAbs + parseFloat(vermietungsaktivitaet.BkAbsolut);
+                        result = result.replace("@@BkGesamt@@", oNumberFormat.format(bkGesamt));
+                    }
+                }
+
                 var gesamtDifferenz = parseFloat(vermietungsaktivitaet.GesErtrag) - parseFloat(vermietungsaktivitaet.GesKosten);
-                result = result.replace("@@GesDiff@@", oNumberFormat.format(gesamtDifferenz));
+                if(gesamtDifferenz){
+                    result = result.replace("@@GesDiff@@", oNumberFormat.format(gesamtDifferenz));
+                }
 
                 // Restliche Keys ersetzen
                 Object.keys(vermietungsaktivitaet).forEach(function(key, index) {
                     var value = vermietungsaktivitaet[key];
 
-                    // Nur floats formattieren
-                    if (value && !isNaN(value) && value.toString().indexOf('.') != -1){
-                        result = result.replace("@@"+key+"@@", "<span style=\"text-align: right\">" + oNumberFormat.format(value) + "</span>");
-                    }else{
-                        result = result.replace("@@"+key+"@@", value);
+                    if (value instanceof Date) {
+                         result = result.replace("@@"+key+"@@", value.toLocaleDateString());
+                    } else {
+                        if(value) {
+                            // Nur floats formattieren
+                            if (!isNaN(value) && value.toString().indexOf('.') != -1){
+                                result = result.replace("@@"+key+"@@", "<span style=\"text-align: right\">" + oNumberFormat.format(value) + "</span>");
+                            }else{
+                                result = result.replace("@@"+key+"@@", value);
+                            }
+                        }
                     }
                 });
 
@@ -178,23 +227,37 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
             var nutzarten = textModel.oData.nutzungsart;
             
             jQuery.get(_this.getBasePath() + _this.druckvorlageKonditioneneinigung, function(result){
+                var keId = konditioneneinigung.KeId;
+                if(keId) {
+                    var cont = result.indexOf("@@KeId@@");
+                    result = result.replace("@@KeId@@", keId);
+                }
+
                 var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
-                result = result.replace("@@KeBezeichnung@@", bezeichnung);
+                if(bezeichnung){
+                    result = result.replace("@@KeBezeichnung@@", bezeichnung);
+                }
 
                 var mietbeginn = konditioneneinigung.Mietbeginn;
-                result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
-
-                var bdgstp = konditioneneinigung.Budgetstp;
-                result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
-
-                var druckDatum = new Date();
-                result = result.replace("@@Druckdatum@@", druckDatum.toLocaleDateString());
+                if(mietbeginn){
+                    result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
+                }
                 
+                var bdgstp = konditioneneinigung.Budgetstp;
+                if(bdgstp){
+                    result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
+                }
+                
+                var druckDatum = new Date();
+                if(druckDatum){
+                    result = result.replace("@@Druckdatum@@", druckDatum.toLocaleDateString());
+                }
+
                 var tmp = konditioneneinigung.Anmerkung;
-                var where = _.findWhere(anmerkungen, {"Id": tmp});
+                var where = anmerkungen[tmp];
                 var text;
                 if(where){
-                    text = where.Txtlg;
+                    text = where;
                     result = result.replace("@@AnmerkungText@@", text);
                 }
 
@@ -215,21 +278,57 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 jQuery.sap.require("sap.ui.core.format.NumberFormat");
                 var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
                     maxFractionDigits: 2,
+                    minFractionDigits: 2,
                     groupingEnabled: true,
                     groupingSeparator: ".",
                     decimalSeparator: ","
                 });
-                var gesamtDifferenz = parseFloat(konditioneneinigung.GesErtrag) - parseFloat(konditioneneinigung.GesKosten);
-                result = result.replace("@@GesDiff@@", oNumberFormat.format(gesamtDifferenz));
+
+                if(konditioneneinigung.MMiete && konditioneneinigung.MkMonate){
+                    var mMiete = parseFloat(konditioneneinigung.MMiete);
+                    var mkMonate = parseFloat(konditioneneinigung.MkMonate);
+
+                    var mkMonateGesamt = mMiete * mkMonate;
+                    result = result.replace("@@MkMonateGesamt@@", oNumberFormat.format(mkMonateGesamt));
+
+                    if(konditioneneinigung.MkAbsolut){
+                        var mkGesamt = mkMonateGesamt + parseFloat(konditioneneinigung.MkAbsolut);
+                        result = result.replace("@@MkGesamt@@", oNumberFormat.format(mkGesamt));
+                    }
+                }
+
+                if(konditioneneinigung.MMiete && konditioneneinigung.BkMonatsmieten){
+                    var mMiete = parseFloat(konditioneneinigung.MMiete);
+                    var bkMonate = parseFloat(konditioneneinigung.BkMonatsmieten);
+
+                    var bkMonateGesamt = mMiete * bkMonate;
+                    result = result.replace("@@BkMonateGesamt@@", oNumberFormat.format(bkMonateGesamt));
+
+                    if(konditioneneinigung.BkAbsolut){
+                        var bkGesamt = bkMonateGesamt + parseFloat(konditioneneinigung.BkAbsolut);
+                        result = result.replace("@@BkGesamt@@", oNumberFormat.format(bkGesamt));
+                    }
+                }
+
+                var gesamtDifferenz = parseFloat(konditioneneinigung.GesErtrag) - parseFloat(konditioneneinigung.GesKosten);                
+                if(gesamtDifferenz){
+                    result = result.replace("@@GesDiff@@", oNumberFormat.format(gesamtDifferenz));
+                }
 
                 // Restliche Keys ersetzen
                 Object.keys(konditioneneinigung).forEach(function(key, index) {
                     var value = konditioneneinigung[key];
 
-                    if (value && !isNaN(value) && value.toString().indexOf('.') != -1){
-                        result = result.replace("@@"+key+"@@", oNumberFormat.format(value));
-                    }else{
-                        result = result.replace("@@"+key+"@@", value);
+                    if(value instanceof Date) {
+                        result = result.replace("@@"+key+"@@", value.toLocaleDateString());
+                    } else {
+                        if(value) {
+                            if (!isNaN(value) && value.toString().indexOf('.') != -1){
+                                result = result.replace("@@"+key+"@@", oNumberFormat.format(value));
+                            } else {
+                                result = result.replace("@@"+key+"@@", value);
+                            }
+                        }
                     }
                 });
 
