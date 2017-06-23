@@ -2,7 +2,7 @@
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:45:16 
  * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-06-13 09:29:30
+ * @Last Modified time: 2017-06-22 10:59:02
  */
 sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 "ag/bpc/Deka/util/DataProvider"], function (PrinterUtil, DataProvider) {
@@ -21,7 +21,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
         generatePrintableHtmlForVermietungsaktivitaet: function(vermietungsaktivitaet, kostenarten, ertragsarten){
             var _this = this;
 
-            jQuery.ajaxSetup({async:false});
+            jQuery.ajaxSetup({
+                async:false,
+                cache: false
+            });
+
             var res;
             var textModel = sap.ui.getCore().getModel("text");
             console.log(sap.ui.getCore().getModel("text"));
@@ -209,8 +213,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 result = result.replace(/@@\w*@@/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
 
                 res = result;  
-            });      
-            jQuery.ajaxSetup({async:true});
+            });
+            
+            jQuery.ajaxSetup({
+                async:true,
+                cache: true
+            });
 
             return res;           
         },
@@ -218,7 +226,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
         generatePrintableHtmlForKonditioneneinigung: function(konditioneneinigung, kostenarten, ertragsarten){
             var _this = this;
 
-            jQuery.ajaxSetup({async:false});
+            jQuery.ajaxSetup({
+                async:false,
+                cache: false
+            });
+
             var res;
             var textModel = sap.ui.getCore().getModel("text");
             console.log(sap.ui.getCore().getModel("text"));
@@ -373,8 +385,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 result = result.replace(/@@\w*@@/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
 
                 res = result;  
-            });      
-            jQuery.ajaxSetup({async:true});
+            });
+            
+            jQuery.ajaxSetup({
+                async:true,
+                cache: true
+            });
 
             return res;         
         },

@@ -2,7 +2,7 @@
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:45:36 
  * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-05-04 21:16:40
+ * @Last Modified time: 2017-06-22 18:05:52
  */
 sap.ui.define([
 	"sap/ui/core/UIComponent", 
