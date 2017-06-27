@@ -1189,7 +1189,7 @@ sap.ui.define([
             {                
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(_this);
                 
-                MessageBox.confirm("{i18n>ABBRUCH_HINWEIS}", {
+                MessageBox.confirm(TranslationUtil.translate("ABBRUCH_HINWEIS"), {
                     title: TranslationUtil.translate("HINWEIS"),
                     actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                     onClose: function(action){
