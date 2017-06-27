@@ -1336,7 +1336,7 @@ sap.ui.define([
                 
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 
-                MessageBox.confirm("Wollen Sie den Vorgang wirklich abbrechen ?", {
+                MessageBox.confirm("{i18n>ABBRUCH_HINWEIS}", {
                     title:"{i18n>HINWEIS}",
                     actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                     onClose: function(action){
