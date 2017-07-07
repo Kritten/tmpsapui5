@@ -970,6 +970,42 @@ sap.ui.define([
             dialog.open();
         },
 
+        showReeditConfirmationDialog: function(onProceed, onAbort){
+            var _this = this;
+
+            var dialog = new sap.m.Dialog({
+				title: TranslationUtil.translate("HINWEIS"),
+				type: sap.m.DialogType.Message,
+                state: sap.ui.core.ValueState.Warning,
+                content: new sap.m.Text({
+                    text: TranslationUtil.translate("REEDIT_HINWEIS")
+                }),
+                beginButton: new sap.m.Button({
+                    text: TranslationUtil.translate("JA"),
+                    press: function () {
+                        dialog.close();
+                        if(typeof onProceed === 'function'){
+                            onProceed();
+                        }
+                    }
+                }),
+				endButton: new sap.m.Button({
+                    text: TranslationUtil.translate("NEIN"),
+					press: function () {
+						dialog.close();
+                        if(typeof onAbort === 'function'){
+                            onAbort();
+                        }
+					}
+				}),
+                afterClose: function() {
+                    dialog.destroy();
+                }
+            });
+
+            dialog.open();
+        },
+
         checkNotNegative: function(view) {
             if(this.checkIsNumber(view)){
                 var value = view.getValue();
@@ -1822,36 +1858,38 @@ sap.ui.define([
 
         onReeditButtonPress: function(oEvent){
             var _this = this;
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+            this.showReeditConfirmationDialog(function(){
+                var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung"); 
 
-            DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-                KeId: ke.KeId, 
-                Bukrs: ke.Bukrs, 
-                Anmerkung: StaticData.ANMERKUNG.KE.REEDIT,
-                Bemerkung: ke.Bemerkung,
-                Confirmation: ke.Confirmation
-            })
-            .then(function(){
-                MessageBox.information(TranslationUtil.translate("KE_REEDIT_SUCCESS"), {
-                    title: TranslationUtil.translate("HINWEIS")
-                });
-
-                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
-            })
-            .catch(function(oError){
-                var error = ErrorMessageUtil.parseErrorMessage(oError);
-
-                if(error.type === 'WARNING'){
-                    _this.showConfirmationDialog(error, function(){
-                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
-                        _this.onReeditButtonPress();
+                DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
+                    KeId: ke.KeId, 
+                    Bukrs: ke.Bukrs, 
+                    Anmerkung: StaticData.ANMERKUNG.KE.REEDIT,
+                    Bemerkung: ke.Bemerkung,
+                    Confirmation: ke.Confirmation
+                })
+                .then(function(){
+                    MessageBox.information(TranslationUtil.translate("KE_REEDIT_SUCCESS"), {
+                        title: TranslationUtil.translate("HINWEIS")
                     });
-                }
-                else {
-                    ErrorMessageUtil.show(error);
-                }
-            })
-            .done();
+
+                    _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
+                })
+                .catch(function(oError){
+                    var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                    if(error.type === 'WARNING'){
+                        _this.showConfirmationDialog(error, function(){
+                            _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                            _this.onReeditButtonPress();
+                        });
+                    }
+                    else {
+                        ErrorMessageUtil.show(error);
+                    }
+                })
+                .done();
+            });
         },
 
         onReaktivierenButtonPress: function(oEvent){
