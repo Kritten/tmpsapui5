@@ -62,7 +62,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 
                 var plr = vermietungsaktivitaet.PLRelevant;
                 var plrString = plr ? "Ja" : "Nein";
-                result = result.replace("@@PLRelevant@@", plrString);                
+                result = result.replace("@@PLRelevant@@", plrString);  
+
+                var stsl = vermietungsaktivitaet.Steuerschlg;
+                var stslString = stsl ? "Ja" : "Nein";
+                result = result.replace("@@Steuerschlg@@", stslString);              
 
                 var druckDatum = new Date();
                 if(druckDatum) {
