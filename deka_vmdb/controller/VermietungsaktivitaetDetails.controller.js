@@ -670,11 +670,13 @@ sap.ui.define([
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             _.map(VaToOb, function(object){
-                var neueFlaeche = object.Hnfl * flaecheneinheit.Multiplikator;
-                var neueMiete = object.NhMiete *  1 / flaecheneinheit.Multiplikator;
-                object.Hnfl = neueFlaeche;
-                object.HnflUnit = flaecheneinheit.Nach;
-                object.NhMiete = neueMiete;
+                if(object.HnflUnit !== StaticData.UNIT.STUECK){
+                    var neueFlaeche = object.Hnfl * flaecheneinheit.Multiplikator;
+                    var neueMiete = object.NhMiete *  1 / flaecheneinheit.Multiplikator;
+                    object.Hnfl = neueFlaeche;
+                    object.HnflUnit = flaecheneinheit.Nach;
+                    object.NhMiete = neueMiete;
+                }
             });
 
             var ausgangsFlaecheneinheitKey = flaecheneinheit.Nach;

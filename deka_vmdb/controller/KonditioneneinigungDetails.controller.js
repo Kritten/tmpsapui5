@@ -595,11 +595,13 @@ sap.ui.define([
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             _.map(KeToOb, function(object){
-                var neueFlaeche = object.Hnfl * flaecheneinheit.Multiplikator;
-                var neueMiete = object.NhMiete *  1 / flaecheneinheit.Multiplikator;
-                object.Hnfl = neueFlaeche;
-                object.HnflUnit = flaecheneinheit.Nach;
-                object.NhMiete = neueMiete;
+                if(object.HnflUnit !== StaticData.UNIT.STUECK){
+                    var neueFlaeche = object.Hnfl * flaecheneinheit.Multiplikator;
+                    var neueMiete = object.NhMiete *  1 / flaecheneinheit.Multiplikator;
+                    object.Hnfl = neueFlaeche;
+                    object.HnflUnit = flaecheneinheit.Nach;
+                    object.NhMiete = neueMiete;
+                }
             });
 
             var ausgangsFlaecheneinheitKey = flaecheneinheit.Nach;
