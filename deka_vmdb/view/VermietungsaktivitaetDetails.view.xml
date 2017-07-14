@@ -346,6 +346,13 @@
 							<l:GridData span="L1 M1 S12" />
 						</layoutData>
                     </CheckBox>
+
+                    <Label text="{i18n>STEUERSCHAEDLING}" />
+                    <CheckBox id="idSteuerschlg" selected="{form>/vermietungsaktivitaet/Steuerschlg}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+							<l:GridData span="L1 M1 S12" />
+						</layoutData>
+                    </CheckBox>
                     
                 </f:content>
 

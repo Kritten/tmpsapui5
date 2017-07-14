@@ -909,6 +909,7 @@ sap.ui.define([
                 Poenale: va.Poenale ? va.Poenale.toString() : null,
                 IdxWeitergabe: va.IdxWeitergabe ? va.IdxWeitergabe.toString() : null,
                 PLRelevant: va.PLRelevant ? true : false,
+                Steuerschlg: va.Steuerschlg ? true : false,
 
                 Status: va.Status,
                 Anmerkung: va.Anmerkung,
@@ -1022,6 +1023,7 @@ sap.ui.define([
                 Poenale: va.Poenale ? va.Poenale.toString() : null,
                 IdxWeitergabe: va.IdxWeitergabe ? va.IdxWeitergabe.toString() : null,
                 PLRelevant: va.PLRelevant,
+                Steuerschlg: va.Steuerschlg,
 
                 Status: va.Status,
                 Anmerkung: va.Anmerkung,
@@ -1974,6 +1976,7 @@ sap.ui.define([
                 Poenale: "",
                 IdxWeitergabe: "",
                 PLRelevant: false,
+                Steuerschlg: false,
 
                 Status: StaticData.STATUS.VA.AUSBAUPLANUNG,
                 Anmerkung: StaticData.ANMERKUNG.VA.ABSTIMMUG_DER_MIETERAUSBAUPLANUNG,

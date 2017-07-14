@@ -4,7 +4,7 @@
     xmlns:l="sap.ui.layout">
 
     <!-- contentMinWidth since 1.36 -->
-    <Popover title="Anzeigeeinstellungen" placement="Bottom" class="sapUiContentPadding">
+    <Popover title="{i18n>ANZEIGEEINSTELLUNGEN}" placement="Bottom" class="sapUiContentPadding">
 
     <content>
 
