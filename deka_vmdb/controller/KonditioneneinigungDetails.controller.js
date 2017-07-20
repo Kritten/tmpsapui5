@@ -1639,6 +1639,44 @@ sap.ui.define([
             PrinterUtil.printKonditioneneinigung(konditioneneinigung, kostenarten, ertragsarten);
         },
 
+        onBeschlussantragButtonPress: function(oEvent){
+            var konditioneneinigung = this.getView().getModel("form").getProperty("/konditioneneinigung");
+            var kostenarten = this.getView().getModel("form").getProperty("/kostenarten");
+            var ertragsarten = this.getView().getModel("form").getProperty("/ertragsarten");
+            
+            PrinterUtil.printBeschlussantrag(konditioneneinigung);
+        },
+
+        onUebernehmenButtonPress: function(oEvent){
+            var _this = this;
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+            
+            DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
+                KeId: ke.KeId, 
+                Bukrs: ke.Bukrs, 
+                Anmerkung: "15",
+                Bemerkung: ke.Bemerkung,
+                Confirmation: ke.Confirmation
+            })
+            .then(function(){      
+                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);                
+            })
+            .catch(function(oError){
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === 'WARNING'){
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
+                        _this.onZurGenehmigungVorlegenButtonPress();
+                    });
+                }
+                else {
+                    ErrorMessageUtil.show(error);
+                }
+            })
+            .done();
+        },
+
         onFavoritButtonPress: function(oEvent){
             var _this = this;
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");

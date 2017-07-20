@@ -18,6 +18,8 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
         druckvorlageKonditioneneinigung: "/util/DruckvorlageKonditioneneinigung.html",
 
+        druckvorlageBeschlussantrag: "/util/DruckvorlageBeschlussantrag.html",
+
         generatePrintableHtmlForVermietungsaktivitaet: function(vermietungsaktivitaet, kostenarten, ertragsarten){
             var _this = this;
 
@@ -398,6 +400,178 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
             return res;         
         },
+
+        generatePrintableHtmlForBeschlussantrag: function(konditioneneinigung, kostenarten, ertragsarten){
+            var _this = this;
+
+            jQuery.ajaxSetup({
+                async:false,
+                cache: false
+            });
+
+            var res;
+            var textModel = sap.ui.getCore().getModel("text");
+            console.log(sap.ui.getCore().getModel("text"));
+
+            var anmerkungen = textModel.oData.anmerkung;
+            var nutzarten = textModel.oData.nutzungsart;
+            
+            jQuery.get(_this.getBasePath() + _this.druckvorlageBeschlussantrag, function(result){
+                var keId = konditioneneinigung.KeId;
+                if(keId) {
+                    var cont = result.indexOf("@@KeId@@");
+                    result = result.replace("@@KeId@@", keId);
+                }
+
+                var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
+                if(bezeichnung){
+                    result = result.replace("@@KeBezeichnung@@", bezeichnung);
+                }
+
+                var mietbeginn = konditioneneinigung.Mietbeginn;
+                if(mietbeginn){
+                    result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
+                }
+                
+                var bdgstp = konditioneneinigung.Budgetstp;
+                result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");                
+                
+                var druckDatum = new Date();
+                if(druckDatum){
+                    result = result.replace("@@Druckdatum@@", druckDatum.toLocaleDateString());
+                }
+
+                var tmp = konditioneneinigung.Anmerkung;
+                var where = anmerkungen[tmp];
+                var text;
+                if(where){
+                    text = where;
+                    result = result.replace("@@AnmerkungText@@", text);
+                }
+
+                tmp = konditioneneinigung.ArtErtrag;
+                where = _.findWhere(ertragsarten, {"ErId": tmp});
+                if(where){
+                    text = where.Txtmd;
+                    result = result.replace("@@ArtE@@", text);
+                }
+
+                tmp = konditioneneinigung.ArtKosten;
+                where = _.findWhere(kostenarten, {"KoId": tmp});
+                if(where){
+                    text = where.Txtmd;
+                    result = result.replace("@@ArtK@@", text);
+                }
+
+                jQuery.sap.require("sap.ui.core.format.NumberFormat");
+                var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
+                    maxFractionDigits: 2,
+                    minFractionDigits: 2,
+                    groupingEnabled: true,
+                    groupingSeparator: ".",
+                    decimalSeparator: ","
+                });
+
+                var mMiete;
+                if(konditioneneinigung.MMiete && konditioneneinigung.MkMonate){
+                    mMiete = parseFloat(konditioneneinigung.MMiete);
+                    var mkMonate = parseFloat(konditioneneinigung.MkMonate);
+
+                    var mkMonateGesamt = mMiete * mkMonate;
+                    result = result.replace("@@MkMonateGesamt@@", oNumberFormat.format(mkMonateGesamt));
+
+                    if(konditioneneinigung.MkAbsolut){
+                        var mkGesamt = mkMonateGesamt + parseFloat(konditioneneinigung.MkAbsolut);
+                        result = result.replace("@@MkGesamt@@", oNumberFormat.format(mkGesamt));
+                    }
+                }
+
+                if(konditioneneinigung.MMiete && konditioneneinigung.BkMonatsmieten){
+                    mMiete = parseFloat(konditioneneinigung.MMiete);
+                    var bkMonate = parseFloat(konditioneneinigung.BkMonatsmieten);
+
+                    var bkMonateGesamt = mMiete * bkMonate;
+                    result = result.replace("@@BkMonateGesamt@@", oNumberFormat.format(bkMonateGesamt));
+
+                    if(konditioneneinigung.BkAbsolut){
+                        var bkGesamt = bkMonateGesamt + parseFloat(konditioneneinigung.BkAbsolut);
+                        result = result.replace("@@BkGesamt@@", oNumberFormat.format(bkGesamt));
+                    }
+                }
+
+                var gesamtDifferenz = parseFloat(konditioneneinigung.GesErtrag) - parseFloat(konditioneneinigung.GesKosten);                
+                if(gesamtDifferenz){
+                    result = result.replace("@@GesDiff@@", oNumberFormat.format(gesamtDifferenz));
+                }
+
+                // Restliche Keys ersetzen
+                Object.keys(konditioneneinigung).forEach(function(key, index) {
+                    var value = konditioneneinigung[key];
+
+                    if(value instanceof Date) {
+                        result = result.replace("@@"+key+"@@", value.toLocaleDateString());
+                    } else {
+                        if(value) {
+                            if (!isNaN(value) && value.toString().indexOf('.') != -1){
+                                result = result.replace("@@"+key+"@@", oNumberFormat.format(value));
+                            } else {
+                                result = result.replace("@@"+key+"@@", value);
+                            }
+                        }
+                    }
+                });
+
+                var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
+
+                mietflaechenangabeHtml += "<thead><tr>";
+                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-size:16\">Lfd Nr <br /> Split</span></td>";
+                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-size:16\">MO<br /> Bezeichnung</span></td>";
+                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-size:16\">Nutzungsart</span></td>";
+                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-size:16\">Hauptnutzfläche</span> <br /> <span style=\"font-weight:bold\">HNFZF alternativ</span> <br /> FE</td>";
+                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-size:16\">Marktübliche Miete</span> <br /> <span style=\"font-weight:bold\">Angebotsmiete</span> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-size:16\">Grundausbaukosten</span> <br /> <span style=\"font-weight:bold\">Mieterausbaukosten</span> <br /> WHG/FE</td>";
+                mietflaechenangabeHtml += "</tr></thead>";
+
+                konditioneneinigung.KeToOb.forEach(function(mietflaechenangabe, i){
+                    var index = i + 1;
+                    tmp = mietflaechenangabe.Nutzart;
+                    var nutzart = nutzarten[tmp];
+                    nutzart = nutzart ? nutzart : mietflaechenangabe.Nutzart;
+                    
+                    var hnfl = mietflaechenangabe.Hnfl ? oNumberFormat.format(mietflaechenangabe.Hnfl) : mietflaechenangabe.Hnfl;
+                    var hnflalt = mietflaechenangabe.HnflAlt ? oNumberFormat.format(mietflaechenangabe.HnflAlt) : mietflaechenangabe.HnflAlt;
+                    var nhMiete = mietflaechenangabe.NhMiete ? oNumberFormat.format(mietflaechenangabe.NhMiete) : mietflaechenangabe.NhMiete;
+                    var anMiete = mietflaechenangabe.AnMiete ? oNumberFormat.format(mietflaechenangabe.AnMiete) : mietflaechenangabe.AnMiete;
+                    var gaKosten = mietflaechenangabe.GaKosten ? oNumberFormat.format(mietflaechenangabe.GaKosten) : mietflaechenangabe.GaKosten;
+                    var maKosten = mietflaechenangabe.MaKosten ? oNumberFormat.format(mietflaechenangabe.MaKosten) : mietflaechenangabe.MaKosten;
+
+                    var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
+                    mietflaechenangabeHtml += "<tr>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center\">" + index + "<br />" + mfsplit + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\">" + nutzart + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\">" + hnfl + "<br />" + hnflalt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\">" + nhMiete + "<br />" + anMiete + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\">" + gaKosten + "<br />" + maKosten + "</td>";
+                    mietflaechenangabeHtml += "</tr>";
+                });
+                mietflaechenangabeHtml += "</table>";
+
+                result = result.replace("@@Mietflaechenangaben@@", mietflaechenangabeHtml);
+
+                // Restliche Platzhalter entfernen
+                result = result.replace(/@@\w*@@/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
+
+                res = result;  
+            });
+            
+            jQuery.ajaxSetup({
+                async:true,
+                cache: true
+            });
+
+            return res; 
+        },
         
         printKonditioneneinigung: function(konditioneneinigung, kostenarten, ertragsarten){
             console.log(konditioneneinigung, "keToPrint");  
@@ -409,6 +583,16 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
             printWindow.focus();
             printWindow.print();
             printWindow.close();                    
+        },
+
+        printBeschlussantrag: function(konditioneneinigung, kostenarten, ertragsarten){
+            var printableHtml = this.generatePrintableHtmlForBeschlussantrag(konditioneneinigung, kostenarten, ertragsarten);
+            var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=1,status=0');
+            printWindow.document.write(printableHtml);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();    
         }
 	};
 });

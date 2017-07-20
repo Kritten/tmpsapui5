@@ -31,6 +31,7 @@
                                                 (${form>Stufe} === 'AL') ? ${i18n>AL} :
                                                 (${form>Stufe} === 'GS') ? ${i18n>GS} :
                                                 (${form>Stufe} === 'BL') ? ${i18n>BL} :
+                                                (${form>Stufe} === 'GF') ? ${i18n>GF} : 
                                                 ${form>Stufe}}" />
                             </Toolbar>
                         </headerToolbar>

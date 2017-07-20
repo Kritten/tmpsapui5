@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Konditioneneinigung @@KeId@@</title>
+<style type="text/css">
+.greyBG {
+	background-color: #888888;
+}
+.greyBGPad {
+	background-color: #888888;
+	padding: 5px;
+	font-size:small;
+}
+
+.auto-style2 {
+	font-size: small;
+}
+.auto-style3 {
+	font-size: small;
+	background-color: #888888;
+}
+table {
+	border-collapse:separate;
+	border-spacing: 5;
+}
+table thead {
+	border-bottom: 1px solid #000;
+}
+.cellSpacedTable {
+	border-collapse:separate;
+	border-spacing: 20;
+	width: 100%;
+}
+</style>
+</head>
+
+<body>
+<h2>Beschlussantrag <span class="greyBG">@@KeId@@</span></h2>
+<table style="width: 100%">
+	<tr>
+		<td style="width: 60%; height: 40px;">
+		<table style="width: 100%">
+			<tr>
+				<td class="auto-style2" style="width: 68px"><strong>Bukr</strong></td>
+				<td class="auto-style2" style="width: 65px"><strong>WE</strong></td>
+				<td class="auto-style2"><strong>Bezeichnung</strong></td>
+			</tr>
+			<tr>
+				<td style="width: 68px; height: 25px;"><span class="auto-style3">@@Bukrs@@</span></td>
+				<td class="auto-style2" style="width: 65px; height: 25px;"><span class="auto-style3">@@WeId@@</span></td>
+				<td class="auto-style2" style="height: 25px"><span class="auto-style3">@@KeBezeichnung@@</span></td>
+			</tr>
+		</table>
+		</td>
+		<td style="height: 40px">
+		<table style="width: 100%">
+			<tr>
+				<td style="width: 230px" class="auto-style2">Währungsangaben in: </td>
+				<td class="auto-style3">@@Currency@@</td>
+			</tr>
+			<tr>
+				<td style="width: 211px" class="auto-style2">Flächenangaben in: </td>
+				<td class="auto-style3">@@Unit@@</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+
+
+<table style="width: 100%">
+	<tr>
+		<td style="width: 50%">
+		<table style="width: 100%">
+			<tr>
+				<td class="auto-style2" style="width: 262px">Gültigkeit der 
+				Konditioneneinigung:</td>
+				<td class="auto-style3">@@GueltigkKe@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px">Mietbeginn:</td>
+				<td class="auto-style3">@@Mietbeginn@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px">Mietfreie Zeiten in 
+				Monaten:</td>
+				<td class="auto-style3">@@MzMonate@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px">&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px">Maklerkosten:
+				<span class="auto-style3">@@MkMonate@@</span> Monatsmieten <span style="text-align:right">=</span> </td>
+				<td class="auto-style3">@@MkMonateGesamt@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px">Maklerkosten 
+				Absolutwert <span style="text-align:right">=</span></td>
+				<td class="auto-style3">@@MkAbsolut@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px; text-align: right">Gesamt: = &nbsp;</td>
+				<td class="auto-style3">@@MkGesamt@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px">Sonstige 
+				Ertragsart:</td>
+				<td class="auto-style3">@@ArtE@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px">Sonstige Erträge: </td>
+				<td class="auto-style3">@@SonstE@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px">&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px">Kosten aus 
+				Steuerschaden: </td>
+				<td><span class="auto-style3">@@Steuerschaden@@</span></td>
+			</tr>			
+		</table>
+		</td>
+		<td style="height: 90%">
+		<table style="width: 100%">
+			<tr>
+				<td class="auto-style2" style="width: 293px">Budgetstop</td>
+				<td class="auto-style3">@@Budgetstp@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 293px">Laufzeit bis 1st 
+				break option in Monaten:</td>
+				<td class="auto-style3">@@LzFirstbreak@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 293px">Einmalertrag:</td>
+				<td class="auto-style3">@@Einmalertrag@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 293px">&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 293px">Beratungskosten:
+				<span class="auto-style3">@@BkMonatsmieten@@</span> Monatsmieten <span style="text-align:right">=</span></td>
+				<td class="auto-style3">@@BkMonateGesamt@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 293px">Beratungskosten 
+				Absolutwert <span style="text-align:right">= </span></td>
+				<td class="auto-style3">@@BkAbsolut@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 262px; text-align: right">Gesamt: =&nbsp; </td>
+				<td class="auto-style3">@@BkGesamt@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 293px">Sonstige 
+				Kostenart:</td>
+				<td class="auto-style3">@@ArtK@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 293px">Sonstige Kosten: </td>
+				<td class="auto-style3">@@SonstK@@</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 293px">&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="auto-style2" style="width: 293px">Ertrag aus 
+				MwSt-Kompensation: </td>
+				<td class="auto-style3">@@MwstkErtrag@@</td>
+			</tr>		
+		</table>
+		</td>
+	</tr>
+</table>
+<p>@@Mietflaechenangaben@@</p>
+<table style="width: 100%">
+	<tr>
+		<td style="width: 104px" class="auto-style2">Gesamtmiete:</td>
+		<td class="auto-style3" style="width: 121px">@@GesErtrag@@</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td style="width: 104px" class="auto-style2">Gesamtkosten:</td>
+		<td class="auto-style3" style="width: 121px">@@GesKosten@@</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td style="width: 104px" class="auto-style2">Differenz:</td>
+		<td class="auto-style3" style="width: 121px">@@GesDiff@@</td>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+
+<table style="width: 100%">
+	<tr style="height: 35px">
+		<td style="vertical-align: bottom">Bemerkung</td>
+	</tr>
+	<tr style="height: 60px">
+		<td class="greyBG">@@Bemerkung@@</td>
+	</tr>
+</table>
+
+
+<table style="width: 100%">
+	<tr style="height: 35px">
+		<td style="vertical-align:bottom; width: 92px;" class="auto-style2">Anmerkung:</td>
+		<td style="vertical-align:bottom"><span class="auto-style3">@@AnmerkungText@@</span></td>
+	</tr>
+</table>
+<p><span class="auto-style2">Druckdatum:&nbsp; </span> <span class="auto-style3">@@Druckdatum@@</span></p>
+
+</body>
+
+</html>

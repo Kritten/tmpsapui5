@@ -405,6 +405,16 @@
                         press="onDruckenButtonPress"
                         visible="{= (${form>/modus} === 'show') }" />
 
+                <Button text="{i18n>BESCHLUSSANTRAG}"
+                        icon="sap-icon://print"
+                        press="onBeschlussantragButtonPress"
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGfBa}}" />
+
+                <Button text="{i18n>UEBERNEHMEN}"
+                        icon="sap-icon://citizen-connect"
+                        press="onUebernehmenButtonPress"
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGf}}" />
+
                 <!--
                 <Button text="{i18n>GUELTIGKEIT_VERLAENGERN}" 
                         icon="sap-icon://fob-watch" 
