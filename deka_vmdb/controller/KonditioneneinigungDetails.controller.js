@@ -1656,7 +1656,14 @@ sap.ui.define([
                 Bukrs: ke.Bukrs, 
                 Anmerkung: "15",
                 Bemerkung: ke.Bemerkung,
-                Confirmation: ke.Confirmation
+                Confirmation: ke.Confirmation,
+
+                KeToOb: _.map(ke.KeToOb, function(object){
+                    delete object.__metadata;
+                    object.HnflAlt = (object.HnflAlt.toString() === "0.00")? null : object.HnflAlt.toString();
+
+                    return object;
+                }),
             })
             .then(function(){      
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);                
