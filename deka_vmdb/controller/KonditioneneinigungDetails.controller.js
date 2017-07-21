@@ -1,8 +1,8 @@
 /*
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:39:31 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:39:31 
+ * @Last Modified by: Christian Hoff (best practice consulting AG)
+ * @Last Modified time: 2017-07-21 12:40:22
  */
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
@@ -1660,10 +1660,6 @@ sap.ui.define([
 
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
-                    if(object.HnflAlt) {
-                        object.HnflAlt = parseFloat(object.HnflAlt) === 0 ? null : object.HnflAlt;
-                    }
-
                     return object;
                 }),
             })
