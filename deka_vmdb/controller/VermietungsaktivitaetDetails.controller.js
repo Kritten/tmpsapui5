@@ -2,7 +2,7 @@
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:43:47 
  * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-04-10 21:56:24
+ * @Last Modified time: 2017-07-21 10:50:17
  */
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
@@ -1616,6 +1616,12 @@ sap.ui.define([
                 
                 konditioneneinigungen = _.map(konditioneneinigungen, function(ke){
                     ke.KeToOb = ke.KeToOb.results;
+
+                    ke.KeToOb = _.map(ke.KeToOb, function(objekt){
+                        objekt.HnflAlt = (objekt.HnflAlt === '0.000') ? '' : objekt.HnflAlt;
+                        return objekt;
+                    });
+
                     return ke;
                 });
 
@@ -1643,13 +1649,6 @@ sap.ui.define([
                     konditioneneinigung.KeToOb.forEach(function(objekt){
                         if(jQuery.inArray(objekt.MoId, vorhandeneMoIds) === -1){
                             mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden = false;
-                        }
-                    });
-
-                    // HnflAlt === 0,00 filtern
-                    konditioneneinigung.KeToOb.forEach(function(objekt){
-                        if(objekt.HnflAlt){
-                            objekt.HnflAlt = parseFloat(objekt.HnflAlt) === 0 ? null : objekt.HnflAlt;
                         }
                     });
 

@@ -1,8 +1,8 @@
 /*
  * @Author: Christian Hoff (best practice consulting AG) 
  * @Date: 2017-04-05 21:39:31 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:39:31 
+ * @Last Modified by: Christian Hoff (best practice consulting AG)
+ * @Last Modified time: 2017-07-21 12:40:22
  */
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
@@ -1656,7 +1656,16 @@ sap.ui.define([
                 Bukrs: ke.Bukrs, 
                 Anmerkung: "15",
                 Bemerkung: ke.Bemerkung,
+<<<<<<< HEAD
                 Confirmation: ke.Confirmation
+=======
+                Confirmation: ke.Confirmation,
+
+                KeToOb: _.map(ke.KeToOb, function(object){
+                    delete object.__metadata;
+                    return object;
+                }),
+>>>>>>> 21fc3601161f504f6f73821ce6dec85da7f38b7f
             })
             .then(function(){      
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);                
