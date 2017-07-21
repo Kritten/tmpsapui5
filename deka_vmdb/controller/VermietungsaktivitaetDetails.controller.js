@@ -1646,6 +1646,13 @@ sap.ui.define([
                         }
                     });
 
+                    // HnflAlt === 0,00 filtern
+                    konditioneneinigung.KeToOb.forEach(function(objekt){
+                        if(objekt.HnflAlt){
+                            objekt.HnflAlt = parseFloat(objekt.HnflAlt) === 0 ? null : objekt.HnflAlt;
+                        }
+                    });
+
                     // Konditioneneinigung nur dann anzeigen, wenn sie Mietflächen enthält, die noch nicht in der Liste sind
                     if(!mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden){
                         jsonData.konditioneneinigungen.push( konditioneneinigung );

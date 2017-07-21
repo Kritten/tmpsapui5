@@ -1660,7 +1660,9 @@ sap.ui.define([
 
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
-                    object.HnflAlt = (object.HnflAlt.toString() === "0.00")? null : object.HnflAlt.toString();
+                    if(object.HnflAlt) {
+                        object.HnflAlt = parseFloat(object.HnflAlt) === 0 ? null : object.HnflAlt;
+                    }
 
                     return object;
                 }),
