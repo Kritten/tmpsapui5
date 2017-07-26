@@ -486,7 +486,7 @@
                         <cells>
                             <Text text="{i18n>ERTRAEGE_GESAMT}" />
                             <Text text="{
-                                    path: 'form>/vermietungsaktivitaet/LaufzeitKe',
+                                    path: 'form>/vermietungsaktivitaet/LzFirstbreak',
                                     type: 'sap.ui.model.type.Integer',
                                     formatOptions: {
                                         maxIntegerDigits: 5
@@ -501,14 +501,8 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>EFFEKTIVMIETE}" />
-                            <Text text="{
-                                    path: 'form>/vermietungsaktivitaet/LaufzeitKe',
-                                    type: 'sap.ui.model.type.Integer',
-                                    formatOptions: {
-                                        maxIntegerDigits: 5
-                                    }
-                            }" />
-                            <Text text="{ path: 'form>/vermietungsaktivitaet/Effektivmiete', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="1" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/Effektivmiete', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                             <Text text=" " />
                             <Text text=" " />
                         </cells>

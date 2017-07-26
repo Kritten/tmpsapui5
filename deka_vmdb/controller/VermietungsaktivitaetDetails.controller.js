@@ -15,7 +15,7 @@ var myFormatter = {
 
             var res = oNumberFormat.format(oNumber);
             if(unit){
-                res = res + unit;
+                res = res + " " + unit;
             }
             
             return res;
