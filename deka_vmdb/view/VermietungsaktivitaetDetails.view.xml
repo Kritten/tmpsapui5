@@ -23,7 +23,7 @@
                                     <ObjectAttribute title="{i18n>KATEGORIE}" text="{= ${text>/kategorie}[${form>/vermietungsaktivitaet/Kategorie}] }" />
                                     <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/vermietungsaktivitaet/Bukrs}" />
                                     <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/vermietungsaktivitaet/WeId}" />
-                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/vermietungsaktivitaet/VaToWe/Plz} {form>/vermietungsaktivitaet/VaToWe/Ort} {form>/vermietungsaktivitaet/VaToWe/StrHnum}" />
+                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/vermietungsaktivitaet/VaToWe/Plz} {form>/vermietungsaktivitaet/VaToWe/Ort}, {form>/vermietungsaktivitaet/VaToWe/StrHnum}, &quot;{form>/vermietungsaktivitaet/VaToWe/Bez}&quot;" />
                                 </attributes>
                             </ObjectHeader>
                         </items>
@@ -436,14 +436,21 @@
                                         maxIntegerDigits: 5
                                     }
                             }" />
-                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtragPa', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesErtrag} * 100 - ${form>/vermietungsaktivitaet/GesKeErtrag} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }">
+                            <Text text="{ parts:
+                                                [
+                                                {path:'form>/vermietungsaktivitaet/GesErtragPa'},
+                                                {path:'form>/vermietungsaktivitaet/GesKeErtrag'},
+                                                {path:'form>/viewsettings/waehrungSelected/Nach'}
+                                                ],
+                                          formatter: 'myFormatter.formatDifferenz'}" />
+                            <!--<Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesErtragPa} * 100 - ${form>/vermietungsaktivitaet/GesKeErtrag} * 100) / 100)} {form>/viewsettings/waehrungSelected/Nach}">
                                 <customData>
-                                    <core:CustomData key="numberstate" value="positive" writeToDom="{= (${form>/vermietungsaktivitaet/GesErtrag} - ${form>/vermietungsaktivitaet/GesKeErtrag}) &gt;= 0 }" />
-                                    <core:CustomData key="numberstate" value="negative" writeToDom="{= (${form>/vermietungsaktivitaet/GesErtrag} - ${form>/vermietungsaktivitaet/GesKeErtrag}) &lt; 0 }" />
+                                    <core:CustomData key="numberstate" value="positive" writeToDom="{= (${form>/vermietungsaktivitaet/GesErtragPa} - ${form>/vermietungsaktivitaet/GesKeErtrag}) &gt;= 0 }" />
+                                    <core:CustomData key="numberstate" value="negative" writeToDom="{= (${form>/vermietungsaktivitaet/GesErtragPa} - ${form>/vermietungsaktivitaet/GesKeErtrag}) &lt; 0 }" />
                                 </customData>
-                            </Text>
+                            </Text>-->
                         </cells>
                     </ColumnListItem>
                     
@@ -459,17 +466,98 @@
                             }" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesKosten} * 100 - ${form>/vermietungsaktivitaet/GesKeKosten} * 100) / 100) + ' ' + ${form>/viewsettings/waehrungSelected/Nach} }">
+                            <Text text="{ parts:
+                                                [
+                                                {path:'form>/vermietungsaktivitaet/GesKosten'},
+                                                {path:'form>/vermietungsaktivitaet/GesKeKosten'},
+                                                {path:'form>/viewsettings/waehrungSelected/Nach'}
+                                                ],
+                                          formatter: 'myFormatter.formatDifferenz'}" />
+                            <!--<Text text="{= (Math.round(${form>/vermietungsaktivitaet/GesKosten} * 100 - ${form>/vermietungsaktivitaet/GesKeKosten} * 100) / 100)} {form>/viewsettings/waehrungSelected/Nach}">
                                 <customData>
                                     <core:CustomData key="numberstate" value="negative" writeToDom="{= (${form>/vermietungsaktivitaet/GesKosten} - ${form>/vermietungsaktivitaet/GesKeKosten}) &gt; 0 }" />
                                     <core:CustomData key="numberstate" value="positive" writeToDom="{= (${form>/vermietungsaktivitaet/GesKosten} - ${form>/vermietungsaktivitaet/GesKeKosten}) &lt;= 0 }" />
                                 </customData>
-                            </Text>
+                            </Text>-->
+                        </cells>
+                    </ColumnListItem>
+
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{i18n>ERTRAEGE_GESAMT}" />
+                            <Text text="{
+                                    path: 'form>/vermietungsaktivitaet/LaufzeitKe',
+                                    type: 'sap.ui.model.type.Integer',
+                                    formatOptions: {
+                                        maxIntegerDigits: 5
+                                    }
+                            }" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text=" " />
+                            <Text text=" " />
+                        </cells>
+                    </ColumnListItem>
+
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{i18n>EFFEKTIVMIETE}" />
+                            <Text text="{
+                                    path: 'form>/vermietungsaktivitaet/LaufzeitKe',
+                                    type: 'sap.ui.model.type.Integer',
+                                    formatOptions: {
+                                        maxIntegerDigits: 5
+                                    }
+                            }" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/Effektivmiete', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text=" " />
+                            <Text text=" " />
                         </cells>
                     </ColumnListItem>
                 </items>
             </Table>
 
+            <Table>
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="{i18n>BERECHNETE_KENNZAHLEN}" level="H2"/>
+                    </Toolbar>
+                </headerToolbar>
+                
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>BEZEICHNUNG}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>WERT}" />
+                    </Column>    
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text=" " />
+                    </Column>  
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text=" " />
+                    </Column>                  
+                </columns>
+                
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{i18n>INCENTIVEQUOTE}" />                            
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/Incentivequote', type: 'model.CustomNumberType'} %" />
+                            <Text text= " " />
+                            <Text text= " " />
+                        </cells>
+                    </ColumnListItem>
+                    
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{i18n>VERHGEMM}" />                            
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/VerhGeMm', type: 'model.CustomNumberType'} %" />
+                            <Text text= " " />
+                            <Text text= " " />
+                        </cells>
+                    </ColumnListItem>              
+                </items>
+            </Table>
 		</content>
         
         <footer>

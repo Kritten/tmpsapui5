@@ -27,7 +27,7 @@
                                 <attributes>
                                     <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/konditioneneinigung/Bukrs}" />
                                     <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/konditioneneinigung/WeId}" />
-                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/konditioneneinigung/KeToWe/Plz} {form>/konditioneneinigung/KeToWe/Ort} {form>/konditioneneinigung/KeToWe/StrHnum}" />
+                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/konditioneneinigung/KeToWe/Plz} {form>/konditioneneinigung/KeToWe/Ort}, {form>/konditioneneinigung/KeToWe/StrHnum}, &quot;{form>konditioneneinigung/KeToWe/Bez}&quot;" />
                                 </attributes>
                             </ObjectHeader>
                         </items>

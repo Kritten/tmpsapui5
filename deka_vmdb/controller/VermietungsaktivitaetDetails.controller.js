@@ -4,6 +4,23 @@
  * @Last Modified by: Christian Hoff (best practice consulting AG)
  * @Last Modified time: 2017-07-21 10:50:17
  */
+
+var myFormatter = {
+        formatDifferenz: function(a,b,unit) {
+            var oNumber = Math.round((a * 100 - b * 100) / 100);
+            var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
+                style: 'Standard',
+                decimals: 2
+            });
+
+            var res = oNumberFormat.format(oNumber);
+            if(unit){
+                res = res + unit;
+            }
+            
+            return res;
+        },
+}
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
     "sap/m/MessageBox", 

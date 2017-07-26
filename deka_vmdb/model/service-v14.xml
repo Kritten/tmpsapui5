@@ -57,8 +57,6 @@
                 </Key>
                 <Property Name="Action" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Aktionsfeld (CRE/UPD)" sap:unicode="false" MaxLength="3" Type="Edm.String"/>
                 <Property Name="BtnGp" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Genehmigungsprozess" sap:unicode="false" Type="Edm.Boolean"/>
-                <Property Name="btn_gf_ba" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Button Beschlussantrag" sap:unicode="false" Type="Edm.Boolean" />
-                <Property Name="btn_gf" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:label="Button Übernehmen" sap:unicode="false" Type="Edm.Boolean"/>
                 <Property Name="BtnVorlegen" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Zur Genehmigung vorlegen" sap:unicode="false" Type="Edm.Boolean"/>
                 <Property Name="BtnLoeschen" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Löschen" sap:unicode="false" Type="Edm.Boolean"/>
                 <Property Name="Budgetstp" sap:filterable="false" sap:sortable="false" sap:updatable="false" sap:creatable="false" sap:label="Budgetstopp" sap:unicode="false" Type="Edm.Boolean"/>

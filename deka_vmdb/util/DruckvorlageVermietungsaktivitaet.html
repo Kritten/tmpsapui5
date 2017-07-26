@@ -37,6 +37,11 @@ table thead {
 	background-color: #FFFFFF;
 }
 
+.auto-style5 {
+	font-size: small;
+	text-align: right;
+}
+
 </style>
 </head>
 <body>
@@ -191,17 +196,44 @@ table thead {
 <table style="width: 100%">
 	<tr>
 		<td style="width: 104px; height: 12px;" class="auto-style2">Gesamtmiete:</td>
-		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@GesErtrag@@</span></td>
-		<td style="height: 12px"></td>
+		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@GesErtragPa@@</span></td>
+		<td style="height: 12px">
+		<table style="width: 100%">
+			<tr>
+		<td style="height: 12px;" class="auto-style5">Incentive-Quote:</td>
+		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@Incentivequote@@</span></td>
+			</tr>
+		</table>
+		</td>
 	</tr>
 	<tr>
 		<td style="width: 104px; " class="auto-style2">Gesamtkosten:</td>
 		<td style="width: 116px;" class="auto-style3"><span class="auto-style3">@@GesKosten@@</span></td>
-		<td></td>
+		<td>
+		<table style="width: 100%">
+			<tr>
+		<td style="height: 12px;" class="auto-style5">Verhältnis Gesamte Erträge 
+		zu Marktüblicher Miete:</td>
+		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@VerhGeMm@@</span></td>
+			</tr>
+		</table>
+		</td>
 	</tr>
 	<tr>
 		<td style="width: 104px; height: 23px;" class="auto-style2">Differenz:</td>
 		<td class="auto-style3" style="width: 116px; height: 23px"><span class="auto-style3">@@GesDiff@@</span></td>
+		<td style="height: 23px"></td>
+	</tr>
+	<tr>
+		<td style="width: 104px; height: 23px;" class="auto-style2">Gesamte 
+		Erträge:</td>
+		<td class="auto-style3" style="width: 116px; height: 23px"><span class="auto-style3">@@GesErtrag@@</span></td>
+		<td style="height: 23px"></td>
+	</tr>
+	<tr>
+		<td style="width: 104px; height: 23px;" class="auto-style2">
+		Effektivmiete:</td>
+		<td class="auto-style3" style="width: 116px; height: 23px"><span class="auto-style3">@@Effektivmiete@@</span></td>
 		<td style="height: 23px"></td>
 	</tr>
 </table>

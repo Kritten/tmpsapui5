@@ -37,6 +37,15 @@ sap.ui.define([
             }else{                
                 return true;
             }
+        },
+
+        formatDifferenz: function(a,b,unit) {
+            var oNumber = Math.round((a * 100 - b * 100) / 100);
+            var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
+                style: 'Standard',
+                decimals: 2
+            });
+            return oNumberFormat.format(oNumber) + "test";
         }
     });
 });

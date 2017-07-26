@@ -30,7 +30,7 @@
 			<cells>
 				<Text text="{form>Bukrs}" />
 				<Text text="{form>WeId}" />
-				<Text text="{form>Plz} {form>Ort} {form>StrHnum}" />
+				<Text text="{form>Plz} {form>Ort}, {form>StrHnum}, &quot;{form>Bez}&quot;" />
 			</cells>
 		</ColumnListItem>
 
