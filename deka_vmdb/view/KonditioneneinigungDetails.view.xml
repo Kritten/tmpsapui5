@@ -27,7 +27,7 @@
                                 <attributes>
                                     <ObjectAttribute title="{i18n>BUCHUNGSKREIS}" text="{form>/konditioneneinigung/Bukrs}" />
                                     <ObjectAttribute title="{i18n>WIRTSCHAFTSEINHEIT}" text="{form>/konditioneneinigung/WeId}" />
-                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{form>/konditioneneinigung/KeToWe/Plz} {form>/konditioneneinigung/KeToWe/Ort}, {form>/konditioneneinigung/KeToWe/StrHnum}, &quot;{form>konditioneneinigung/KeToWe/Bez}&quot;" />
+                                    <ObjectAttribute title="{i18n>BEZEICHNUNG}" text="{= ${form>/konditioneneinigung/KeToWe/Plz} + ' ' + ${form>/konditioneneinigung/KeToWe/Ort} + ', ' + ${form>/konditioneneinigung/KeToWe/StrHnum} + (${form>/konditioneneinigung/KeToWe/Bez} ? ', &quot;' + ${form>/konditioneneinigung/KeToWe/Bez} + '&quot;' : '')}" />
                                 </attributes>
                             </ObjectHeader>
                         </items>
@@ -338,25 +338,99 @@
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>BEZEICHNUNG}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Left">
                         <Text text="{i18n>KONDITIONENEINIGUNG}" />
-                    </Column>
+                    </Column>    
+                    <Column minScreenWidth="Tablet" demandPopin="false" hAlign="Left">
+                        <Text text=" " />
+                    </Column>          
+                    <Column minScreenWidth="Tablet" demandPopin="false" hAlign="Left">
+                        <Text text=" " />
+                    </Column>     
+                    <Column minScreenWidth="Tablet" demandPopin="false" hAlign="Left">
+                        <Text text=" " />
+                    </Column>           
                 </columns>
                 
                 <items>
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>MIETE_GESAMT}" />
-                            <Text text="{ path: 'form>/konditioneneinigung/GesErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/konditioneneinigung/GesErtragPa', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text=" " />
+                            <Text text=" " />
+                            <Text text=" " />
                         </cells>
                     </ColumnListItem>
                     
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>KOSTEN_GESAMT}" />
-                            <Text text="{ path: 'form>/konditioneneinigung/GesKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/konditioneneinigung/GesKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />                            
+                            <Text text=" " />
+                            <Text text=" " />
+                            <Text text=" " />
                         </cells>
                     </ColumnListItem>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{i18n>ERTRAEGE_GESAMT}" />                            
+                            <Text text="{ path: 'form>/konditioneneinigung/GesErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text=" " />
+                            <Text text=" " />
+                            <Text text=" " />
+                        </cells>
+                    </ColumnListItem>  
+                </items>
+            </Table>
+
+            <Table>
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="{i18n>BERECHNETE_KENNZAHLEN}" level="H2"/>
+                    </Toolbar>
+                </headerToolbar>
+                
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>BEZEICHNUNG}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>WERT}" />
+                    </Column>    
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text=" " />
+                    </Column>  
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text=" " />
+                    </Column>                  
+                </columns>
+                
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{i18n>INCENTIVEQUOTE}" />                            
+                            <Text text="{ path: 'form>/konditioneneinigung/Incentivequote', type: 'model.CustomNumberType'} %" />
+                            <Text text= " " />
+                            <Text text= " " />
+                        </cells>
+                    </ColumnListItem>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{i18n>EFFEKTIVMIETE}" />
+                            <Text text="{ path: 'form>/konditioneneinigung/Effektivmiete', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
+                            <Text text=" " />
+                            <Text text=" " />
+                        </cells>
+                    </ColumnListItem>                    
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{i18n>VERHGEMM}" />                            
+                            <Text text="{ path: 'form>/konditioneneinigung/VerhGeMm', type: 'model.CustomNumberType'} %" />
+                            <Text text= " " />
+                            <Text text= " " />
+                        </cells>
+                    </ColumnListItem>              
                 </items>
             </Table>
 
