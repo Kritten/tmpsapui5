@@ -4,23 +4,24 @@
  * @Last Modified by: Christian Hoff (best practice consulting AG)
  * @Last Modified time: 2017-07-21 10:50:17
  */
-
-var myFormatter = {
-        formatDifferenz: function(a,b,unit) {
-            var oNumber = Math.round((a * 100 - b * 100) / 100);
-            var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
+var formatter = sap.ui.core.format.NumberFormat.getFloatInstance({
                 style: 'Standard',
                 decimals: 2
             });
 
-            var res = oNumberFormat.format(oNumber);
+var myFormatter = {       
+        formatDifferenz: function(a,b,unit) {
+            var oNumber = Math.round((a * 100 - b * 100) / 100);        
+
+            var res = formatter.format(oNumber);
             if(unit){
                 res = res + " " + unit;
             }
             
             return res;
         },
-}
+};
+    
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
     "sap/m/MessageBox", 
@@ -34,7 +35,8 @@ sap.ui.define([
     "ag/bpc/Deka/model/CustomNumberType"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
 	
 	"use strict";
-	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {        
+	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {    
+        
 		onInit: function(evt){            
             var _this = this;
             
@@ -54,6 +56,8 @@ sap.ui.define([
             oRouter.getRoute("vermietungsaktivitaetAnlegenKV").attachPatternMatched(this.onVermietungsaktivitaetAnlegenKleinvermietung, this);
             oRouter.getRoute("vermietungsaktivitaetAnlegenEV").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExterneVermietung, this);
             oRouter.getRoute("vermietungsaktivitaetAnlegenImport").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExcelImport, this);
+
+            
 		},
 
         initializeEmptyModel: function(){
@@ -1509,7 +1513,7 @@ sap.ui.define([
 
                         });
                         _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
-                    };
+                    }
 
                     if( WeCurrency !== VaWaehrung && WeUnit !== VaUnit ) { //Beides umrechnen
                         DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
