@@ -33,6 +33,12 @@ table thead {
 	border-spacing: 20;
 	width: 100%;
 }
+
+.auto-style5 {
+	font-size: small;
+	text-align: right;
+}
+
 </style>
 </head>
 
@@ -185,18 +191,40 @@ table thead {
 <table style="width: 100%">
 	<tr>
 		<td style="width: 104px" class="auto-style2">Gesamtmiete:</td>
-		<td class="auto-style3" style="width: 121px">@@GesErtrag@@</td>
-		<td>&nbsp;</td>
+		<td class="auto-style3" style="width: 121px">@@GesErtragPa@@</td>
+		<td>
+		<table style="width: 100%">
+			<tr>
+		<td style="height: 12px;" class="auto-style5">Incentive-Quote:</td>
+		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@Incentivequote@@</span></td>
+			</tr>
+		</table>
+		</td>
 	</tr>
 	<tr>
 		<td style="width: 104px" class="auto-style2">Gesamtkosten:</td>
 		<td class="auto-style3" style="width: 121px">@@GesKosten@@</td>
-		<td>&nbsp;</td>
+		<td>
+		<table style="width: 100%">
+			<tr>
+		<td style="height: 12px;" class="auto-style5">Verhältnis Gesamte Erträge 
+		zu Marktüblicher Miete:</td>
+		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@VerhGeMm@@</span></td>
+			</tr>
+		</table>
+		</td>
 	</tr>
 	<tr>
 		<td style="width: 104px" class="auto-style2">Differenz:</td>
 		<td class="auto-style3" style="width: 121px">@@GesDiff@@</td>
-		<td>&nbsp;</td>
+		<td>
+		<table style="width: 100%">
+			<tr>
+		<td style="height: 12px;" class="auto-style5">Effektivmiete:</td>
+		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@Effektivmiete@@</span></td>
+			</tr>
+		</table>
+				</td>
 	</tr>
 </table>
 
