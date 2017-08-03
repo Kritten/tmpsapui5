@@ -20,6 +20,26 @@ var myFormatter = {
             
             return res;
         },
+
+        formatHnfl: function(hnfl, hnflUnit, flMultiplikator, flSelected) {
+            var res;
+            if(hnflUnit === "ST"){
+                res = formatter.format(hnfl) + " " + hnflUnit;
+            }else{
+                var hnflConv = Math.round((hnfl * flMultiplikator * 100) / 100);
+                
+                res = formatter.format(hnflConv) + " " + flSelected;
+            }
+
+            return res;
+        },
+
+        formatBetrag: function(betrag, waehrungsMultiplikator){
+            var res;
+            res = Math.round((betrag * waehrungsMultiplikator * 100) / 100);
+            res = formatter.format(res);
+            return res;
+        }
 };
     
 sap.ui.define([

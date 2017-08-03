@@ -4,6 +4,44 @@
  * @Last Modified by: Christian Hoff (best practice consulting AG)
  * @Last Modified time: 2017-07-21 12:40:22
  */
+var formatter = sap.ui.core.format.NumberFormat.getFloatInstance({
+                style: 'Standard',
+                decimals: 2
+            });
+
+var myFormatter = {       
+        formatDifferenz: function(a,b,unit) {
+            var oNumber = Math.round((a * 100 - b * 100) / 100);        
+
+            var res = formatter.format(oNumber);
+            if(unit){
+                res = res + " " + unit;
+            }
+            
+            return res;
+        },
+
+        formatHnfl: function(hnfl, hnflUnit, flMultiplikator, flSelected) {
+            var res;
+            if(hnflUnit === "ST"){
+                res = formatter.format(hnfl) + " " + hnflUnit;
+            }else{
+                var hnflConv = Math.round((hnfl * flMultiplikator * 100) / 100);
+                
+                res = formatter.format(hnflConv) + " " + flSelected;
+            }
+
+            return res;
+        },
+
+        formatBetrag: function(betrag, waehrungsMultiplikator){
+            var res;
+            res = Math.round((betrag * waehrungsMultiplikator * 100) / 100);
+            res = formatter.format(res);
+            return res;
+        }
+};
+
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
     "sap/m/MessageBox", 
