@@ -232,7 +232,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var keMappingHtml = "<table style=\"width: 100%\">";
                         
                         keMappingHtml += "<tr><td class=\"auto-style7\" style=\"text-align:left; width: 213px\" vAlign=\"top\">Zugrundeliegende Konditioneneinigungen:</td>";
-                        keMappingHtml += "<td class=\"greyBGPad\">";
+                        keMappingHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">";
                         vermietungsaktivitaet.VaToMap.forEach(function(ke, i){
                             if(ke.Aktiv){                                
                                 keMappingHtml += ke.KeId;
