@@ -3,274 +3,390 @@
 
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title>Konditioneneinigung @@KeId@@</title>
+<title>Vermietungsaktivität @@VaId@@</title>
 <style type="text/css">
+@media print {
 .greyBG {
-	background-color: #888888;
+	background-color: #888888 !important;
+	-webkit-print-color-adjust: exact;
 }
 .greyBGPad {
-	background-color: #888888;
-	font-size:small;
+	background-color: #888888 !important;
+	-webkit-print-color-adjust: exact;
+	font-size: small;
 	padding: 5px;
 }
-
 .auto-style2 {
 	font-size: small;
 }
 .auto-style3 {
 	font-size: small;
-	background-color: #888888;
+	background-color: #888888 !important;
+	-webkit-print-color-adjust: exact;
 }
 table {
-	border-collapse:seperate;
+	border-collapse: seperate;
 	border-spacing: 5;
 }
 table thead {
 	border-bottom: 1px solid #000;
 }
 .cellSpacedTable {
-	border-collapse:separate;
+	border-collapse: separate;
 	border-spacing: 20;
 	width: 100%;
 }
 .auto-style4 {
 	background-color: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
 }
-
 .auto-style5 {
 	font-size: small;
-	text-align: right;
+	text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
 }
-
+.auto-style6 {
+	font-size: small;
+	background-color: #888888 !important;
+	font-family: Arial, Helvetica, sans-serif;
+	-webkit-print-color-adjust: exact;
+}
+.auto-style7 {
+	font-size: small;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.auto-style8 {
+	background-color: #888888;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.auto-style9 {
+	font-family: Arial, Helvetica, sans-serif;
+}
+}
+@media screen {
+.greyBG {
+	background-color: #888888 !important;
+}
+.greyBGPad {
+	background-color: #888888 !important;
+	font-size: small;
+	padding: 5px;
+}
+.auto-style2 {
+	font-size: small;
+}
+.auto-style3 {
+	font-size: small;
+	background-color: #888888 !important;
+}
+table {
+	border-collapse: seperate;
+	border-spacing: 5;
+}
+table thead {
+	border-bottom: 1px solid #000;
+}
+.cellSpacedTable {
+	border-collapse: separate;
+	border-spacing: 20;
+	width: 100%;
+}
+.auto-style4 {
+	background-color: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.auto-style5 {
+	font-size: small;
+	text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.auto-style6 {
+	font-size: small;
+	background-color: #888888 !important;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.auto-style7 {
+	font-size: small;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.auto-style8 {
+	background-color: #888888;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.auto-style9 {
+	font-family: Arial, Helvetica, sans-serif;
+}
+}
+.auto-style10 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
+	text-align: center;
+}
+.auto-style11 {
+	font-size: small;
+	-webkit-print-color-adjust: exact;
+	text-align: center;
+	background-color: #888888;
+}
 </style>
 </head>
+
 <body>
-<h2>Vermietungsaktivität <span class="greyBG">@@VaId@@</span></h2>
+
+<h3><span style="float: right;">
+<img src="data:image/jpeg;base64,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">
+</span><span class="auto-style9">Vermietungsaktivität </span>
+<span class="auto-style8">@@VaId@@</span></h3>
 <table style="width: 100%">
 	<tr>
 		<td style="width: 60%; height: 40px;">
 		<table style="width: 100%">
 			<tr>
-				<td class="auto-style2" style="width: 68px; "><strong>Bukr</strong></td>
-				<td class="auto-style2" style="width: 65px; "><strong>WE</strong></td>
-				<td class="auto-style2"><strong>Bezeichnung</strong></td>
+				<td class="auto-style7" style="width: 68px;"><strong>Bukr</strong></td>
+				<td class="auto-style7" style="width: 65px;"><strong>WE</strong></td>
+				<td class="auto-style7"><strong>Bezeichnung</strong></td>
 			</tr>
 			<tr>
-				<td style="width: 68px; height: 13px;"><span class="auto-style3">@@Bukrs@@</span></td>
-				<td class="auto-style2" style="width: 65px; height: 13px;"><span class="auto-style3">@@WeId@@</span></td>
-				<td class="auto-style2" style="height: 13px"><span class="auto-style3">@@VaBezeichnung@@</span></td>
+				<td style="width: 68px; height: 13px;">
+				<span class="auto-style6">@@Bukrs@@</span></td>
+				<td class="auto-style2" style="width: 65px; height: 13px;">
+				<span class="auto-style6">@@WeId@@</span></td>
+				<td class="auto-style2" style="height: 13px">
+				<span class="auto-style6">@@VaBezeichnung@@</span></td>
 			</tr>
 		</table>
 		</td>
 		<td style="height: 40px">
 		<table style="width: 100%">
 			<tr>
-				<td style="width: 230px; height: 5px;" class="auto-style2">Währungsangaben in: </td>
-				<td style="height: 5px"><span class="auto-style3">@@Currency@@</span></td>
+				<td class="auto-style7" style="width: 230px; height: 5px;">Währungsangaben 
+				in: </td>
+				<td style="height: 5px"><span class="auto-style6">@@Currency@@</span></td>
 			</tr>
 			<tr>
-				<td style="width: 211px" class="auto-style2">Flächenangaben in: </td>
-				<td><span class="auto-style3">@@Unit@@</span></td>
+				<td class="auto-style7" style="width: 211px">Flächenangaben in:
+				</td>
+				<td><span class="auto-style6">@@Unit@@</span></td>
+			</tr>
+			<tr>
+				<td class="auto-style7" style="width: 211px">Mietflächenangaben 
+				in: </td>
+				<td><span class="auto-style6">@@MonatJahr@@</span></td>
 			</tr>
 		</table>
 		</td>
 	</tr>
 </table>
-
-
+<hr />
 <table style="width: 100%">
 	<tr>
-		<td style="width: 213px" class="auto-style2">Vermietungsaktivitäten-Typ:</td>
-		<td style="width: 158px" class="auto-style3">@@VaTyp@@</td>
-		<td style="width: 258px" class="auto-style2">&nbsp;&nbsp; BudgetStop:</td>
-		<td class="auto-style3">@@Budgetstp@@</td>
+		<td class="auto-style7" style="width: 213px">Kategorie:</td>
+		<td class="auto-style6" style="width: 158px">@@VaTyp@@</td>
+		<td class="auto-style7" style="width: 258px">&nbsp;&nbsp; BudgetStop:</td>
+		<td class="auto-style6">@@Budgetstp@@</td>
 	</tr>
 	<tr>
-		<td style="width: 213px" class="auto-style2">Vermietungsart:</td>
-		<td style="width: 158px" class="auto-style3">@@VaArt@@</td>
-		<td style="width: 258px" class="auto-style2">&nbsp;</td>
-		<td>&nbsp;</td>
+		<td class="auto-style7" style="width: 213px">Vermietungsart:</td>
+		<td class="auto-style6" style="width: 158px">@@VaArt@@</td>
+		<td class="auto-style7" style="width: 258px">&nbsp;</td>
+		<td class="auto-style9">&nbsp;</td>
 	</tr>
 </table>
-<br />
+@@KEMapping@@ 
 <table style="width: 100%">
 	<tr>
-		<td style="width: 211px" class="auto-style2">Mietername:</td>
-		<td style="width: 160px" class="auto-style3">@@Debitorname@@</td>
-		<td style="width: 256px" class="auto-style2">&nbsp; Debitor:</td>
-		<td class="auto-style3">@@Debitor@@</td>
+		<td class="auto-style7" style="width: 211px">Mietername:</td>
+		<td class="auto-style6" style="width: 160px">@@Debitorname@@</td>
+		<td class="auto-style7" style="width: 256px">&nbsp; Debitor:</td>
+		<td class="auto-style6">@@Debitor@@</td>
 	</tr>
 	<tr>
-		<td style="width: 211px" class="auto-style2">Mietbeginn:</td>
-		<td style="width: 160px" class="auto-style3">@@Mietbeginn@@</td>
-		<td style="width: 256px" class="auto-style2">&nbsp; Laufzeit bis 1st break option in Monaten:</td>
-		<td class="auto-style3">@@LzFirstbreak@@</td>
+		<td class="auto-style7" style="width: 211px">Mietbeginn:</td>
+		<td class="auto-style6" style="width: 160px">@@Mietbeginn@@</td>
+		<td class="auto-style7" style="width: 256px">&nbsp; Laufzeit bis 1st break 
+		option in Monaten:</td>
+		<td class="auto-style6">@@LzFirstbreak@@</td>
 	</tr>
 	<tr>
-		<td style="width: 211px; height: 17px;" class="auto-style2">Indexweitergabe in %:</td>
-		<td style="width: 160px; height: 17px;" class="auto-style3">
-		@@IdxWeitergabe@@</td>
-		<td style="width: 256px; height: 17px;" class="auto-style2">&nbsp; Pönale:</td>
-		<td class="auto-style3" style="height: 17px">@@Poenale@@</td>
-	</tr>
-</table>
-<table style="width: 100%">
-	<tr>
-		<td style="width: 210px; height: 21px;" class="auto-style2">Mietfreie Zeiten in Monaten:</td>
-		<td style="width: 160px; height: 21px;" class="auto-style3">@@MzMonate@@</td>
-		<td style="width: 256px; height: 21px;" class="auto-style2">&nbsp; Einmalertrag:</td>
-		<td class="auto-style3" style="height: 21px">@@Einmalertrag@@</td>
-	</tr>
-	<tr>
-		<td style="width: 210px" class="auto-style2">Erster Monat der mietfreien Zeit:</td>
-		<td style="width: 160px" class="auto-style3">@@MzErsterMonat@@</td>
-		<td style="width: 256px" class="auto-style2">&nbsp; 1. Monat Verteilung der Ausbaukosten:</td>
-		<td class="auto-style3">@@AkErsterMonat@@</td>
-	</tr>
-	<tr>
-		<td style="width: 210px" class="auto-style2">Anzahl Wiederholungen in Jahren:</td>
-		<td style="width: 160px" class="auto-style3">@@MzAnzahlJ@@</td>
-		<td style="width: 256px" class="auto-style2">&nbsp; Anzahl Monate Verteilung Ausbaukosten:</td>
-		<td class="auto-style3">@@AkAnzahlM@@</td>
+		<td class="auto-style7" style="width: 211px; height: 17px;">Indexweitergabe 
+		in %:</td>
+		<td class="auto-style6" style="width: 160px; height: 17px;">@@IdxWeitergabe@@</td>
+		<td class="auto-style7" style="width: 256px; height: 17px;">&nbsp; Pönale:</td>
+		<td class="auto-style6" style="height: 17px">@@Poenale@@</td>
 	</tr>
 </table>
 <table style="width: 100%">
 	<tr>
-		<td class="auto-style2" style="height: 22px; width: 209px">Maklerkosten: 
-		<span class="greyBG">@@MkMonate@@</span><span class="auto-style4"> </span> Monatsmieten:</td>
-		<td class="auto-style3" style="height: 22px; width: 161px">@@MkMAbs@@</td>
+		<td class="auto-style7" style="width: 213px; height: 21px;">Mietfreie Zeiten 
+		in Monaten:</td>
+		<td class="auto-style6" style="width: 160px; height: 21px;">@@MzMonate@@</td>
+		<td class="auto-style7" style="width: 256px; height: 21px;">&nbsp; Einmalertrag:</td>
+		<td class="auto-style6" style="height: 21px">@@Einmalertrag@@</td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 213px">Erster Monat der mietfreien 
+		Zeit:</td>
+		<td class="auto-style6" style="width: 160px">@@MzErsterMonat@@</td>
+		<td class="auto-style7" style="width: 256px">&nbsp; 1. Monat Verteilung 
+		der Ausbaukosten:</td>
+		<td class="auto-style6">@@AkErsterMonat@@</td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 210px">Anzahl Wiederholungen in Jahren:</td>
+		<td class="auto-style6" style="width: 160px">@@MzAnzahlJ@@</td>
+		<td class="auto-style7" style="width: 256px">&nbsp; Anzahl Monate Verteilung 
+		Ausbaukosten:</td>
+		<td class="auto-style6">@@AkAnzahlM@@</td>
+	</tr>
+</table>
+<table style="width: 100%">
+	<tr>
+		<td class="auto-style2" style="height: 22px; width: 209px">
+		<span class="auto-style9">Maklerkosten: </span>
+		<span class="auto-style8">@@MkMonate@@</span><span class="auto-style4">
+		</span><span class="auto-style9">Monatsmieten:</span></td>
+		<td class="auto-style6" style="height: 22px; width: 161px">@@MkMAbs@@</td>
 		<td class="auto-style2" style="height: 22px; width: 255px">
-		&nbsp;
-		Beratungskosten: <span class="greyBG">@@BkMonate@@</span> Monatsmieten:</td>
-		<td style="height: 22px" class="auto-style3">@@BkMAbs@@</td>
+		<span class="auto-style9">&nbsp; Beratungskosten: </span>
+		<span class="auto-style8">@@BkMonate@@</span><span class="auto-style9"> 
+		Monatsmieten:</span></td>
+		<td class="auto-style6" style="height: 22px">@@BkMAbs@@</td>
 	</tr>
 	<tr>
-		<td class="auto-style2" style="width: 209px">Maklerkosten Absolutwert:</td>
-		<td class="auto-style3" style="width: 161px">@@MkAbsolut@@</td>
-		<td class="auto-style2" style="width: 255px">&nbsp; Beratungskosten 
-		Absolutwert:</td>
-		<td class="auto-style3">@@BkAbsolut@@</td>
+		<td class="auto-style7" style="width: 209px">Maklerkosten Absolutwert:</td>
+		<td class="auto-style6" style="width: 161px">@@MkAbsolut@@</td>
+		<td class="auto-style7" style="width: 255px">&nbsp; Beratungskosten Absolutwert:</td>
+		<td class="auto-style6">@@BkAbsolut@@</td>
 	</tr>
 	<tr>
-		<td class="auto-style2" style="width: 209px; height: 17px;">Gesamt:</td>
-		<td class="auto-style3" style="width: 161px; height: 17px;">@@MkGesamt@@</td>
-		<td class="auto-style2" style="width: 255px; height: 17px;">&nbsp; Gesamt:</td>
-		<td class="auto-style3" style="height: 17px">@@BkGesamt@@</td>
-	</tr>
-</table>
-<br />
-<table style="width: 100%">
-	<tr>
-		<td class="auto-style2" style="width: 175px">Sonstige Ertragsart:</td>
-		<td class="auto-style3" style="width: 129px">@@ArtErtrag@@</td>
-		<td class="auto-style2" style="width: 266px; text-align: right">Sonstige Kostenart:</td>
-		<td class="auto-style3">@@ArtKosten@@</td>
-	</tr>
-	<tr>
-		<td class="auto-style2" style="width: 175px">Sonstige Erträge:</td>
-		<td class="auto-style3" style="width: 129px">@@SonstE@@</td>
-		<td class="auto-style2" style="width: 266px; text-align: right">Sonstige Kosten:</td>
-		<td class="auto-style3">@@SonstK@@</td>
+		<td class="auto-style7" style="width: 209px; height: 17px;">Gesamt:</td>
+		<td class="auto-style6" style="width: 161px; height: 17px;">@@MkGesamt@@</td>
+		<td class="auto-style7" style="width: 255px; height: 17px;">&nbsp; Gesamt:</td>
+		<td class="auto-style6" style="height: 17px">@@BkGesamt@@</td>
 	</tr>
 </table>
+<br class="auto-style9" />
 <table style="width: 100%">
 	<tr>
-		<td class="auto-style2" style="width: 175px">Kennzeichen 
-		Steuerschädling:</td>
-		<td class="auto-style3" style="width: 96px">@@Steuerschlg@@</td>
-		<td class="auto-style2" style="width: 268px">&nbsp;</td>
-		<td class="auto-style2">&nbsp;</td>
+		<td class="auto-style7" style="width: 175px">Sonstige Ertragsart:</td>
+		<td class="auto-style6" style="width: 129px">@@ArtErtrag@@</td>
+		<td class="auto-style7" style="width: 266px; text-align: right">Sonstige 
+		Kostenart:</td>
+		<td class="auto-style6">@@ArtKosten@@</td>
 	</tr>
 	<tr>
-		<td class="auto-style2" style="width: 175px">Kosten aus Steuerschaden:</td>
-		<td class="auto-style3" style="width: 96px">@@Steuerschaden@@</td>
-		<td class="auto-style2" style="width: 268px; text-align: right">Ertrag aus 
+		<td class="auto-style7" style="width: 175px">Sonstige Erträge:</td>
+		<td class="auto-style6" style="width: 129px">@@SonstE@@</td>
+		<td class="auto-style7" style="width: 266px; text-align: right">Sonstige 
+		Kosten:</td>
+		<td class="auto-style6">@@SonstK@@</td>
+	</tr>
+</table>
+<table style="width: 100%">
+	<tr>
+		<td class="auto-style7" style="width: 175px">Kennzeichen Steuerschädling:</td>
+		<td class="auto-style6" style="width: 96px">@@Steuerschlg@@</td>
+		<td class="auto-style7" style="width: 268px">&nbsp;</td>
+		<td class="auto-style7">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 175px">Kosten aus Steuerschaden:</td>
+		<td class="auto-style6" style="width: 96px">@@Steuerschaden@@</td>
+		<td class="auto-style7" style="width: 268px; text-align: right">Ertrag aus 
 		MwSt-Kompensation:</td>
-		<td class="auto-style3">@@MwstkErtrag@@</td>
+		<td class="auto-style6">@@MwstkErtrag@@</td>
 	</tr>
 </table>
-
-<p>@@Mietflaechenangaben@@</p>
-
-
-<table style="width: 100%">
+<hr />
+<p class="auto-style9">@@Mietflaechenangaben@@</p>
+<hr />
+<table style="width: 90%" class="cellSpacedTable">
 	<tr>
-		<td style="width: 104px; height: 12px;" class="auto-style2">Gesamtmiete:</td>
-		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@GesErtragPa@@</span></td>
-		<td style="height: 12px">
-		<table style="width: 100%">
-			<tr>
-		<td style="height: 12px;" class="auto-style5">Incentive-Quote:</td>
-		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@Incentivequote@@</span></td>
-			</tr>
-		</table>
-		</td>
+		<td></td>
+		<td class="auto-style10"><strong>Laufzeit</strong></td>
+		<td class="auto-style10"><strong>Vermietungsaktivität</strong></td>
+		<td class="auto-style10"><strong>Konditioneneinigung</strong></td>
+		<td class="auto-style10"><strong>Differenz</strong></td>
 	</tr>
 	<tr>
-		<td style="width: 104px; " class="auto-style2">Gesamtkosten:</td>
-		<td style="width: 116px;" class="auto-style3"><span class="auto-style3">@@GesKosten@@</span></td>
-		<td>
-		<table style="width: 100%">
-			<tr>
-		<td style="height: 12px;" class="auto-style5">Verhältnis Gesamte Erträge 
-		zu Marktüblicher Miete:</td>
-		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@VerhGeMm@@</span></td>
-			</tr>
-		</table>
-		</td>
+		<td class="auto-style7" style="width: 104px; height: 12px;">Erträge (1. 
+		Jahr):</td>
+		<td class="auto-style11" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@LaufzeitKe@@</span></td>
+		<td class="auto-style11" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@GesErtragPa@@</span></td>
+		<td class="auto-style11" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@GesKeErtrag@@</span></td>
+		<td class="auto-style11" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@Diff1@@</span></td>
 	</tr>
 	<tr>
-		<td style="width: 104px; height: 23px;" class="auto-style2">Differenz:</td>
-		<td class="auto-style3" style="width: 116px; height: 23px"><span class="auto-style3">@@GesDiff@@</span></td>
-		<td style="height: 23px">
-		<table style="width: 100%">
-			<tr>
-				<td>
-		<table style="width: 100%">
-			<tr>
-		<td style="height: 12px;" class="auto-style5">Effektivmiete:</td>
-		<td class="auto-style3" style="width: 116px; height: 12px"><span class="auto-style3">@@Effektivmiete@@</span></td>
-			</tr>
-		</table>
-				</td></tr>
-		</table>
-		</td>
+		<td class="auto-style7" style="width: 104px;">Kosten gesamt:</td>
+		<td class="auto-style11" style="width: 116px;"><span class="auto-style6">
+		</span></td>
+		<td class="auto-style11" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@GesKosten@@</span></td>
+		<td class="auto-style11" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@GesKeKosten@@</span></td>
+		<td class="auto-style11" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@Diff2@@</span></td>
 	</tr>
 	<tr>
-		<td style="width: 104px; height: 23px;" class="auto-style2">Gesamte 
-		Erträge:</td>
-		<td class="auto-style3" style="width: 116px; height: 23px"><span class="auto-style3">@@GesErtrag@@</span></td>
-		<td style="height: 23px"></td>
-	</tr>
-	<tr>
-		<td style="height: 23px"></td>
+		<td class="auto-style7" style="width: 104px; height: 12px;">Gesamte Erträge:</td>
+		<td class="auto-style11" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@LzFirstbreak@@</span></td>
+		<td class="auto-style11" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@GesErtrag@@</span></td>
+		<td class="auto-style3" style="width: 116px; height: 12px">
+		<span class="auto-style6"></span></td>
+		<td class="auto-style3" style="width: 116px; height: 12px">
+		<span class="auto-style6"></span></td>
 	</tr>
 </table>
-
-<table style="width: 100%">
+<div>&nbsp;</div>
+<table>
 	<tr>
-		<td style="vertical-align: bottom; height: 26px;">Bemerkung</td>
+		<td class="auto-style5" style="height: 12px; width: 213px;">Incentive-Quote:</td>
+		<td class="auto-style3" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@Incentivequote@@</span></td>
 	</tr>
 	<tr>
-		<td class="greyBG" style="height: 60px">@@Bemerkung@@</td>
+		<td class="auto-style5" style="height: 12px; width: 213px;">Effektivmiete:</td>
+		<td class="auto-style3" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@Effektivmiete@@</span></td>
+	</tr>
+	<tr>
+		<td class="auto-style5" style="height: 12px; width: 166px;">Verhältnis gesamte 
+		Erträge zu marktüblicher Miete:</td>
+		<td class="auto-style3" style="width: 116px; height: 12px">
+		<span class="auto-style6">@@VerhGeMm@@</span></td>
 	</tr>
 </table>
-
-
+<hr />
 <table style="width: 100%">
 	<tr>
-		<td style="vertical-align:bottom; width: 92px; height: 26px;" class="auto-style2">Anmerkung:</td>
-		<td style="vertical-align:bottom; height: 26px;">
-		<span class="auto-style3">@@AnmerkungText@@</span></td>
+		<td class="auto-style9" style="vertical-align: bottom; height: 26px;">Bemerkung</td>
 	</tr>
 	<tr>
-		<td style="width: 92px" class="auto-style2">Status:</td>
-		<td><span class="auto-style3">@@Status@@ </span>
-		<span class="auto-style2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		Planungsrelevanz: </span> <span class="auto-style3">@@PLRelevant@@</span></td>
+		<td class="auto-style6" style="height: 60px">@@Bemerkung@@</td>
 	</tr>
-	</table>
-<p><span class="auto-style2">Druckdatum:&nbsp; </span> <span class="auto-style3">@@Druckdatum@@</span></p>
+</table>
+<table style="width: 100%">
+	<tr>
+		<td class="auto-style7" style="vertical-align: bottom; width: 92px; height: 26px;">
+		Anmerkung:</td>
+		<td style="vertical-align: bottom; height: 26px;">
+		<span class="auto-style6">@@AnmerkungText@@</span></td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 92px">Status:</td>
+		<td><span class="auto-style6">@@Status@@ </span>
+		<span class="auto-style7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		Planungsrelevanz: </span><span class="auto-style6">@@PLRelevant@@</span></td>
+	</tr>
+</table>
+<p><span class="auto-style7">Druckdatum:&nbsp; </span><span class="auto-style6">
+@@Druckdatum@@</span></p>
 
 </body>
 
