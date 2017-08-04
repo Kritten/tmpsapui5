@@ -44,6 +44,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@VaBezeichnung@@", bezeichnung);
                     }
 
+                    var vaid = vermietungsaktivitaet.VaId;
+                    if(vaid) {
+                        result = result.replace("@@VaId2@@", vaid);
+                    }
+
                     var mietbeginn = vermietungsaktivitaet.Mietbeginn;
                     if (mietbeginn) {
                         result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
@@ -231,7 +236,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     if(vermietungsaktivitaet.Kategorie === "01"){
                         var keMappingHtml = "<table style=\"width: 100%\">";
                         
-                        keMappingHtml += "<tr><td class=\"auto-style7\" style=\"text-align:left; width: 213px\" vAlign=\"top\">Zugrundeliegende Konditioneneinigungen:</td>";
+                        keMappingHtml += "<tr><td class=\"auto-style7\" style=\"text-align:left; font-family: Arial, Helvetica, sans-serif; width: 213px\" vAlign=\"top\">Zugrundeliegende Konditioneneinigungen:</td>";
                         keMappingHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">";
                         vermietungsaktivitaet.VaToMap.forEach(function(ke, i){
                             if(ke.Aktiv){                                
@@ -283,7 +288,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     if (keId) {
                         var cont = result.indexOf("@@KeId@@");
                         result = result.replace("@@KeId@@", keId);
+                        result = result.replace("@@KeId2@@", keId);
                     }
+
 
                     var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
                     if (bezeichnung) {
@@ -464,6 +471,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     if (keId) {
                         var cont = result.indexOf("@@KeId@@");
                         result = result.replace("@@KeId@@", keId);
+                        result = result.replace("@@KeId2@@", keId);
                     }
 
                     var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
