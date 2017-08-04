@@ -218,11 +218,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:center; font-family: Arial, Helvetica, sans-serif;\">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right; font-family: Arial, Helvetica, sans-serif;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right; font-family: Arial, Helvetica, sans-serif;\">" + nutzart + "<br />" + nutzartAlt + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right; font-family: Arial, Helvetica, sans-serif;\">" + hnfl + "<br />" + hnflalt + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right; font-family: Arial, Helvetica, sans-serif;\">" + nhMiete + "<br />" + anMiete + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right; font-family: Arial, Helvetica, sans-serif;\">" + gaKosten + "<br />" + maKosten + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + nutzart + "<br />" + nutzartAlt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + hnfl + "<br />" + hnflalt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + nhMiete + "<br />" + anMiete + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + gaKosten + "<br />" + maKosten + "</td>";
                         mietflaechenangabeHtml += "</tr>";
                     });
                     mietflaechenangabeHtml += "</table>";
