@@ -196,12 +196,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
                     mietflaechenangabeHtml += "<thead><tr>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Lfd Nr <br /> Split</span></td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">MO<br /> Bezeichnung</span></td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-family: Arial, Helvetica, sans-serif;\">Nutzungsart <br /> NA alternativ</span></td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Hauptnutzfläche</span> <br /> <span style=\"font-weight:bold\">HNFZF alternativ</span> <br /> FE</td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Marktübliche Miete</span> <br /> <span style=\"font-weight:bold\">Angebotsmiete</span> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Grundausbaukosten</span> <br /> <span style=\"font-weight:bold\">Mieterausbaukosten</span> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Lfd Nr <br /> Split</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">MO<br /> Bezeichnung</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif;\">Nutzungsart <br /> NA alternativ</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Hauptnutzfläche <br /> HNFZF alternativ</span> <br /> FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Marktübliche Miete<br /> Angebotsmiete</span> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Grundausbaukosten <br /> Mieterausbaukosten</span> <br /> WHG/FE</td>";
                     mietflaechenangabeHtml += "</tr></thead>";
 
                     vermietungsaktivitaet.VaToOb.forEach(function (mietflaechenangabe, i) {
@@ -402,12 +402,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
                     mietflaechenangabeHtml += "<thead><tr>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Lfd Nr <br /> Split</span></td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">MO<br /> Bezeichnung</span></td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Nutzungsart</span></td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Hauptnutzfläche</span> <br /> <span style=\"font-weight:bold\">HNFZF alternativ</span> <br /> FE</td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Marktübliche Miete</span> <br /> <span style=\"font-weight:bold\">Angebotsmiete</span> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Grundausbaukosten</span> <br /> <span style=\"font-weight:bold\">Mieterausbaukosten</span> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Lfd Nr <br /> Split</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">MO<br /> Bezeichnung</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Nutzungsart</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Hauptnutzfläche <br /> HNFZF alternativ</span> <br /> FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Marktübliche Miete <br /> Angebotsmiete</span> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Grundausbaukosten <br /> Mieterausbaukosten</span> <br /> WHG/FE</td>";
                     mietflaechenangabeHtml += "</tr></thead>";
 
                     konditioneneinigung.KeToOb.forEach(function (mietflaechenangabe, i) {
@@ -584,12 +584,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
                     mietflaechenangabeHtml += "<thead><tr>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Lfd Nr <br /> Split</span></td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">MO<br /> Bezeichnung</span></td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Nutzungsart</span></td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Hauptnutzfläche</span> <br /> <span style=\"font-weight:bold\">HNFZF alternativ</span> <br /> FE</td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Marktübliche Miete</span> <br /> <span style=\"font-weight:bold\">Angebotsmiete</span> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "<td><span style=\"font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Grundausbaukosten</span> <br /> <span style=\"font-weight:bold\">Mieterausbaukosten</span> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Lfd Nr <br /> Split</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\" font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">MO<br /> Bezeichnung</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Nutzungsart</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Hauptnutzfläche<br /> HNFZF alternativ</span> <br /> FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Marktübliche Miete <br /> Angebotsmiete</span> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Grundausbaukosten<br /> Mieterausbaukosten</span> <br /> WHG/FE</td>";
                     mietflaechenangabeHtml += "</tr></thead>";
 
                     konditioneneinigung.KeToOb.forEach(function (mietflaechenangabe, i) {
