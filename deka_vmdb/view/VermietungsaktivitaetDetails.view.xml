@@ -339,6 +339,34 @@
 						</layoutData>
                     </Input>
 
+                    <Label text="{i18n>STEUERSCHAEDLING}" />
+                    <CheckBox id="idSteuerschlg" selected="{form>/vermietungsaktivitaet/Steuerschlg}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+							<l:GridData span="L1 M1 S12" />
+						</layoutData>
+                    </CheckBox>
+                    
+                    <Label text="{i18n>KOSTEN_AUS_STEUERSCHADEN} in {form>/viewsettings/waehrungSelected/Nach}" />
+                    <Input id="idSteuerschaden" value="{ path: 'form>/vermietungsaktivitaet/Steuerschaden', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+
+                    <Label text="{i18n>ERTRAG_AUS_MWST} in {form>/viewsettings/waehrungSelected/Nach}" />
+                    <Input id="idMwstkErtrag" value="{ path: 'form>/vermietungsaktivitaet/MwstkErtrag', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+
+                    <Label text="{i18n>EINMAL_ERTRAG} in {form>/viewsettings/waehrungSelected/Nach}" />
+                    <Input id="einmalertrag" value="{ path: 'form>/vermietungsaktivitaet/Einmalertrag', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    
                     <Label text="{i18n>POENALE} in {form>/viewsettings/waehrungSelected/Nach}" />
                     <Input id="idPoenale" value="{ path: 'form>/vermietungsaktivitaet/Poenale', type: 'model.CustomNumberType'}"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
@@ -358,15 +386,7 @@
                         <layoutData>
 							<l:GridData span="L1 M1 S12" />
 						</layoutData>
-                    </CheckBox>
-
-                    <Label text="{i18n>STEUERSCHAEDLING}" />
-                    <CheckBox id="idSteuerschlg" selected="{form>/vermietungsaktivitaet/Steuerschlg}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
-                        <layoutData>
-							<l:GridData span="L1 M1 S12" />
-						</layoutData>
-                    </CheckBox>
-                    
+                    </CheckBox>                    
                 </f:content>
 
 			</f:SimpleForm>
