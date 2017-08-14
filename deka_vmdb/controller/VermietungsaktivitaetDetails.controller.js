@@ -55,9 +55,9 @@ sap.ui.define([
     "ag/bpc/Deka/model/CustomNumberType"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
 	
 	"use strict";
-	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {    
+	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
         
-		onInit: function(evt){            
+		onInit: function(evt){
             var _this = this;
             
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
@@ -76,8 +76,6 @@ sap.ui.define([
             oRouter.getRoute("vermietungsaktivitaetAnlegenKV").attachPatternMatched(this.onVermietungsaktivitaetAnlegenKleinvermietung, this);
             oRouter.getRoute("vermietungsaktivitaetAnlegenEV").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExterneVermietung, this);
             oRouter.getRoute("vermietungsaktivitaetAnlegenImport").attachPatternMatched(this.onVermietungsaktivitaetAnlegenExcelImport, this);
-
-            
 		},
 
         initializeEmptyModel: function(){
@@ -261,10 +259,10 @@ sap.ui.define([
                 return DataProvider.readKonditioneneinigungAsync(keKey.Bukrs, keKey.KeId);
             });
 
+            var vermietungsaktivitaet = _this.newVermietungsaktivitaet();            
+
             // Wenn alle Konditioneneinigungen erfolgreich geladen wurden
             Q.all(promises).then(function(konditioneneinigungen){
-
-                var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
                 
                 vermietungsaktivitaet.VaToWe = konditioneneinigungen[0].KeToWe;
                 vermietungsaktivitaet.WeId = vermietungsaktivitaet.VaToWe.WeId;
@@ -283,11 +281,43 @@ sap.ui.define([
                     });
                 }), true);
                 
-                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
-
                 return _this.initializeViewsettingsAsync(vermietungsaktivitaet);
             })
             .then(function(){
+                // Quickfix:
+                // VA erst hier an die Form binden, da Berechnungen auf den Objekten notwendig waren
+                // die erst möglich sind, nachdem die viewSettings geladen wurden
+                
+                var viewsettings = _this.getView().getModel("form").getProperty("/viewsettings");
+
+                vermietungsaktivitaet.VaToOb = _.map(vermietungsaktivitaet.VaToOb, function(objekt){
+                    
+                    // Umrechnungskurs für Währung finden
+                    var umrechnungsWaehrung = _.find(viewsettings.waehrungen, function(waehrung){
+                        return waehrung.Nach === objekt.Whrung;
+                    });
+
+                    // Umrechnungskurs für Flächeneinheit finden
+                    var umrechnungsFlaecheneinheit = _.find(viewsettings.flaecheneinheiten, function(flaecheneinheit){
+                        return flaecheneinheit.Nach === objekt.HnflUnit;
+                    });
+
+                    if(umrechnungsWaehrung){
+                        objekt.NhMiete = objekt.NhMiete / umrechnungsWaehrung.Multiplikator;
+                        objekt.Whrung = umrechnungsWaehrung.Von;
+                    }
+
+                    if(umrechnungsFlaecheneinheit && objekt.HnflUnit !== StaticData.UNIT.STUECK){
+                        objekt.NhMiete = objekt.NhMiete / umrechnungsFlaecheneinheit.Multiplikator;
+                        objekt.Hnfl = objekt.Hnfl / umrechnungsFlaecheneinheit.Multiplikator;
+                        objekt.HnflUnit = umrechnungsFlaecheneinheit.Von;
+                    }
+
+                    return objekt;
+                });
+                
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);                                
+                
                 return Q.when(StaticData.STATUSWERTE);
             })
             .then(function(statuswerte){
@@ -1546,7 +1576,7 @@ sap.ui.define([
                                     currenyMultiplicator = ausgangsWaehrung.Multiplikator;
                                 }
                             }
-                             return DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheitKey);
+                            return DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheitKey);
                         })
                         .then(function(flaecheneinheiten){
                             if(flaecheneinheiten.length > 0){
