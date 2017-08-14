@@ -11,7 +11,7 @@ var formatter = sap.ui.core.format.NumberFormat.getFloatInstance({
 
 var myFormatter = {       
         formatDifferenz: function(a,b,unit) {
-            var oNumber = Math.round((a * 100 - b * 100) / 100);        
+            var oNumber = (a * 100 - b * 100) / 100;        
 
             var res = formatter.format(oNumber);
             if(unit){
@@ -26,7 +26,7 @@ var myFormatter = {
             if(hnflUnit === "ST"){
                 res = formatter.format(hnfl) + " " + hnflUnit;
             }else{
-                var hnflConv = Math.round((hnfl * flMultiplikator * 100) / 100);
+                var hnflConv = (hnfl * flMultiplikator * 100) / 100;
                 
                 res = formatter.format(hnflConv) + " " + flSelected;
             }
@@ -36,7 +36,7 @@ var myFormatter = {
 
         formatBetrag: function(betrag, waehrungsMultiplikator){
             var res;
-            res = Math.round((betrag * waehrungsMultiplikator * 100) / 100);
+            res = (betrag * waehrungsMultiplikator * 100) / 100;
             res = formatter.format(res);
             return res;
         }
