@@ -5,41 +5,41 @@
  * @Last Modified time: 2017-07-21 10:50:17
  */
 var formatter = sap.ui.core.format.NumberFormat.getFloatInstance({
-                style: 'Standard',
-                decimals: 2
-            });
+    style: 'Standard',
+    decimals: 2
+});
 
-var myFormatter = {       
-        formatDifferenz: function(a,b,unit) {
-            var oNumber = (a * 100 - b * 100) / 100;        
+var myFormatter = {
+    formatDifferenz: function(a,b,unit) {
+        var oNumber = (a * 100 - b * 100) / 100;        
 
-            var res = formatter.format(oNumber);
-            if(unit){
-                res = res + " " + unit;
-            }
-            
-            return res;
-        },
-
-        formatHnfl: function(hnfl, hnflUnit, flMultiplikator, flSelected) {
-            var res;
-            if(hnflUnit === "ST"){
-                res = formatter.format(hnfl) + " " + hnflUnit;
-            }else{
-                var hnflConv = (hnfl * flMultiplikator * 100) / 100;
-                
-                res = formatter.format(hnflConv) + " " + flSelected;
-            }
-
-            return res;
-        },
-
-        formatBetrag: function(betrag, waehrungsMultiplikator){
-            var res;
-            res = (betrag * waehrungsMultiplikator * 100) / 100;
-            res = formatter.format(res);
-            return res;
+        var res = formatter.format(oNumber);
+        if(unit){
+            res = res + " " + unit;
         }
+        
+        return res;
+    },
+
+    formatHnfl: function(hnfl, hnflUnit, flMultiplikator, flSelected) {
+        var res;
+        if(hnflUnit === "ST"){
+            res = formatter.format(hnfl) + " " + hnflUnit;
+        }else{
+            var hnflConv = (hnfl * flMultiplikator * 100) / 100;
+            
+            res = formatter.format(hnflConv) + " " + flSelected;
+        }
+
+        return res;
+    },
+
+    formatBetrag: function(betrag, waehrungsMultiplikator){
+        var res;
+        res = (betrag * waehrungsMultiplikator * 100) / 100;
+        res = formatter.format(res);
+        return res;
+    }
 };
     
 sap.ui.define([
@@ -284,9 +284,14 @@ sap.ui.define([
                 return _this.initializeViewsettingsAsync(vermietungsaktivitaet);
             })
             .then(function(){
-                // Quickfix:
-                // VA erst hier an die Form binden, da Berechnungen auf den Objekten notwendig waren
-                // die erst möglich sind, nachdem die viewSettings geladen wurden
+                
+                // Anmerkung:
+                //
+                // Bei Übernahme der Objekte aus den KEs müssen ggf. Miete, Kosten und Fläche umberechnet werden,
+                // sodass die Werte stimmig sind zur Währung und Flächeneinheit der VA.
+                //
+                // VA erst hier an die form binden, da Berechnungen auf den Objekten notwendig waren
+                // die erst möglich sind, nachdem die viewsettings geladen wurden
                 
                 var viewsettings = _this.getView().getModel("form").getProperty("/viewsettings");
 
@@ -304,11 +309,17 @@ sap.ui.define([
 
                     if(umrechnungsWaehrung){
                         objekt.NhMiete = objekt.NhMiete / umrechnungsWaehrung.Multiplikator;
+                        objekt.AnMiete = objekt.AnMiete / umrechnungsWaehrung.Multiplikator;
+                        objekt.GaKosten = objekt.GaKosten / umrechnungsWaehrung.Multiplikator;
+                        objekt.MaKosten = objekt.MaKosten / umrechnungsWaehrung.Multiplikator;
                         objekt.Whrung = umrechnungsWaehrung.Von;
                     }
 
                     if(umrechnungsFlaecheneinheit && objekt.HnflUnit !== StaticData.UNIT.STUECK){
-                        objekt.NhMiete = objekt.NhMiete / umrechnungsFlaecheneinheit.Multiplikator;
+                        objekt.NhMiete = objekt.NhMiete * umrechnungsFlaecheneinheit.Multiplikator;
+                        objekt.AnMiete = objekt.AnMiete * umrechnungsFlaecheneinheit.Multiplikator;
+                        objekt.GaKosten = objekt.GaKosten * umrechnungsFlaecheneinheit.Multiplikator;
+                        objekt.MaKosten = objekt.MaKosten * umrechnungsFlaecheneinheit.Multiplikator;
                         objekt.Hnfl = objekt.Hnfl / umrechnungsFlaecheneinheit.Multiplikator;
                         objekt.HnflUnit = umrechnungsFlaecheneinheit.Von;
                     }
@@ -1527,7 +1538,7 @@ sap.ui.define([
                     var currenyMultiplicator = 1;
                     var unitMultiplicator    = 1;
 
-                    function resolveFunction() {
+                    var resolveFunction = function() {
 
                         selectedItems.forEach(function(item){
 
@@ -1562,8 +1573,9 @@ sap.ui.define([
                             });
 
                         });
+                        
                         _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
-                    }
+                    };
 
                     if( WeCurrency !== VaWaehrung && WeUnit !== VaUnit ) { //Beides umrechnen
                         DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
