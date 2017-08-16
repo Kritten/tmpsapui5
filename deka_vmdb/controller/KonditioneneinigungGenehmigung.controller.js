@@ -35,6 +35,7 @@ sap.ui.define([
 
         ladeGenehmigungen: function(){
             var _this = this;
+            var genehmigerSet;
 
             DataProvider.readGenehmigungsprozessSetAsync(_this._KeId, null)
             .then(function(genehmigungen){
@@ -61,7 +62,7 @@ sap.ui.define([
 
                         var promise = DataProvider.readGenehmigerSetAsync(genehmiger, stufenId);
                         promise.then(function(genehmigerSet){
-                            genehmigung.available = genehmigerSet;                            
+                            genehmigung.available = genehmigerSet;                           
                         });
                         promises.push(promise);
                     });

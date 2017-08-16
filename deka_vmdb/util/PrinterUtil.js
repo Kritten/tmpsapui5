@@ -5,7 +5,8 @@
  * @Last Modified time: 2017-06-22 10:59:02
  */
 sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
-    "ag/bpc/Deka/util/DataProvider"], function (PrinterUtil, DataProvider) {
+    "ag/bpc/Deka/util/DataProvider",
+    "ag/bpc/Deka/util/StaticData"], function (PrinterUtil, DataProvider, StaticData) {
 
         "use strict";
         return {
@@ -45,13 +46,18 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     }
 
                     var vaid = vermietungsaktivitaet.VaId;
-                    if(vaid) {
+                    if (vaid) {
                         result = result.replace("@@VaId2@@", vaid);
                     }
 
                     var mietbeginn = vermietungsaktivitaet.Mietbeginn;
                     if (mietbeginn) {
                         result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
+                    }
+
+                    var lzFb = vermietungsaktivitaet.LzFirstbreak;
+                    if(lzFb){
+                        result = result.replace("@@LzFirstbreak2@@", lzFb);
                     }
 
                     var mzErsterMonat = vermietungsaktivitaet.MzErsterMonat;
@@ -166,12 +172,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     }
 
                     var diff1 = parseFloat(vermietungsaktivitaet.GesErtragPa) - parseFloat(vermietungsaktivitaet.GesKeErtrag);
-                    if(diff1){
+                    if (diff1) {
                         result = result.replace("@@Diff1@@", oNumberFormat.format(diff1));
                     }
 
                     var diff2 = parseFloat(vermietungsaktivitaet.GesKosten) - parseFloat(vermietungsaktivitaet.GesKeKosten);
-                    if(diff2){
+                    if (diff2) {
                         result = result.replace("@@Diff2@@", oNumberFormat.format(diff2));
                     }
 
@@ -233,24 +239,24 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     mietflaechenangabeHtml += "</table>";
                     result = result.replace("@@Mietflaechenangaben@@", mietflaechenangabeHtml);
 
-                    if(vermietungsaktivitaet.Kategorie === "01"){
+                    if (vermietungsaktivitaet.Kategorie === "01") {
                         var keMappingHtml = "<table style=\"width: 100%\">";
-                        
-                        keMappingHtml += "<tr><td class=\"auto-style7\" style=\"text-align:left; font-family: Arial, Helvetica, sans-serif; width: 213px\" vAlign=\"top\">Zugrundeliegende Konditioneneinigungen:</td>";
+
+                        keMappingHtml += "<tr><td class=\"auto-style7\" style=\"text-align:left; font-family: Arial, Helvetica, sans-serif; width: 152px\" vAlign=\"top\">Zugrundeliegende Konditioneneinigungen:</td>";
                         keMappingHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">";
-                        vermietungsaktivitaet.VaToMap.forEach(function(ke, i){
-                            if(ke.Aktiv){                                
+                        vermietungsaktivitaet.VaToMap.forEach(function (ke, i) {
+                            if (ke.Aktiv) {
                                 keMappingHtml += ke.KeId;
 
-                                if(i < vermietungsaktivitaet.VaToMap.length - 1){                                    
-                                    keMappingHtml += ", ";  
-                                }                              
+                                if (i < vermietungsaktivitaet.VaToMap.length - 1) {
+                                    keMappingHtml += ", ";
+                                }
                             }
                         });
                         keMappingHtml += "</td></tr>";
                         keMappingHtml += "</table>";
                         result = result.replace("@@KEMapping@@", keMappingHtml);
-                    }else{
+                    } else {
                         result = result.replace("@@KEMapping@@", "<br />");
                     }
 
@@ -319,7 +325,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     if (where) {
                         text = where;
                         result = result.replace("@@AnmerkungText@@", text);
-                    }                   
+                    }
 
                     var sonstE = konditioneneinigung.SonstE;
                     if (sonstE && sonstE > 0) {
@@ -451,7 +457,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 return res;
             },
 
-            generatePrintableHtmlForBeschlussantrag: function (konditioneneinigung, kostenarten, ertragsarten) {
+            generatePrintableHtmlForBeschlussantrag: function (konditioneneinigung, kostenarten, ertragsarten, stufen) {
                 var _this = this;
 
                 jQuery.ajaxSetup({
@@ -616,8 +622,56 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "</tr>";
                     });
                     mietflaechenangabeHtml += "</table>";
-
                     result = result.replace("@@Mietflaechenangaben@@", mietflaechenangabeHtml);
+
+
+                    var genehmigerHtml = "<table class=\"cellSpacedTable\">";
+                    genehmigerHtml += "<thead><tr>";
+                    genehmigerHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Stufe</span></td>";
+                    genehmigerHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Name</span></td>";
+                    genehmigerHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Status</span></td>";
+                    genehmigerHtml += "</thead></tr>";
+
+                    var textModel = sap.ui.getCore().getModel("text");
+                    var stati = textModel.oData.status;
+                    _.map(stufen, function (genehmigung) {
+                        var genehmiger = genehmigung.Name;
+                        var stufenId = genehmigung.Stufe;
+                        var statusId = genehmigung.Status;
+                        var statusTrl = stati[statusId] ? stati[statusId] : "unbekannt";
+                        var stufe;
+                        switch(stufenId){
+                            case "SB":
+                                stufe = "Sachbearbeiter";
+                                break;
+                            case "GL":
+                                stufe = "Gruppenleiter";
+                                break;
+                            case "AL":
+                                stufe = "Abteilungsleiter";
+                                break;
+                            case "GS":
+                                stufe = "Geschäftsführung";
+                                break;
+                            case "GF":
+                                stufe = "Geschäftsführung";
+                                break;
+                            case "BL":
+                                stufe = "Bereichsleiter";
+                                break;
+                            default:
+                                stufe = "";    
+                        }        
+
+                        genehmigerHtml += "<tr>";
+                        genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; font-family: Arial, Helvetica, sans-serif;\">" + stufe + "</td>";
+                        genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; font-family: Arial, Helvetica, sans-serif;\">" + genehmiger + "</td>";
+                        genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; font-family: Arial, Helvetica, sans-serif;\">" + statusTrl + "</td>";
+                        genehmigerHtml += "</tr>";
+                    });
+                  
+                    genehmigerHtml += "</table>";
+                    result = result.replace("@@MoeglicheGenehmiger@@", genehmigerHtml);
 
                     // Restliche Platzhalter entfernen
                     result = result.replace(/@@\w*@@/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -646,13 +700,57 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
             },
 
             printBeschlussantrag: function (konditioneneinigung, kostenarten, ertragsarten) {
-                var printableHtml = this.generatePrintableHtmlForBeschlussantrag(konditioneneinigung, kostenarten, ertragsarten);
-                var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=1,status=0');
-                printWindow.document.write(printableHtml);
-                printWindow.document.close();
-                printWindow.focus();
-                printWindow.print();
-                printWindow.close();
+                var _this = this;
+                var keId = konditioneneinigung.KeId;
+                var stufenListe;
+
+                DataProvider.readGenehmigungsprozessSetAsync(keId, null).then(function (genehmigungen) {
+                        var genehmigungenGruppiert = _.groupBy(genehmigungen, function (genehmigung) {
+                            return genehmigung.Stufe;
+                        });
+
+                        var stufen = _.map(_.pairs(genehmigungenGruppiert), function (pair) {
+                            return {
+                                Stufe: pair[0],
+                                genehmigungen: _.sortBy(pair[1], function (genehmigung) {
+                                    return genehmigung.Index;
+                                })
+                            };
+                        });
+
+                        // Lade moegliche Genehmiger 
+                        var promises = [];
+                        _.map(stufen, function (stufe) {
+                            _.map(stufe.genehmigungen, function (genehmigung) {
+                                var genehmiger = genehmigung.Genehmiger;
+                                var stufenId = stufe.Stufe;
+
+                                var promise = DataProvider.readGenehmigerSetAsync(genehmiger, stufenId);
+                                promise.then(function (genehmigerSet) {
+                                    genehmigung.available = genehmigerSet;
+                                });
+                                promises.push(promise);
+                            });
+                        });
+
+                        Q.all(promises).then(function () {
+                            stufenListe = genehmigungen;   
+                            
+                            var printableHtml = _this.generatePrintableHtmlForBeschlussantrag(konditioneneinigung, kostenarten, ertragsarten, stufenListe);
+                            var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=1,status=0');
+                            printWindow.document.write(printableHtml);
+                            printWindow.document.close();
+                            printWindow.focus();
+                            printWindow.print();
+                            printWindow.close();
+                        });
+                    })
+                    .catch(function (oError) {
+                        ErrorMessageUtil.showError(oError);
+                    })
+                    .done(function(){
+                        
+                    });                
             }
         };
     });
