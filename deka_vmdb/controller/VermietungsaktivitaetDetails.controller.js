@@ -584,29 +584,34 @@ sap.ui.define([
             .done();
             
             // Vermietungsobjekte auslesen und mit importierten Daten ergänzen          
-            var bukr = vermietungsaktivitaet.Bukrs;
-            var weId = vermietungsaktivitaet.WeId;
+            var Bukrs = vermietungsaktivitaet.Bukrs;
+            var WeId = vermietungsaktivitaet.WeId;
            
-            this.readMietobjektSetAsync(bukr,weId)
+            DataProvider.readMietobjektSetAsync(null, "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'")
             .then(function(mietobjekte) {
                 var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
 
-                _.map(mietflaechenangaben, function(mietflaechenangabe){
-                    _.map(mietobjekte, function(mietobjekt){
-                        if(mietobjekt.MoId === mietflaechenangabe.MoId){
-                            mietflaechenangabe.Bukrs = mietobjekt.Bukrs;
-                            mietflaechenangabe.WeId = mietobjekt.WeId;
-                            mietflaechenangabe.Nutzart = mietobjekt.Nutzart;
-                            mietflaechenangabe.NhMiete = mietobjekt.NhMiete;
-                            mietflaechenangabe.Bezei = mietobjekt.Bezei;
-                            mietflaechenangabe.Hnfl = mietobjekt.Hnfl;
-                            mietflaechenangabe.HnflUnit = mietobjekt.HnflUnit;
-                        }
+                _.each(mietflaechenangaben, function(mietflaechenangabe){
+                    
+                    var mietobjekt = _.find(mietobjekte, function(mo){
+                        return mo.MoId === mietflaechenangabe.MoId;
                     });
+
+                    if(mietobjekt){
+                        mietflaechenangabe.Bukrs = mietobjekt.Bukrs;
+                        mietflaechenangabe.WeId = mietobjekt.WeId;
+                        mietflaechenangabe.Nutzart = mietobjekt.Nutzart;
+                        mietflaechenangabe.NhMiete = mietobjekt.NhMiete;
+                        mietflaechenangabe.Bezei = mietobjekt.Bezei;
+                        mietflaechenangabe.Hnfl = mietobjekt.Hnfl;
+                        mietflaechenangabe.HnflUnit = mietobjekt.HnflUnit;
+                    }
+
                 });
 
                 var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
                 var objekte = [];
+                
                 // Umwandlung Mietobjekt -> Objekt
                 mietflaechenangaben.forEach(function(mietobjekt){
                     objekte.push({
@@ -631,36 +636,10 @@ sap.ui.define([
                     });
                 });
 
-                _this.getView().getModel("form").setProperty("vermietungsaktivitaet/VaToOb", objekte);
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
             })
             .done();            
-        },
-
-        readMietobjektSetAsync: function(Bukrs, WeId){
-
-            return Q.Promise(function(resolve, reject, notify) {
-
-                var KeUnitModel = sap.ui.getCore().getModel("KeUnit");
-
-                KeUnitModel.read("/MietobjektSet", {
-
-                    urlParameters: {
-                        "$filter": "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'"
-                    },
-
-                    success: function(KeUnit){
-                        console.log(KeUnit);
-                        resolve(KeUnit.results);
-                    },
-
-                    error: function(oError){
-                        reject(oError);
-                    }
-                });
-
-            });
-
-        },        
+        },      
 
         onStatusSelektionChange: function(oEvent){
             var _this = this;

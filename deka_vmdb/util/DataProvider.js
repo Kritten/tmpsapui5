@@ -698,6 +698,27 @@ sap.ui.define([], function() {
             });
         },
 
+        readMietobjektSetAsync: function(expand, filter){
+            var _this = this;
+            
+            var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
+                return _.isUndefined(val) || _.isNull(val);
+            });
+
+            return Q.Promise(function(resolve, reject, notify) {
+                _this.oDataModel.read("/MietobjektSet", {
+                    urlParameters: urlParameters,
+                    success: function(oData){
+                        console.log(oData.results);
+                        resolve(oData.results);
+                    },
+                    error: function(oError){
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
         readKonditioneneinigungSetAsync: function(expand, filter){
             var _this = this;
             
