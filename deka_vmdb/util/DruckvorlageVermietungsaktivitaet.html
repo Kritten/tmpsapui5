@@ -15,16 +15,12 @@
 	-webkit-print-color-adjust: exact;
 	border: 1px solid black;
 	font-size: small;
+	font-family: Arial, Helvetica, sans-serif;
 	padding: 5px;
 }
 .auto-style2 {
 	font-size: small;
 	font-family: Arial, Helvetica, sans-serif;
-}
-.auto-style3 {
-	font-size: small;
-	background-color: #888888 !important;
-	-webkit-print-color-adjust: exact;
 }
 table {
 	border-collapse: seperate;
@@ -69,16 +65,13 @@ table thead {
 .greyBGPad {
 	background-color: #888888 !important;
 	font-size: small;
+	font-family: Arial, Helvetica, sans-serif;
 	padding: 5px;
 	border: 1px solid black;
 }
 .auto-style2 {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: small;
-}
-.auto-style3 {
-	font-size: small;
-	background-color: #888888 !important;
 }
 table {
 	border-collapse: seperate;
@@ -99,6 +92,7 @@ table thead {
 }
 .auto-style6 {
 	font-size: small;
+	text-align: right;
 	background-color: #888888 !important;
 	font-family: Arial, Helvetica, sans-serif;
 	border: 1px solid black;
@@ -120,12 +114,6 @@ table thead {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: small;
 	text-align: center;
-}
-.auto-style11 {
-	font-size: small;
-	-webkit-print-color-adjust: exact;
-	text-align: center;
-	background-color: #888888;
 }
 </style>
 </head>
@@ -160,17 +148,17 @@ table thead {
 			<tr>
 				<td class="auto-style7" style="width: 230px; height: 5px;">Währungsangaben 
 				in: </td>
-				<td style="height: 5px"><span class="auto-style6">@@Currency@@</span></td>
+				<td style="height: 5px" class="auto-style6">@@Currency@@</td>
 			</tr>
 			<tr>
 				<td class="auto-style7" style="width: 211px">Flächenangaben in:
 				</td>
-				<td><span class="auto-style6">@@Unit@@</span></td>
+				<td class="auto-style6">@@Unit@@></td>
 			</tr>
 			<tr>
 				<td class="auto-style7" style="width: 211px">Mietflächenangaben 
 				in: </td>
-				<td><span class="auto-style6">@@MonatJahr@@</span></td>
+				<td class="auto-style6">@@MonatJahr@@</td>
 			</tr>
 		</table>
 		</td>
@@ -211,8 +199,8 @@ table thead {
 		<td>
 			<table style="width: 100%">
 				<tr>
-					<td class="auto-style7" style="width: 152px">Mietername:</td>
-					<td class="auto-style6" style="width: 165px">@@Debitorname@@</td>
+					<td class="auto-style7" style="width: 152px; height: 22px;">Mietername:</td>
+					<td class="auto-style6" style="width: 165px; height: 22px;">@@Debitorname@@</td>
 				</tr>
 				<tr>
 					<td class="auto-style7" style="width: 152px; height: 20px;">Mietbeginn:</td>
@@ -317,7 +305,7 @@ table thead {
 			<table style="width: 100%">
 				<tr>
 					<td class="auto-style7" style="width: 152px; height: 20px;">Sonstige Kostenart:</td>
-					<td class="auto-style6" style="width: 165px; height: 22px">@@ArtK@@</td>
+					<td class="auto-style6" style="height: 22px">@@ArtK@@</td>
 				</tr>	
 				<tr>
 					<td class="auto-style7" style="width: 152px;">Sonstige Kosten:</td>
@@ -338,7 +326,7 @@ table thead {
 <hr />
 <p class="auto-style9">@@Mietflaechenangaben@@</p>
 <hr />
-<table style="width: 90%" class="cellSpacedTable">
+<table style="width: 100%" class="cellSpacedTable">
 	<tr>
 		<td></td>
 		<td class="auto-style10"><strong>Laufzeit</strong></td>
@@ -347,10 +335,10 @@ table thead {
 		<td class="auto-style10"><strong>Differenz</strong></td>
 	</tr>
 	<tr>
-		<td class="auto-style7" style="width: 104px; height: 12px;">Erträge (1. 
+		<td class="auto-style7" style="width: 150px; height: 12px;">Erträge (1. 
 		Jahr):</td>
 		<td class="greyBGPad" style="width: 116px; height: 12px">
-		@@LaufzeitKe@@</td>
+		&nbsp;</td>
 		<td class="greyBGPad" style="width: 116px; height: 12px">
 		@@GesErtragPa@@</td>
 		<td class="greyBGPad" style="width: 116px; height: 12px">
@@ -359,8 +347,8 @@ table thead {
 		@@Diff1@@</td>
 	</tr>
 	<tr>
-		<td class="auto-style7" style="width: 104px;">Kosten gesamt:</td>
-		<td class="auto-style11" style="width: 116px;"></td>
+		<td class="auto-style7" style="width: 150px;">Kosten gesamt:</td>
+		<td class="greyBGPad" style="width: 116px;"></td>
 		<td class="greyBGPad" style="width: 116px; height: 12px">
 		@@GesKosten@@</td>
 		<td class="greyBGPad" style="width: 116px; height: 12px">
@@ -369,31 +357,42 @@ table thead {
 		@@Diff2@@</td>
 	</tr>
 	<tr>
-		<td class="auto-style7" style="width: 104px; height: 12px;">Gesamte Erträge:</td>
+		<td class="auto-style7" style="width: 150px; height: 12px;">Gesamte Erträge 
+		(KE):</td>
 		<td class="greyBGPad" style="width: 116px; height: 12px">
-		@@LzFirstbreak@@</td>
+		@@LaufzeitKe@@</td>
 		<td class="greyBGPad" style="width: 116px; height: 12px">
-		@@GesErtrag@@</td>
-		<td class="auto-style3" style="width: 116px; height: 12px"></td>
-		<td class="auto-style3" style="width: 116px; height: 12px"></td>
+		&nbsp;</td>
+		<td class="greyBGPad" style="width: 116px; height: 12px">@@GesKeErtragLz@@</td>
+		<td class="greyBGPad" style="width: 116px; height: 12px">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 150px; height: 12px;">Gesamte Erträge 
+		(VA):</td>
+		<td class="greyBGPad" style="width: 116px; height: 12px">
+		@@LzFirstbreak2@@</td>
+		<td class="greyBGPad" style="width: 116px; height: 12px">
+		@@GesVaErtragLz@@</td>
+		<td class="greyBGPad" style="width: 116px; height: 12px"></td>
+		<td class="greyBGPad" style="width: 116px; height: 12px"></td>
 	</tr>
 </table>
 <div>&nbsp;</div>
 <table>
 	<tr>
 		<td class="auto-style5" style="height: 12px; width: 300px;">Incentive-Quote:</td>
-		<td class="greyBGPad" style="width: 116px; height: 12px">
+		<td class="greyBGPad" style="text-align: right;width: 116px; height: 12px">
 		@@Incentivequote@@</td>
 	</tr>
 	<tr>
 		<td class="auto-style5" style="height: 12px; width: 300px;">Effektivmiete:</td>
-		<td class="greyBGPad" style="width: 116px; height: 12px">
+		<td class="greyBGPad" style="text-align: right;width: 116px; height: 12px">
 		@@Effektivmiete@@</td>
 	</tr>
 	<tr>
 		<td class="auto-style5" style="height: 12px; width: 300px;">Verhältnis gesamte 
 		Erträge zu marktüblicher Miete:</td>
-		<td class="greyBGPad" style="width: 116px; height: 12px">
+		<td class="greyBGPad" style="text-align: right;width: 116px; height: 12px">
 		@@VerhGeMm@@</td>
 	</tr>
 </table>
@@ -403,7 +402,7 @@ table thead {
 		<td class="auto-style9" style="vertical-align: bottom; height: 26px;">Bemerkung</td>
 	</tr>
 	<tr>
-		<td class="auto-style6" style="height: 60px">@@Bemerkung@@</td>
+		<td class="auto-style6" style="text-align: left;height: 60px">@@Bemerkung@@</td>
 	</tr>
 </table>
 <table style="width: 100%">

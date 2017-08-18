@@ -462,13 +462,7 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>MIETE_GESAMT}" />
-                            <Text text="{
-                                    path: 'form>/vermietungsaktivitaet/LaufzeitKe',
-                                    type: 'sap.ui.model.type.Integer',
-                                    formatOptions: {
-                                        maxIntegerDigits: 5
-                                    }
-                            }" />
+                            <Text text=" " />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtragPa', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{ parts:
@@ -485,8 +479,7 @@
                                 </customData>
                             </Text>-->
                         </cells>
-                    </ColumnListItem>
-                    
+                    </ColumnListItem>                    
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>KOSTEN_GESAMT}" />
@@ -508,10 +501,24 @@
                             </Text>-->
                         </cells>
                     </ColumnListItem>
-
                     <ColumnListItem>
                         <cells>
-                            <Text text="{i18n>ERTRAEGE_GESAMT}" />
+                            <Text text="{i18n>ERTRAEGE_GESAMT_KE}" />
+                            <Text text="{
+                                    path: 'form>/vermietungsaktivitaet/LaufzeitKe',
+                                    type: 'sap.ui.model.type.Integer',
+                                    formatOptions: {
+                                        maxIntegerDigits: 5
+                                    }
+                            }" />
+                            <Text text=" " />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeErtragLz', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text=" " />
+                        </cells>
+                    </ColumnListItem>                     
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{i18n>ERTRAEGE_GESAMT_VA}" />
                             <Text text="{
                                     path: 'form>/vermietungsaktivitaet/LzFirstbreak',
                                     type: 'sap.ui.model.type.Integer',
@@ -519,7 +526,7 @@
                                         maxIntegerDigits: 5
                                     }
                             }" />
-                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesVaErtragLz', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text=" " />
                             <Text text=" " />
                         </cells>
