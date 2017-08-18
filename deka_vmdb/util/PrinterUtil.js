@@ -181,6 +181,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@Diff2@@", oNumberFormat.format(diff2));
                     }
 
+                    var diff3 = parseFloat(vermietungsaktivitaet.GesVaErtragLz) - parseFloat(vermietungsaktivitaet.GesKeErtragLz);
+                    if(diff3) {
+                        result = result.replace("@@Diff3@@", oNumberFormat.format(diff3));
+                    }
+
                     // Restliche Keys ersetzen
                     Object.keys(vermietungsaktivitaet).forEach(function (key, index) {
                         var value = vermietungsaktivitaet[key];

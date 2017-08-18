@@ -479,7 +479,7 @@
                                 </customData>
                             </Text>-->
                         </cells>
-                    </ColumnListItem>                    
+                    </ColumnListItem>
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>KOSTEN_GESAMT}" />
@@ -511,11 +511,16 @@
                                         maxIntegerDigits: 5
                                     }
                             }" />
-                            <Text text=" " />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesVaErtragLz', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeErtragLz', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text=" " />
+                            <Text text="{ parts: [  
+                                                    {path:'form>/vermietungsaktivitaet/GesVaErtragLz'},
+                                                    {path:'form>/vermietungsaktivitaet/GesKeErtragLz'},
+                                                    {path:'form>/viewsettings/waehrungSelected/Nach'}
+                                                ],
+                                                formatter: 'myFormatter.formatDifferenz'}" />
                         </cells>
-                    </ColumnListItem>                     
+                    </ColumnListItem>
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>ERTRAEGE_GESAMT_VA}" />
@@ -526,11 +531,11 @@
                                         maxIntegerDigits: 5
                                     }
                             }" />
-                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesVaErtragLz', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text=" " />
                             <Text text=" " />
                         </cells>
-                    </ColumnListItem>                    
+                    </ColumnListItem>
                 </items>
             </Table>
 
