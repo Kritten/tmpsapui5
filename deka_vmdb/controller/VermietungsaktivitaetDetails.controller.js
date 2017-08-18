@@ -584,8 +584,8 @@ sap.ui.define([
             .done();
             
             // Vermietungsobjekte auslesen und mit importierten Daten ergänzen          
-            var bukr = vermietungsaktivitaet.Bukrs;
-            var weId = vermietungsaktivitaet.WeId;
+            var Bukrs = vermietungsaktivitaet.Bukrs;
+            var WeId = vermietungsaktivitaet.WeId;
            
             DataProvider.readMietobjektSetAsync(null, "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'")
             .then(function(mietobjekte) {
