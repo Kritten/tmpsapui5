@@ -203,9 +203,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     mietflaechenangabeHtml += "<thead><tr>";
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Lfd Nr <br /> Split</span></td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">MO<br /> Bezeichnung</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif;width: 180px;\">MO<br /> Bezeichnung</span></td>";
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif;\">Nutzungsart <br /> NA alternativ</span></td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Hauptnutzfläche <br /> HNFZF alternativ</span> <br /> FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Hauptnutzfläche <br /> HNF alternativ</span> <br /> FE</td>";
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Marktübliche Miete<br /> Angebotsmiete</span> <br /> WHG/FE</td>";
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Grundausbaukosten <br /> Mieterausbaukosten</span> <br /> WHG/FE</td>";
                     mietflaechenangabeHtml += "</tr></thead>";
@@ -242,7 +242,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     if (vermietungsaktivitaet.Kategorie === "01") {
                         var keMappingHtml = "<table style=\"width: 100%\">";
 
-                        keMappingHtml += "<tr><td class=\"auto-style7\" style=\"text-align:left; font-family: Arial, Helvetica, sans-serif; width: 152px\" vAlign=\"top\">Zugrundeliegende Konditioneneinigungen:</td>";
+                        keMappingHtml += "<tr><td class=\"auto-style7\" style=\"text-align:left; font-family: Arial, Helvetica, sans-serif; width: 152px;\" vAlign=\"top\">Zugrundeliegende Konditioneneinigungen:</td>";
                         keMappingHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">";
                         vermietungsaktivitaet.VaToMap.forEach(function (ke, i) {
                             if (ke.Aktiv) {
@@ -409,7 +409,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     mietflaechenangabeHtml += "<thead><tr>";
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Lfd Nr <br /> Split</span></td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">MO<br /> Bezeichnung</span></td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;width: 180px; \">MO<br /> Bezeichnung</span></td>";
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Nutzungsart</span></td>";
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Hauptnutzfläche <br /> HNF alternativ</span> <br /> FE</td>";
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Marktübliche Miete <br /> Angebotsmiete</span> <br /> WHG/FE</td>";
