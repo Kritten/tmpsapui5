@@ -12,8 +12,9 @@
         .greyBGPad {
                 background-color: #888888 !important;
                 padding: 5px;
-                font-size:small;
+                font-size: 12px;
                 border: 1px solid black;
+                font-family: Arial, Helvetica, sans-serif;
         }
 
         .auto-style2 {
@@ -43,14 +44,14 @@
         }
 
         .auto-style6 {
-                font-size: small;
+                font-size: 12px;
                 background-color: #888888 !important;
                 font-family: Arial, Helvetica, sans-serif;
                 border: 1px solid black;
                 text-align: right;
         }
         .auto-style7 {
-                font-size: small;
+                font-size: 12px;
                 font-family: Arial, Helvetica, sans-serif;
         }
         .auto-style8 {
@@ -71,8 +72,9 @@
                 background-color: #888888 !important;
                 -webkit-print-color-adjust: exact;
                 border: 1px solid black;
-                font-size: small;
+                font-size: 12px;
                 padding: 5px;
+                font-family: Arial, Helvetica, sans-serif;
          }
 
         .auto-style2 {
@@ -103,7 +105,7 @@
         }
 
         .auto-style6 {
-                font-size: small;
+                font-size: 12px;
                 text-align: right;
                 background-color: #888888 !important;
                 font-family: Arial, Helvetica, sans-serif;
@@ -111,7 +113,7 @@
                 -webkit-print-color-adjust: exact;
         }
         .auto-style7 {
-                font-size: small;
+                font-size: 12px;
                 font-family: Arial, Helvetica, sans-serif;
         }
         .auto-style8 {
@@ -141,7 +143,7 @@
 </h3>
 <table style="width: 100%">
         <tr>
-                <td style="vertical-align:top; width: 100%;">
+                <td style="vertical-align:top; width: 70%;">
                 <table style="width: 100%; height: 100%">
                         <tr>
                                 <td class="auto-style7" style="width: 40px"><strong>Bukr</strong></td>
@@ -149,151 +151,128 @@
                                 <td class="auto-style7"><strong>Bezeichnung</strong></td>
                         </tr>
                         <tr style="height: 100%; vertical-align:top">
-                                <td style="width: 68px; height: 25px;">
-                                <span class="auto-style6">@@Bukrs@@</span></td>
-                                <td class="auto-style2" style="width: 65px; height: 25px;">
-                                <span class="auto-style6">@@WeId@@</span></td>
-                                <td class="auto-style2" style="height: 25px">
-                                <span class="auto-style6">@@KeBezeichnung@@</span></td>
+                                <td style="width: 68px"><span class="auto-style6">@@Bukrs@@</span></td>
+                                <td class="auto-style2" style="width: 65px"><span class="auto-style6">@@WeId@@</span></td>
+                                <td class="auto-style2"><span class="auto-style6">@@KeBezeichnung@@</span></td>
                         </tr>
                 </table>
                 </td>
-                <td style="height: 40px; text-align: right">
-                <table style="width: 280px; text-align: right">
+                <td style="text-align: right" >
+                <table style="text-align: right; width: 100%">
                         <tr>
-                                <td style="width: 230px" class="auto-style7">W&auml;hrungsangaben in: </td>
+                                <td class="auto-style7">W&auml;hrungsangaben in: </td>
                                 <td class="auto-style6">@@Currency@@</td>
                         </tr>
                         <tr>
-                                <td style="width: 211px; height: 20px;" class="auto-style7">Fl&auml;chenangaben in: </td>
-                                <td class="auto-style6" style="height: 20px">@@Unit@@</td>
+                                <td class="auto-style7">Fl&auml;chenangaben in: </td>
+                                <td class="auto-style6">@@Unit@@</td>
                         </tr>
                         <tr>
-                                <td style="width: 211px; height: 20px;" class="auto-style7">Mietfl&auml;chenangaben in: </td>
-                                <td class="auto-style6" style="height: 20px">@@MonatJahr@@</td>
+                                <td class="auto-style7">Mietfl&auml;chenangaben in: </td>
+                                <td class="auto-style6">@@MonatJahr@@</td>
                         </tr>
                 </table>
                 </td>
         </tr>
 </table>
-
 <hr />
 <table style="width: 100%">
         <tr>
-                <td style="width: 50%">
-                <table style="width: 100%">
+                <td style="width: 50%; vertical-align: top">
+                 <table style="width: 100%">
                         <tr>
-                                <td class="auto-style7" style="width: 262px">G&uuml;ltigkeit der
-                                Konditioneneinigung:</td>
+                                <td class="auto-style7" style="width: 50%">G&uuml;ltigkeit der Konditioneneinigung:</td>
                                 <td class="auto-style6">@@GueltigkKe@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 262px">Mietbeginn:</td>
+                                <td class="auto-style7" style="width: 50%">Mietbeginn:</td>
                                 <td class="auto-style6">@@Mietbeginn@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 262px">Mietfreie Zeiten in
-                                Monaten:</td>
+                                <td class="auto-style7" style="width: 50%">Mietfreie Zeiten in Monaten:</td>
                                 <td class="auto-style6">@@MzMonate@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 262px">&nbsp;</td>
+                                <td class="auto-style7" style="width: 50%">&nbsp;</td>
                                 <td class="auto-style9">&nbsp;</td>
                         </tr>
                         <tr>
-                                <td class="auto-style2" style="width: 262px">
-                                <span class="auto-style9">Maklerkosten:
-                                </span>
-                                <span class="auto-style6">@@MkMonate@@</span><span class="auto-style9"> Monatsmieten
-                                </span> <span style="text-align:right" class="auto-style9">=</span><span class="auto-style9">
-                                </span> </td>
+                                <td class="auto-style7" style="width: 50%">Maklerkosten:<br>
+                                 <span class="auto-style6">@@MkMonate@@</span>Monatsmieten =
+                                </td>
                                 <td class="auto-style6">@@MkMonateGesamt@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style2" style="width: 262px">
-                                <span class="auto-style9">Maklerkosten
-                                Absolutwert </span>
-                                <span style="text-align:right" class="auto-style9">=</span></td>
+                                <td class="auto-style7" style="width: 50%">Maklerkosten Absolutwert =</td>
                                 <td class="auto-style6">@@MkAbsolut@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 262px; text-align: right">Gesamt = &nbsp;</td>
+                                <td class="auto-style7" style="width: 50%; text-align: right">Gesamt =</td>
                                 <td class="auto-style6">@@MkGesamt@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 262px">Sonstige
-                                Ertragsart:</td>
+                                <td class="auto-style7" style="width: 50%">Sonstige Ertragsart:</td>
                                 <td class="auto-style6">@@ArtE@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 262px">Sonstige Ertr&auml;ge: </td>
+                                <td class="auto-style7" style="width: 50%">Sonstige Ertr&auml;ge: </td>
                                 <td class="auto-style6">@@SonstE@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 262px">&nbsp;</td>
+                                <td class="auto-style7" style="width: 50%">&nbsp;</td>
                                 <td class="auto-style9">&nbsp;</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 262px">Kosten aus
-                                Steuerschaden: </td>
+                                <td class="auto-style7" style="width: 50%">Kosten aus Steuerschaden:</td>
                                 <td class="auto-style6">@@Steuerschaden@@</td>
                         </tr>
-                </table>
+                 </table>
                 </td>
-                <td style="height: 90%">
-                <table style="width: 100%">
+                <td style="width: 50%; vertical-align: top">
+                 <table style="width: 100%">
                         <tr>
-                                <td class="auto-style7" style="width: 293px">Budgetstop</td>
+                                <td class="auto-style7" style="width: 50%">Budgetstop:</td>
                                 <td class="auto-style6">@@Budgetstp@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 293px">Laufzeit bis 1st
-                                break option in Monaten:</td>
+                                <td class="auto-style7" style="width: 50%">Laufzeit bis 1st break option in Monaten:</td>
                                 <td class="auto-style6">@@LzFirstbreak@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 293px">Einmalertrag:</td>
+                                <td class="auto-style7" style="width: 50%">Einmalertrag:</td>
                                 <td class="auto-style6">@@Einmalertrag@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 293px">&nbsp;</td>
+                                <td class="auto-style7" style="width: 50%">&nbsp;</td>
                                 <td class="auto-style9">&nbsp;</td>
                         </tr>
                         <tr>
-                                <td class="auto-style2" style="width: 293px">
-                                <span class="auto-style9">Beratungskosten:
-                                </span>
-                                <span class="auto-style6">@@BkMonatsmieten@@</span><span class="auto-style9"> Monatsmieten
-                                </span> <span style="text-align:right" class="auto-style9">=</span></td>
+                                <td class="auto-style7" style="width: 50%">Beratungskosten:<br>
+                                 <span class="auto-style6">@@BkMonatsmieten@@</span>Monatsmieten =</td>
                                 <td class="auto-style6">@@BkMonateGesamt@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style2" style="width: 293px">
-                                <span class="auto-style9">Beratungskosten
-                                Absolutwert </span>
-                                <span style="text-align:right" class="auto-style9">= </span></td>
+                                <td class="auto-style7" style="width: 50%">Beratungskosten Absolutwert =</td>
                                 <td class="auto-style6">@@BkAbsolut@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 262px; text-align: right">Gesamt =&nbsp; </td>
+                                <td class="auto-style7" style="width: 50%; text-align: right">Gesamt =</td>
                                 <td class="auto-style6">@@BkGesamt@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 293px">Sonstige
-                                Kostenart:</td>
+                                <td class="auto-style7" style="width: 50%">Sonstige Kostenart:</td>
                                 <td class="auto-style6">@@ArtK@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 293px">Sonstige Kosten: </td>
+                                <td class="auto-style7" style="width: 50%">Sonstige Kosten: </td>
                                 <td class="auto-style6">@@SonstK@@</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 293px">&nbsp;</td>
+                                <td class="auto-style7" style="width: 50%">&nbsp;</td>
                                 <td class="auto-style9">&nbsp;</td>
                         </tr>
                         <tr>
-                                <td class="auto-style7" style="width: 293px">Ertrag aus
-                                MwSt-Kompensation: </td>
+                                <td class="auto-style7" style="width: 50%">Ertrag aus MwSt-Kompensation:</td>
                                 <td class="auto-style6">@@MwstkErtrag@@</td>
                         </tr>
                 </table>
@@ -303,52 +282,34 @@
 <hr />
 <p class="auto-style9">@@Mietflaechenangaben@@</p>
 <hr />
-<table style="width: 100%" border=1>
+<table style="width: 100%">
         <tr>
                 <td style="width: 104px" class="auto-style7">Ertr&auml;ge (1. Jahr):</td>
-                <td class="auto-style6" style="width: 180px">@@GesErtragPa@@</td>
-                <td style="text-align: right">
-                    <table style="width: 100%">
-                            <tr>
-                                    <td class="auto-style7">Incentive-Quote:</td>
-                                    <td class="auto-style6" style="width: 180px">@@Incentivequote@@</td>
-                            </tr>
-                    </table>
-                </td>
+                <td class="auto-style6" style="width: 121px">@@GesErtragPa@@</td>
+                <td class="auto-style5">Incentive-Quote:</td>
+                <td class="auto-style6" style="width: 116px">@@Incentivequote@@</td>
         </tr>
         <tr>
                 <td style="width: 104px" class="auto-style7">Kosten gesamt:</td>
-                <td class="auto-style6" style="width: 180px">@@GesKosten@@</td>
-                <td style="text-align: right">
-                    <table style="width: 100%">
-                            <tr>
-                                  <td class="auto-style7">Effektivmiete:</td>
-                                  <td class="auto-style6" style="width: 180px">@@Effektivmiete@@</td>
-                            </tr>
-                    </table>
-                </td>
+                <td class="auto-style6" style="width: 121px">@@GesKosten@@</td>
+                <td class="auto-style5">Effektivmiete:</td>
+                <td class="auto-style6" style="width: 116px">@@Effektivmiete@@</td>
         </tr>
         <tr>
                 <td style="width: 104px" class="auto-style7">Gesamte Ertr&auml;ge:</td>
-                <td class="auto-style6" style="width: 180px">@@GesErtrag@@</td>
-                <td style="text-align: right">
-                      <table style="width: 100%">
-                              <tr>
-                                  <td class="auto-style7">Verh&auml;ltnis gesamte Ertr&auml;ge zu markt&uuml;blicher Miete:</td>
-                                  <td class="auto-style6" style="width: 180px">@@VerhGeMm@@</td>
-                              </tr>
-                      </table>
-                </td>
+                <td class="auto-style6" style="width: 121px">@@GesErtrag@@</td>
+                <td class="auto-style5">Verh&auml;ltnis gesamte Ertr&auml;ge zu markt&uuml;blicher Miete:</td>
+                <td class="auto-style6" style="width: 116px">@@VerhGeMm@@</td>
         </tr>
 </table>
 <hr />
 @@MoeglicheGenehmiger@@
 <table style="width: 100%">
-        <tr style="height: 35px">
+        <tr>
                 <td style="vertical-align: bottom" class="auto-style7"><strong>Bemerkung</strong></td>
         </tr>
-        <tr style="height: 60px">
-                <td class="auto-style6" style="text-align:left;">@@Bemerkung@@</td>
+        <tr>
+                <td class="auto-style6" style="height: 60px; text-align: left; vertical-align: text-top;">@@Bemerkung@@</td>
         </tr>
 </table>
 

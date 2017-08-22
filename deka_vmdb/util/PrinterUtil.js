@@ -245,9 +245,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     result = result.replace("@@Mietflaechenangaben@@", mietflaechenangabeHtml);
 
                     if (vermietungsaktivitaet.Kategorie === "01") {
-                        var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 25%;\">Zugrundeliegende Konditioneneinigungen:</td>";
+                        var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Zugrundeliegende Konditioneneinigungen:</td>";
 
-                        keMappingHtml += "<td class=\"greyBGPad\">";
+                        keMappingHtml += "<td class=\"auto-style6\">";
                         vermietungsaktivitaet.VaToMap.forEach(function (ke, i) {
                             if (ke.Aktiv) {
                                 keMappingHtml += ke.KeId;
