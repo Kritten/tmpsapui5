@@ -12,8 +12,9 @@
         .greyBGPad {
                 background-color: #888888 !important;
                 padding: 5px;
-                font-size:small;
+                font-size: 12px;
                 border: 1px solid black;
+                font-family: Arial, Helvetica, sans-serif;
         }
 
         .auto-style2 {
@@ -43,14 +44,14 @@
         }
 
         .auto-style6 {
-                font-size: small;
+                font-size: 12px;
                 text-align: right;
                 background-color: #888888 !important;
                 font-family: Arial, Helvetica, sans-serif;
                 border: 1px solid black;
         }
         .auto-style7 {
-                font-size: small;
+                font-size: 12px;
                 font-family: Arial, Helvetica, sans-serif;
                 text-align: left;
         }
@@ -72,8 +73,9 @@
                 background-color: #888888 !important;
                 -webkit-print-color-adjust: exact;
                 border: 1px solid black;
-                font-size: small;
+                font-size: 12px;
                 padding: 5px;
+                font-family: Arial, Helvetica, sans-serif;
         }
 
         .auto-style2 {
@@ -104,14 +106,14 @@
         }
 
         .auto-style6 {
-                font-size: small;
+                font-size: 12px;
                 background-color: #888888 !important;
                 font-family: Arial, Helvetica, sans-serif;
                 border: 1px solid black;
                 text-align: right;
         }
         .auto-style7 {
-                font-size: small;
+                font-size: 12px;
                 font-family: Arial, Helvetica, sans-serif;
                 text-align: left;
         }
@@ -150,7 +152,7 @@
                 </table>
                 </td>
                 <td style="text-align: right">
-                <table style="text-align: right">
+                <table style="text-align: right; width: 100%">
                         <tr>
                                 <td class="auto-style7">W&auml;hrungsangaben in: </td>
                                 <td class="auto-style6">@@Currency@@</td>
@@ -195,8 +197,15 @@
                         </table>
                 </td>
         </tr>
+        <tr>
+                <td style="width: 100%" colspan="2">
+                         <table style="width: 100%">
+                              @@KEMapping@@
+                        </table>
+                </td>
+        </tr>
 </table>
-@@KEMapping@@
+
 <table style="width: 100%">
         <tr>
                 <td style="width: 50%; vertical-align: top">
@@ -382,7 +391,7 @@
                <td style="vertical-align: bottom" class="auto-style7"><strong>Bemerkung</strong></td>
         </tr>
         <tr>
-                <td class="auto-style6" style="text-align: left;height: 60px">@@Bemerkung@@</td>
+                <td class="auto-style6" style="text-align: left;height: 60px; vertical-align: text-top;">@@Bemerkung@@</td>
         </tr>
 </table>
 <table style="width: 100%">

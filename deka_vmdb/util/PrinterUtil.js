@@ -234,7 +234,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:center;\">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;width: 180px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nutzart + "<br />" + nutzartAlt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
@@ -245,9 +245,8 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     result = result.replace("@@Mietflaechenangaben@@", mietflaechenangabeHtml);
 
                     if (vermietungsaktivitaet.Kategorie === "01") {
-                        var keMappingHtml = "<table style=\"width: 100%\">";
+                        var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 25%;\">Zugrundeliegende Konditioneneinigungen:</td>";
 
-                        keMappingHtml += "<tr><td class=\"auto-style7\" style=\"width: 25%;\">Zugrundeliegende Konditioneneinigungen:</td>";
                         keMappingHtml += "<td class=\"greyBGPad\">";
                         vermietungsaktivitaet.VaToMap.forEach(function (ke, i) {
                             if (ke.Aktiv) {
@@ -258,8 +257,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                                 }
                             }
                         });
-                        keMappingHtml += "</td></tr>";
-                        keMappingHtml += "</table>";
+                        keMappingHtml += "</td>";
                         result = result.replace("@@KEMapping@@", keMappingHtml);
                     } else {
                         result = result.replace("@@KEMapping@@", "<br />");
@@ -437,7 +435,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center;\">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 180px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nutzart + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
@@ -619,7 +617,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center \">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 180px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + nutzart + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + nhMiete + "<br />" + anMiete + "</td>";
