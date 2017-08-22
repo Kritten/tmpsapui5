@@ -207,12 +207,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
                     mietflaechenangabeHtml += "<tr>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr <br /> Split</b></td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br /> Bezeichnung</b></td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart <br /> NA alternativ</b></td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche <br /> HNF alternativ</b> <br /> FE</td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br /> Angebotsmiete</b> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten <br /> Mieterausbaukosten</b> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr<br>Split</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart<br>NA alternativ</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br>HNF alternativ</b><br>FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br>Angebotsmiete</b><br>WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten<br>Mieterausbaukosten</b><br>WHG/FE</td>";
                     mietflaechenangabeHtml += "</tr>";
 
                     vermietungsaktivitaet.VaToOb.forEach(function (mietflaechenangabe, i) {
@@ -235,7 +235,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:center;\">" + index + "<br />" + mfsplit + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left;width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:leftt;\">" + nutzart + "<br />" + nutzartAlt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left;width: 100px !important;\">" + nutzart + "<br />" + nutzartAlt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + gaKosten + "<br />" + maKosten + "</td>";
@@ -411,12 +411,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
                     mietflaechenangabeHtml += "<tr>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr <br /> Split</b></td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br /> Bezeichnung</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr<br>Split</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b></td>";
                     mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart</b></td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche <br /> HNF alternativ</b> <br /> FE</td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete <br /> Angebotsmiete</b> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten <br /> Mieterausbaukosten</b> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br>HNF alternativ</b><br>FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br>Angebotsmiete</b><br>WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten<br>Mieterausbaukosten</b><br>WHG/FE</td>";
                     mietflaechenangabeHtml += "</tr>";
 
                     konditioneneinigung.KeToOb.forEach(function (mietflaechenangabe, i) {
@@ -436,7 +436,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center;\">" + index + "<br />" + mfsplit + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left;\">" + nutzart + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 100px !important;\">" + nutzart + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + gaKosten + "<br />" + maKosten + "</td>";
@@ -593,12 +593,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
                     mietflaechenangabeHtml += "<tr>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr <br /> Split</b></td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br /> Bezeichnung</b</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr<br>Split</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b</td>";
                     mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart</b></td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br /> HNF alternativ</b> <br /> FE</td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete <br /> Angebotsmiete</b> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten<br /> Mieterausbaukosten</b> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br>HNF alternativ</b><br>FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br>Angebotsmiete</b><br>WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten<br>Mieterausbaukosten</b><br>WHG/FE</td>";
                     mietflaechenangabeHtml += "</tr>";
 
                     konditioneneinigung.KeToOb.forEach(function (mietflaechenangabe, i) {
@@ -617,8 +617,8 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center \">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: left \">" + nutzart + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: left; width: 100px !important; \">" + nutzart + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + nhMiete + "<br />" + anMiete + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + gaKosten + "<br />" + maKosten + "</td>";
