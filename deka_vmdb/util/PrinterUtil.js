@@ -437,7 +437,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center;\">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right; width: 180px;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right; width: 180px; important!\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nutzart + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
