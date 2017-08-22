@@ -416,9 +416,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Lfd Nr <br /> Split</span></td>";
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;width: 180px; \">MO<br /> Bezeichnung</span></td>";
                     mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Nutzungsart</span></td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Hauptnutzfläche <br /> HNF alternativ</span> <br /> FE</td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Marktübliche Miete <br /> Angebotsmiete</span> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; \">Grundausbaukosten <br /> Mieterausbaukosten</span> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; text-align:right; \">Hauptnutzfläche <br /> HNF alternativ</span> <br /> FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; text-align:right; \">Marktübliche Miete <br /> Angebotsmiete</span> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif; text-align:right; \">Grundausbaukosten <br /> Mieterausbaukosten</span> <br /> WHG/FE</td>";
                     mietflaechenangabeHtml += "</tr></thead>";
 
                     konditioneneinigung.KeToOb.forEach(function (mietflaechenangabe, i) {
