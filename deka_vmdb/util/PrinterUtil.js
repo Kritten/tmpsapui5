@@ -206,14 +206,14 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
-                    mietflaechenangabeHtml += "<thead><tr>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Lfd Nr <br /> Split</span></td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif;width: 180px;\">MO<br /> Bezeichnung</span></td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif;\">Nutzungsart <br /> NA alternativ</span></td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Hauptnutzfläche <br /> HNF alternativ</span> <br /> FE</td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Marktübliche Miete<br /> Angebotsmiete</span> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold; font-family: Arial, Helvetica, sans-serif; \">Grundausbaukosten <br /> Mieterausbaukosten</span> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "</tr></thead>";
+                    mietflaechenangabeHtml += "<tr>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr <br /> Split</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br /> Bezeichnung</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart <br /> NA alternativ</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche <br /> HNF alternativ</b> <br /> FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br /> Angebotsmiete</b> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten <br /> Mieterausbaukosten</b> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "</tr>";
 
                     vermietungsaktivitaet.VaToOb.forEach(function (mietflaechenangabe, i) {
                         var index = i + 1;
@@ -233,12 +233,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                         var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         mietflaechenangabeHtml += "<tr>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:center; font-family: Arial, Helvetica, sans-serif;\">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + nutzart + "<br />" + nutzartAlt + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + hnfl + "<br />" + hnflalt + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + nhMiete + "<br />" + anMiete + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + gaKosten + "<br />" + maKosten + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:center;\">" + index + "<br />" + mfsplit + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;width: 180px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nutzart + "<br />" + nutzartAlt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + gaKosten + "<br />" + maKosten + "</td>";
                         mietflaechenangabeHtml += "</tr>";
                     });
                     mietflaechenangabeHtml += "</table>";
@@ -247,8 +247,8 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     if (vermietungsaktivitaet.Kategorie === "01") {
                         var keMappingHtml = "<table style=\"width: 100%\">";
 
-                        keMappingHtml += "<tr><td class=\"auto-style7\" style=\"text-align:left; font-family: Arial, Helvetica, sans-serif; width: 152px;\" vAlign=\"top\">Zugrundeliegende Konditioneneinigungen:</td>";
-                        keMappingHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">";
+                        keMappingHtml += "<tr><td class=\"auto-style7\" style=\"width: 25%;\">Zugrundeliegende Konditioneneinigungen:</td>";
+                        keMappingHtml += "<td class=\"greyBGPad\">";
                         vermietungsaktivitaet.VaToMap.forEach(function (ke, i) {
                             if (ke.Aktiv) {
                                 keMappingHtml += ke.KeId;
@@ -414,7 +414,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     mietflaechenangabeHtml += "<tr>";
                     mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr <br /> Split</b></td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\" style=\"width: 180px;\"><b>MO<br /> Bezeichnung</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br /> Bezeichnung</b></td>";
                     mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart</b></td>";
                     mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche <br /> HNF alternativ</b> <br /> FE</td>";
                     mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete <br /> Angebotsmiete</b> <br /> WHG/FE</td>";
@@ -437,7 +437,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center;\">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right; width: 180px; important!\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 180px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nutzart + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
@@ -594,14 +594,14 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
-                    mietflaechenangabeHtml += "<thead><tr>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Lfd Nr <br /> Split</span></td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\" font-weight:bold;font-family: Arial, Helvetica, sans-serif;width: 180px;\">MO<br /> Bezeichnung</span></td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Nutzungsart</span></td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Hauptnutzfläche<br /> HNF alternativ</span> <br /> FE</td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Marktübliche Miete <br /> Angebotsmiete</span> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Grundausbaukosten<br /> Mieterausbaukosten</span> <br /> WHG/FE</td>";
-                    mietflaechenangabeHtml += "</tr></thead>";
+                    mietflaechenangabeHtml += "<tr>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr <br /> Split</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br /> Bezeichnung</b</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart</b></td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br /> HNF alternativ</b> <br /> FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete <br /> Angebotsmiete</b> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten<br /> Mieterausbaukosten</b> <br /> WHG/FE</td>";
+                    mietflaechenangabeHtml += "</tr>";
 
                     konditioneneinigung.KeToOb.forEach(function (mietflaechenangabe, i) {
                         var index = i + 1;
@@ -618,12 +618,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                         var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         mietflaechenangabeHtml += "<tr>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center;font-family: Arial, Helvetica, sans-serif;\">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + nutzart + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + hnfl + "<br />" + hnflalt + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + nhMiete + "<br />" + anMiete + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"font-family: Arial, Helvetica, sans-serif;\">" + gaKosten + "<br />" + maKosten + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center \">" + index + "<br />" + mfsplit + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 180px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + nutzart + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + hnfl + "<br />" + hnflalt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + nhMiete + "<br />" + anMiete + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + gaKosten + "<br />" + maKosten + "</td>";
                         mietflaechenangabeHtml += "</tr>";
                     });
                     mietflaechenangabeHtml += "</table>";
@@ -631,11 +631,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
 
                     var genehmigerHtml = "<table class=\"cellSpacedTable\">";
-                    genehmigerHtml += "<thead><tr>";
-                    genehmigerHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Stufe</span></td>";
-                    genehmigerHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Name</span></td>";
-                    genehmigerHtml += "<td style=\"font-size: small;\"><span style=\"font-size: small; font-weight:bold;font-family: Arial, Helvetica, sans-serif;\">Status</span></td>";
-                    genehmigerHtml += "</thead></tr>";
+                    genehmigerHtml += "<tr>";
+                    genehmigerHtml += "<td class=\"auto-style7\">Stufe</span></td>";
+                    genehmigerHtml += "<td class=\"auto-style7\">Name</span></td>";
+                    genehmigerHtml += "<td class=\"auto-style7\">Status</span></td>";
+                    genehmigerHtml += "</tr>";
 
                     var textModel = sap.ui.getCore().getModel("text");
                     var stati = textModel.oData.status;
@@ -669,9 +669,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         }        
 
                         genehmigerHtml += "<tr>";
-                        genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; font-family: Arial, Helvetica, sans-serif;\">" + stufe + "</td>";
-                        genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; font-family: Arial, Helvetica, sans-serif;\">" + genehmiger + "</td>";
-                        genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; font-family: Arial, Helvetica, sans-serif;\">" + statusTrl + "</td>";
+                        genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; \">" + stufe + "</td>";
+                        genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; \">" + genehmiger + "</td>";
+                        genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; \">" + statusTrl + "</td>";
                         genehmigerHtml += "</tr>";
                     });
                   
