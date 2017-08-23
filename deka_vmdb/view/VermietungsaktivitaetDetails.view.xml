@@ -501,7 +501,7 @@
                             </Text>-->
                         </cells>
                     </ColumnListItem>
-                    <ColumnListItem>
+                    <ColumnListItem visible = "{= (${form>/vermietungsaktivitaet/Kategorie} === '01') }">
                         <cells>
                             <Text text="{i18n>ERTRAEGE_GESAMT_KE}" />
                             <Text text="{
