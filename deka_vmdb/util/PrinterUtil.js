@@ -15,11 +15,21 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 return jQuery.sap.getModulePath("ag.bpc.Deka");
             },
 
-            druckvorlageVermietungsaktivitaet: "/util/DruckvorlageVermietungsaktivitaet.html",
+            // Mehrsprachigkeit (beschränkt auf DE und EN)
+			getLocale: function() {
+                return sap.ui.getCore().getConfiguration().getLanguage(); // Anmeldesprache ermitteln
+                console.log("Anmeldesprache:" + sap.ui.getCore().getConfiguration().getLanguage());
+            }, 
 
-            druckvorlageKonditioneneinigung: "/util/DruckvorlageKonditioneneinigung.html",
+            if (getLocale = "de_DE") {
+                console.log("IF de_DE = Anmeldesprache:" + this.getLocale);
+            },
 
-            druckvorlageBeschlussantrag: "/util/DruckvorlageBeschlussantrag.html",
+            druckvorlageVermietungsaktivitaet: "/util/DruckvorlageVermietungsaktivitaet.html", // entweder DE oder EN
+                
+            druckvorlageKonditioneneinigung: "/util/DruckvorlageKonditioneneinigung.html", // entweder DE oder EN 
+
+            druckvorlageBeschlussantrag: "/util/DruckvorlageBeschlussantrag.html", // immer DE
 
             generatePrintableHtmlForVermietungsaktivitaet: function (vermietungsaktivitaet, kostenarten, ertragsarten) {
                 var _this = this;
@@ -40,6 +50,15 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 var stati = textModel.oData.status;
 
                 jQuery.get(_this.getBasePath() + _this.druckvorlageVermietungsaktivitaet, function (result) {
+                    jQuery.sap.require("sap.ui.core.format.NumberFormat");
+                    var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
+                        maxFractionDigits: 2,
+                        minFractionDigits: 2,
+                        groupingEnabled: true,
+                        groupingSeparator: ".",
+                        decimalSeparator: ","
+                    });
+
                     var bezeichnung = vermietungsaktivitaet.VaToWe.Plz + "/" + vermietungsaktivitaet.VaToWe.Ort + "/" + vermietungsaktivitaet.VaToWe.StrHnum;
                     if (bezeichnung) {
                         result = result.replace("@@VaBezeichnung@@", bezeichnung);
@@ -57,7 +76,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var lzFb = vermietungsaktivitaet.LzFirstbreak;
                     if(lzFb){
-                        result = result.replace("@@LzFirstbreak2@@", lzFb);
+                        result = result.replace("@@LzFirstbreak2@@", oNumberFormat.format(lzFb));
                     }
 
                     var mzErsterMonat = vermietungsaktivitaet.MzErsterMonat;
@@ -134,15 +153,6 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                             result = result.replace("@@ArtK@@", text);
                         }
                     }
-
-                    jQuery.sap.require("sap.ui.core.format.NumberFormat");
-                    var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
-                        maxFractionDigits: 2,
-                        minFractionDigits: 2,
-                        groupingEnabled: true,
-                        groupingSeparator: ".",
-                        decimalSeparator: ","
-                    });
 
                     var mMiete;
                     if (vermietungsaktivitaet.MMiete && vermietungsaktivitaet.MkMonate) {
@@ -235,7 +245,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:center;\">" + index + "<br />" + mfsplit + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left;width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left;width: 100px !important;\">" + nutzart + "<br />" + nutzartAlt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left;width: 65px !important;\">" + nutzart + "<br />" + nutzartAlt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + gaKosten + "<br />" + maKosten + "</td>";
@@ -436,7 +446,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center;\">" + index + "<br />" + mfsplit + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 100px !important;\">" + nutzart + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 60px !important;\">" + nutzart + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + gaKosten + "<br />" + maKosten + "</td>";
@@ -618,7 +628,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center \">" + index + "<br />" + mfsplit + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: left; width: 100px !important; \">" + nutzart + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: left; width: 65px !important; \">" + nutzart + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + hnfl + "<br />" + hnflalt + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + nhMiete + "<br />" + anMiete + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + gaKosten + "<br />" + maKosten + "</td>";
