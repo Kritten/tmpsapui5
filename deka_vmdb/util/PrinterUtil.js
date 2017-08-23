@@ -18,12 +18,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
             // Mehrsprachigkeit (beschränkt auf DE und EN)
 			getLocale: function() {
                 return sap.ui.getCore().getConfiguration().getLanguage(); // Anmeldesprache ermitteln
-                console.log("Anmeldesprache:" + sap.ui.getCore().getConfiguration().getLanguage());
             }, 
-
-            if (getLocale = "de_DE") {
-                console.log("IF de_DE = Anmeldesprache:" + this.getLocale);
-            },
 
             druckvorlageVermietungsaktivitaet: "/util/DruckvorlageVermietungsaktivitaet.html", // entweder DE oder EN
                 
@@ -38,6 +33,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     async: false,
                     cache: false
                 });
+
+                var locale = _this.getLocale();
+                console.log("Anmeldesprache = ", locale);
 
                 var res;
                 var textModel = sap.ui.getCore().getModel("text");
