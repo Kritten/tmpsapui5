@@ -299,6 +299,15 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     cache: false
                 });
 
+                var locale = _this.getLocale();
+                console.log(locale, "= Anmeldesprache");
+
+                if(locale.indexOf("de") ==! -1){
+                   // standardsprache 
+                }else{
+                    _this.druckvorlageVermietungsaktivitaet = "/util/DruckvorlageVermietungsaktivitaet_en.html";
+                }
+
                 var res;
                 var textModel = sap.ui.getCore().getModel("text");
                 console.log(sap.ui.getCore().getModel("text"));
