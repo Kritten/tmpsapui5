@@ -305,7 +305,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 if(locale.indexOf("de") ==! -1){
                    // standardsprache 
                 }else{
-                    _this.druckvorlageVermietungsaktivitaet = "/util/DruckvorlageVermietungsaktivitaet_en.html";
+                    _this.druckvorlageKonditioneneinigung = "/util/DruckvorlageKonditioneneinigung_en.html";
                 }
 
                 var res;
