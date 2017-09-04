@@ -94,18 +94,40 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     }
 
                     var bdgstp = vermietungsaktivitaet.Budgetstp;
-                    result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
-
+                    if(locale.indexOf("de") ==! -1){
+                        // standardsprache 
+                        result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
+                     }else{
+                        result = result.replace("@@Budgetstp@@", bdgstp ? "Yes" : "No");
+                     }
+                    
                     var monatJahr = vermietungsaktivitaet.MonatJahr;
-                    result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Monat" : "Jahr");
+                    if(locale.indexOf("de") ==! -1){
+                        // standardsprache 
+                        result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Monat" : "Jahr");
+                     }else{
+                        result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Month" : "Year");
+                     }                   
 
                     var plr = vermietungsaktivitaet.PLRelevant;
-                    var plrString = plr ? "Ja" : "Nein";
-                    result = result.replace("@@PLRelevant@@", plrString);
+                    if(locale.indexOf("de") ==! -1){
+                        // standardsprache 
+                        var plrString = plr ? "Ja" : "Nein";
+                        result = result.replace("@@PLRelevant@@", plrString);
+                     }else{
+                        var plrString = plr ? "Yes" : "No";
+                        result = result.replace("@@PLRelevant@@", plrString);
+                     }
 
                     var stsl = vermietungsaktivitaet.Steuerschlg;
-                    var stslString = stsl ? "Ja" : "Nein";
-                    result = result.replace("@@Steuerschlg@@", stslString);
+                    if(locale.indexOf("de") ==! -1){
+                        // standardsprache 
+                        var stslString = stsl ? "Ja" : "Nein";
+                        result = result.replace("@@Steuerschlg@@", stslString);
+                     }else{
+                        var stslString = stsl ? "Yes" : "No";
+                        result = result.replace("@@Steuerschlg@@", stslString);
+                     }
 
                     var druckDatum = new Date();
                     if (druckDatum) {
@@ -335,10 +357,20 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     }
 
                     var bdgstp = konditioneneinigung.Budgetstp;
-                    result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
-
+                    if(locale.indexOf("de") ==! -1){
+                        // standardsprache 
+                        result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
+                    }else{
+                        result = result.replace("@@Budgetstp@@", bdgstp ? "Yes" : "No");
+                    }
+                    
                     var monatJahr = konditioneneinigung.MonatJahr;
-                    result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Monat" : "Jahr");
+                    if(locale.indexOf("de") ==! -1){
+                        // standardsprache 
+                        result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Monat" : "Jahr");
+                    }else{
+                        result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Month" : "Year");
+                    }  
 
                     var druckDatum = new Date();
                     if (druckDatum) {

@@ -38,13 +38,13 @@
 
                         <columns>
                             <Column autoAdjustWidth="true">
-                                <Text text="Genehmiger" />
+                                <Text text="{i18n>GENEHMIGER}" />
                             </Column>    
                             <Column width="30%" visible="{= (${form>/modus} === 'edit')}">
-                                <Text text="Neuer Genehmiger" visible="{= (${form>/modus} === 'edit')}"/>
+                                <Text text="{i18n>NEUER_GENEHMIGER}" visible="{= (${form>/modus} === 'edit')}"/>
                             </Column>                        
                             <Column width="50%">
-                                <Text text="Status" />
+                                <Text text="{i18n>STATUS}" />
                             </Column>                            
                         </columns>
 
