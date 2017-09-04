@@ -8,7 +8,7 @@
     
 	<Page 
         id="idKonditioneneinigungGenehmigung"
-        title="Konditioneneinigung Genehmigung" 
+        title="{i18n>KOND_GENEHM_TITLE}" 
         class="sapUiFioriObjectPage" 
         showNavButton="{= ${form>/modus} === 'show' }"
         navButtonPress="onBack">
