@@ -37,12 +37,8 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                     // var data = e.target.result;
                     var workbook = XLSX.read(data, {type: 'binary'});
 
-                    // Vermietungsaktivitäten
-                    var vaSheetName = workbook.SheetNames[0];
-                    // Mietflächen
-                    var mfSheetName = workbook.SheetNames[1];
-
-                    var vaWorksheet = workbook.Sheets[vaSheetName];
+                    var vaWorksheet = workbook.Sheets.va_daten;
+                    var mfWorksheet = workbook.Sheets.mo_daten;
 
                     var vermietungsaktivitaet = {
                         VaToOb: []
@@ -73,8 +69,6 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                             }                            
                         }
                     }                    
-
-                    var mfWorksheet = workbook.Sheets[mfSheetName];
 
                     // Mietflächenobjekte erstellen
                     for(row=2; row<100; row++)

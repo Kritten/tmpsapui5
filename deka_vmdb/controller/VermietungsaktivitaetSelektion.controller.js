@@ -267,6 +267,7 @@ sap.ui.define([
 
 			var combinedOrFilter = new Filter([
 				new Filter("Bukrs", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue),
 				new Filter("KeId", sap.ui.model.FilterOperator.Contains, sValue),
 			], false);
 
