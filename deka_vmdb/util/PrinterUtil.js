@@ -254,12 +254,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "</tr>";
                      }else{
                         mietflaechenangabeHtml += "<tr>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr<br>Split</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart<br>NA alternativ</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br>HNF alternativ</b><br>FE</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br>Angebotsmiete</b><br>WHG/FE</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten<br>Mieterausbaukosten</b><br>WHG/FE</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>No.<br>Split</b></td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>RO<br>Identification</b></td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Type of use<br>TOU alternative</b></td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Area<br>Area alternative/b><br>FE</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Unit</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Unit</td>";
                         mietflaechenangabeHtml += "</tr>";
                      }    
 
@@ -284,9 +284,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         if(locale.indexOf("de") ==! -1){
                             // standardsprache 
                             var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
-                         }else{
+                        }else{
                             var mfsplit = mietflaechenangabe.MfSplit ? "Yes" : "No";
-                         } 
+                        } 
 
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:center;\">" + index + "<br />" + mfsplit + "</td>";
@@ -301,8 +301,13 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     result = result.replace("@@Mietflaechenangaben@@", mietflaechenangabeHtml);
 
                     if (vermietungsaktivitaet.Kategorie === "01") {
-                        var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Zugrundeliegende Konditioneneinigungen:</td>";
-
+                        if(locale.indexOf("de") ==! -1){
+                            // standardsprache 
+                            var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Zugrundeliegende Konditioneneinigungen:</td>";
+                        }else{
+                            var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Underlying agreement:</td>";
+                        }
+                        
                         keMappingHtml += "<td class=\"auto-style6\">";
                         vermietungsaktivitaet.VaToMap.forEach(function (ke, i) {
                             if (ke.Aktiv) {
@@ -497,12 +502,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "</tr>";
                      }else{
                         mietflaechenangabeHtml += "<tr>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr<br>Split</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br>HNF alternativ</b><br>FE</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br>Angebotsmiete</b><br>WHG/FE</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten<br>Mieterausbaukosten</b><br>WHG/FE</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>No.<br>Split</b></td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>RO<br>Identification</b></td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Type of use</b></td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Area<br>Area alternative</b><br>FE</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Unit</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Unit</td>";
                         mietflaechenangabeHtml += "</tr>";
                      }
 
