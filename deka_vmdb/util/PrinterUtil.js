@@ -256,8 +256,8 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>No.<br>Split</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>RO<br>Identification</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Type of use<br>TOU alternative</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Area<br>Area alternative</b><br>Unit</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Type of use<br>(alternative)</b></td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Area<br>(alternative)</b><br>Unit</td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Unit</td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Unit</td>";
                         mietflaechenangabeHtml += "</tr>";
@@ -505,7 +505,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>No.<br>Split</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>RO<br>Identification</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Type of use</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Area<br>Area alternative</b><br>Unit</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Area<br>(alternative)</b><br>Unit</td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Unit</td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Unit</td>";
                         mietflaechenangabeHtml += "</tr>";
