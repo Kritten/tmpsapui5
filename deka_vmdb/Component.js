@@ -86,6 +86,8 @@ sap.ui.define([
 			sap.ui.getCore().setModel(oDataModel, "odata");
 			// <
 
+			// Neuer KOmmentar
+
 			DataProvider.setModel(oDataModel);
 		},
 
