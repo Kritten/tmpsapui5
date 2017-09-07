@@ -9,7 +9,7 @@
         multiSelect="true"
         search="onMietflaechenSelektionDialogSearch"
         confirm="onMietflaechenSelektionDialogConfirm"
-        contentWidth="110%"
+        contentWidth="80%"
         cancel="onMietflaechenSelektionDialogCancel" 
         items="{/mietflaechen}">
 

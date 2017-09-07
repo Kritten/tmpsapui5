@@ -34,7 +34,7 @@
 
 					<StandardTile
 						icon="sap-icon://locked"
-						title="{i18n>SPERRE}"
+						title="{i18n>EIGENE_SPERREN}"
 						press="onSperTilePress"
 						visible="false"
 						id="idSperreTile" />
