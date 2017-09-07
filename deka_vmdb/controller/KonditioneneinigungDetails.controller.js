@@ -56,7 +56,8 @@ sap.ui.define([
 	
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {        
-		onInit: function(oEvent){
+        
+        onInit: function(oEvent){
             var _this = this;
 
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
@@ -1296,29 +1297,15 @@ sap.ui.define([
         },
 
         onMietflaechenAngabenLoeschenButtonPress: function(oEvent){
-            var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
-            
-            // Objekte der ausgewählten Mietflächenangaben sammeln
-            var selectedMietflaechenangaben = [];
-            mietflaechenangabenTable.getSelectedItems().forEach(function(selectedItem){
-                selectedMietflaechenangaben.push( selectedItem.getBindingContext("form").getObject() );
-            });
 
+            var mietflaechenangabenToDelete = oEvent.getParameter('listItem').getBindingContext("form").getObject();
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
 
-			selectedMietflaechenangaben.forEach(function(mietflaechenangabe){
-				var i = mietflaechenangaben.length;
-				while (i--) {
-					if(mietflaechenangaben[i].MoId === mietflaechenangabe.MoId){
-						mietflaechenangaben.splice(i, 1);
-					}
-				}
-			});
+            mietflaechenangaben = _.reject(mietflaechenangaben, function(mietflaechenangabe){
+                return mietflaechenangabe.MoId === mietflaechenangabenToDelete.MoId;
+            });
             
             this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
-
-            // Selektion aufheben nach dem Löschen
-            mietflaechenangabenTable.removeSelections(true);
 
             // Verteilen Button rot hervorheben
             this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);

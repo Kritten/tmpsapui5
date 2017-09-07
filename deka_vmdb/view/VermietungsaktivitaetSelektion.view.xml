@@ -159,7 +159,7 @@
 					<items>
 						<ColumnListItem type="Navigation">
 							<cells>
-								<core:Icon src="{= (${vermSel>Favorit} === true) ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" />
+								<core:Icon src="{= (${vermSel>Favorit} === true) ? 'sap-icon://favorite' : '' }" />
 								<Text text="{vermSel>Bukrs}" />
 								<Text text="{vermSel>WeId}" />
 								<Text text="{vermSel>VaId}" />

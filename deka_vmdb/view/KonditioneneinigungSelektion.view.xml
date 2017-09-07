@@ -139,7 +139,7 @@
 					<items>
 						<ColumnListItem type="Navigation">
 							<cells>
-								<core:Icon src="{= (${kondSel>Favorit} === true) ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" />
+								<core:Icon src="{= (${kondSel>Favorit} === true) ? 'sap-icon://favorite' : '' }" />
 								<Text text="{kondSel>Bukrs}" />
 								<Text text="{kondSel>WeId}" />
 								<Text text="{kondSel>KeId}" />

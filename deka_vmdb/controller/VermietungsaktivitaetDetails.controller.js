@@ -1429,30 +1429,30 @@ sap.ui.define([
 
         },
 		
-        onMietflaechenAngabenLoeschenButtonPress: function(oEvent){  
-            var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
-            
-            // Objekte der ausgewählten Mietflächenangaben sammeln
-            var selectedMietflaechenangaben = [];
-            mietflaechenangabenTable.getSelectedItems().forEach(function(selectedItem){
-                selectedMietflaechenangaben.push( selectedItem.getBindingContext("form").getObject() );
-            });
+        onMietflaechenAngabenLoeschenButtonPress: function(oEvent){
 
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
+            var mietflaechenangabenToDelete = oEvent.getParameter('listItem').getBindingContext("form").getObject();
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
 
-			selectedMietflaechenangaben.forEach(function(mietflaechenangabe){
-				var i = mietflaechenangaben.length;
-				while (i--) {
-					if(mietflaechenangaben[i].MoId === mietflaechenangabe.MoId){
-						mietflaechenangaben.splice(i, 1);
-					}
-				}
-			});
-            
-            this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
+            // Kategorie !== 01 -> Mietfläche entfernen
+            // Kategorie === 01 -> Konditioneneinigung entfernen (alle Mietflächen entfernen, die zu der KeId dieser Mietfläche passen)
+            if(va.Kategorie !== '01'){
 
-            // Selektion aufheben nach dem Löschen
-            mietflaechenangabenTable.removeSelections(true);
+                mietflaechenangaben = _.reject(mietflaechenangaben, function(mietflaechenangabe){
+                    return mietflaechenangabe.MoId === mietflaechenangabenToDelete.MoId;
+                });
+
+            } else {
+
+                mietflaechenangaben = _.reject(mietflaechenangaben, function(mietflaechenangabe){
+                    return mietflaechenangabe.KeId === mietflaechenangabenToDelete.KeId;
+                });
+
+            }
+
+            this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
         },
 		
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
@@ -1735,28 +1735,6 @@ sap.ui.define([
             })
             .done();
 
-        },
-
-        onKonditioneneinigungLoeschenButtonPress: function(oEvent){            
-            var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
-            
-            // IDs der KEs der ausgewählten Mietflächen sammeln (einzigartige)
-            var selectedItems = mietflaechenangabenTable.getSelectedItems();
-            var konditioneneinigungenIds = _.unique(_.map(selectedItems, function(item){
-                return item.getBindingContext("form").getObject().KeId;
-            }));
-
-            // Alle Mietflächen löschen, deren KEs ausgewählt wurde
-            var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
-
-            mietflaechenangaben = _.filter(mietflaechenangaben, function(mietflaechenangabe){
-                return (_.indexOf(konditioneneinigungenIds, mietflaechenangabe.KeId) === -1);
-            });
-
-            this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
-
-            // Selektion aufheben nach dem Löschen
-            mietflaechenangabenTable.removeSelections(true);
         },
 
         onKonditioneneinigungDialogSearch: function(oEvent){

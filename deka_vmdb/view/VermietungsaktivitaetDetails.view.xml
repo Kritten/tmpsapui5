@@ -51,17 +51,8 @@
                     </FlexBox>
                 </items>
             </FlexBox>
-
-
-            <!--
-            <ScrollContainer
-                horizontal="true"
-                focusable="false"
-                class="sapUiSmallMarginBeginEnd">
-            </ScrollContainer>
-            -->
             
-            <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{form>/vermietungsaktivitaet/VaToOb}">
+            <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'Delete' : 'None' }" items="{form>/vermietungsaktivitaet/VaToOb}" delete="onMietflaechenAngabenLoeschenButtonPress">
 
                 <headerToolbar>
                     <Toolbar>
@@ -69,6 +60,8 @@
                         <ToolbarSpacer />
                         <Text text="{form>/viewsettings/zeitspanneSelected/Text} | {form>/viewsettings/waehrungSelected/Nach} | {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit')}" />
+                        <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onKonditioneneinigungHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" />
+                        <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} !== '01' }" />
                     </Toolbar>
                 </headerToolbar>
                 
@@ -147,30 +140,9 @@
 
             <MessageStrip id="mietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
 
-            <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
-            
+            <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" justifyContent="End">
                 <items>
-                    <FlexBox>
-                        <items>
-                            <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onKonditioneneinigungHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" class="sapUiSmallMarginEnd" />
-                            <Button text="{i18n>KONDITIONENEINIGUNG_ENTFERNEN}" icon="sap-icon://sys-minus" press="onKonditioneneinigungLoeschenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" />
-                            <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} !== '01' }" class="sapUiSmallMarginEnd" />
-                            <Button text="{i18n>MIETFLAECHE_ENTFERNEN}" icon="sap-icon://sys-minus" press="onMietflaechenAngabenLoeschenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} !== '01' }" />
-                        </items>
-                        <layoutData>
-							<FlexItemData growFactor="1" />
-						</layoutData>
-                    </FlexBox>
-                    
-                    <FlexBox justifyContent="End">
-                        <items>
-                            <Button text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
-                        </items>
-                        <layoutData>
-							<FlexItemData growFactor="1" />
-						</layoutData>
-                    </FlexBox>
-                
+                    <Button text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
                 </items>
             </FlexBox>
                     
@@ -593,29 +565,26 @@
         <footer>
 			<OverflowToolbar>
 
-				<Button text="{= ${form>/vermietungsaktivitaet/Favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" 
-                        icon="{= ${form>/vermietungsaktivitaet/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" 
+                <ToolbarSpacer/>
+
+				<Button icon="{= ${form>/vermietungsaktivitaet/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" 
                         press="onFavoritButtonPress" 
                         visible="{= (${form>/modus} === 'show') }" />
                 
-                <Button text="{i18n>DRUCKEN}" 
-                        icon="sap-icon://print" 
+                <Button text="{i18n>DRUCKEN}"
                         press="onDruckenButtonPress" 
                         visible="{= (${form>/modus} === 'show') }" />
                 
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 
                 <Button text="{i18n>SPEICHERN}"
-                        icon="sap-icon://accept"
-                        type="Accept"
+                        type="Emphasized"
                         press="onSpeichernButtonPress"
                         visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
 
                 <Button text="{i18n>ABBRECHEN}"
-                        icon="sap-icon://decline"
-                        type="Reject"
                         press="onAbbrechenButtonPress"
                         visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>

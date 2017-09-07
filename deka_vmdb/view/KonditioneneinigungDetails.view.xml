@@ -58,7 +58,7 @@
                 </items>
             </FlexBox>
 
-            <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'MultiSelect' : 'None' }" items="{form>/konditioneneinigung/KeToOb}">
+            <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'Delete' : 'None' }" items="{form>/konditioneneinigung/KeToOb}" delete="onMietflaechenAngabenLoeschenButtonPress">
                 
                 <headerToolbar>
                     <Toolbar>
@@ -66,6 +66,7 @@
                         <ToolbarSpacer />
                         <Text text="{form>/viewsettings/zeitspanneSelected/Text} | {form>/viewsettings/waehrungSelected/Nach} | {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit')}" />
+                        <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     </Toolbar>
                 </headerToolbar>
                 
@@ -136,28 +137,9 @@
 
             <MessageStrip id="idMietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
                 
-            <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
-            
+            <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" justifyContent="End">
                 <items>
-                    <FlexBox>
-                        <items>
-                            <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" press="onMietflaechenAngabeHinzufuegenButtonPress" class="sapUiSmallMarginEnd" />
-                            <Button text="{i18n>MIETFLAECHE_ENTFERNEN}" icon="sap-icon://sys-minus" press="onMietflaechenAngabenLoeschenButtonPress" />
-                        </items>
-                        <layoutData>
-							<FlexItemData growFactor="1" />
-						</layoutData>
-                    </FlexBox>
-                    
-                    <FlexBox justifyContent="End">
-                        <items>
-                            <Button id="idButtonAusbaukostenVerteilen" text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
-                        </items>
-                        <layoutData>
-							<FlexItemData growFactor="1" />
-						</layoutData>
-                    </FlexBox>
-                
+                    <Button id="idButtonAusbaukostenVerteilen" text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
                 </items>
             </FlexBox>
                     
@@ -312,7 +294,7 @@
                             <core:Item key="{form>Stid}" text="{form>Txtmd}" />
                         </items>
                         <layoutData>
-							<l:GridData span="L3 M3 S12" />
+							<l:GridData span="L6 M6 S12" />
 						</layoutData>
                     </Select>
                     
@@ -327,7 +309,11 @@
                     </Select>
 
                     <Label text="{i18n>BEMERKUNG}" />
-                    <TextArea value="{form>/konditioneneinigung/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <TextArea value="{form>/konditioneneinigung/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                        <layoutData>
+							<l:GridData span="L6 M6 S12" />
+						</layoutData>
+                    </TextArea>
                     
                     <Label text="{i18n>BUDGET_STOPP}" />
 					<CheckBox id="idBudgetstp" text="" selected="{form>/konditioneneinigung/Budgetstp}" editable="false">
@@ -452,53 +438,45 @@
         <footer>
 			<OverflowToolbar>
 
-				<Button text="{= ${form>/konditioneneinigung/Favorit} ? ${i18n>FAVORIT_ENTFERNEN} : ${i18n>FAVORIT_HINZUFUEGEN} }" 
-                        icon="{= ${form>/konditioneneinigung/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" 
+                <ToolbarSpacer/>
+
+				<Button icon="{= ${form>/konditioneneinigung/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" 
                         press="onFavoritButtonPress"
                         visible="{= (${form>/modus} === 'show') }" />
 
-				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}" 
-                        icon="sap-icon://request"
+				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}"
                         press="onZurGenehmigungVorlegenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnVorlegen} }" />
 				
-                <Button text="{i18n>GENEHMIGEN}" 
-                        icon="sap-icon://accept" 
+                <Button text="{i18n>GENEHMIGEN}"
                         press="onGenehmigenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
 
-				<Button text="{i18n>NICHTGENEHMIGEN}" 
-                        icon="sap-icon://decline" 
+				<Button text="{i18n>NICHTGENEHMIGEN}"
                         press="onNichtGenehmigenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
         
-				<Button text="{i18n>REAKTIVIEREN}" 
-                        icon="sap-icon://repost" 
+				<Button text="{i18n>REAKTIVIEREN}"
                         press="onReaktivierenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnReaktiv} }" />
 
-                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" 
-                        icon="sap-icon://undo" 
+                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}"
                         press="onGenehmigungZurueckziehenButtonPress" 
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnZurueck} }" />
 
-                <Button text="{i18n>GENEHMIGUNGSPROZESS}" 
-                        icon="sap-icon://approvals" 
+                <Button text="{i18n>GENEHMIGUNGSPROZESS}"
                         press="onGenehmigungsprozessButtonPress" 
                         visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/BtnGp} || ${form>/konditioneneinigung/BtnGpAr}) }" />
 
-                <Button text="{i18n>DRUCKEN}" 
-                        icon="sap-icon://print"
+                <Button text="{i18n>DRUCKEN}"
                         press="onDruckenButtonPress"
                         visible="{= (${form>/modus} === 'show') }" />
 
                 <Button text="{i18n>BESCHLUSSANTRAG}"
-                        icon="sap-icon://print"
                         press="onBeschlussantragButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGfBa}}" />
 
                 <Button text="{i18n>UEBERNEHMEN}"
-                        icon="sap-icon://citizen-connect"
                         press="onUebernehmenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGf}}" />
 
@@ -510,28 +488,24 @@
                  -->
 
                 <Button text="{i18n>REEDIT}"
-                        icon="sap-icon://edit-outside" 
                         press="onReeditButtonPress" 
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnReedit} }" />
 
                 <Button text="{i18n>LOESCHEN}"
-                        icon="sap-icon://delete" 
-                        press="onLoeschenButtonPress" 
+                        press="onLoeschenButtonPress"
+                        type="Reject"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnLoeschen} }" />
                 
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                 
                 <Button text="{i18n>SPEICHERN}"
-                        type="Accept" 
+                        type="Emphasized" 
                         press="onSpeichernButtonPress"
-                        icon="sap-icon://accept" 
                         visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
                 
-                <Button text="{i18n>ABBRECHEN}" 
-                        icon="sap-icon://decline" 
-                        type="Reject" 
+                <Button text="{i18n>ABBRECHEN}"
                         press="onAbbrechenButtonPress" 
                         visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
