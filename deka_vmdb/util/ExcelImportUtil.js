@@ -71,41 +71,44 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                     }                    
 
                     // Mietflächenobjekte erstellen
-                    for(row=2; row<100; row++)
-                    {
-                        var mietflaeche = {};
+                    for(row=2; row<100; row++) {
+                        var mietflaeche_ca = XLSX.utils.encode_cell({c:0, r:row});
+                        
+                        if(mfWorksheet[mietflaeche_ca] !== undefined && mfWorksheet[mietflaeche_ca].v !== ''){
+                            var mietflaeche = {};
 
-                        for(col=0; col<100; col++)
-                        {
-                            keyCellAddress = XLSX.utils.encode_cell({c:col, r:0});
-                            valCellAddress = XLSX.utils.encode_cell({c:col, r:row});
-                            
-                            // Wenn KeyCell leer ist, dann ist die Schleife am Ende der Spalten angelangt
-                            // Die Mietfläche wird hierbei der VA hinzugefügt und die Schleife unterbrochen
-                            if(mfWorksheet[keyCellAddress] === undefined){
-                                vermietungsaktivitaet.VaToOb.push(mietflaeche);
-                                break;
-                            }
-                            
-                            // Wenn die ValCell leer ist, wird angenommen, dass keine weiteren Reihen befüllt sind
-                            // Die Schleife wird unterbrochen
-                            // Ausnahme: Das Feld "MfSplit" darf leer sein
-                            if(mfWorksheet[valCellAddress] === undefined && mfWorksheet[keyCellAddress].v !== "MfSplit")
-                            {
-                                break;
+                            for(col=0; col<100; col++) {
+                                keyCellAddress = XLSX.utils.encode_cell({c:col, r:0});
+                                valCellAddress = XLSX.utils.encode_cell({c:col, r:row});
+                                
+                                // Wenn KeyCell leer ist, dann ist die Schleife am Ende der Spalten angelangt
+                                if(mfWorksheet[keyCellAddress] === undefined){
+                                    break;
+                                }
+                                
+                                // Wenn die ValCell leer ist, wird angenommen, dass keine weiteren Reihen befüllt sind
+                                // Die Schleife wird unterbrochen
+                                // Ausnahme: Das Feld "MfSplit" darf leer sein
+                                if(mfWorksheet[keyCellAddress].v !== "MfSplit" && mfWorksheet[valCellAddress] === undefined) {
+                                    break;
+                                }
+    
+                                //console.log( mfWorksheet[keyCellAddress].v + " = " + mfWorksheet[valCellAddress].v );
+                                
+                                // Prüfen ob value existiert (bei MfSplit === "" ist mfWorksheet[valCellAddress] undefined, aber kein Fehler!) 
+                                var value = mfWorksheet[valCellAddress] ? mfWorksheet[valCellAddress].v : "";
+                                var numberValue = that.checkForNumber(value);
+    
+                                if(!numberValue){
+                                    mietflaeche[mfWorksheet[keyCellAddress].v] = value;
+                                }else{
+                                    mietflaeche[mfWorksheet[keyCellAddress].v] = numberValue;
+                                }
                             }
 
-                            //console.log( mfWorksheet[keyCellAddress].v + " = " + mfWorksheet[valCellAddress].v );
-                            
-                            // Prüfen ob value existiert (bei MfSplit === "" ist mfWorksheet[valCellAddress] undefined, aber kein Fehler!) 
-                            var value = mfWorksheet[valCellAddress] ? mfWorksheet[valCellAddress].v : "";
-                            var numberValue = that.checkForNumber(value);
-
-                            if(!numberValue){
-                                mietflaeche[mfWorksheet[keyCellAddress].v] = value;
-                            }else{
-                                mietflaeche[mfWorksheet[keyCellAddress].v] = numberValue;
-                            }
+                            vermietungsaktivitaet.VaToOb.push(mietflaeche);
+                        } else {
+                            break;
                         }
                     }                    
 
