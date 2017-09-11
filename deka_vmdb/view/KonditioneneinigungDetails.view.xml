@@ -66,6 +66,7 @@
                         <ToolbarSpacer />
                         <Text text="{form>/viewsettings/zeitspanneSelected/Text} | {form>/viewsettings/waehrungSelected/Nach} | {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit')}" />
+                        <Button id="idButtonAusbaukostenVerteilen" text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" iconFirst="false" press="onAusbaukostenVerteilenButtonPress" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                         <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     </Toolbar>
                 </headerToolbar>
@@ -136,12 +137,6 @@
             </Table>
 
             <MessageStrip id="idMietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
-                
-            <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" justifyContent="End">
-                <items>
-                    <Button id="idButtonAusbaukostenVerteilen" text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
-                </items>
-            </FlexBox>
                     
             <f:SimpleForm
                 title="{i18n>GEMEINSAME_ANGABEN}"
@@ -216,7 +211,12 @@
 
                     <!-- Sonstige Kosten -->
                     <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtKosten}" items="{form>/kostenarten}" >
+                    <Input value="{= ${text>/kostenart}[${form>/konditioneneinigung/ArtKosten}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    <Select visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtKosten}" items="{form>/kostenarten}" >
                         <items>
                             <core:Item key="{form>KoId}" text="{form>Txtmd}" />
                         </items>
@@ -232,7 +232,12 @@
 
                     <!-- Sonstige Erträge  -->
                     <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtErtrag}" items="{form>/ertragsarten}" >
+                    <Input value="{= ${text>/ertragsart}[${form>/konditioneneinigung/ArtErtrag}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    <Select visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtErtrag}" items="{form>/ertragsarten}" >
                         <items>
                             <core:Item key="{form>ErId}" text="{form>Txtmd}" />
                         </items>
@@ -289,24 +294,18 @@
                     <!-- <core:Title text="" /> -->
                     
                     <Label text="{i18n>STATUS}" />
-                    <Select width="100%" enabled="false" selectedKey="{form>/konditioneneinigung/Status}" items="{form>/statuswerte}" >
-                        <items>
-                            <core:Item key="{form>Stid}" text="{form>Txtmd}" />
-                        </items>
+                    <Input value="{= ${text>/status}[${form>/konditioneneinigung/Status}] }" editable="false">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
-                    </Select>
+                    </Input>
                     
                     <Label text="{i18n>ANMERKUNG}" />
-                    <Select width="100%" enabled="false" selectedKey="{form>/konditioneneinigung/Anmerkung}" items="{form>/anmerkungen}" >
-                        <items>
-                            <core:Item key="{form>Id}" text="{form>Txtmd}" />
-                        </items>
+                    <Input value="{= ${text>/anmerkung}[${form>/konditioneneinigung/Anmerkung}] }" editable="false">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
-                    </Select>
+                    </Input>
 
                     <Label text="{i18n>BEMERKUNG}" />
                     <TextArea value="{form>/konditioneneinigung/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">

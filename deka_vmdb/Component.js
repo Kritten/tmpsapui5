@@ -161,6 +161,20 @@ sap.ui.define([
                 }));
 				textModel.setProperty("/stockwerk", stockwerkMapping);
 			}).done();
+
+			Q.when(StaticData.KOSTENARTEN).then(function(kostenarten){
+                var kostenartMapping = _.object(_.map(kostenarten, function(kostenart){
+                    return [kostenart.KoId, kostenart.Txtmd];
+                }));
+				textModel.setProperty("/kostenart", kostenartMapping);
+			}).done();
+
+			Q.when(StaticData.ERTRAGSARTEN).then(function(ertragsarten){
+                var ertragsartMapping = _.object(_.map(ertragsarten, function(ertragsart){
+                    return [ertragsart.ErId, ertragsart.Txtmd];
+                }));
+				textModel.setProperty("/ertragsart", ertragsartMapping);
+			}).done();
 		}
 
 	});

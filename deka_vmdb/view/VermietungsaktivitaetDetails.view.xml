@@ -61,6 +61,7 @@
                         <Text text="{form>/viewsettings/zeitspanneSelected/Text} | {form>/viewsettings/waehrungSelected/Nach} | {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit')}" />
                         <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onKonditioneneinigungHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" />
+                        <Button text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" iconFirst="false" press="onAusbaukostenVerteilenButtonPress" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                         <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} !== '01' }" />
                     </Toolbar>
                 </headerToolbar>
@@ -75,7 +76,10 @@
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>NUTZUNGSART}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                        <Text text="{i18n>NUTZUNGSART} {i18n>ALTERNATIV}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" visible="{= ${form>/modus} === 'show' }">
                         <Text text="{i18n>NUTZUNGSART} {i18n>ALTERNATIV}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
@@ -107,11 +111,12 @@
                             <Text text="{form>Bukrs}/{form>WeId}/{form>MoId}" />
                             <Text text="{form>Bezei}" />
                             <Text text="{= ${text>/nutzungsart}[${form>Nutzart}] }" />
-                            <Select selectedKey="{form>NutzartAlt}" items="{path: 'form>/nutzungsarten', templateShareable: true}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" change="onNutzartAltChange">
+                            <Select selectedKey="{form>NutzartAlt}" items="{path: 'form>/nutzungsarten', templateShareable: true}" change="onNutzartAltChange">
                                 <items>
                                     <core:Item key="{form>NaId}" text="{form>TextSh}" />
                                 </items>
                             </Select>
+                            <Text text="{= ${text>/nutzungsart}[${form>NutzartAlt}] }" />
                             <Text text="{ parts:
                                                 [
                                                 {path: 'form>Hnfl'},
@@ -139,12 +144,6 @@
             </Table>
 
             <MessageStrip id="mietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
-
-            <FlexBox class="sapUiSmallMargin" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" justifyContent="End">
-                <items>
-                    <Button text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" press="onAusbaukostenVerteilenButtonPress" />
-                </items>
-            </FlexBox>
                     
             <f:SimpleForm
                 title="{i18n>GEMEINSAME_ANGABEN}"
@@ -162,7 +161,12 @@
                 <f:content>
                     
                     <Label text="{i18n>VERMIETUNGSART}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Select id="vermietungsart" selectedKey="{form>/vermietungsaktivitaet/Vermietungsart}" items="{form>/vermietungsarten}" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }"  class="sapUiSmallMarginBottom">
+                    <Input value="{= ${text>/vermietungsart}[${form>/vermietungsaktivitaet/Vermietungsart}] }" visible="{= ${form>/modus} === 'show' }" editable="false" class="sapUiSmallMarginBottom">
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    <Select id="vermietungsart" selectedKey="{form>/vermietungsaktivitaet/Vermietungsart}" items="{form>/vermietungsarten}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
                         <items>
                             <core:Item key="{form>key}" text="{form>text}" />
                         </items>
@@ -267,7 +271,12 @@
 
                     <!-- Sonstige Kosten -->
                     <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtKosten}" items="{form>/kostenarten}">
+                    <Input value="{= ${text>/kostenart}[${form>/vermietungsaktivitaet/ArtKosten}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    <Select visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtKosten}" items="{form>/kostenarten}">
                         <items>
                             <core:Item key="{form>KoId}" text="{form>Txtmd}" />
                         </items>
@@ -283,7 +292,12 @@
 
                     <!-- Sonstige Erträge  -->
                     <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Select enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtErtrag}" items="{form>/ertragsarten}">
+                    <Input value="{= ${text>/ertragsart}[${form>/vermietungsaktivitaet/ArtErtrag}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    <Select visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtErtrag}" items="{form>/ertragsarten}">
                         <items>
                             <core:Item key="{form>ErId}" text="{form>Txtmd}" />
                         </items>
@@ -379,17 +393,27 @@
                 <f:content>
                     
                     <Label text="{i18n>STATUS}" />
-                    <Select id="selectStatus" selectedKey="{form>/vermietungsaktivitaet/Status}" width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/statuswerte}" change="onStatusSelektionChange" >
+                    <Input value="{= ${text>/status}[${form>/vermietungsaktivitaet/Status}] }" editable="false" visible="{= ${form>/modus} === 'show' }">
+                        <layoutData>
+							<l:GridData span="L6 M6 S12" />
+						</layoutData>
+                    </Input>
+                    <Select id="selectStatus" selectedKey="{form>/vermietungsaktivitaet/Status}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/statuswerte}" change="onStatusSelektionChange" >
                         <items>
                             <core:Item key="{form>Stid}" text="{form>Txtmd}" />
                         </items>
                         <layoutData>
-							<l:GridData span="L3 M3 S12" />
+							<l:GridData span="L6 M6 S12" />
 						</layoutData>
                     </Select>
                     
                     <Label text="{i18n>ANMERKUNG}" />
-                    <Select id="idAnmerkung" selectedKey="{form>/vermietungsaktivitaet/Anmerkung}" width="100%" enabled="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/anmerkungen}" >
+                    <Input value="{= ${text>/anmerkung}[${form>/vermietungsaktivitaet/Anmerkung}] }" editable="false" visible="{= ${form>/modus} === 'show' }">
+                        <layoutData>
+							<l:GridData span="L6 M6 S12" />
+						</layoutData>
+                    </Input>
+                    <Select id="idAnmerkung" selectedKey="{form>/vermietungsaktivitaet/Anmerkung}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" items="{form>/anmerkungen}" >
                         <items>
                             <core:Item key="{form>Id}" text="{form>Txtmd}" />
                         </items>
@@ -399,7 +423,11 @@
                     </Select>
                     
                     <Label text="{i18n>BEMERKUNG}" />
-                    <TextArea value="{form>/vermietungsaktivitaet/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <TextArea value="{form>/vermietungsaktivitaet/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                        <layoutData>
+							<l:GridData span="L6 M6 S12" />
+						</layoutData>
+                    </TextArea>
 
                 </f:content>
 
