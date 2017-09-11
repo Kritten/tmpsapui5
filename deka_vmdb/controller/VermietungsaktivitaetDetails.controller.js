@@ -41,7 +41,9 @@ var myFormatter = {
         return res;
     }
 };
-    
+
+// Test
+
 sap.ui.define([
     "sap/ui/core/mvc/Controller", 
     "sap/m/MessageBox", 
