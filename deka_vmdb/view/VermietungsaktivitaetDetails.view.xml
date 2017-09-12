@@ -60,8 +60,8 @@
                         <ToolbarSpacer />
                         <Text text="{form>/viewsettings/zeitspanneSelected/Text} | {form>/viewsettings/waehrungSelected/Nach} | {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit')}" />
-                        <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onKonditioneneinigungHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" />
                         <Button text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" iconFirst="false" press="onAusbaukostenVerteilenButtonPress" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                        <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onKonditioneneinigungHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" />
                         <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} !== '01' }" />
                     </Toolbar>
                 </headerToolbar>
@@ -135,8 +135,8 @@
                                             formatter: 'myFormatter.formatBetrag'}"
                                     editable="false" />     
                             <Input value="{ path: 'form>AnMiete', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" type="Float" />
-                            <Input value="{ path: 'form>GaKosten', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
-                            <Input value="{ path: 'form>MaKosten', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" enabled="{= (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
+                            <Input value="{ path: 'form>GaKosten', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') &amp;&amp; (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
+                            <Input value="{ path: 'form>MaKosten', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') &amp;&amp; (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
                         </cells>
                     </ColumnListItem>
                     
