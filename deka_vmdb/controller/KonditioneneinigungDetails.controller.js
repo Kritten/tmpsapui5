@@ -1169,7 +1169,7 @@ sap.ui.define([
                     validationResult = false;
                 }
 
-                var mietflaechenangabe = item.getBindingContext().getObject();
+                var mietflaechenangabe = item.getBindingContext("form").getObject();
 
                 if(!isNaN(mietflaechenangabe.HnflAlt) && !isNaN(mietflaechenangabe.Hnfl) && (mietflaechenangabe.HnflAlt > (mietflaechenangabe.Hnfl * 1.2))) {
                     HnflAlt_cell.setValueState(sap.ui.core.ValueState.Error);
