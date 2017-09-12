@@ -866,8 +866,8 @@ sap.ui.define([
                 var parent = source.getParent();
                 var cells = parent.getCells();
 
-                var GaKostenFeld = cells[9];
-                var MaKostenFeld = cells[10];
+                var GaKostenFeld = cells[10];
+                var MaKostenFeld = cells[11];
 
                 // Beide Felder leeren
                 GaKostenFeld.setValue("");
@@ -1222,7 +1222,7 @@ sap.ui.define([
                 var cells = row.getAggregation("cells");
 
                 // TODO: dynamisch machen (spaltenindex aus "Columns" aggregation der table berechnen)
-                var mfAltCell = cells[5];                
+                var mfAltCell = cells[6];                
                 // var mfAltValue = mfAltCell.getProperty("value");
                 var mfAltValue = vatoob[i].HnflAlt;
                 var hnflValue = vatoob[i].Hnfl;
@@ -1238,7 +1238,7 @@ sap.ui.define([
 
             _.map(mietflaechenangabenTable.getItems(), function(item){
                 var cells = item.getCells();
-                var anMieteCell = cells[8];
+                var anMieteCell = cells[9];
 
                 if(anMieteCell.getValue() === ""){
                     anMieteCell.setValueState(sap.ui.core.ValueState.Error);
@@ -1251,18 +1251,18 @@ sap.ui.define([
                     validationResult = false;
                 }
 
-                var hnflAltCell = cells[5];
+                var hnflAltCell = cells[6];
                 validationResult = that.checkNotNegative(hnflAltCell) && validationResult;
 
-                var nhMieteCell = cells[7];
+                var nhMieteCell = cells[8];
                 validationResult = that.checkNotNegative(nhMieteCell) && validationResult;
 
                 validationResult = that.checkNotNegative(anMieteCell) && validationResult;
 
-                var gaKostenCell = cells[9];
+                var gaKostenCell = cells[10];
                 validationResult = that.checkNotNegative(gaKostenCell) && validationResult;
 
-                var maKostenCell = cells[10];
+                var maKostenCell = cells[11];
                 validationResult = that.checkNotNegative(maKostenCell) && validationResult;
             });
 
@@ -1369,19 +1369,19 @@ sap.ui.define([
             _.map(mietflaechenangabenTable.getItems(), function(item){
                 var cells = item.getCells();
 
-                var anMieteCell = cells[8];
+                var anMieteCell = cells[9];
                 anMieteCell.setValueState(sap.ui.core.ValueState.None);  
 
-                var hnflAltCell = cells[5];
+                var hnflAltCell = cells[6];
                 hnflAltCell.setValueState(sap.ui.core.ValueState.None);
 
-                var nhMieteCell = cells[7];
+                var nhMieteCell = cells[8];
                 nhMieteCell.setValueState(sap.ui.core.ValueState.None);
 
-                var gaKostenCell = cells[9];
+                var gaKostenCell = cells[10];
                 gaKostenCell.setValueState(sap.ui.core.ValueState.None);
 
-                var maKostenCell = cells[10];
+                var maKostenCell = cells[11];
                 maKostenCell.setValueState(sap.ui.core.ValueState.None);   
             });
         },
