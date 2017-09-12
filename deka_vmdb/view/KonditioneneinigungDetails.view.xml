@@ -72,34 +72,34 @@
                 </headerToolbar>
                 
                 <columns>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" id="idColMietflaeche">
                         <Text text="{i18n>MIETFLAECHE}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" id="idColBezeichnung">
                         <Text text="{i18n>BEZEICHNUNG}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" id="idColNutzart">
                         <Text text="{i18n>NUTZUNGSART}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" id="idColHnfl">
                         <Text text="{i18n>HAUPTNUTZFLAECHE} / {i18n>STUECK}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" id="idColHnflAlt">
                         <Text text="{i18n>HAUPTNUTZFLAECHE} {i18n>ALTERNATIV}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" id="idColMfSplit">
                         <Text text="{i18n>MIETFLAECHENSPLIT}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" id="idColNhMiete">
                         <Text text="{i18n>MARKTUEBLICHE_MIETE} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" id="idColAnMiete">
                         <Text text="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) ? '*' : '' }{i18n>ANGEBOTSMIETE} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" id="idColGaKosten">
                         <Text text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column minScreenWidth="Tablet" demandPopin="true" id="idColMaKosten">
                         <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     </Column>
                 </columns>

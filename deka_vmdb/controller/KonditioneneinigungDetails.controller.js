@@ -219,15 +219,18 @@ sap.ui.define([
 
 
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
+
+            var HnflAlt_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColHnflAlt"));
+            var AnMiete_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColAnMiete"));
+            var GaKosten_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColGaKosten"));
+            var MaKosten_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColMaKosten"));
+
             _.map(mietflaechenangabenTable.getItems(), function(item){
                 var cells = item.getCells();
-                var anMieteCell = cells[7];
-
-                anMieteCell.setValueState(sap.ui.core.ValueState.None);  
-                cells[8].setValueState(sap.ui.core.ValueState.None);  
-                cells[9].setValueState(sap.ui.core.ValueState.None);  
-                cells[6].setValueState(sap.ui.core.ValueState.None);  
-                cells[4].setValueState(sap.ui.core.ValueState.None);      
+                cells[HnflAlt_cellindex].setValueState(sap.ui.core.ValueState.None);
+                cells[AnMiete_cellindex].setValueState(sap.ui.core.ValueState.None);
+                cells[GaKosten_cellindex].setValueState(sap.ui.core.ValueState.None);
+                cells[MaKosten_cellindex].setValueState(sap.ui.core.ValueState.None);
             });
 
             this.getView().byId("idMietflaechenangabenErrorBox").setVisible(false);
@@ -1129,56 +1132,53 @@ sap.ui.define([
             }
             
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
+
             var idMietflaechenangabenErrorBox = this.getView().byId("idMietflaechenangabenErrorBox");
             if(mietflaechenangabenTable.getItems().length < 1){
                 idMietflaechenangabenErrorBox.setText("Bitte fügen Sie mindestens eine Mietfläche hinzu");
                 idMietflaechenangabenErrorBox.setVisible(true);
             }
             
-            _.map(mietflaechenangabenTable.getItems(), function(item){
+            var HnflAlt_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColHnflAlt"));
+            var AnMiete_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColAnMiete"));
+            var GaKosten_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColGaKosten"));
+            var MaKosten_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColMaKosten"));
+
+            _.each(mietflaechenangabenTable.getItems(), function(item){
+                
                 var cells = item.getCells();
-                var anMieteCell = cells[7];
+                var HnflAlt_cell = cells[HnflAlt_cellindex];
+                var AnMiete_cell = cells[AnMiete_cellindex];
+                var GaKosten_cell = cells[GaKosten_cellindex];
+                var MaKosten_cell = cells[MaKosten_cellindex];
 
-                if(anMieteCell.getValue() === ""){
-                    anMieteCell.setValueState(sap.ui.core.ValueState.Error);
-                    anMieteCell.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                if(AnMiete_cell.getValue() === ""){
+                    AnMiete_cell.setValueState(sap.ui.core.ValueState.Error);
+                    AnMiete_cell.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                     validationResult = false;
                 }
 
-                validationResult = that.checkNotNegative(anMieteCell) && validationResult;
-                validationResult = that.checkNotNegative(cells[8]) && validationResult; // gaKosten
-                validationResult = that.checkNotNegative(cells[9]) && validationResult; // maKosten
-                validationResult = that.checkNotNegative(cells[6]) && validationResult; // nhMiete
-                validationResult = that.checkNotNegative(cells[4]) && validationResult; // hnflAlt
-
-                if(parseFloat(anMieteCell.getValue()) < 0){
-                    anMieteCell.setValueState(sap.ui.core.ValueState.Error);
-                    anMieteCell.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
+                validationResult = that.checkNotNegative(HnflAlt_cell) && validationResult;
+                validationResult = that.checkNotNegative(AnMiete_cell) && validationResult;
+                validationResult = that.checkNotNegative(GaKosten_cell) && validationResult;
+                validationResult = that.checkNotNegative(MaKosten_cell) && validationResult;
+                
+                if(parseFloat(AnMiete_cell.getValue()) < 0){
+                    AnMiete_cell.setValueState(sap.ui.core.ValueState.Error);
+                    AnMiete_cell.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                     validationResult = false;
-                }                                
-            });
+                }
 
-            var ketoob = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");           
-            var rows = mietflaechenangabenTable.getItems();
-            var i;
-            for(i = 0; i < rows.length; i = i+1){
-                var row = rows[i];
-                var cells = row.getAggregation("cells");
+                var mietflaechenangabe = item.getBindingContext().getObject();
 
-                // TODO: dynamisch machen (spaltenindex aus "Columns" aggregation der table berechnen)
-                var mfAltCell = cells[4];                 
-                //var mfAltValue = mfAltCell.getProperty("value");
-                var mfAltValue = ketoob[i].HnflAlt;
-                var hnflValue = ketoob[i].Hnfl;
-
-                if(!isNaN(mfAltValue) && !isNaN(hnflValue) && (mfAltValue > (hnflValue*1.2))) {
-                    mfAltCell.setValueState(sap.ui.core.ValueState.Error);
+                if(!isNaN(mietflaechenangabe.HnflAlt) && !isNaN(mietflaechenangabe.Hnfl) && (mietflaechenangabe.HnflAlt > (mietflaechenangabe.Hnfl * 1.2))) {
+                    HnflAlt_cell.setValueState(sap.ui.core.ValueState.Error);
                     var errText = TranslationUtil.translate("ERR_MFALT_MAX");
-                    mfAltCell.setValueStateText(errText);
-
+                    HnflAlt_cell.setValueStateText(errText);
                     validationResult = false;
                 }
-            }
+
+            });
             
             var mkMonate = this.getView().byId("maklerkostenInMonatsmieten");
             validationResult = this.checkNotNegative(mkMonate) && validationResult;
