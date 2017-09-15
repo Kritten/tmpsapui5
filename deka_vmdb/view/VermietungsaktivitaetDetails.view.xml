@@ -61,8 +61,8 @@
                         <Text text="{form>/viewsettings/zeitspanneSelected/Text} | {form>/viewsettings/waehrungSelected/Nach} | {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                         <Button icon="sap-icon://action-settings" press="handleTableSettingsButton" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit')}" />
                         <Button text="{i18n>VERTEILEN}" icon="sap-icon://overview-chart" iconFirst="false" press="onAusbaukostenVerteilenButtonPress" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                        <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onKonditioneneinigungHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' }" />
-                        <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= ${form>/vermietungsaktivitaet/Kategorie} !== '01' }" />
+                        <Button text="{i18n>KONDITIONENEINIGUNG_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onKonditioneneinigungHinzufuegenButtonPress" visible="{= (${form>/vermietungsaktivitaet/Kategorie} === '01') &amp;&amp; ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) }" />
+                        <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= (${form>/vermietungsaktivitaet/Kategorie} !== '01') &amp;&amp; ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) }" />
                     </Toolbar>
                 </headerToolbar>
                 
