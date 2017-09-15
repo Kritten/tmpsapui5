@@ -76,6 +76,7 @@
             <OverflowToolbar>
                 <ToolbarSpacer />
                 <Button text="{i18n>SPEICHERN}" 
+                        type="Emphasized"
                         press="onSpeichernButtonPress" 
                         visible="{= ${form>/modus} === 'edit' }" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>

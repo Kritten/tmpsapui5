@@ -619,7 +619,7 @@ sap.ui.define([
                     objekte.push({
                         WeId: mietobjekt.WeId,
                         MoId: mietobjekt.MoId,
-                        KeId: mietobjekt.KeId, // 15.09.17 - ""
+                        KeId: (vermietungsaktivitaet.Kategorie === StaticData.KATEGORIE.VA.REGELVERMIETUNG) ? mietobjekt.KeId : '', // 15.09.17 - ""
                         Bukrs: mietobjekt.Bukrs,
                         Bezei: mietobjekt.Bezei ? mietobjekt.Bezei : null,
                         Nutzart: mietobjekt.Nutzart,
