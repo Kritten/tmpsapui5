@@ -77,7 +77,11 @@ sap.ui.define([
                     formModel.setSizeLimit(1000);
                     console.log(formModel, "formModel");
                     _this.getView().setModel(formModel, "form");   
-                });                       
+                })
+                .catch(function(oError){
+                    var error = ErrorMessageUtil.parseErrorMessage(oError);
+                    ErrorMessageUtil.show(error);
+                }).done();                       
             })
             .catch(function(oError){
                 ErrorMessageUtil.showError(oError);
