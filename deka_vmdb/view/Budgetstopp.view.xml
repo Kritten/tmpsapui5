@@ -106,7 +106,9 @@
 
         <footer>
             <OverflowToolbar>
-                <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" icon="sap-icon://undo" press="onGenehmigungZurueckziehenButtonPress" />          
+                <Button 
+                    text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}" 
+                    press="onGenehmigungZurueckziehenButtonPress" />          
             </OverflowToolbar>
 		</footer>
 
