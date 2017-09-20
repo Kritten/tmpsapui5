@@ -128,8 +128,8 @@
                                             formatter: 'myFormatter.formatBetrag'}"
                                     editable="false" />                              
                             <Input value="{path: 'form>AnMiete', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                            <Input value="{path: 'form>GaKosten', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') &amp;&amp; (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
-                            <Input value="{path: 'form>MaKosten', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') &amp;&amp; (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
+                            <Input value="{path: 'form>GaKosten', type: 'model.CustomNumberType'}" editable="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) &amp;&amp; (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
+                            <Input value="{path: 'form>MaKosten', type: 'model.CustomNumberType'}" editable="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) &amp;&amp; (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
                         </cells>
                     </ColumnListItem>
                     
