@@ -1321,13 +1321,9 @@ sap.ui.define([
 
             var Bukrs = _this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
             var WeId = _this.getView().getModel("form").getProperty("/konditioneneinigung/WeId");
-            var MvId = _this.getView().getModel("form").getProperty("/konditioneneinigung/MvId");
 
-            var expand = (MvId !== undefined) ? 'MvToMo' : 'WeToMo';
-            var promise = (MvId !== undefined) ? DataProvider.readMietvertragAsync(WeId, Bukrs, MvId) : DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId);
-
-            promise.then(function(oData){
-                var mietflaechenangaben = oData[expand];
+            DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId).then(function(oData){
+                var mietflaechenangaben = oData.WeToMo;
 
                 var vorhandeneMietflaechenangaben = _this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
 
