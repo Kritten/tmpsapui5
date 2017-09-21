@@ -1384,6 +1384,9 @@ sap.ui.define([
                 var maKostenCell = cells[11];
                 maKostenCell.setValueState(sap.ui.core.ValueState.None);   
             });
+
+            // Verteilen Button normal stylen
+            this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Default);
         },
 
         onAbbrechenButtonPress: function(oEvent){            
@@ -1455,6 +1458,9 @@ sap.ui.define([
             }
 
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
+
+            // Verteilen Button rot hervorheben
+            this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
         },
 		
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
@@ -1556,6 +1562,9 @@ sap.ui.define([
                         });
                         
                         _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
+
+                        // Verteilen Button rot hervorheben
+                        _this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
                     };
 
                     if( WeCurrency !== VaWaehrung && WeUnit !== VaUnit ) { //Beides umrechnen
@@ -1649,6 +1658,9 @@ sap.ui.define([
                     });
                     
                     this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
+
+                    // Verteilen Button rot hervorheben
+                    this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
                 }
 
                 
@@ -1871,6 +1883,9 @@ sap.ui.define([
             });
             
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
+
+            // Verteilen Button rot hervorheben
+            this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
         },
 		
 		onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(oEvent){

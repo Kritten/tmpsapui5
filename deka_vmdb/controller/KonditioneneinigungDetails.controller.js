@@ -236,7 +236,7 @@ sap.ui.define([
             this.getView().byId("idMietflaechenangabenErrorBox").setVisible(false);
 
             // Verteilen Button normal stylen
-            this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Default);          
+            this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Default);
         },
 
         onKonditioneneinigungAnzeigen: function(oEvent){
