@@ -1258,42 +1258,35 @@ sap.ui.define([
         onAbbrechenButtonPress: function(evt){
             var _this = this;
             
-            var modus = this.getView().getModel("form").getProperty("/modus");   
-            var konditioneneinigung = _this.getView().getModel("form").getProperty("/konditioneneinigung");    
-            var keid = konditioneneinigung.KeId;    
+            var modus =_this.getView().getModel("form").getProperty("/modus");   
+            var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");    
             
-            if(modus === "new")
-            {                
-                var oRouter = sap.ui.core.UIComponent.getRouterFor(_this);
-                
-                MessageBox.confirm(TranslationUtil.translate("ABBRUCH_HINWEIS"), {
-                    title: TranslationUtil.translate("HINWEIS"),
-                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-                    onClose: function(action){
-                        if(action === sap.m.MessageBox.Action.YES){
+            MessageBox.confirm(TranslationUtil.translate("ABBRUCH_HINWEIS"), {
+                title: TranslationUtil.translate("HINWEIS"),
+                actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                onClose: function(action){
+                    if(action === sap.m.MessageBox.Action.YES){
+
+                        // wenn modus == new    Navigation zurück
+                        // wenn modus == edit   Ausgangszustand wiederherstellen, Sperre aufheben, modus = show
+
+                        if(modus === "new") {
                             window.history.go(-1);
+                        } else if(modus === "edit") {
+                            DataProvider.deleteSperreAsync(ke.KeId, '')
+                            .then(function(){
+                                _this.getView().getModel("form").setData(_this._formDataBackup);
+                                _this.getView().getModel("form").setProperty("/modus", "show");
+                            })
+                            .catch(function(oError){
+                                 ErrorMessageUtil.showError(oError);
+                            })
+                            .done();
                         }
+
                     }
-                });
-                
-            }
-            else if(modus === "edit")
-            {
-                DataProvider.deleteSperreAsync(keid, '')
-                .then(function(){
-                    var formDataBackup = _this._formDataBackup;
-                    _this.getView().getModel("form").setData(formDataBackup);
-                    _this.getView().getModel("form").setProperty("/modus", "show");
-                    /*
-                var Bukrs = this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs");
-                var KeId = this.getView().getModel("form").getProperty("/konditioneneinigung/KeId");
-                _this.konditioneneinigungAnzeigen(KeId, Bukrs);*/
-                })
-                .catch(function(oError){
-                     ErrorMessageUtil.showError(oError);
-                })
-                .done();            
-            }
+                }
+            });
         },
 
         onMietflaechenAngabenLoeschenButtonPress: function(oEvent){

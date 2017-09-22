@@ -1390,47 +1390,37 @@ sap.ui.define([
         },
 
         onAbbrechenButtonPress: function(oEvent){            
-            
             var _this = this;
             this.initializeValidationState();
             
             var modus = this.getView().getModel("form").getProperty("/modus");  
             var va =  this.getView().getModel("form").getProperty("/vermietungsaktivitaet");  
-            var vaid = va.VaId;     
-            console.log(vaid, "VaId");
             
-            if(modus === "new")
-            {
-                // wenn modus == new
-                // -> Änderungen Verwerfen und Navigation zurück
-                
-                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                
-                MessageBox.confirm(TranslationUtil.translate("ABBRUCH_HINWEIS"), {
-                    title:"{i18n>HINWEIS}",
-                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-                    onClose: function(action){
-                        if(action === sap.m.MessageBox.Action.YES){
+            MessageBox.confirm(TranslationUtil.translate("ABBRUCH_HINWEIS"), {
+                title:"{i18n>HINWEIS}",
+                actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                onClose: function(action){
+                    if(action === sap.m.MessageBox.Action.YES){
+                        
+                        // wenn modus == new    Navigation zurück
+                        // wenn modus == edit   Ausgangszustand wiederherstellen, Sperre aufheben, modus = show
+
+                        if(modus === "new") {
                             window.history.go(-1);
+                        } else if(modus === "edit") {
+                            DataProvider.deleteSperreAsync('', va.VaId).then(function(){
+                                _this.getView().getModel("form").setData(_this._formDataBackup);
+                                _this.getView().getModel("form").setProperty("/modus", "show");
+                            })
+                            .catch(function(oError){
+                                ErrorMessageUtil.showError(oError);
+                            })
+                            .done();
                         }
+
                     }
-                });
-                
-            }
-            else if(modus === "edit")
-            {
-                // wenn modus == edit
-                // -> Änderungen Verwerfen
-                // -> modus = show
-                DataProvider.deleteSperreAsync('',vaid).then(function(){
-                    _this.getView().getModel("form").setData(_this._formDataBackup);
-                    _this.getView().getModel("form").setProperty("/modus", "show");
-                })
-                .catch(function(oError){
-                    ErrorMessageUtil.showError(oError);
-                })
-                .done();
-            }
+                }
+            });
 
         },
 		
