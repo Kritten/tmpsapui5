@@ -1,6 +1,6 @@
 /*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:43:47 
+ * @Author: Christian Hoff (best practice consulting AG)
+ * @Date: 2017-04-05 21:43:47
  * @Last Modified by: Christian Hoff (best practice consulting AG)
  * @Last Modified time: 2017-07-21 10:50:17
  */
@@ -11,13 +11,13 @@ var formatter = sap.ui.core.format.NumberFormat.getFloatInstance({
 
 var myFormatter = {
     formatDifferenz: function(a,b,unit) {
-        var oNumber = (a * 100 - b * 100) / 100;        
+        var oNumber = (a * 100 - b * 100) / 100;
 
         var res = formatter.format(oNumber);
         if(unit){
             res = res + " " + unit;
         }
-        
+
         return res;
     },
 
@@ -27,7 +27,7 @@ var myFormatter = {
             res = formatter.format(hnfl) + " " + hnflUnit;
         }else{
             var hnflConv = (hnfl * flMultiplikator * 100) / 100;
-            
+
             res = formatter.format(hnflConv) + " " + flSelected;
         }
 
@@ -45,8 +45,8 @@ var myFormatter = {
 // Test
 
 sap.ui.define([
-    "sap/ui/core/mvc/Controller", 
-    "sap/m/MessageBox", 
+    "sap/ui/core/mvc/Controller",
+    "sap/m/MessageBox",
     "ag/bpc/Deka/util/PrinterUtil",
     "sap/ui/model/Filter",
     "ag/bpc/Deka/util/NavigationPayloadUtil",
@@ -55,16 +55,16 @@ sap.ui.define([
     "ag/bpc/Deka/util/ErrorMessageUtil",
     "ag/bpc/Deka/util/TranslationUtil",
     "ag/bpc/Deka/model/CustomNumberType"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
-	
+
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetDetails", {
-        
+
 		onInit: function(evt){
             var _this = this;
-            
+
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
             this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
-			
+
             // View nach oben Scrollen, da die Scrollposition von vorherigen Anzeigen übernommen wird
             this.getView().addEventDelegate({
                 onAfterShow: function(oEvent) {
@@ -96,7 +96,7 @@ sap.ui.define([
 
                 viewsettings: null
             };
-            
+
             var formModel = new sap.ui.model.json.JSONModel(form);
             this.getView().setModel(formModel, "form");
         },
@@ -261,11 +261,12 @@ sap.ui.define([
                 return DataProvider.readKonditioneneinigungAsync(keKey.Bukrs, keKey.KeId);
             });
 
-            var vermietungsaktivitaet = _this.newVermietungsaktivitaet();            
+            var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
 
             // Wenn alle Konditioneneinigungen erfolgreich geladen wurden
             Q.all(promises).then(function(konditioneneinigungen){
-                
+
+                vermietungsaktivitaet.MonatJahr = konditioneneinigungen[0].MonatJahr;
                 vermietungsaktivitaet.VaToWe = konditioneneinigungen[0].KeToWe;
                 vermietungsaktivitaet.WeId = vermietungsaktivitaet.VaToWe.WeId;
                 vermietungsaktivitaet.Bukrs = vermietungsaktivitaet.VaToWe.Bukrs;
@@ -282,11 +283,11 @@ sap.ui.define([
                         return objekt;
                     });
                 }), true);
-                
+
                 return _this.initializeViewsettingsAsync(vermietungsaktivitaet);
             })
             .then(function(){
-                
+
                 // Anmerkung:
                 //
                 // Bei Übernahme der Objekte aus den KEs müssen ggf. Miete, Kosten und Fläche umberechnet werden,
@@ -294,11 +295,11 @@ sap.ui.define([
                 //
                 // VA erst hier an die form binden, da Berechnungen auf den Objekten notwendig waren
                 // die erst möglich sind, nachdem die viewsettings geladen wurden
-                
+
                 var viewsettings = _this.getView().getModel("form").getProperty("/viewsettings");
 
                 vermietungsaktivitaet.VaToOb = _.map(vermietungsaktivitaet.VaToOb, function(objekt){
-                    
+
                     // Umrechnungskurs für Währung finden
                     var umrechnungsWaehrung = _.find(viewsettings.waehrungen, function(waehrung){
                         return waehrung.Nach === objekt.Whrung;
@@ -328,9 +329,9 @@ sap.ui.define([
 
                     return objekt;
                 });
-                
-                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);                                
-                
+
+                _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+
                 return Q.when(StaticData.STATUSWERTE);
             })
             .then(function(statuswerte){
@@ -391,7 +392,7 @@ sap.ui.define([
             .then(function(wirtschaftseinheit){
 
                 var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
-                
+
                 vermietungsaktivitaet.VaToWe = wirtschaftseinheit;
                 vermietungsaktivitaet.WeId = vermietungsaktivitaet.VaToWe.WeId;
                 vermietungsaktivitaet.Bukrs = vermietungsaktivitaet.VaToWe.Bukrs;
@@ -465,7 +466,7 @@ sap.ui.define([
             .then(function(wirtschaftseinheit){
 
                 var vermietungsaktivitaet = _this.newVermietungsaktivitaet();
-                
+
                 vermietungsaktivitaet.VaToWe = wirtschaftseinheit;
                 vermietungsaktivitaet.WeId = vermietungsaktivitaet.VaToWe.WeId;
                 vermietungsaktivitaet.Bukrs = vermietungsaktivitaet.VaToWe.Bukrs;
@@ -525,23 +526,23 @@ sap.ui.define([
             var _this = this;
 
             var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
-            
+
             if(!vermietungsaktivitaet){
                 this.onBack(null);
                 return;
             }
-            
+
             _this.initializeEmptyModel();
-            _this.getView().getModel("form").setProperty("/modus", "new"); 
-            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);            
-         
+            _this.getView().getModel("form").setProperty("/modus", "new");
+            _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+
             DataProvider.readWirtschaftseinheitAsync(vermietungsaktivitaet.Bukrs, vermietungsaktivitaet.WeId)
-            .then(function(wirtschaftseinheit){                
+            .then(function(wirtschaftseinheit){
                 vermietungsaktivitaet.VaToWe = wirtschaftseinheit;
                 vermietungsaktivitaet.Unit = vermietungsaktivitaet.VaToWe.Unit;
-                vermietungsaktivitaet.Currency = vermietungsaktivitaet.VaToWe.Currency; 
+                vermietungsaktivitaet.Currency = vermietungsaktivitaet.VaToWe.Currency;
 
-                return _this.initializeViewsettingsAsync(vermietungsaktivitaet);             
+                return _this.initializeViewsettingsAsync(vermietungsaktivitaet);
             })
             .then(function(){
                 return Q.when(StaticData.STATUSWERTE);
@@ -584,17 +585,17 @@ sap.ui.define([
                 ErrorMessageUtil.showError(oError);
             })
             .done();
-            
-            // Vermietungsobjekte auslesen und mit importierten Daten ergänzen          
+
+            // Vermietungsobjekte auslesen und mit importierten Daten ergänzen
             var Bukrs = vermietungsaktivitaet.Bukrs;
             var WeId = vermietungsaktivitaet.WeId;
-           
+
             DataProvider.readMietobjektSetAsync(null, "Bukrs eq '"+Bukrs+"' and WeId eq '"+WeId+"'")
             .then(function(mietobjekte) {
                 var mietflaechenangaben = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
 
                 _.each(mietflaechenangaben, function(mietflaechenangabe){
-                    
+
                     var mietobjekt = _.find(mietobjekte, function(mo){
                         return mo.MoId === mietflaechenangabe.MoId;
                     });
@@ -613,7 +614,7 @@ sap.ui.define([
 
                 var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
                 var objekte = [];
-                
+
                 // Umwandlung Mietobjekt -> Objekt
                 mietflaechenangaben.forEach(function(mietobjekt){
                     objekte.push({
@@ -640,14 +641,14 @@ sap.ui.define([
 
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
             })
-            .done();            
-        },      
+            .done();
+        },
 
         onStatusSelektionChange: function(oEvent){
             var _this = this;
 
             var va = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
-            
+
             Q.when(StaticData.ANMERKUNGEN).then(function(anmerkungen){
                 var filteredAnmerkungen = _.filter(anmerkungen, function(anmerkung){
                     return anmerkung.Stid === va.Status;
@@ -656,7 +657,7 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Anmerkung", filteredAnmerkungen[0].Id);
             });
         },
-        
+
 		onBearbeitenButtonPress: function(oEvent){
             var _this = this;
 
@@ -676,7 +677,7 @@ sap.ui.define([
         },
 
         onBack: function(oEvent) {
-            var modus = this.getView().getModel("form").getProperty("/modus"); 
+            var modus = this.getView().getModel("form").getProperty("/modus");
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
 
             if(modus === "edit") {
@@ -724,11 +725,11 @@ sap.ui.define([
         },
 
         onPopoverFlaecheneinheitSelect: function(oEvent){
-            var item = oEvent.getParameter("selectedItem");          
+            var item = oEvent.getParameter("selectedItem");
             var flaecheneinheit = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/flaecheneinheitSelected", flaecheneinheit);
             var viewsettings = this.getView().getModel("form").getProperty("/viewsettings");
-            var _this = this;  
+            var _this = this;
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             var VaToOb = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
@@ -772,7 +773,7 @@ sap.ui.define([
 
         onPopoverWaehrungSelect: function(oEvent){
             var item = oEvent.getParameter("selectedItem");
-            var waehrung = item.getBindingContext("form").getObject();            
+            var waehrung = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/waehrungSelected", waehrung);
             var _this = this;
             var viewsettings = this.getView().getModel("form").getProperty("/viewsettings");
@@ -809,21 +810,21 @@ sap.ui.define([
         },
 
         // Deprecated
-        ___onSpeichernButtonPress: function(evt){            
+        ___onSpeichernButtonPress: function(evt){
             // Eingaben validieren
             // Daten ins Backend schicken
             // Neues Modell auf Basis der Backenddaten anbinden
 
             var validationSuccess = this.validateForm();
-            
+
             if(validationSuccess)
             {
                 this.getView().getModel("form").setProperty("/modus", "show");
             }
             else
-            {              
+            {
                 var _this = this;
-                
+
                 var dialog = new sap.m.Dialog({
                     title: "Warnung",
                     type: "Message",
@@ -838,7 +839,7 @@ sap.ui.define([
                             // Im Arbeitsvorrat speichern
                             _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/arbeitsvorrat", true);
                             _this.getView().getModel("form").setProperty("/modus", "show");
-                            _this.initializeValidationState();                        
+                            _this.initializeValidationState();
                             dialog.close();
                         }
                     }),
@@ -852,7 +853,7 @@ sap.ui.define([
                         dialog.destroy();
                     }
                 });
-                
+
                 dialog.open();
             }
         },
@@ -875,10 +876,10 @@ sap.ui.define([
             }
         },
 
-        onSpeichernButtonPress: function(oEvent){  
-            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");  
+        onSpeichernButtonPress: function(oEvent){
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             var validationSuccess = this.validateForm();
-        
+
             if(validationSuccess){
                 this.speichern();
             }
@@ -886,10 +887,10 @@ sap.ui.define([
                 MessageBox.error(TranslationUtil.translate("VALIDATION_FAILED"));
             }
         },
-		
+
         speichern: function(){
 
-            var modus = this.getView().getModel("form").getProperty("/modus");   
+            var modus = this.getView().getModel("form").getProperty("/modus");
 
             switch(modus)
             {
@@ -946,13 +947,13 @@ sap.ui.define([
                 Vermietungsart: va.Vermietungsart,
 
                 Dienstleister: va.Dienstleister ? va.Dienstleister : null,
-                
+
                 Debitor: va.Debitor ? va.Debitor : null,
                 Debitorname: va.Debitorname,
 
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak.toString(),
-                
+
                 MzMonate: va.MzMonate ? va.MzMonate.toString() : null,
                 MzErsterMonat: va.MzErsterMonat,
                 MzAnzahlJ: va.MzAnzahlJ ? va.MzAnzahlJ.toString() : null,
@@ -979,7 +980,7 @@ sap.ui.define([
                 Status: va.Status,
                 Anmerkung: va.Anmerkung,
                 Bemerkung: va.Bemerkung,
-                
+
                 MonatJahr: va.MonatJahr,
                 Currency: va.Currency,
                 Unit: va.Unit,
@@ -1060,13 +1061,13 @@ sap.ui.define([
                 Vermietungsart: va.Vermietungsart,
 
                 Dienstleister: va.Dienstleister ? va.Dienstleister : null,
-                
+
                 Debitor: va.Debitor ? va.Debitor : null,
                 Debitorname: va.Debitorname,
 
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak.toString(),
-                
+
                 MzMonate: va.MzMonate ? va.MzMonate.toString() : null,
                 MzErsterMonat: va.MzErsterMonat,
                 MzAnzahlJ: va.MzAnzahlJ ? va.MzAnzahlJ.toString() : null,
@@ -1093,7 +1094,7 @@ sap.ui.define([
                 Status: va.Status,
                 Anmerkung: va.Anmerkung,
                 Bemerkung: va.Bemerkung,
-                
+
                 MonatJahr: va.MonatJahr,
                 Currency: va.Currency,
                 Unit: va.Unit,
@@ -1179,7 +1180,7 @@ sap.ui.define([
             var idMietername = this.getView().byId("idMietername");
             if(idMietername.getValue() === ""){
                 idMietername.setValueState(sap.ui.core.ValueState.Error);
-                idMietername.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT")); 
+                idMietername.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
 
@@ -1189,7 +1190,7 @@ sap.ui.define([
                 idMzMonate.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
                 validationResult = false;
             }
-            
+
             var idMietbeginn = this.getView().byId("idMietbeginn");
             if(idMietbeginn.getDateValue() === null){
                 idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
@@ -1199,7 +1200,7 @@ sap.ui.define([
             // else if(idMietbeginn.getDateValue() < Date.now())
             // {
             //     idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
-            //     idMietbeginn.setValueStateText(TranslationUtil.translate("ERR_UNGUELTIGES_DATUM")); 
+            //     idMietbeginn.setValueStateText(TranslationUtil.translate("ERR_UNGUELTIGES_DATUM"));
             //     validationResult = false;
             // }
 
@@ -1222,11 +1223,11 @@ sap.ui.define([
                 var cells = row.getAggregation("cells");
 
                 // TODO: dynamisch machen (spaltenindex aus "Columns" aggregation der table berechnen)
-                var mfAltCell = cells[6];                
+                var mfAltCell = cells[6];
                 // var mfAltValue = mfAltCell.getProperty("value");
                 var mfAltValue = vatoob[i].HnflAlt;
                 var hnflValue = vatoob[i].Hnfl;
-               
+
                 if(!isNaN(mfAltValue) && !isNaN(hnflValue) && (mfAltValue > (hnflValue*1.2))) {
                     mfAltCell.setValueState(sap.ui.core.ValueState.Error);
                     var errText = TranslationUtil.translate("ERR_MFALT_MAX");
@@ -1285,7 +1286,7 @@ sap.ui.define([
             else{
                 validationResult = this.checkNotNegative(idIdxWeitergabe) && validationResult;
             }
-            
+
             var idMzAnzahlJ = this.getView().byId("idMzAnzahlJ");
             validationResult = this.checkNotNegative(idMzAnzahlJ) && validationResult;
 
@@ -1346,9 +1347,9 @@ sap.ui.define([
                 return result;
             }else{
                 return false;
-            }              
+            }
         },
-		
+
 		initializeValidationState: function(){
             this.getView().byId("idMietername").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMietbeginn").setValueState(sap.ui.core.ValueState.None);
@@ -1370,7 +1371,7 @@ sap.ui.define([
                 var cells = item.getCells();
 
                 var anMieteCell = cells[9];
-                anMieteCell.setValueState(sap.ui.core.ValueState.None);  
+                anMieteCell.setValueState(sap.ui.core.ValueState.None);
 
                 var hnflAltCell = cells[6];
                 hnflAltCell.setValueState(sap.ui.core.ValueState.None);
@@ -1382,26 +1383,26 @@ sap.ui.define([
                 gaKostenCell.setValueState(sap.ui.core.ValueState.None);
 
                 var maKostenCell = cells[11];
-                maKostenCell.setValueState(sap.ui.core.ValueState.None);   
+                maKostenCell.setValueState(sap.ui.core.ValueState.None);
             });
 
             // Verteilen Button normal stylen
             this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Default);
         },
 
-        onAbbrechenButtonPress: function(oEvent){            
+        onAbbrechenButtonPress: function(oEvent){
             var _this = this;
             this.initializeValidationState();
-            
-            var modus = this.getView().getModel("form").getProperty("/modus");  
-            var va =  this.getView().getModel("form").getProperty("/vermietungsaktivitaet");  
-            
+
+            var modus = this.getView().getModel("form").getProperty("/modus");
+            var va =  this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+
             MessageBox.confirm(TranslationUtil.translate("ABBRUCH_HINWEIS"), {
                 title:"{i18n>HINWEIS}",
                 actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                 onClose: function(action){
                     if(action === sap.m.MessageBox.Action.YES){
-                        
+
                         // wenn modus == new    Navigation zurück
                         // wenn modus == edit   Ausgangszustand wiederherstellen, Sperre aufheben, modus = show
 
@@ -1423,7 +1424,7 @@ sap.ui.define([
             });
 
         },
-		
+
         onMietflaechenAngabenLoeschenButtonPress: function(oEvent){
 
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
@@ -1452,16 +1453,16 @@ sap.ui.define([
             // Verteilen Button rot hervorheben
             this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
         },
-		
+
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
             var _this = this;
-			
+
             if (! this._mietflaechenSelektionDialog) {
                 this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenSelektion", this);
             }
 
             var Bukrs = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Bukrs");
-            var WeId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId"); 
+            var WeId = _this.getView().getModel("form").getProperty("/vermietungsaktivitaet/WeId");
 
             DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId)
             .then(function(wirtschaftseinheit){
@@ -1488,11 +1489,11 @@ sap.ui.define([
             })
             .done();
         },
-		
+
         onMietflaechenSelektionDialogConfirm: function(oEvent){
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
 
-            var selectedItems = oEvent.getParameter("selectedItems");        
+            var selectedItems = oEvent.getParameter("selectedItems");
 
             if(selectedItems.length > 0)
             {
@@ -1550,7 +1551,7 @@ sap.ui.define([
                             });
 
                         });
-                        
+
                         _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
 
                         // Verteilen Button rot hervorheben
@@ -1558,7 +1559,7 @@ sap.ui.define([
                     };
 
                     if( WeCurrency !== VaWaehrung && WeUnit !== VaUnit ) { //Beides umrechnen
-                        DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
+                        DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){
                             if(waehrungen.length > 0){
                                 var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
                                     return waehrung.Nach === VaWaehrung;
@@ -1587,7 +1588,7 @@ sap.ui.define([
                         .done();
                     }
                     else if( WeCurrency !== VaWaehrung ) { // Waehrung umrechnen
-                        DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
+                        DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){
                             if(waehrungen.length > 0){
                                 var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
                                     return waehrung.Nach === VaWaehrung;
@@ -1620,7 +1621,7 @@ sap.ui.define([
                         })
                         .done();
                     }
- 
+
                 }
                 else {
                     selectedItems.forEach(function(item){
@@ -1646,17 +1647,17 @@ sap.ui.define([
                         });
 
                     });
-                    
+
                     this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", objekte);
 
                     // Verteilen Button rot hervorheben
                     this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
                 }
 
-                
+
             }
         },
-        
+
         onMietflaechenSelektionDialogSearch: function(oEvent){
             var sValue = oEvent.getParameter("value");
 
@@ -1679,7 +1680,7 @@ sap.ui.define([
 
             DataProvider.readKonditioneneinigungSetAsync("KeToOb", "Anmerkung eq '03'")
             .then(function(konditioneneinigungen){
-                
+
                 konditioneneinigungen = _.map(konditioneneinigungen, function(ke){
                     ke.KeToOb = ke.KeToOb.results;
 
@@ -1722,7 +1723,7 @@ sap.ui.define([
                     if(!mietflaechenDerKonditioneneinigungBereitsVollstaendigVorhanden){
                         jsonData.konditioneneinigungen.push( konditioneneinigung );
                     }
-                    
+
                 });
 
                 var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
@@ -1751,7 +1752,7 @@ sap.ui.define([
             {
                 var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
                 var aVorhandeneMoIds = [];
-                
+
                 mietflaechenangaben.forEach(function(mietflaechenangabe){
                     aVorhandeneMoIds.push( mietflaechenangabe.MoId );
                 });
@@ -1761,7 +1762,7 @@ sap.ui.define([
                     var konditioneneinigung = item.getBindingContext().getObject();
 
                     konditioneneinigung.KeToOb.forEach(function(mietflaechenangabe){
-                        
+
                         // Nur die Mietflächen hinzufügen, die noch nicht vorhanden sind
                         if(_.indexOf(aVorhandeneMoIds, mietflaechenangabe.MoId) === -1){
                             mietflaechenangaben.push( mietflaechenangabe );
@@ -1769,23 +1770,23 @@ sap.ui.define([
 
                     });
                 });
-                
+
                 this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
             }
 
         },
-		
-        onAusbaukostenVerteilenButtonPress: function(oEvent){            
+
+        onAusbaukostenVerteilenButtonPress: function(oEvent){
             var _this = this;
 
             if (!this._ausbaukostenVerteilenDialog) {
                 this._ausbaukostenVerteilenDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.AusbaukostenVerteilen", this);
                 this.getView().addDependent(this._ausbaukostenVerteilenDialog);
             }
-            
+
             // über Einträge iterieren und Nutzungsarten sammeln
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
-            
+
 			if(mietflaechenangaben.length === 0) {
                 MessageBox.error("Eine Verteilung ohne Mietflächen ist nicht möglich.");
 			} else {
@@ -1822,12 +1823,12 @@ sap.ui.define([
                 .done();
             }
         },
-		
-        onAusbaukostenVerteilenFragmentAkzeptierenButtonPress: function(oEvent){            
+
+        onAusbaukostenVerteilenFragmentAkzeptierenButtonPress: function(oEvent){
             this._ausbaukostenVerteilenDialog.close();
-            
+
             var dialogModel = this._ausbaukostenVerteilenDialog.getModel();
-            
+
             var verteilung = {
                 nutzungsart: dialogModel.getProperty("/nutzungsart"),
                 grundausbaukosten: parseFloat(dialogModel.getProperty("/grundausbaukosten")),
@@ -1835,15 +1836,15 @@ sap.ui.define([
             };
 
             // Logik zur Verteilung der Ausbaukosten
-        
+
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
-            
+
             var sumNutzflaechen = 0;
-            
+
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
                 if((mietflaechenangabe.Nutzart === verteilung.nutzungsart) || (mietflaechenangabe.NutzartAlt === verteilung.nutzungsart))
-                {				
+                {
 					if(mietflaechenangabe.HnflAlt === null || mietflaechenangabe.HnflAlt === "")
 					{
 						sumNutzflaechen += parseFloat(mietflaechenangabe.Hnfl);
@@ -1854,7 +1855,7 @@ sap.ui.define([
 					}
                 }
             });
-            
+
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
                 if((mietflaechenangabe.Nutzart === verteilung.nutzungsart) || (mietflaechenangabe.NutzartAlt === verteilung.nutzungsart))
@@ -1871,23 +1872,23 @@ sap.ui.define([
 					}
                 }
             });
-            
+
             this.getView().getModel("form").setProperty("/vermietungsaktivitaet/VaToOb", mietflaechenangaben);
 
             // Verteilen Button rot hervorheben
             this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
         },
-		
+
 		onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(oEvent){
             this._ausbaukostenVerteilenDialog.close();
         },
-        
-        onDruckenButtonPress: function(oEvent){                        
+
+        onDruckenButtonPress: function(oEvent){
             var vermietungsaktivitaet = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             console.log(vermietungsaktivitaet, "va");
             var kostenarten = this.getView().getModel("form").getProperty("/kostenarten");
             var ertragsarten = this.getView().getModel("form").getProperty("/ertragsarten");
-            
+
             var printableHtml = PrinterUtil.generatePrintableHtmlForVermietungsaktivitaet(vermietungsaktivitaet, kostenarten, ertragsarten);
 
             var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=1,status=0');
@@ -1897,7 +1898,7 @@ sap.ui.define([
             printWindow.print();
             printWindow.close();
         },
-        
+
         onFavoritButtonPress: function(oEvent){
             var _this = this;
             var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
@@ -1918,7 +1919,7 @@ sap.ui.define([
             })
             .done();
         },
-        
+
         onDebitorAuswahlButtonPress: function(oEvent){
             var _this = this;
 
@@ -1932,7 +1933,7 @@ sap.ui.define([
                 var formModel = new sap.ui.model.json.JSONModel({
                     debitoren: debitoren
                 });
-                
+
                 _this._debitorSelektionDialog.setModel(formModel, "form");
                 _this._debitorSelektionDialog.open();
             })
@@ -1942,7 +1943,7 @@ sap.ui.define([
             .done();
 
         },
-        
+
         onDienstleisterAuswahlButtonPress: function(oEvent){
             var _this = this;
 
@@ -1956,7 +1957,7 @@ sap.ui.define([
                 var formModel = new sap.ui.model.json.JSONModel({
                     dienstleister: dienstleister
                 });
-                
+
                 _this._dienstleisterSelektionDialog.setModel(formModel, "form");
                 _this._dienstleisterSelektionDialog.open();
             })
@@ -1994,21 +1995,21 @@ sap.ui.define([
 			var oBinding = oEvent.getSource().getBinding("items");
 			oBinding.filter([combinedOrFilter]);
         },
-        
+
         newVermietungsaktivitaet: function(){
 
             return {
                 VaId: "",
                 Bukrs: "",
                 WeId: "",
-                
+
                 Vermietungsart: "",
                 Dienstleister: "",
                 Debitor: "",
                 Debitorname: "",
                 Mietbeginn: null,
                 LzFirstbreak: "",
-                
+
                 MzMonate: "",
                 MzErsterMonat: null,
                 MzAnzahlJ: "",
@@ -2019,7 +2020,7 @@ sap.ui.define([
                 BkMonate: "",
                 BkAbsolut: "",
 
-                
+
                 ArtKosten: "00",
                 SonstK: "",
                 ArtErtrag: "00",
@@ -2036,7 +2037,7 @@ sap.ui.define([
                 Status: StaticData.STATUS.VA.AUSBAUPLANUNG,
                 Anmerkung: StaticData.ANMERKUNG.VA.ABSTIMMUG_DER_MIETERAUSBAUPLANUNG,
                 Bemerkung: "",
-                
+
                 MonatJahr: "M",
                 Currency: "",
                 Unit: "",
