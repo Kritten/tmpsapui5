@@ -282,7 +282,7 @@ sap.ui.define([
                         objekt.NutzartAlt = '';
 
                         if(vermietungsaktivitaet.MonatJahr !== konditioneneinigung.MonatJahr){
-                            var faktor = konditioneneinigung.MonatJahr === StaticData.ZEITSPANNE.JAHR ? (1/12) : 12;
+                            var faktor = (konditioneneinigung.MonatJahr === StaticData.ZEITSPANNE.JAHR) ? (1/12) : 12;
                             objekt.NhMiete = objekt.NhMiete * faktor;
                             objekt.AnMiete = objekt.AnMiete * faktor;
                             objekt.GaKosten = objekt.GaKosten * faktor;
@@ -1778,7 +1778,7 @@ sap.ui.define([
                             mietflaechenangaben.push( mietflaechenangabe );
 
                             if(va.MonatJahr !== konditioneneinigung.MonatJahr){
-                                var faktor = konditioneneinigung.MonatJahr === StaticData.ZEITSPANNE.JAHR ? (1/12) : 12;
+                                var faktor = (konditioneneinigung.MonatJahr === StaticData.ZEITSPANNE.JAHR) ? (1/12) : 12;
                                 mietflaechenangabe.NhMiete = mietflaechenangabe.NhMiete * faktor;
                                 mietflaechenangabe.AnMiete = mietflaechenangabe.AnMiete * faktor;
                                 mietflaechenangabe.GaKosten = mietflaechenangabe.GaKosten * faktor;
