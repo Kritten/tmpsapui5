@@ -266,7 +266,6 @@ sap.ui.define([
             // Wenn alle Konditioneneinigungen erfolgreich geladen wurden
             Q.all(promises).then(function(konditioneneinigungen){
 
-                vermietungsaktivitaet.MonatJahr = konditioneneinigungen[0].MonatJahr;
                 vermietungsaktivitaet.VaToWe = konditioneneinigungen[0].KeToWe;
                 vermietungsaktivitaet.WeId = vermietungsaktivitaet.VaToWe.WeId;
                 vermietungsaktivitaet.Bukrs = vermietungsaktivitaet.VaToWe.Bukrs;
@@ -278,8 +277,18 @@ sap.ui.define([
                 // Objekte aller selektierten KEs zur VA hinzufügen. Metadaten bereinigen
                 vermietungsaktivitaet.VaToOb = _.flatten(_.map(konditioneneinigungen, function(konditioneneinigung){
                     return _.map(konditioneneinigung.KeToOb, function(objekt){
+
                         delete objekt.__metadata;
                         objekt.NutzartAlt = '';
+
+                        if(vermietungsaktivitaet.MonatJahr !== konditioneneinigung.MonatJahr){
+                            var faktor = konditioneneinigung.MonatJahr === StaticData.ZEITSPANNE.JAHR ? (1/12) : 12;
+                            objekt.NhMiete = objekt.NhMiete * faktor;
+                            objekt.AnMiete = objekt.AnMiete * faktor;
+                            objekt.GaKosten = objekt.GaKosten * faktor;
+                            objekt.MaKosten = objekt.MaKosten * faktor;
+                        }
+
                         return objekt;
                     });
                 }), true);
@@ -1750,7 +1759,8 @@ sap.ui.define([
 
             if(selectedItems.length > 0)
             {
-                var mietflaechenangaben = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+                var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
+                var mietflaechenangaben = va.VaToOb;
                 var aVorhandeneMoIds = [];
 
                 mietflaechenangaben.forEach(function(mietflaechenangabe){
@@ -1766,6 +1776,15 @@ sap.ui.define([
                         // Nur die Mietflächen hinzufügen, die noch nicht vorhanden sind
                         if(_.indexOf(aVorhandeneMoIds, mietflaechenangabe.MoId) === -1){
                             mietflaechenangaben.push( mietflaechenangabe );
+
+                            if(va.MonatJahr !== konditioneneinigung.MonatJahr){
+                                var faktor = konditioneneinigung.MonatJahr === StaticData.ZEITSPANNE.JAHR ? (1/12) : 12;
+                                mietflaechenangabe.NhMiete = mietflaechenangabe.NhMiete * faktor;
+                                mietflaechenangabe.AnMiete = mietflaechenangabe.AnMiete * faktor;
+                                mietflaechenangabe.GaKosten = mietflaechenangabe.GaKosten * faktor;
+                                mietflaechenangabe.MaKosten = mietflaechenangabe.MaKosten * faktor;
+                            }
+
                         }
 
                     });
@@ -2038,7 +2057,7 @@ sap.ui.define([
                 Anmerkung: StaticData.ANMERKUNG.VA.ABSTIMMUG_DER_MIETERAUSBAUPLANUNG,
                 Bemerkung: "",
 
-                MonatJahr: "M",
+                MonatJahr: StaticData.ZEITSPANNE.MONAT,
                 Currency: "",
                 Unit: "",
 

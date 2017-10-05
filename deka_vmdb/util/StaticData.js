@@ -1,8 +1,8 @@
 /*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:45:23 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:45:23 
+ * @Author: Christian Hoff (best practice consulting AG)
+ * @Date: 2017-04-05 21:45:23
+ * @Last Modified by:   Christian Hoff (best practice consulting AG)
+ * @Last Modified time: 2017-04-05 21:45:23
  */
 sap.ui.define(["ag/bpc/Deka/util/DataProvider",
 "ag/bpc/Deka/util/TranslationUtil"], function(DataProvider, TranslationUtil) {
@@ -22,7 +22,7 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider",
 
         UNIT: {
             STUECK: "ST"
-        },        
+        },
 
         ANMERKUNG: {
             KE: {
@@ -77,7 +77,12 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider",
             }
         },
 
-        init: function(){            
+        ZEITSPANNE: {
+            MONAT: 'M',
+            JAHR: 'J'
+        },
+
+        init: function(){
             this.USER = DataProvider.readUserAsync();
             this.ANMERKUNGEN = DataProvider.readAnmerkungSetAsync();
             this.STATUSWERTE = DataProvider.readStatusSetAsync();
