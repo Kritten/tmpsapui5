@@ -381,11 +381,6 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@Bemerkung@@", bemerkung);
                     }
 
-                    var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
-                    if (bezeichnung) {
-                        result = result.replace("@@KeBezeichnung@@", bezeichnung);
-                    }
-
                     var mietbeginn = konditioneneinigung.Mietbeginn;
                     if (mietbeginn) {
                         result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
