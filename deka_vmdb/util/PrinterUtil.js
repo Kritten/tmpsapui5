@@ -68,10 +68,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@VaBezeichnung@@", bezeichnung);
                     }
 
-                    // JWE: Bemerkung mit Umbrüchen
-                    var bemerkung = vermietungsaktivitaet.bemerkung.replace("\n", "<br>");
-                    if (bemerkung) {
-                        result.result.replace("@@Bemerkung@@", bemerkung.replace("/n", "<br>"));
+                    if(vermietungsaktivitaet.Bemerkung){
+                        var bemerkung = vermietungsaktivitaet.Bemerkung.replace("\n", "<br>");
+                        result = result.replace("@@Bemerkung@@", bemerkung);
                     }
 
                     var vaid = vermietungsaktivitaet.VaId;
@@ -381,6 +380,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@Bemerkung@@", bemerkung);
                     }
 
+                    var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
+                    if (bezeichnung) {
+                        result = result.replace("@@KeBezeichnung@@", bezeichnung);
+                    }
+
                     var mietbeginn = konditioneneinigung.Mietbeginn;
                     if (mietbeginn) {
                         result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
@@ -591,10 +595,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@KeBezeichnung@@", bezeichnung);
                     }
 
-                    // JWE: Bemerkung mit Umbrüchen
-                    var bemerkung = vermietungsaktivitaet.bemerkung.replace("\n", "<br>");
-                    if (bemerkung) {
-                        result.result.replace("@@Bemerkung@@", bemerkung.replace("/n", "<br>"));
+                    if(konditioneneinigung.Bemerkung){
+                        var bemerkung = konditioneneinigung.Bemerkung.replace("\n", "<br>");
+                        result = result.replace("@@Bemerkung@@", bemerkung);
                     }
 
                     var mietbeginn = konditioneneinigung.Mietbeginn;
