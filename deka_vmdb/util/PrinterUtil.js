@@ -68,6 +68,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@VaBezeichnung@@", bezeichnung);
                     }
 
+                    // JWE: Bemerkung mit Umbrüchen
+                    var bemerkung = vermietungsaktivitaet.bemerkung.replace("\n", "<br>");
+                    if (bemerkung) {
+                        result.result.replace("@@Bemerkung@@", bemerkung.replace("/n", "<br>"));
+                    }
+
                     var vaid = vermietungsaktivitaet.VaId;
                     if (vaid) {
                         result = result.replace("@@VaId2@@", vaid);
@@ -257,9 +263,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>No.<br>Split</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>RO<br>Identification</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Type of use<br>(alternative)</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Area<br>(alternative)</b><br>Unit</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Unit</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Unit</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MLA<br>(MLA alternative)</b><br>Meas. Amt.</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Meas. Amt.</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Meas. Amt.</td>";
                         mietflaechenangabeHtml += "</tr>";
                      }    
 
@@ -303,9 +309,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     if (vermietungsaktivitaet.Kategorie === "01") {
                         if(locale.indexOf("de") ==! -1){
                             // standardsprache 
-                            var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Zugrundeliegende Konditioneneinigungen:</td>";
+                            var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Zugrundeliegende KE:</td>";
                         }else{
-                            var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Underlying agreement:</td>";
+                            var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Underlying TaC:</td>";
                         }
                         
                         keMappingHtml += "<td class=\"auto-style6\">";
@@ -370,6 +376,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@KeId2@@", keId);
                     }
 
+                    // JWE: Bemerkung mit Umbrüchen
+                    var bemerkung = konditioneneinigung.bemerkung.replace("\n", "<br>");
+                    if (bemerkung) {
+                        result.result.replace("@@Bemerkung@@", bemerkung.replace("/n", "<br>"));
+                    }
 
                     var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
                     if (bezeichnung) {
@@ -505,9 +516,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>No.<br>Split</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>RO<br>Identification</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Type of use</b></td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Area<br>(alternative)</b><br>Unit</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Unit</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Unit</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MLA<br>(MLA alternative)</b><br>Meas. Amt.</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Meas. Amt.</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Meas. Amt.</td>";
                         mietflaechenangabeHtml += "</tr>";
                      }
 
@@ -584,6 +595,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
                     if (bezeichnung) {
                         result = result.replace("@@KeBezeichnung@@", bezeichnung);
+                    }
+
+                    // JWE: Bemerkung mit Umbrüchen
+                    var bemerkung = vermietungsaktivitaet.bemerkung.replace("\n", "<br>");
+                    if (bemerkung) {
+                        result.result.replace("@@Bemerkung@@", bemerkung.replace("/n", "<br>"));
                     }
 
                     var mietbeginn = konditioneneinigung.Mietbeginn;

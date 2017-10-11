@@ -73,6 +73,15 @@
         .auto-style9 {
                 font-family: Arial, Helvetica, sans-serif;
         }
+        .style6_padding {
+                font-size: 12px;
+                background-color: #888888 !important;
+                font-family: Arial, Helvetica, sans-serif;
+                border: 1px solid black;
+                text-align: right;
+                padding-left: 2px;
+                padding-right: 2px;
+        }
 }
 
 @media print {
@@ -147,6 +156,15 @@
         .auto-style9 {
                 font-family: Arial, Helvetica, sans-serif;
         }
+        .style6_padding {
+                font-size: 12px;
+                background-color: #888888 !important;
+                font-family: Arial, Helvetica, sans-serif;
+                border: 1px solid black;
+                text-align: right;
+                padding-left: 2px;
+                padding-right: 2px;
+        }
 }
 </style>
 </head>
@@ -164,27 +182,27 @@
                         <tr>
                                 <td class="auto-style7" style="width: 40px"><strong>CC</strong></td>
                                 <td class="auto-style7" style="width: 40px"><strong>BE</strong></td>
-                                <td class="auto-style7"><strong>Description</strong></td>
+                                <td class="auto-style7"><strong>Identification</strong></td>
                         </tr>
                         <tr style="height: 100%; vertical-align:top">
-                                <td style="width: 68px"><span class="auto-style6">@@Bukrs@@</span></td>
-                                <td class="auto-style2" style="width: 65px"><span class="auto-style6">@@WeId@@</span></td>
-                                <td class="auto-style2"><span class="auto-style6">@@VaBezeichnung@@</span></td>
+                                <td style="width: 68px"><span class="style6_padding">@@Bukrs@@</span></td>
+                                <td class="auto-style2" style="width: 65px"><span class="style6_padding">@@WeId@@</span></td>
+                                <td class="auto-style2"><span class="style6_padding">@@VaBezeichnung@@</span></td>
                         </tr>
                 </table>
                 </td>
                 <td style="text-align: right">
                 <table style="text-align: right; width: 100%">
                         <tr>
-                                <td class="header">Currency Values in: </td>
+                                <td class="header">Currency information in: </td>
                                 <td class="auto-style6">@@Currency@@</td>
                         </tr>
                         <tr>
-                                <td class="header">Area specifications in: </td>
+                                <td class="header">Area data in: </td>
                                 <td class="auto-style6">@@Unit@@</td>
                         </tr>
                         <tr>
-                                <td class="header">Rent data in: </td>
+                                <td class="header">Income data in: </td>
                                 <td class="auto-style6">@@MonatJahr@@</td>
                         </tr>
                 </table>
@@ -253,12 +271,12 @@
                                         <td class="auto-style6">@@MzErsterMonat@@</td>
                                 </tr>
                                 <tr>
-                                        <td class="data-bez">No. of repetitions:</td>
+                                        <td class="data-bez">No. of repetitions in years:</td>
                                         <td class="auto-style6">@@MzAnzahlJ@@</td>
                                 </tr>
                                 <tr>
                                         <td class="data-bez">Leasing fees:<br>
-                                         <span class="auto-style6">@@MkMonate@@</span> in monthly rent =</td>
+                                         <span class="style6_padding">@@MkMonate@@</span> in monthly rent =</td>
                                         <td class="auto-style6">@@MkMAbs@@</td>
                                 </tr>
                                 <tr>
@@ -278,7 +296,7 @@
                                         <td class="auto-style6">@@Debitor@@</td>
                                 </tr>
                                 <tr>
-                                        <td class="data-bez">Months until 1st break option:</td>
+                                        <td class="data-bez">Term until 1st break option (mon.):</td>
                                         <td class="auto-style6">@@LzFirstbreak@@</td>
                                 </tr>
                                 <tr>
@@ -290,16 +308,16 @@
                                         <td class="auto-style6">@@Einmalertrag@@</td>
                                 </tr>
                                 <tr>
-                                        <td class="data-bez">1st month of fit out costs:</td>
+                                        <td class="data-bez">Fit out, cost distribution starts:</td>
                                         <td class="auto-style6">@@AkErsterMonat@@</td>
                                 </tr>
                                 <tr>
-                                        <td class="data-bez">Months for distributing costs:</td>
+                                        <td class="data-bez">Distribution over months:</td>
                                         <td class="auto-style6">@@AkAnzahlM@@</td>
                                 </tr>
                                 <tr>
                                         <td class="data-bez">Consulting fees:<br>
-                                         <span class="auto-style6">@@BkMonate@@</span> in monthly rent =</td>
+                                         <span class="style6_padding">@@BkMonate@@</span> in monthly rent =</td>
                                         <td class="auto-style6">@@BkMAbs@@</td>
                                 </tr>
                                 <tr>
@@ -364,7 +382,7 @@
                 <td class="auto-style7"><strong>Difference</strong></td>
         </tr>
         <tr>
-                <td class="auto-style7" style="width: 150px; height: 12px">Income (year 1):</td>
+                <td class="auto-style7" style="width: 150px; height: 12px">Income (1st year):</td>
                 <td class="auto-style6" style="width: 116px; height: 12px"></td>
                 <td class="auto-style6" style="width: 116px; height: 12px">@@GesErtragPa@@</td>
                 <td class="auto-style6" style="width: 116px; height: 12px">@@GesKeErtrag@@</td>
@@ -378,14 +396,14 @@
                 <td class="auto-style6" style="width: 116px; height: 12px">@@Diff2@@</td>
         </tr>
         <tr>
-                <td class="auto-style7" style="width: 150px; height: 12px">Total income (KE):</td>
+                <td class="auto-style7" style="width: 150px; height: 12px">Total income (CA):</td>
                 <td class="auto-style6" style="width: 116px; height: 12px">@@LaufzeitKe@@</td>
                 <td class="auto-style6" style="width: 116px; height: 12px">@@GesVaErtragLz@@</td>
                 <td class="auto-style6" style="width: 116px; height: 12px">@@GesKeErtragLz@@</td>
                 <td class="auto-style6" style="width: 116px; height: 12px">@@Diff3@@</td>
         </tr>
         <tr>
-                <td class="auto-style7" style="width: 150px; height: 12px">Total income (VA):</td>
+                <td class="auto-style7" style="width: 150px; height: 12px">Total income (LA):</td>
                 <td class="auto-style6" style="width: 116px; height: 12px">@@LzFirstbreak2@@</td>
                 <td class="auto-style6" style="width: 116px; height: 12px">@@GesErtrag@@</td>
                 <td class="auto-style6" style="width: 116px; height: 12px"></td>
@@ -395,7 +413,7 @@
 <br />
 <table style="width: 100%">
         <tr>
-                <td class="auto-style7" style="width: 80%">Incentive ratio:</td>
+                <td class="auto-style7" style="width: 80%">Incentive ratio (%):</td>
                 <td class="auto-style6">@@Incentivequote@@</td>
         </tr>
         <tr>
@@ -403,7 +421,7 @@
                 <td class="auto-style6">@@Effektivmiete@@</td>
         </tr>
         <tr>
-                <td class="auto-style7" style="width: 80%">Proportion total income to sustainable rent:</td>
+                <td class="auto-style7" style="width: 80%">Proportion total income p.a. to sustainable rent (%):</td>
                 <td class="auto-style6">@@VerhGeMm@@</td>
         </tr>
 </table>
@@ -418,19 +436,19 @@
 </table>
 <table style="width: 100%">
         <tr>
+                <td class="auto-style7" style="width: 92px">Status:</td>
+                <td><span class="style6_padding">@@Status@@ </span>
+                <span class="auto-style7">&nbsp;Budget relevance:&nbsp;</span><span class="style6_padding">@@PLRelevant@@</span></td>
+        </tr>
+        <tr>
                 <td class="auto-style7" style="vertical-align: bottom; width: 92px; height: 26px;">
                 Comment:</td>
                 <td style="vertical-align: bottom; height: 26px;">
-                <span class="auto-style6">@@AnmerkungText@@</span></td>
-        </tr>
-        <tr>
-                <td class="auto-style7" style="width: 92px">Status:</td>
-                <td><span class="auto-style6">@@Status@@ </span>
-                <span class="auto-style7">&nbsp;Budget relevance:&nbsp;</span><span class="auto-style6">@@PLRelevant@@</span></td>
+                <span class="style6_padding">@@AnmerkungText@@</span></td>
         </tr>
         <tr>
                  <td class="auto-style7" style="width: 92px">Date of print:</td>
-                 <td><span class="auto-style6">@@Druckdatum@@</span></td>
+                 <td><span class="style6_padding">@@Druckdatum@@</span></td>
         </tr>
 </table>
 </body>

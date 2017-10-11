@@ -73,6 +73,15 @@
         .auto-style9 {
                 font-family: Arial, Helvetica, sans-serif;
         }
+        .style6_padding {
+                font-size: 12px;
+                background-color: #888888 !important;
+                font-family: Arial, Helvetica, sans-serif;
+                border: 1px solid black;
+                text-align: right;
+                padding-left: 2px;
+                padding-right: 2px;
+        }
 }
 
 @media print {
@@ -147,6 +156,15 @@
         .auto-style9 {
                 font-family: Arial, Helvetica, sans-serif;
         }
+        .style6_padding {
+                font-size: 12px;
+                background-color: #888888 !important;
+                font-family: Arial, Helvetica, sans-serif;
+                border: 1px solid black;
+                text-align: right;
+                padding-left: 2px;
+                padding-right: 2px;
+        }
 }
 </style>
 </head>
@@ -167,9 +185,9 @@
                                 <td class="auto-style7"><strong>Bezeichnung</strong></td>
                         </tr>
                         <tr style="height: 100%; vertical-align:top">
-                                <td style="width: 68px"><span class="auto-style6">@@Bukrs@@</span></td>
-                                <td class="auto-style2" style="width: 65px"><span class="auto-style6">@@WeId@@</span></td>
-                                <td class="auto-style2"><span class="auto-style6">@@VaBezeichnung@@</span></td>
+                                <td style="width: 68px"><span class="style6_padding">@@Bukrs@@</span></td>
+                                <td class="auto-style2" style="width: 65px"><span class="style6_padding">@@WeId@@</span></td>
+                                <td class="auto-style2"><span class="style6_padding">@@VaBezeichnung@@</span></td>
                         </tr>
                 </table>
                 </td>
@@ -184,7 +202,7 @@
                                 <td class="auto-style6">@@Unit@@</td>
                         </tr>
                         <tr>
-                                <td class="header">Mietfl&auml;chenangaben in: </td>
+                                <td class="header">Ertragsangaben in: </td>
                                 <td class="auto-style6">@@MonatJahr@@</td>
                         </tr>
                 </table>
@@ -253,12 +271,12 @@
                                         <td class="auto-style6">@@MzErsterMonat@@</td>
                                 </tr>
                                 <tr>
-                                        <td class="data-bez">Anzahl Wiederholungen:</td>
+                                        <td class="data-bez">Anzahl Wiederholungen (Jahre):</td>
                                         <td class="auto-style6">@@MzAnzahlJ@@</td>
                                 </tr>
                                 <tr>
                                         <td class="data-bez">Maklerkosten:<br>
-                                         <span class="auto-style6">@@MkMonate@@</span> Monatsmieten =</td>
+                                         <span class="style6_padding">@@MkMonate@@</span> Monatsmieten =</td>
                                         <td class="auto-style6">@@MkMAbs@@</td>
                                 </tr>
                                 <tr>
@@ -290,16 +308,16 @@
                                         <td class="auto-style6">@@Einmalertrag@@</td>
                                 </tr>
                                 <tr>
-                                        <td class="data-bez">Ausbaukosten ab:</td>
+                                        <td class="data-bez">Ausbaukosten-Verteilung ab:</td>
                                         <td class="auto-style6">@@AkErsterMonat@@</td>
                                 </tr>
                                 <tr>
-                                        <td class="data-bez">Ausbaukosten &uuml;ber Monate:</td>
+                                        <td class="data-bez">Verteilung &uuml;ber Monate:</td>
                                         <td class="auto-style6">@@AkAnzahlM@@</td>
                                 </tr>
                                 <tr>
                                         <td class="data-bez">Beratungskosten: <br>
-                                         <span class="auto-style6">@@BkMonate@@</span> Monatsmieten =</td>
+                                         <span class="style6_padding">@@BkMonate@@</span> Monatsmieten =</td>
                                         <td class="auto-style6">@@BkMAbs@@</td>
                                 </tr>
                                 <tr>
@@ -358,7 +376,7 @@
 <table style="width: 100%" class="cellSpacedTable">
         <tr>
                 <td></td>
-                <td class="auto-style7"><strong>Laufzeit</strong></td>
+                <td class="auto-style7"><strong>Laufzeit (Monate)</strong></td>
                 <td class="auto-style7"><strong>Vermietungsaktivit&auml;t</strong></td>
                 <td class="auto-style7"><strong>Konditioneneinigung</strong></td>
                 <td class="auto-style7"><strong>Differenz</strong></td>
@@ -395,7 +413,7 @@
 <br />
 <table style="width: 100%">
         <tr>
-                <td class="auto-style7" style="width: 80%">Incentive-Quote:</td>
+                <td class="auto-style7" style="width: 80%">Incentive-Quote (%):</td>
                 <td class="auto-style6">@@Incentivequote@@</td>
         </tr>
         <tr>
@@ -403,7 +421,7 @@
                 <td class="auto-style6">@@Effektivmiete@@</td>
         </tr>
         <tr>
-                <td class="auto-style7" style="width: 80%">Verh&auml;ltnis gesamte Ertr&auml;ge zu markt&uuml;blicher Miete:</td>
+                <td class="auto-style7" style="width: 80%">Verh&auml;ltnis Ertr&auml;ge p.a. zu markt&uuml;blicher Miete (%):</td>
                 <td class="auto-style6">@@VerhGeMm@@</td>
         </tr>
 </table>
@@ -418,19 +436,19 @@
 </table>
 <table style="width: 100%">
         <tr>
+                <td class="auto-style7" style="width: 92px">Status:</td>
+                <td><span class="style6_padding">@@Status@@ </span>
+                <span class="auto-style7">&nbsp;Planungsrelevanz:&nbsp;</span><span class="style6_padding">@@PLRelevant@@</span></td>
+        </tr>
+        <tr>
                 <td class="auto-style7" style="vertical-align: bottom; width: 92px; height: 26px;">
                 Anmerkung:</td>
                 <td style="vertical-align: bottom; height: 26px;">
-                <span class="auto-style6">@@AnmerkungText@@</span></td>
-        </tr>
-        <tr>
-                <td class="auto-style7" style="width: 92px">Status:</td>
-                <td><span class="auto-style6">@@Status@@ </span>
-                <span class="auto-style7">&nbsp;Planungsrelevanz:&nbsp;</span><span class="auto-style6">@@PLRelevant@@</span></td>
+                <span class="style6_padding">@@AnmerkungText@@</span></td>
         </tr>
         <tr>
                  <td class="auto-style7" style="width: 92px">Druckdatum:</td>
-                 <td><span class="auto-style6">@@Druckdatum@@</span></td>
+                 <td><span class="style6_padding">@@Druckdatum@@</span></td>
         </tr>
 </table>
 </body>

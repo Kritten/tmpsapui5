@@ -73,6 +73,15 @@
         .auto-style9 {
                 font-family: Arial, Helvetica, sans-serif;
         }
+        .style6_padding {
+                font-size: 12px;
+                background-color: #888888 !important;
+                font-family: Arial, Helvetica, sans-serif;
+                border: 1px solid black;
+                text-align: right;
+                padding-left: 2px;
+                padding-right: 2px;
+        }
 }
 
 @media print {
@@ -147,6 +156,15 @@
         .auto-style9 {
                 font-family: Arial, Helvetica, sans-serif;
         }
+        .style6_padding {
+                font-size: 12px;
+                background-color: #888888 !important;
+                font-family: Arial, Helvetica, sans-serif;
+                border: 1px solid black;
+                text-align: right;
+                padding-left: 2px;
+                padding-right: 2px;
+        }
 }
 
 </style>
@@ -166,27 +184,27 @@
                         <tr>
                                 <td class="auto-style7" style="width: 40px"><strong>CC</strong></td>
                                 <td class="auto-style7" style="width: 40px"><strong>BE</strong></td>
-                                <td class="auto-style7"><strong>Description</strong></td>
+                                <td class="auto-style7"><strong>Identification</strong></td>
                         </tr>
                         <tr style="height: 100%; vertical-align:top">
-                                <td style="width: 68px"><span class="auto-style6">@@Bukrs@@</span></td>
-                                <td class="auto-style2" style="width: 65px"><span class="auto-style6">@@WeId@@</span></td>
-                                <td class="auto-style2"><span class="auto-style6">@@KeBezeichnung@@</span></td>
+                                <td style="width: 68px"><span class="style6_padding">@@Bukrs@@</span></td>
+                                <td class="auto-style2" style="width: 65px"><span class="style6_padding">@@WeId@@</span></td>
+                                <td class="auto-style2"><span class="style6_padding">@@KeBezeichnung@@</span></td>
                         </tr>
                 </table>
                 </td>
                 <td style="text-align: right" >
                 <table style="text-align: right; width: 100%">
                         <tr>
-                                <td class="header">Currency Values in: </td>
+                                <td class="header">Currency information in: </td>
                                 <td class="auto-style6">@@Currency@@</td>
                         </tr>
                         <tr>
-                                <td class="header">Area specifications in: </td>
+                                <td class="header">Area data in: </td>
                                 <td class="auto-style6">@@Unit@@</td>
                         </tr>
                         <tr>
-                                <td class="header">Rent data in: </td>
+                                <td class="header">Income data in: </td>
                                 <td class="auto-style6">@@MonatJahr@@</td>
                         </tr>
                 </table>
@@ -199,7 +217,7 @@
                 <td style="width: 50%; vertical-align: top">
                  <table style="width: 100%">
                         <tr>
-                                <td class="data-bez">Validity of agreement:</td>
+                                <td class="data-bez">Validity of TaC:</td>
                                 <td class="auto-style6">@@GueltigkKe@@</td>
                         </tr>
                         <tr>
@@ -216,7 +234,7 @@
                         </tr>
                         <tr>
                                 <td class="data-bez">Leasing fees:<br>
-                                 <span class="auto-style6">@@MkMonate@@</span> in monthly rent =
+                                 <span class="style6_padding">@@MkMonate@@</span> in monthly rent =
                                 </td>
                                 <td class="auto-style6">@@MkMonateGesamt@@</td>
                         </tr>
@@ -253,7 +271,7 @@
                                 <td class="auto-style6">@@Budgetstp@@</td>
                         </tr>
                         <tr>
-                                <td class="data-bez">Months until 1st break option:</td>
+                                <td class="data-bez">Term until 1st break option (mon.):</td>
                                 <td class="auto-style6">@@LzFirstbreak@@</td>
                         </tr>
                         <tr>
@@ -266,7 +284,7 @@
                         </tr>
                         <tr>
                                 <td class="data-bez">Consulting fees:<br>
-                                 <span class="auto-style6">@@BkMonatsmieten@@</span> in monthly rent =</td>
+                                 <span class="style6_padding">@@BkMonatsmieten@@</span> in monthly rent =</td>
                                 <td class="auto-style6">@@BkMonateGesamt@@</td>
                         </tr>
                         <tr>
@@ -302,9 +320,9 @@
 <hr />
 <table style="width: 100%">
         <tr>
-                <td style="width: 104px" class="auto-style7">Income (year 1):</td>
+                <td style="width: 104px" class="auto-style7">Income (1st year):</td>
                 <td class="auto-style6" style="width: 121px">@@GesErtragPa@@</td>
-                <td class="auto-style5">Incentive ratio:</td>
+                <td class="auto-style5">Incentive ratio (%):</td>
                 <td class="auto-style6" style="width: 116px">@@Incentivequote@@</td>
         </tr>
         <tr>
@@ -316,7 +334,7 @@
         <tr>
                 <td style="width: 104px" class="auto-style7">Total income:</td>
                 <td class="auto-style6" style="width: 121px">@@GesErtrag@@</td>
-                <td class="auto-style5">Proportion total income to sustainable rent:</td>
+                <td class="auto-style5">Proportion total income p.a. to sustainable rent (%):</td>
                 <td class="auto-style6" style="width: 116px">@@VerhGeMm@@</td>
         </tr>
 </table>
@@ -334,12 +352,12 @@
 <table style="width: 100%">
         <tr>
                 <td style="width: 104px" class="auto-style7">Comment:</td>
-                <td style="width: 121px" class="auto-style6">@@AnmerkungText@@</td>
+                <td style="width: 121px" class="style6_padding">@@AnmerkungText@@</td>
                 <td>&nbsp;</td>
         </tr>
         <tr>
                  <td style="width: 104px" class="auto-style7">Date of print:</td>
-                 <td style="width: 121px" class="auto-style6">@@Druckdatum@@</td>
+                 <td style="width: 121px" class="style6_padding">@@Druckdatum@@</td>
                  <td>&nbsp;</td>
         </tr>
 </table>
