@@ -69,7 +69,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     }
 
                     if(vermietungsaktivitaet.Bemerkung){
-                        var bemerkung = vermietungsaktivitaet.Bemerkung.replace("\n", "<br>");
+                        var bemerkung = vermietungsaktivitaet.Bemerkung.replace(/\n/g, "<br>");
                         result = result.replace("@@Bemerkung@@", bemerkung);
                     }
 
@@ -376,7 +376,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     }
 
                     if(konditioneneinigung.Bemerkung){
-                        var bemerkung = konditioneneinigung.Bemerkung.replace("\n", "<br>");
+                        var bemerkung = konditioneneinigung.Bemerkung.replace(/\n/g, "<br>");
                         result = result.replace("@@Bemerkung@@", bemerkung);
                     }
 
@@ -596,7 +596,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     }
 
                     if(konditioneneinigung.Bemerkung){
-                        var bemerkung = konditioneneinigung.Bemerkung.replace("\n", "<br>");
+                        var bemerkung = konditioneneinigung.Bemerkung.replace(/\n/g, "<br>");
                         result = result.replace("@@Bemerkung@@", bemerkung);
                     }
 
