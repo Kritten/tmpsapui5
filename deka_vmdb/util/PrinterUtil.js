@@ -1,6 +1,6 @@
 /*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:45:16 
+ * @Author: Christian Hoff (best practice consulting AG)
+ * @Date: 2017-04-05 21:45:16
  * @Last Modified by: Christian Hoff (best practice consulting AG)
  * @Last Modified time: 2017-06-22 10:59:02
  */
@@ -18,11 +18,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
             // Mehrsprachigkeit (beschränkt auf DE und EN)
 			getLocale: function() {
                 return sap.ui.getCore().getConfiguration().getLanguage(); // Anmeldesprache ermitteln
-            }, 
+            },
 
             druckvorlageVermietungsaktivitaet: "/util/DruckvorlageVermietungsaktivitaet.html", // entweder DE oder EN
-                
-            druckvorlageKonditioneneinigung: "/util/DruckvorlageKonditioneneinigung.html", // entweder DE oder EN 
+
+            druckvorlageKonditioneneinigung: "/util/DruckvorlageKonditioneneinigung.html", // entweder DE oder EN
 
             druckvorlageBeschlussantrag: "/util/DruckvorlageBeschlussantrag.html", // immer DE
 
@@ -38,7 +38,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 console.log(locale, "= Anmeldesprache");
 
                 if(locale.indexOf("de") ==! -1){
-                   // standardsprache 
+                   // standardsprache
                 }else{
                     _this.druckvorlageVermietungsaktivitaet = "/util/DruckvorlageVermietungsaktivitaet_en.html";
                 }
@@ -101,23 +101,23 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var bdgstp = vermietungsaktivitaet.Budgetstp;
                     if(locale.indexOf("de") ==! -1){
-                        // standardsprache 
+                        // standardsprache
                         result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
                      }else{
                         result = result.replace("@@Budgetstp@@", bdgstp ? "Yes" : "No");
                      }
-                    
+
                     var monatJahr = vermietungsaktivitaet.MonatJahr;
                     if(locale.indexOf("de") ==! -1){
-                        // standardsprache 
+                        // standardsprache
                         result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Monat" : "Jahr");
                      }else{
                         result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Month" : "Year");
-                     }                   
+                     }
 
                     var plr = vermietungsaktivitaet.PLRelevant;
                     if(locale.indexOf("de") ==! -1){
-                        // standardsprache 
+                        // standardsprache
                         var plrString = plr ? "Ja" : "Nein";
                         result = result.replace("@@PLRelevant@@", plrString);
                      }else{
@@ -127,7 +127,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var stsl = vermietungsaktivitaet.Steuerschlg;
                     if(locale.indexOf("de") ==! -1){
-                        // standardsprache 
+                        // standardsprache
                         var stslString = stsl ? "Ja" : "Nein";
                         result = result.replace("@@Steuerschlg@@", stslString);
                      }else{
@@ -249,7 +249,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
                     if(locale.indexOf("de") ==! -1){
-                        // standardsprache 
+                        // standardsprache
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr<br>Split</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b></td>";
@@ -267,7 +267,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Meas. Amt.</td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Meas. Amt.</td>";
                         mietflaechenangabeHtml += "</tr>";
-                     }    
+                     }
 
 
 
@@ -286,13 +286,13 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var anMiete = mietflaechenangabe.AnMiete ? oNumberFormat.format(mietflaechenangabe.AnMiete) : mietflaechenangabe.AnMiete;
                         var gaKosten = mietflaechenangabe.GaKosten ? oNumberFormat.format(mietflaechenangabe.GaKosten) : mietflaechenangabe.GaKosten;
                         var maKosten = mietflaechenangabe.MaKosten ? oNumberFormat.format(mietflaechenangabe.MaKosten) : mietflaechenangabe.MaKosten;
-                        
+
                         if(locale.indexOf("de") ==! -1){
-                            // standardsprache 
+                            // standardsprache
                             var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         }else{
                             var mfsplit = mietflaechenangabe.MfSplit ? "Yes" : "No";
-                        } 
+                        }
 
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:center;\">" + index + "<br />" + mfsplit + "</td>";
@@ -308,12 +308,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     if (vermietungsaktivitaet.Kategorie === "01") {
                         if(locale.indexOf("de") ==! -1){
-                            // standardsprache 
+                            // standardsprache
                             var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Zugrundeliegende KE:</td>";
                         }else{
                             var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Underlying TaC:</td>";
                         }
-                        
+
                         keMappingHtml += "<td class=\"auto-style6\">";
                         vermietungsaktivitaet.VaToMap.forEach(function (ke, i) {
                             if (ke.Aktiv) {
@@ -356,7 +356,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 console.log(locale, "= Anmeldesprache");
 
                 if(locale.indexOf("de") ==! -1){
-                   // standardsprache 
+                   // standardsprache
                 }else{
                     _this.druckvorlageKonditioneneinigung = "/util/DruckvorlageKonditioneneinigung_en.html";
                 }
@@ -376,10 +376,9 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@KeId2@@", keId);
                     }
 
-                    // JWE: Bemerkung mit Umbrüchen
-                    var bemerkung = konditioneneinigung.bemerkung.replace("\n", "<br>");
-                    if (bemerkung) {
-                        result.result.replace("@@Bemerkung@@", bemerkung.replace("/n", "<br>"));
+                    if(konditioneneinigung.Bemerkung){
+                        var bemerkung = konditioneneinigung.Bemerkung.replace("\n", "<br>");
+                        result = result.replace("@@Bemerkung@@", bemerkung);
                     }
 
                     var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
@@ -394,19 +393,19 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var bdgstp = konditioneneinigung.Budgetstp;
                     if(locale.indexOf("de") ==! -1){
-                        // standardsprache 
+                        // standardsprache
                         result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
                     }else{
                         result = result.replace("@@Budgetstp@@", bdgstp ? "Yes" : "No");
                     }
-                    
+
                     var monatJahr = konditioneneinigung.MonatJahr;
                     if(locale.indexOf("de") ==! -1){
-                        // standardsprache 
+                        // standardsprache
                         result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Monat" : "Jahr");
                     }else{
                         result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Month" : "Year");
-                    }  
+                    }
 
                     var druckDatum = new Date();
                     if (druckDatum) {
@@ -502,7 +501,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
                     if(locale.indexOf("de") ==! -1){
-                        // standardsprache 
+                        // standardsprache
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr<br>Split</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b></td>";
@@ -536,7 +535,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var maKosten = mietflaechenangabe.MaKosten ? oNumberFormat.format(mietflaechenangabe.MaKosten) : mietflaechenangabe.MaKosten;
 
                         if(locale.indexOf("de") ==! -1){
-                            // standardsprache 
+                            // standardsprache
                             var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         }else{
                             var mfsplit = mietflaechenangabe.MfSplit ? "Yes" : "No";
@@ -778,8 +777,8 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                                 stufe = "Bereichsleiter";
                                 break;
                             default:
-                                stufe = "";    
-                        }        
+                                stufe = "";
+                        }
 
                         genehmigerHtml += "<tr>";
                         genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; \">" + stufe + "</td>";
@@ -787,7 +786,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         genehmigerHtml += "<td class=\"greyBGPad\" style=\"text-align: left; \">" + statusTrl + "</td>";
                         genehmigerHtml += "</tr>";
                     });
-                  
+
                     genehmigerHtml += "</table>";
                     result = result.replace("@@MoeglicheGenehmiger@@", genehmigerHtml);
 
@@ -836,7 +835,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                             };
                         });
 
-                        // Lade moegliche Genehmiger 
+                        // Lade moegliche Genehmiger
                         var promises = [];
                         _.map(stufen, function (stufe) {
                             _.map(stufe.genehmigungen, function (genehmigung) {
@@ -852,8 +851,8 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         });
 
                         Q.all(promises).then(function () {
-                            stufenListe = genehmigungen;   
-                            
+                            stufenListe = genehmigungen;
+
                             var printableHtml = _this.generatePrintableHtmlForBeschlussantrag(konditioneneinigung, kostenarten, ertragsarten, stufenListe);
                             var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=1,status=0');
                             printWindow.document.write(printableHtml);
@@ -867,8 +866,8 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         ErrorMessageUtil.showError(oError);
                     })
                     .done(function(){
-                        
-                    });                
+
+                    });
             }
         };
     });
