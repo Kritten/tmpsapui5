@@ -187,45 +187,39 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var mMiete;
                     if (vermietungsaktivitaet.MMiete && vermietungsaktivitaet.MkMonate) {
-                        mMiete = parseFloat(vermietungsaktivitaet.MMiete);
-                        var mkMonate = parseFloat(vermietungsaktivitaet.MkMonate);
+                        mMiete = parseFloat(vermietungsaktivitaet.MMiete) || 0;
+                        var mkMonate = parseFloat(vermietungsaktivitaet.MkMonate) || 0;
 
                         var mkMAbs = mMiete * mkMonate;
                         result = result.replace("@@MkMAbs@@", oNumberFormat.format(mkMAbs));
 
                         if (vermietungsaktivitaet.MkAbsolut) {
-                            var mkGesamt = mkMAbs + parseFloat(vermietungsaktivitaet.MkAbsolut);
+                            var mkGesamt = mkMAbs + (parseFloat(vermietungsaktivitaet.MkAbsolut) || 0);
                             result = result.replace("@@MkGesamt@@", oNumberFormat.format(mkGesamt));
                         }
                     }
 
                     if (vermietungsaktivitaet.MMiete && vermietungsaktivitaet.BkMonate) {
-                        mMiete = parseFloat(vermietungsaktivitaet.MMiete);
-                        var bkMonate = parseFloat(vermietungsaktivitaet.BkMonate);
+                        mMiete = parseFloat(vermietungsaktivitaet.MMiete) || 0;
+                        var bkMonate = parseFloat(vermietungsaktivitaet.BkMonate) || 0;
 
                         var bkMAbs = mMiete * bkMonate;
                         result = result.replace("@@BkMAbs@@", oNumberFormat.format(bkMAbs));
 
                         if (vermietungsaktivitaet.BkAbsolut) {
-                            var bkGesamt = bkMAbs + parseFloat(vermietungsaktivitaet.BkAbsolut);
+                            var bkGesamt = bkMAbs + (parseFloat(vermietungsaktivitaet.BkAbsolut) || 0);
                             result = result.replace("@@BkGesamt@@", oNumberFormat.format(bkGesamt));
                         }
                     }
 
-                    var diff1 = parseFloat(vermietungsaktivitaet.GesErtragPa) - parseFloat(vermietungsaktivitaet.GesKeErtrag);
-                    if (diff1) {
-                        result = result.replace("@@Diff1@@", oNumberFormat.format(diff1));
-                    }
+                    var diff1 = (parseFloat(vermietungsaktivitaet.GesErtragPa) || 0) - (parseFloat(vermietungsaktivitaet.GesKeErtrag) || 0);
+                    result = result.replace("@@Diff1@@", oNumberFormat.format(diff1));
 
-                    var diff2 = parseFloat(vermietungsaktivitaet.GesKosten) - parseFloat(vermietungsaktivitaet.GesKeKosten);
-                    if (diff2) {
-                        result = result.replace("@@Diff2@@", oNumberFormat.format(diff2));
-                    }
+                    var diff2 = (parseFloat(vermietungsaktivitaet.GesKosten) || 0) - (parseFloat(vermietungsaktivitaet.GesKeKosten) || 0);
+                    result = result.replace("@@Diff2@@", oNumberFormat.format(diff2));
 
-                    var diff3 = parseFloat(vermietungsaktivitaet.GesVaErtragLz) - parseFloat(vermietungsaktivitaet.GesKeErtragLz);
-                    if(diff3) {
-                        result = result.replace("@@Diff3@@", oNumberFormat.format(diff3));
-                    }
+                    var diff3 = (parseFloat(vermietungsaktivitaet.GesVaErtragLz) || 0) - (parseFloat(vermietungsaktivitaet.GesKeErtragLz) || 0);
+                    result = result.replace("@@Diff3@@", oNumberFormat.format(diff3));
 
                     // Restliche Keys ersetzen
                     Object.keys(vermietungsaktivitaet).forEach(function (key, index) {
@@ -450,35 +444,33 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var mMiete;
                     if (konditioneneinigung.MMiete && konditioneneinigung.MkMonate) {
-                        mMiete = parseFloat(konditioneneinigung.MMiete);
-                        var mkMonate = parseFloat(konditioneneinigung.MkMonate);
+                        mMiete = parseFloat(konditioneneinigung.MMiete) || 0;
+                        var mkMonate = parseFloat(konditioneneinigung.MkMonate) || 0;
 
                         var mkMonateGesamt = mMiete * mkMonate;
                         result = result.replace("@@MkMonateGesamt@@", oNumberFormat.format(mkMonateGesamt));
 
                         if (konditioneneinigung.MkAbsolut) {
-                            var mkGesamt = mkMonateGesamt + parseFloat(konditioneneinigung.MkAbsolut);
+                            var mkGesamt = mkMonateGesamt + (parseFloat(konditioneneinigung.MkAbsolut) || 0);
                             result = result.replace("@@MkGesamt@@", oNumberFormat.format(mkGesamt));
                         }
                     }
 
                     if (konditioneneinigung.MMiete && konditioneneinigung.BkMonatsmieten) {
-                        mMiete = parseFloat(konditioneneinigung.MMiete);
-                        var bkMonate = parseFloat(konditioneneinigung.BkMonatsmieten);
+                        mMiete = parseFloat(konditioneneinigung.MMiete) || 0;
+                        var bkMonate = parseFloat(konditioneneinigung.BkMonatsmieten) || 0;
 
                         var bkMonateGesamt = mMiete * bkMonate;
                         result = result.replace("@@BkMonateGesamt@@", oNumberFormat.format(bkMonateGesamt));
 
                         if (konditioneneinigung.BkAbsolut) {
-                            var bkGesamt = bkMonateGesamt + parseFloat(konditioneneinigung.BkAbsolut);
+                            var bkGesamt = bkMonateGesamt + (parseFloat(konditioneneinigung.BkAbsolut) || 0);
                             result = result.replace("@@BkGesamt@@", oNumberFormat.format(bkGesamt));
                         }
                     }
 
-                    var gesamtDifferenz = parseFloat(konditioneneinigung.GesErtrag) - parseFloat(konditioneneinigung.GesKosten);
-                    if (gesamtDifferenz) {
-                        result = result.replace("@@GesDiff@@", oNumberFormat.format(gesamtDifferenz));
-                    }
+                    var gesamtDifferenz = (parseFloat(konditioneneinigung.GesErtrag) || 0) - (parseFloat(konditioneneinigung.GesKosten) || 0);
+                    result = result.replace("@@GesDiff@@", oNumberFormat.format(gesamtDifferenz));
 
                     // Restliche Keys ersetzen
                     Object.keys(konditioneneinigung).forEach(function (key, index) {
@@ -655,35 +647,34 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var mMiete;
                     if (konditioneneinigung.MMiete && konditioneneinigung.MkMonate) {
-                        mMiete = parseFloat(konditioneneinigung.MMiete);
-                        var mkMonate = parseFloat(konditioneneinigung.MkMonate);
+                        mMiete = parseFloat(konditioneneinigung.MMiete) || 0;
+                        var mkMonate = parseFloat(konditioneneinigung.MkMonate) || 0;
 
                         var mkMonateGesamt = mMiete * mkMonate;
                         result = result.replace("@@MkMonateGesamt@@", oNumberFormat.format(mkMonateGesamt));
 
                         if (konditioneneinigung.MkAbsolut) {
-                            var mkGesamt = mkMonateGesamt + parseFloat(konditioneneinigung.MkAbsolut);
+                            var mkGesamt = mkMonateGesamt + (parseFloat(konditioneneinigung.MkAbsolut) || 0);
                             result = result.replace("@@MkGesamt@@", oNumberFormat.format(mkGesamt));
                         }
                     }
 
                     if (konditioneneinigung.MMiete && konditioneneinigung.BkMonatsmieten) {
-                        mMiete = parseFloat(konditioneneinigung.MMiete);
-                        var bkMonate = parseFloat(konditioneneinigung.BkMonatsmieten);
+                        mMiete = parseFloat(konditioneneinigung.MMiete) || 0;
+                        var bkMonate = parseFloat(konditioneneinigung.BkMonatsmieten) || 0;
 
                         var bkMonateGesamt = mMiete * bkMonate;
                         result = result.replace("@@BkMonateGesamt@@", oNumberFormat.format(bkMonateGesamt));
 
                         if (konditioneneinigung.BkAbsolut) {
-                            var bkGesamt = bkMonateGesamt + parseFloat(konditioneneinigung.BkAbsolut);
+                            var bkGesamt = bkMonateGesamt + (parseFloat(konditioneneinigung.BkAbsolut) || 0);
                             result = result.replace("@@BkGesamt@@", oNumberFormat.format(bkGesamt));
                         }
                     }
 
-                    var gesamtDifferenz = parseFloat(konditioneneinigung.GesErtrag) - parseFloat(konditioneneinigung.GesKosten);
-                    if (gesamtDifferenz) {
-                        result = result.replace("@@GesDiff@@", oNumberFormat.format(gesamtDifferenz));
-                    }
+                    var gesamtDifferenz = (parseFloat(konditioneneinigung.GesErtrag) || 0) - (parseFloat(konditioneneinigung.GesKosten) || 0);
+                    result = result.replace("@@GesDiff@@", oNumberFormat.format(gesamtDifferenz));
+
 
                     // Restliche Keys ersetzen
                     Object.keys(konditioneneinigung).forEach(function (key, index) {
