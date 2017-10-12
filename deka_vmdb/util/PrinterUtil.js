@@ -215,17 +215,17 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var diff1 = parseFloat(vermietungsaktivitaet.GesErtragPa) - parseFloat(vermietungsaktivitaet.GesKeErtrag);
                     if (diff1) {
                         result = result.replace("@@Diff1@@", oNumberFormat.format(diff1));
-                    }
+                    } 
 
                     var diff2 = parseFloat(vermietungsaktivitaet.GesKosten) - parseFloat(vermietungsaktivitaet.GesKeKosten);
                     if (diff2) {
                         result = result.replace("@@Diff2@@", oNumberFormat.format(diff2));
-                    }
+                    } 
 
                     var diff3 = parseFloat(vermietungsaktivitaet.GesVaErtragLz) - parseFloat(vermietungsaktivitaet.GesKeErtragLz);
                     if(diff3) {
                         result = result.replace("@@Diff3@@", oNumberFormat.format(diff3));
-                    }
+                    } 
 
                     // Restliche Keys ersetzen
                     Object.keys(vermietungsaktivitaet).forEach(function (key, index) {
