@@ -317,7 +317,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                         keMappingHtml += _.join(_.map(_.filter(vermietungsaktivitaet.VaToMap, function(ke){return ke.Aktiv;}), function(ke){
                             return ke.KeId;
-                        }), ",");
+                        }), ", ");
 
                         keMappingHtml += "</td>";
                         result = result.replace("@@KEMapping@@", keMappingHtml);
