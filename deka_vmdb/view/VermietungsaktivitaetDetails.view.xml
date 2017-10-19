@@ -1,19 +1,19 @@
-<core:View 
+<core:View
     xmlns="sap.m"
     xmlns:f="sap.ui.layout.form"
     xmlns:l="sap.ui.layout"
     xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc"
 	controllerName="ag.bpc.Deka.controller.VermietungsaktivitaetDetails" >
-	
+
 	<Page id="idVermietungsaktivitaetDetails" title="{i18n>VERM_DET_TITLE}" class="sapUiFioriObjectPage" showNavButton="true" navButtonPress="onBack" >
 
         <headerContent>
 			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/vermietungsaktivitaet/Editable}) }" press="onBearbeitenButtonPress" />
 		</headerContent>
-                
+
 		<content>
-            
+
             <FlexBox>
                 <items>
                     <FlexBox>
@@ -31,16 +31,16 @@
 							<FlexItemData growFactor="1" />
 						</layoutData>
                     </FlexBox>
-                    
+
                     <FlexBox justifyContent="End">
                         <items>
                             <List items="{form>/vermietungsaktivitaet/VaToMap}" growing="true" growingThreshold="3" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" noDataText=" " >
-                                <StandardListItem 
+                                <StandardListItem
                                     type="Active"
                                     title="{form>KeId}"
                                     icon="{= ${form>Aktiv} ? 'sap-icon://accept' : 'sap-icon://decline' }"
                                     iconDensityAware="false"
-                                    iconInset="false" 
+                                    iconInset="false"
                                     press="onMappingPressed">
                                 </StandardListItem>
                             </List>
@@ -51,7 +51,7 @@
                     </FlexBox>
                 </items>
             </FlexBox>
-            
+
             <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'Delete' : 'None' }" items="{form>/vermietungsaktivitaet/VaToOb}" delete="onMietflaechenAngabenLoeschenButtonPress">
 
                 <headerToolbar>
@@ -65,7 +65,7 @@
                         <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= (${form>/vermietungsaktivitaet/Kategorie} !== '01') &amp;&amp; ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) }" />
                     </Toolbar>
                 </headerToolbar>
-                
+
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>MIETFLAECHE}" />
@@ -104,7 +104,7 @@
                         <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     </Column>
                 </columns>
-                
+
                 <items>
                     <ColumnListItem vAlign="Middle">
                         <cells>
@@ -120,7 +120,7 @@
                             <Text text="{ parts:
                                                 [
                                                 {path: 'form>Hnfl'},
-                                                {path: 'form>HnflUnit'},                                                
+                                                {path: 'form>HnflUnit'},
                                                 {path: 'form>/viewsettings/flaecheneinheitSelected/Multiplikator'},
                                                 {path: 'form>/viewsettings/flaecheneinheitSelected/Nach'}
                                                 ],
@@ -133,18 +133,18 @@
                                                 {path: 'form>/viewsettings/waehrungSelected/Multiplikator'}
                                                 ],
                                             formatter: 'myFormatter.formatBetrag'}"
-                                    editable="false" />     
+                                    editable="false" />
                             <Input value="{ path: 'form>AnMiete', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" type="Float" />
                             <Input value="{ path: 'form>GaKosten', type: 'model.CustomNumberType' }" editable="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) &amp;&amp; (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
                             <Input value="{ path: 'form>MaKosten', type: 'model.CustomNumberType' }" editable="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) &amp;&amp; (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') &amp;&amp; (${form>NutzartAlt} !== '0700') &amp;&amp; (${form>NutzartAlt} !== '0750') }" />
                         </cells>
                     </ColumnListItem>
-                    
+
                 </items>
             </Table>
 
-            <MessageStrip id="mietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
-                    
+            <MessageStrip id="idMietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
+
             <f:SimpleForm
                 title="{i18n>GEMEINSAME_ANGABEN}"
                 minWidth="1024"
@@ -159,7 +159,7 @@
                 columnsM="1" >
 
                 <f:content>
-                    
+
                     <Label text="{i18n>VERMIETUNGSART}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Input value="{= ${text>/vermietungsart}[${form>/vermietungsaktivitaet/Vermietungsart}] }" visible="{= ${form>/modus} === 'show' }" editable="false" class="sapUiSmallMarginBottom">
                         <layoutData>
@@ -214,7 +214,7 @@
                     </DatePicker>
 
                     <Label text="{i18n>LAUFZEIT_BIS_1ST_BREAK} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="idLzFirstbreak" value="{ path: 'form>/vermietungsaktivitaet/LzFirstbreak', type: 'model.CustomNumberType'}"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >                        
+                    <Input id="idLzFirstbreak" value="{ path: 'form>/vermietungsaktivitaet/LzFirstbreak', type: 'model.CustomNumberType'}"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
                         <layoutData>
                             <l:GridData span="L3 M3 S12" />
                         </layoutData>
@@ -331,7 +331,7 @@
 							<l:GridData span="L1 M1 S12" />
 						</layoutData>
                     </CheckBox>
-                    
+
                     <Label text="{i18n>KOSTEN_AUS_STEUERSCHADEN} in {form>/viewsettings/waehrungSelected/Nach}" />
                     <Input id="idSteuerschaden" value="{ path: 'form>/vermietungsaktivitaet/Steuerschaden', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
@@ -352,7 +352,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
-                    
+
                     <Label text="{i18n>POENALE} in {form>/viewsettings/waehrungSelected/Nach}" />
                     <Input id="idPoenale" value="{ path: 'form>/vermietungsaktivitaet/Poenale', type: 'model.CustomNumberType'}"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
@@ -372,7 +372,7 @@
                         <layoutData>
 							<l:GridData span="L1 M1 S12" />
 						</layoutData>
-                    </CheckBox>                    
+                    </CheckBox>
                 </f:content>
 
 			</f:SimpleForm>
@@ -391,7 +391,7 @@
                 columnsM="1">
 
                 <f:content>
-                    
+
                     <Label text="{i18n>STATUS}" />
                     <Input value="{= ${text>/status}[${form>/vermietungsaktivitaet/Status}] }" editable="false" visible="{= ${form>/modus} === 'show' }">
                         <layoutData>
@@ -406,7 +406,7 @@
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
                     </Select>
-                    
+
                     <Label text="{i18n>ANMERKUNG}" />
                     <Input value="{= ${text>/anmerkung}[${form>/vermietungsaktivitaet/Anmerkung}] }" editable="false" visible="{= ${form>/modus} === 'show' }">
                         <layoutData>
@@ -421,7 +421,7 @@
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
                     </Select>
-                    
+
                     <Label text="{i18n>BEMERKUNG}" />
                     <TextArea value="{form>/vermietungsaktivitaet/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>
@@ -439,7 +439,7 @@
                         <Title text="{i18n>MIETE_UND_KOSTEN}" level="H2"/>
                     </Toolbar>
                 </headerToolbar>
-                
+
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>BEZEICHNUNG}" />
@@ -457,7 +457,7 @@
                         <Text text="{i18n>DIFFERENZ}" />
                     </Column>
                 </columns>
-                
+
                 <items>
                     <ColumnListItem>
                         <cells>
@@ -513,7 +513,7 @@
                             }" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesVaErtragLz', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeErtragLz', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{ parts: [  
+                            <Text text="{ parts: [
                                                     {path:'form>/vermietungsaktivitaet/GesVaErtragLz'},
                                                     {path:'form>/vermietungsaktivitaet/GesKeErtragLz'},
                                                     {path:'form>/viewsettings/waehrungSelected/Nach'}
@@ -545,26 +545,26 @@
                         <Title text="{i18n>BERECHNETE_KENNZAHLEN}" level="H2"/>
                     </Toolbar>
                 </headerToolbar>
-                
+
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>BEZEICHNUNG}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>WERT}" />
-                    </Column>    
+                    </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text=" " />
-                    </Column>  
+                    </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text=" " />
-                    </Column>                  
+                    </Column>
                 </columns>
-                
+
                 <items>
                     <ColumnListItem>
                         <cells>
-                            <Text text="{i18n>INCENTIVEQUOTE}" />                            
+                            <Text text="{i18n>INCENTIVEQUOTE}" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/Incentivequote', type: 'model.CustomNumberType'} %" />
                             <Text text= " " />
                             <Text text= " " />
@@ -577,34 +577,34 @@
                             <Text text=" " />
                             <Text text=" " />
                         </cells>
-                    </ColumnListItem>                    
+                    </ColumnListItem>
                     <ColumnListItem>
                         <cells>
-                            <Text text="{i18n>VERHGEMM}" />                            
+                            <Text text="{i18n>VERHGEMM}" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/VerhGeMm', type: 'model.CustomNumberType'} %" />
                             <Text text= " " />
                             <Text text= " " />
                         </cells>
-                    </ColumnListItem>              
+                    </ColumnListItem>
                 </items>
             </Table>
 		</content>
-        
+
         <footer>
 			<OverflowToolbar>
 
                 <ToolbarSpacer/>
 
-				<Button icon="{= ${form>/vermietungsaktivitaet/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" 
-                        press="onFavoritButtonPress" 
+				<Button icon="{= ${form>/vermietungsaktivitaet/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }"
+                        press="onFavoritButtonPress"
                         visible="{= (${form>/modus} === 'show') }" />
-                
+
                 <Button text="{i18n>DRUCKEN}"
-                        press="onDruckenButtonPress" 
+                        press="onDruckenButtonPress"
                         visible="{= (${form>/modus} === 'show') }" />
-                
+
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                
+
                 <Button text="{i18n>SPEICHERN}"
                         type="Emphasized"
                         press="onSpeichernButtonPress"
@@ -622,5 +622,5 @@
 		</footer>
 
 	</Page>
-	
+
 </core:View>
