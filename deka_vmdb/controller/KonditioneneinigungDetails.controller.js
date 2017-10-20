@@ -1,6 +1,6 @@
 /*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:39:31 
+ * @Author: Christian Hoff (best practice consulting AG)
+ * @Date: 2017-04-05 21:39:31
  * @Last Modified by: Christian Hoff (best practice consulting AG)
  * @Last Modified time: 2017-07-21 12:40:22
  */
@@ -9,15 +9,15 @@ var formatter = sap.ui.core.format.NumberFormat.getFloatInstance({
                 decimals: 2
             });
 
-var myFormatter = {       
+var myFormatter = {
         formatDifferenz: function(a,b,unit) {
-            var oNumber = (a * 100 - b * 100) / 100;        
+            var oNumber = (a * 100 - b * 100) / 100;
 
             var res = formatter.format(oNumber);
             if(unit){
                 res = res + " " + unit;
             }
-            
+
             return res;
         },
 
@@ -27,7 +27,7 @@ var myFormatter = {
                 res = formatter.format(hnfl) + " " + hnflUnit;
             }else{
                 var hnflConv = (hnfl * flMultiplikator * 100) / 100;
-                
+
                 res = formatter.format(hnflConv) + " " + flSelected;
             }
 
@@ -43,9 +43,9 @@ var myFormatter = {
 };
 
 sap.ui.define([
-    "sap/ui/core/mvc/Controller", 
-    "sap/m/MessageBox", 
-    "ag/bpc/Deka/util/PrinterUtil", 
+    "sap/ui/core/mvc/Controller",
+    "sap/m/MessageBox",
+    "ag/bpc/Deka/util/PrinterUtil",
     "sap/ui/model/Filter",
     "ag/bpc/Deka/util/NavigationPayloadUtil",
     "ag/bpc/Deka/util/DataProvider",
@@ -53,30 +53,30 @@ sap.ui.define([
     "ag/bpc/Deka/util/StaticData",
     "ag/bpc/Deka/util/TranslationUtil",
     "ag/bpc/Deka/model/CustomNumberType"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil) {
-	
+
 	"use strict";
-	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {        
-        
+	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
+
         onInit: function(oEvent){
             var _this = this;
 
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
             this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
-            
+
             // View nach oben Scrollen, da die Scrollposition von vorherigen Anzeigen übernommen wird
             this.getView().addEventDelegate({
                 onAfterShow: function(oEvent) {
                     _this.getView().byId("idKonditioneneinigungDetails").scrollTo(0, 0);
                 }
             });
-            
+
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("konditioneneinigungDetails").attachPatternMatched(this.onKonditioneneinigungAnzeigen, this);
             oRouter.getRoute("konditioneneinigungAnlegenWe").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit, this);
             oRouter.getRoute("konditioneneinigungAnlegenMv").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinesMietvertrags, this);
             oRouter.getRoute("konditioneneinigungAnlegenKe").attachPatternMatched(this.onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung, this);
 		},
-        
+
 
         initializeEmptyModel: function(){
 
@@ -91,7 +91,7 @@ sap.ui.define([
                     BtnGp: false,
                     BtnReedit: false,
                     BtnLoeschen: false,
-                    
+
                 },
 
                 statuswerte: null,
@@ -101,7 +101,7 @@ sap.ui.define([
                 anmerkungen: null,
                 viewsettings: null
             };
-            
+
             var formModel = new sap.ui.model.json.JSONModel(form);
             this.getView().setModel(formModel, "form");
         },
@@ -169,7 +169,7 @@ sap.ui.define([
                         }
                         viewsettings.flaecheneinheitSelectedKey = ausgangsFlaecheneinheit.Nach;
                         viewsettings.flaecheneinheitSelected = ausgangsFlaecheneinheit;
-                        
+
                     }
 
                     _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
@@ -302,19 +302,19 @@ sap.ui.define([
             _this.initializeValidationState();
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
-            
+
             DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId)
             .then(function(wirtschaftseinheit){
-                
+
                 var konditioneneinigung = _this.newKonditioneneinigung();
-                
+
                 _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/KeToWe", wirtschaftseinheit);
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", wirtschaftseinheit.WeId);
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", wirtschaftseinheit.Bukrs);
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/Currency", wirtschaftseinheit.Currency);
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/Unit", wirtschaftseinheit.Unit);
-                
+
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
             .then(function(){
@@ -362,7 +362,7 @@ sap.ui.define([
             _this.initializeValidationState();
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
-           
+
             DataProvider.readMietvertragAsync(WeId, Bukrs, MvId)
             .then(function(mietvertrag){
 
@@ -394,9 +394,9 @@ sap.ui.define([
 
                     return objekt;
                 }));
-                
+
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/KeToWe", mietvertrag.MvToWe);
-                _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", mietvertrag.MvToWe.WeId); 
+                _this.getView().getModel("form").setProperty("/konditioneneinigung/WeId", mietvertrag.MvToWe.WeId);
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/Bukrs", mietvertrag.MvToWe.Bukrs);
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/Currency", mietvertrag.MvToWe.Currency);
                 _this.getView().getModel("form").setProperty("/konditioneneinigung/Unit", mietvertrag.MvToWe.Unit);
@@ -460,7 +460,7 @@ sap.ui.define([
                 ke.Mietbeginn = basisKe.Mietbeginn;
                 ke.LzFirstbreak = basisKe.LzFirstbreak;
                 ke.MzMonate = basisKe.MzMonate;
-                
+
                 ke.MkMonate = basisKe.MkMonate;
                 ke.MkAbsolut = basisKe.MkAbsolut;
 
@@ -491,7 +491,7 @@ sap.ui.define([
                 ke.Confirmation = false;
 
                 _this.getView().getModel("form").setProperty("/konditioneneinigung", ke);
-                
+
                 return _this.initializeViewsettingsAsync(ke);
             })
             .then(function(){
@@ -531,12 +531,12 @@ sap.ui.define([
                 KeId: "",
                 Bukrs: "",
                 WeId: "",
-                
+
                 GueltigkKe: then,
                 Mietbeginn: null,
                 LzFirstbreak: "",
                 MzMonate: "",
-                
+
                 MkMonate: "",
                 MkAbsolut: "",
 
@@ -674,7 +674,7 @@ sap.ui.define([
         },
 
         onBack: function(oEvent) {
-            var modus = this.getView().getModel("form").getProperty("/modus"); 
+            var modus = this.getView().getModel("form").getProperty("/modus");
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
             if(modus === "edit") {
@@ -683,7 +683,7 @@ sap.ui.define([
 
             this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
         },
-        
+
         handleTableSettingsButton: function(oEvent){
             var _this = this;
 
@@ -724,10 +724,10 @@ sap.ui.define([
 
         onSpeichernButtonPress: function(oEvent){
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
-            console.log(ke, "ke");       
+            console.log(ke, "ke");
 
             var validationSuccess = this.validateForm();
-            
+
             if(validationSuccess){
                 this.speichern();
             }else {
@@ -736,7 +736,7 @@ sap.ui.define([
         },
 
         speichern: function(){
-            var modus = this.getView().getModel("form").getProperty("/modus");   
+            var modus = this.getView().getModel("form").getProperty("/modus");
 
             switch(modus)
             {
@@ -784,7 +784,7 @@ sap.ui.define([
                 Mietbeginn: ke.Mietbeginn,
                 LzFirstbreak:  ke.LzFirstbreak.toString(),
                 MzMonate:  ke.MzMonate.toString(),
-                
+
                 MkMonate: ke.MkMonate ?  ke.MkMonate.toString() : null,
                 MkAbsolut: ke.MkAbsolut ?  ke.MkAbsolut.toString() : null,
 
@@ -849,7 +849,7 @@ sap.ui.define([
             var _this = this;
 
             var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");
-            
+
             if( ke.GueltigkKe && Object.prototype.toString.call(ke.GueltigkKe) === "[object Date]" ){
                 ke.GueltigkKe.setHours(12);
                 ke.GueltigkKe.setMinutes(0);
@@ -877,7 +877,7 @@ sap.ui.define([
                 Mietbeginn: ke.Mietbeginn,
                 LzFirstbreak: ke.LzFirstbreak.toString(),
                 MzMonate: ke.MzMonate.toString(),
-                
+
                 MkMonate: ke.MkMonate ? ke.MkMonate.toString() : null,
                 MkAbsolut: ke.MkAbsolut ? ke.MkAbsolut.toString() : null,
 
@@ -904,7 +904,7 @@ sap.ui.define([
 
                 Aktiv: ke.Aktiv,
                 Ersteller: ke.Ersteller,
-                
+
                 KeToOb: _.map(ke.KeToOb, function(object){
                     delete object.__metadata;
                     object.HnflAlt = object.HnflAlt ? object.HnflAlt.toString() : null;
@@ -1065,7 +1065,7 @@ sap.ui.define([
                 return result;
             }else{
                 return false;
-            }              
+            }
         },
 
         checkIsNumber: function(view) {
@@ -1088,7 +1088,7 @@ sap.ui.define([
             this.initializeValidationState();
 
             var validationResult = true;
-                        
+
             var idGueltigkKe = this.getView().byId("idGueltigkKe");
             if(idGueltigkKe.getDateValue() === null){
                 idGueltigkKe.setValueState(sap.ui.core.ValueState.Error);
@@ -1119,7 +1119,7 @@ sap.ui.define([
             }
             else{
                 validationResult = this.checkNotNegative(idLzFirstbreak) && validationResult;
-            }        
+            }
 
             var idMzMonate = this.getView().byId("idMzMonate");
             if(idMzMonate.getValue() === ""){
@@ -1130,22 +1130,23 @@ sap.ui.define([
             else{
                 validationResult = this.checkNotNegative(idMzMonate) && validationResult;
             }
-            
+
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
 
             var idMietflaechenangabenErrorBox = this.getView().byId("idMietflaechenangabenErrorBox");
             if(mietflaechenangabenTable.getItems().length < 1){
                 idMietflaechenangabenErrorBox.setText("Bitte fügen Sie mindestens eine Mietfläche hinzu");
                 idMietflaechenangabenErrorBox.setVisible(true);
+                validationResult = false;
             }
-            
+
             var HnflAlt_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColHnflAlt"));
             var AnMiete_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColAnMiete"));
             var GaKosten_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColGaKosten"));
             var MaKosten_cellindex = mietflaechenangabenTable.indexOfColumn(this.getView().byId("idColMaKosten"));
 
             _.each(mietflaechenangabenTable.getItems(), function(item){
-                
+
                 var cells = item.getCells();
                 var HnflAlt_cell = cells[HnflAlt_cellindex];
                 var AnMiete_cell = cells[AnMiete_cellindex];
@@ -1162,7 +1163,7 @@ sap.ui.define([
                 validationResult = that.checkNotNegative(AnMiete_cell) && validationResult;
                 validationResult = that.checkNotNegative(GaKosten_cell) && validationResult;
                 validationResult = that.checkNotNegative(MaKosten_cell) && validationResult;
-                
+
                 if(parseFloat(AnMiete_cell.getValue()) < 0){
                     AnMiete_cell.setValueState(sap.ui.core.ValueState.Error);
                     AnMiete_cell.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
@@ -1179,7 +1180,7 @@ sap.ui.define([
                 }
 
             });
-            
+
             var mkMonate = this.getView().byId("maklerkostenInMonatsmieten");
             validationResult = this.checkNotNegative(mkMonate) && validationResult;
 
@@ -1225,7 +1226,7 @@ sap.ui.define([
                         placeholder: " ",
                         change: function(oEvent) {
 							var validDate = oEvent.getParameter('valid');
-                            var parent = oEvent.getSource().getParent(); 
+                            var parent = oEvent.getSource().getParent();
 							parent.getBeginButton().setEnabled(validDate);
 						},
                     })
@@ -1235,9 +1236,9 @@ sap.ui.define([
                     enabled: false,
 					press: function () {
                         var gueltigkeitsdatum = sap.ui.getCore().byId('idGueltigkeitsDatumDatePicker').getDateValue();
-                        
+
                         _this.getView().getModel("form").setProperty("/konditioneneinigung/GueltigkKe", gueltigkeitsdatum);
-						
+
                         dialog.close();
 					}
 				}),
@@ -1251,16 +1252,16 @@ sap.ui.define([
 					dialog.destroy();
 				}
 			});
- 
+
 			dialog.open();
         },
 
         onAbbrechenButtonPress: function(evt){
             var _this = this;
-            
-            var modus =_this.getView().getModel("form").getProperty("/modus");   
-            var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");    
-            
+
+            var modus =_this.getView().getModel("form").getProperty("/modus");
+            var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");
+
             MessageBox.confirm(TranslationUtil.translate("ABBRUCH_HINWEIS"), {
                 title: TranslationUtil.translate("HINWEIS"),
                 actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
@@ -1297,7 +1298,7 @@ sap.ui.define([
             mietflaechenangaben = _.reject(mietflaechenangaben, function(mietflaechenangabe){
                 return mietflaechenangabe.MoId === mietflaechenangabenToDelete.MoId;
             });
-            
+
             this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
 
             // Verteilen Button rot hervorheben
@@ -1306,7 +1307,7 @@ sap.ui.define([
 
         onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
             var _this = this;
-            
+
             if (! this._mietflaechenSelektionDialog) {
                 this._mietflaechenSelektionDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.MietflaechenSelektion", this);
                 this.getView().addDependent(this._mietflaechenSelektionDialog);
@@ -1339,12 +1340,12 @@ sap.ui.define([
             })
             .done();
         },
-        
+
         onMietflaechenSelektionDialogConfirm: function(oEvent){
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
             var selectedItems = oEvent.getParameter("selectedItems");
-            
+
             if(selectedItems.length > 0)
             {
                 var wirtschaftseinheitId = selectedItems[0].getBindingContext().getObject().WeId;
@@ -1362,7 +1363,7 @@ sap.ui.define([
                 if(auswahlValide)
                 {
                     var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-                    
+
                     var zeitMultiplikator = 1;
                     var zeitspannenId = this.getView().getModel("form").getProperty("/viewsettings/zeitspanneSelected/Id");
                     if(zeitspannenId === "J") {
@@ -1421,7 +1422,7 @@ sap.ui.define([
                             _this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
                         }
                         if( WeCurrency !== KeWaehrung && WeUnit !== KeUnit ) { //Beides umrechnen
-                            DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
+                            DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){
                                 if(waehrungen.length > 0){
                                     var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
                                         return waehrung.Nach === KeWaehrung;
@@ -1450,7 +1451,7 @@ sap.ui.define([
                             .done();
                         }
                         else if( WeCurrency !== KeWaehrung ) { // Waehrung umrechnen
-                            DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){                        
+                            DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){
                                 if(waehrungen.length > 0){
                                     var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
                                         return waehrung.Nach === KeWaehrung;
@@ -1521,7 +1522,7 @@ sap.ui.define([
                 }
             }
         },
-        
+
         onMietflaechenSelektionDialogSearch: function(oEvent){
 			var sValue = oEvent.getParameter("value");
 
@@ -1533,7 +1534,7 @@ sap.ui.define([
 			var oBinding = oEvent.getSource().getBinding("items");
 			oBinding.filter([combinedOrFilter]);
         },
-        
+
         onAusbaukostenVerteilenButtonPress: function(oEvent){
             var _this = this;
 
@@ -1541,20 +1542,20 @@ sap.ui.define([
                 this._ausbaukostenVerteilenDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.AusbaukostenVerteilen", this);
                 this.getView().addDependent(this._ausbaukostenVerteilenDialog);
             }
-            
+
             // über Einträge iterieren und Nutzungsarten sammeln
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-            
+
 			if(mietflaechenangaben.length === 0) {
                 MessageBox.error("Eine Verteilung ohne Mietflächen ist nicht möglich.");
 			} else {
                 Q.when(StaticData.NUTZUNGSARTEN).then(function(nutzungsarten){
-                    
+
                     var vorhandeneNutzungsarten = _.filter(nutzungsarten, function(nutzungsart){
-                        return _.find(mietflaechenangaben, function(mietflaechenangabe){                           
+                        return _.find(mietflaechenangaben, function(mietflaechenangabe){
                             if(mietflaechenangabe.Nutzart !== "0700" && mietflaechenangabe.Nutzart !== "0750"){
                                 return nutzungsart.NaId === mietflaechenangabe.Nutzart;
-                            }                            
+                            }
                         });
                     });
 
@@ -1578,13 +1579,13 @@ sap.ui.define([
                 .done();
             }
         },
-        
+
         onAusbaukostenVerteilenFragmentAkzeptierenButtonPress: function(oEvent){
-            
+
             this._ausbaukostenVerteilenDialog.close();
-            
+
             var dialogModel = this._ausbaukostenVerteilenDialog.getModel();
-            
+
             var verteilung = {
                 nutzungsart: dialogModel.getProperty("/nutzungsart"),
                 grundausbaukosten: parseFloat(dialogModel.getProperty("/grundausbaukosten")),
@@ -1592,11 +1593,11 @@ sap.ui.define([
             };
 
             // Logik zur Verteilung der Ausbaukosten
-        
+
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
-            
+
             var sumNutzflaechen = 0;
-            
+
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
                 if(mietflaechenangabe.Nutzart === verteilung.nutzungsart)
@@ -1611,7 +1612,7 @@ sap.ui.define([
                     }
                 }
             });
-            
+
             mietflaechenangaben.forEach(function(mietflaechenangabe)
             {
                 if(mietflaechenangabe.Nutzart === verteilung.nutzungsart)
@@ -1634,13 +1635,13 @@ sap.ui.define([
                 mietflaechenangabe.GaKosten = (Math.floor(mietflaechenangabe.GaKosten * 100) / 100).toFixed(2);
                 mietflaechenangabe.MaKosten = (Math.floor(mietflaechenangabe.MaKosten * 100) / 100).toFixed(2);
             });
-            
+
             this.getView().getModel("form").setProperty("/konditioneneinigung/KeToOb", mietflaechenangaben);
-            
+
             // Verteilen Button normal stylen
             this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Default);
         },
-        
+
         onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(oEvent){
             this._ausbaukostenVerteilenDialog.close();
         },
@@ -1649,7 +1650,7 @@ sap.ui.define([
             var konditioneneinigung = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var kostenarten = this.getView().getModel("form").getProperty("/kostenarten");
             var ertragsarten = this.getView().getModel("form").getProperty("/ertragsarten");
-            
+
             PrinterUtil.printKonditioneneinigung(konditioneneinigung, kostenarten, ertragsarten);
         },
 
@@ -1657,23 +1658,23 @@ sap.ui.define([
             var konditioneneinigung = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var kostenarten = this.getView().getModel("form").getProperty("/kostenarten");
             var ertragsarten = this.getView().getModel("form").getProperty("/ertragsarten");
-            
+
             PrinterUtil.printBeschlussantrag(konditioneneinigung);
         },
 
         onUebernehmenButtonPress: function(oEvent){
             var _this = this;
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
-            
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
+
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-                KeId: ke.KeId, 
-                Bukrs: ke.Bukrs, 
+                KeId: ke.KeId,
+                Bukrs: ke.Bukrs,
                 Anmerkung: "15",
                 Bemerkung: ke.Bemerkung,
                 Confirmation: ke.Confirmation
             })
-            .then(function(){      
-                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);                
+            .then(function(){
+                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -1714,12 +1715,12 @@ sap.ui.define([
 
         onZurGenehmigungVorlegenButtonPress: function(oEvent){
             var _this = this;
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
-            
+
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-                KeId: ke.KeId, 
-                Bukrs: ke.Bukrs, 
+                KeId: ke.KeId,
+                Bukrs: ke.Bukrs,
                 Anmerkung: StaticData.ANMERKUNG.KE.ZUR_GEMEHMIGUNG_VORGELEGT,
                 Bemerkung: ke.Bemerkung,
                 Confirmation: ke.Confirmation
@@ -1729,7 +1730,7 @@ sap.ui.define([
                     title: TranslationUtil.translate("HINWEIS")
                 });
 
-                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);                
+                _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -1778,8 +1779,8 @@ sap.ui.define([
                         var sText = sap.ui.getCore().byId('idGenehmigungZurueckziehenBegruendungTextArea').getValue();
 
                         DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-                            KeId: ke.KeId, 
-                            Bukrs: ke.Bukrs, 
+                            KeId: ke.KeId,
+                            Bukrs: ke.Bukrs,
                             Anmerkung: StaticData.ANMERKUNG.KE.AUS_WICHTIGEM_GRUND_ZURUECKGEZOGEN,
                             Bemerkung: sText,
                             Confirmation: ke.Confirmation
@@ -1820,13 +1821,13 @@ sap.ui.define([
 					dialog.destroy();
 				}
 			});
- 
+
 			dialog.open();
         },
 
         onGenehmigungsprozessButtonPress: function(oEvent){
 
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
 			this.getOwnerComponent().getRouter().navTo("konditioneneinigungGenehmigung", {
                 KeId: ke.KeId,
@@ -1836,11 +1837,11 @@ sap.ui.define([
 
         onNichtGenehmigenButtonPress: function(oEvent){
             var _this = this;
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-                KeId: ke.KeId, 
-                Bukrs: ke.Bukrs, 
+                KeId: ke.KeId,
+                Bukrs: ke.Bukrs,
                 Anmerkung: StaticData.ANMERKUNG.KE.NICHT_GENEHMIGT,
                 Bemerkung: ke.Bemerkung,
                 Confirmation: ke.Confirmation
@@ -1874,11 +1875,11 @@ sap.ui.define([
 
         onGenehmigenButtonPress: function(oEvent){
             var _this = this;
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-                KeId: ke.KeId, 
-                Bukrs: ke.Bukrs, 
+                KeId: ke.KeId,
+                Bukrs: ke.Bukrs,
                 Anmerkung: StaticData.ANMERKUNG.KE.GENEHMIGT,
                 Bemerkung: ke.Bemerkung,
                 Confirmation: ke.Confirmation
@@ -1892,7 +1893,7 @@ sap.ui.define([
                 });
 
                 //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
-                
+
             })
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
@@ -1913,11 +1914,11 @@ sap.ui.define([
         onReeditButtonPress: function(oEvent){
             var _this = this;
             this.showReeditConfirmationDialog(function(){
-                var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+                var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");
 
                 DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-                    KeId: ke.KeId, 
-                    Bukrs: ke.Bukrs, 
+                    KeId: ke.KeId,
+                    Bukrs: ke.Bukrs,
                     Anmerkung: StaticData.ANMERKUNG.KE.REEDIT,
                     Bemerkung: ke.Bemerkung,
                     Confirmation: ke.Confirmation
@@ -1948,11 +1949,11 @@ sap.ui.define([
 
         onReaktivierenButtonPress: function(oEvent){
             var _this = this;
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
             DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-                KeId: ke.KeId, 
-                Bukrs: ke.Bukrs, 
+                KeId: ke.KeId,
+                Bukrs: ke.Bukrs,
                 Anmerkung: StaticData.ANMERKUNG.KE.REAKTIVIERT,
                 Bemerkung: ke.Bemerkung,
                 Confirmation: ke.Confirmation
@@ -1979,16 +1980,16 @@ sap.ui.define([
             })
             .done();
         },
-        
+
 
         onLoeschenButtonPress: function(oEvent){
             var _this = this;
             this.showDeleteConfirmationDialog(function(){
-                var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung"); 
+                var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");
 
                 DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-                    KeId: ke.KeId, 
-                    Bukrs: ke.Bukrs, 
+                    KeId: ke.KeId,
+                    Bukrs: ke.Bukrs,
                     Anmerkung: StaticData.ANMERKUNG.KE.GELOESCHT,
                     Bemerkung: ke.Bemerkung,
                     Confirmation: ke.Confirmation
@@ -2013,7 +2014,7 @@ sap.ui.define([
                         ErrorMessageUtil.show(error);
                     }
                 })
-                .done();        
+                .done();
             });
         },
 

@@ -37,7 +37,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 var locale = _this.getLocale();
                 console.log(locale, "= Anmeldesprache");
 
-                if(locale.indexOf("de") ==! -1){
+                if(locale.indexOf("de") !== -1){
                    // standardsprache
                 }else{
                     _this.druckvorlageVermietungsaktivitaet = "/util/DruckvorlageVermietungsaktivitaet_en.html";
@@ -99,7 +99,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     }
 
                     var bdgstp = vermietungsaktivitaet.Budgetstp;
-                    if(locale.indexOf("de") ==! -1){
+                    if(locale.indexOf("de") !== -1){
                         // standardsprache
                         result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
                      }else{
@@ -107,7 +107,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                      }
 
                     var monatJahr = vermietungsaktivitaet.MonatJahr;
-                    if(locale.indexOf("de") ==! -1){
+                    if(locale.indexOf("de") !== -1){
                         // standardsprache
                         result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Monat" : "Jahr");
                      }else{
@@ -115,22 +115,24 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                      }
 
                     var plr = vermietungsaktivitaet.PLRelevant;
-                    if(locale.indexOf("de") ==! -1){
+                    var plrString;
+                    if(locale.indexOf("de") !== -1){
                         // standardsprache
-                        var plrString = plr ? "Ja" : "Nein";
+                        plrString = plr ? "Ja" : "Nein";
                         result = result.replace("@@PLRelevant@@", plrString);
                      }else{
-                        var plrString = plr ? "Yes" : "No";
+                        plrString = plr ? "Yes" : "No";
                         result = result.replace("@@PLRelevant@@", plrString);
                      }
 
                     var stsl = vermietungsaktivitaet.Steuerschlg;
-                    if(locale.indexOf("de") ==! -1){
+                    var stslString;
+                    if(locale.indexOf("de") !== -1){
                         // standardsprache
-                        var stslString = stsl ? "Ja" : "Nein";
+                        stslString = stsl ? "Ja" : "Nein";
                         result = result.replace("@@Steuerschlg@@", stslString);
                      }else{
-                        var stslString = stsl ? "Yes" : "No";
+                        stslString = stsl ? "Yes" : "No";
                         result = result.replace("@@Steuerschlg@@", stslString);
                      }
 
@@ -241,7 +243,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
-                    if(locale.indexOf("de") ==! -1){
+                    if(locale.indexOf("de") !== -1){
                         // standardsprache
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr<br>Split</b></td>";
@@ -280,47 +282,47 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var gaKosten = mietflaechenangabe.GaKosten ? oNumberFormat.format(mietflaechenangabe.GaKosten) : mietflaechenangabe.GaKosten;
                         var maKosten = mietflaechenangabe.MaKosten ? oNumberFormat.format(mietflaechenangabe.MaKosten) : mietflaechenangabe.MaKosten;
 
-                        if(locale.indexOf("de") ==! -1){
+                        var mfsplit;
+
+                        if(locale.indexOf("de") !== -1){
                             // standardsprache
-                            var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
+                            mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         }else{
-                            var mfsplit = mietflaechenangabe.MfSplit ? "Yes" : "No";
+                            mfsplit = mietflaechenangabe.MfSplit ? "Yes" : "No";
                         }
 
                         mietflaechenangabeHtml += "<tr>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:center;\">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left;width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left;width: 65px !important;\">" + nutzart + "<br />" + nutzartAlt + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + gaKosten + "<br />" + maKosten + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:center;\">" + index + "<br>" + mfsplit + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left;width: 160px !important;\">" + mietflaechenangabe.MoId + "<br>" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left;width: 65px !important;\">" + nutzart + "<br>" + nutzartAlt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br>" + hnflalt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br>" + anMiete + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + gaKosten + "<br>" + maKosten + "</td>";
                         mietflaechenangabeHtml += "</tr>";
                     });
                     mietflaechenangabeHtml += "</table>";
                     result = result.replace("@@Mietflaechenangaben@@", mietflaechenangabeHtml);
 
+                    var keMappingHtml;
+
                     if (vermietungsaktivitaet.Kategorie === "01") {
-                        if(locale.indexOf("de") ==! -1){
+                        if(locale.indexOf("de") !== -1){
                             // standardsprache
-                            var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Zugrundeliegende KE:</td>";
+                            keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Zugrundeliegende KE:</td>";
                         }else{
-                            var keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Underlying TaC:</td>";
+                            keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Underlying TaC:</td>";
                         }
 
                         keMappingHtml += "<td class=\"auto-style6\">";
-                        vermietungsaktivitaet.VaToMap.forEach(function (ke, i) {
-                            if (ke.Aktiv) {
-                                keMappingHtml += ke.KeId;
 
-                                if (i < vermietungsaktivitaet.VaToMap.length - 1) {
-                                    keMappingHtml += ", ";
-                                }
-                            }
-                        });
+                        keMappingHtml += _.join(_.map(_.filter(vermietungsaktivitaet.VaToMap, function(ke){return ke.Aktiv;}), function(ke){
+                            return ke.KeId;
+                        }), ", ");
+
                         keMappingHtml += "</td>";
                         result = result.replace("@@KEMapping@@", keMappingHtml);
                     } else {
-                        result = result.replace("@@KEMapping@@", "<br />");
+                        result = result.replace("@@KEMapping@@", "<br>");
                     }
 
                     // Restliche Platzhalter entfernen
@@ -348,7 +350,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 var locale = _this.getLocale();
                 console.log(locale, "= Anmeldesprache");
 
-                if(locale.indexOf("de") ==! -1){
+                if(locale.indexOf("de") !== -1){
                    // standardsprache
                 }else{
                     _this.druckvorlageKonditioneneinigung = "/util/DruckvorlageKonditioneneinigung_en.html";
@@ -385,7 +387,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     }
 
                     var bdgstp = konditioneneinigung.Budgetstp;
-                    if(locale.indexOf("de") ==! -1){
+                    if(locale.indexOf("de") !== -1){
                         // standardsprache
                         result = result.replace("@@Budgetstp@@", bdgstp ? "Ja" : "Nein");
                     }else{
@@ -393,7 +395,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     }
 
                     var monatJahr = konditioneneinigung.MonatJahr;
-                    if(locale.indexOf("de") ==! -1){
+                    if(locale.indexOf("de") !== -1){
                         // standardsprache
                         result = result.replace("@@MonatJahr@@", monatJahr === "M" ? "Monat" : "Jahr");
                     }else{
@@ -491,7 +493,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     var mietflaechenangabeHtml = "<table class=\"cellSpacedTable\">";
 
-                    if(locale.indexOf("de") ==! -1){
+                    if(locale.indexOf("de") !== -1){
                         // standardsprache
                         mietflaechenangabeHtml += "<tr>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr<br>Split</b></td>";
@@ -525,20 +527,23 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var gaKosten = mietflaechenangabe.GaKosten ? oNumberFormat.format(mietflaechenangabe.GaKosten) : mietflaechenangabe.GaKosten;
                         var maKosten = mietflaechenangabe.MaKosten ? oNumberFormat.format(mietflaechenangabe.MaKosten) : mietflaechenangabe.MaKosten;
 
-                        if(locale.indexOf("de") ==! -1){
+
+                        var mfsplit;
+
+                        if(locale.indexOf("de") !== -1){
                             // standardsprache
-                            var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
+                            mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         }else{
-                            var mfsplit = mietflaechenangabe.MfSplit ? "Yes" : "No";
+                            mfsplit = mietflaechenangabe.MfSplit ? "Yes" : "No";
                         }
 
                         mietflaechenangabeHtml += "<tr>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center;\">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center;\">" + index + "<br>" + mfsplit + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br>" + mietflaechenangabe.Bezei + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:left; width: 60px !important;\">" + nutzart + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br />" + hnflalt + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br />" + anMiete + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + gaKosten + "<br />" + maKosten + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + hnfl + "<br>" + hnflalt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + nhMiete + "<br>" + anMiete + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align:right;\">" + gaKosten + "<br>" + maKosten + "</td>";
                         mietflaechenangabeHtml += "</tr>";
                     });
                     mietflaechenangabeHtml += "</table>";
@@ -719,12 +724,12 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                         var mfsplit = mietflaechenangabe.MfSplit ? "Ja" : "Nein";
                         mietflaechenangabeHtml += "<tr>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center \">" + index + "<br />" + mfsplit + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br />" + mietflaechenangabe.Bezei + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: center \">" + index + "<br>" + mfsplit + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: left; width: 160px !important;\">" + mietflaechenangabe.MoId + "<br>" + mietflaechenangabe.Bezei + "</td>";
                         mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: left; width: 65px !important; \">" + nutzart + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + hnfl + "<br />" + hnflalt + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + nhMiete + "<br />" + anMiete + "</td>";
-                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + gaKosten + "<br />" + maKosten + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + hnfl + "<br>" + hnflalt + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + nhMiete + "<br>" + anMiete + "</td>";
+                        mietflaechenangabeHtml += "<td class=\"greyBGPad\" style=\"text-align: right \">" + gaKosten + "<br>" + maKosten + "</td>";
                         mietflaechenangabeHtml += "</tr>";
                     });
                     mietflaechenangabeHtml += "</table>";

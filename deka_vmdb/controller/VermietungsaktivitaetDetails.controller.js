@@ -1225,6 +1225,15 @@ sap.ui.define([
 
             var vatoob = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
+
+            var idMietflaechenangabenErrorBox = this.getView().byId("idMietflaechenangabenErrorBox");
+            if(mietflaechenangabenTable.getItems().length < 1){
+                idMietflaechenangabenErrorBox.setText("Bitte fügen Sie mindestens eine Mietfläche hinzu");
+                idMietflaechenangabenErrorBox.setVisible(true);
+                validationResult = false;
+            }
+
+            // >>> CHO .. TODO: Code aufräumen
             var rows = mietflaechenangabenTable.getItems();
             var i;
             for(i = 0; i < rows.length; i = i+1){
@@ -1246,7 +1255,7 @@ sap.ui.define([
                 }
             }
 
-            _.map(mietflaechenangabenTable.getItems(), function(item){
+            _.each(mietflaechenangabenTable.getItems(), function(item){
                 var cells = item.getCells();
                 var anMieteCell = cells[9];
 
@@ -1275,6 +1284,7 @@ sap.ui.define([
                 var maKostenCell = cells[11];
                 validationResult = that.checkNotNegative(maKostenCell) && validationResult;
             });
+            // <<< CHO .. TODO: Code aufräumen
 
             var idLzFirstbreak = this.getView().byId("idLzFirstbreak");
             if(idLzFirstbreak.getValue() === ""){
@@ -1394,6 +1404,8 @@ sap.ui.define([
                 var maKostenCell = cells[11];
                 maKostenCell.setValueState(sap.ui.core.ValueState.None);
             });
+
+            this.getView().byId("idMietflaechenangabenErrorBox").setVisible(false);
 
             // Verteilen Button normal stylen
             this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Default);
