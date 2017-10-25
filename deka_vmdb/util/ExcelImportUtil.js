@@ -139,7 +139,7 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
 
                     // 1. Monat der Verteilung der Ausbaukosten
                     if(vermietungsaktivitaet.AkErsterMonat){
-                        splitString = dateString.split(".");
+                        splitString = vermietungsaktivitaet.AkErsterMonat.split(".");
                         if(splitString.length > 2){
                             vermietungsaktivitaet.AkErsterMonat = new Date(splitString[2], splitString[1]-1, splitString[0]);
                         }else{

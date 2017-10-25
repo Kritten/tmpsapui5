@@ -231,7 +231,7 @@ sap.ui.define([
 		},
 
 		onExcelImportDialogAnlegenButtonPress: function(oEvent){
-			_this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenImport");
+			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenImport");
 		},
 
 		onExcelImportDialogAbbrechenButtonPress: function(oEvent){
