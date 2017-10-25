@@ -1,15 +1,15 @@
 /*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:45:06 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:45:06 
+ * @Author: Christian Hoff (best practice consulting AG)
+ * @Date: 2017-04-05 21:45:06
+ * @Last Modified by:   Christian Hoff (best practice consulting AG)
+ * @Last Modified time: 2017-04-05 21:45:06
  */
 sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
 
     "use strict";
 	return {
-        
-        /*  
+
+        /*
         oParams = {
             file: ..
             success: ..
@@ -46,7 +46,7 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
 
                     var row, col;
                     var keyCellAddress;
-                    var valCellAddress;                     
+                    var valCellAddress;
 
                     // Vermietungsaktivität erstellen
                     for(row=0; row<100; row++){
@@ -56,8 +56,8 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
 
                         if(vaWorksheet[keyCellAddress] === undefined){
                             break;
-                        }                        
-                                                
+                        }
+
                         if(vaWorksheet[valCellAddress] === undefined){
                             vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = "";
                         }else {
@@ -66,39 +66,39 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                                 vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = vaWorksheet[valCellAddress].v;
                             }else{
                                 vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = number;
-                            }                            
+                            }
                         }
-                    }                    
+                    }
 
                     // Mietflächenobjekte erstellen
                     for(row=2; row<100; row++) {
                         var mietflaeche_ca = XLSX.utils.encode_cell({c:0, r:row});
-                        
+
                         if(mfWorksheet[mietflaeche_ca] !== undefined && mfWorksheet[mietflaeche_ca].v !== ''){
                             var mietflaeche = {};
 
                             for(col=0; col<100; col++) {
                                 keyCellAddress = XLSX.utils.encode_cell({c:col, r:0});
                                 valCellAddress = XLSX.utils.encode_cell({c:col, r:row});
-                                
+
                                 // Wenn KeyCell leer ist, dann ist die Schleife am Ende der Spalten angelangt
                                 if(mfWorksheet[keyCellAddress] === undefined){
                                     break;
                                 }
-                                
+
                                 // Wenn die ValCell leer ist, wird angenommen, dass keine weiteren Reihen befüllt sind
                                 // Die Schleife wird unterbrochen
                                 // Ausnahme: Das Feld "MfSplit" darf leer sein
                                 if(mfWorksheet[keyCellAddress].v !== "MfSplit" && mfWorksheet[valCellAddress] === undefined) {
                                     break;
                                 }
-    
+
                                 //console.log( mfWorksheet[keyCellAddress].v + " = " + mfWorksheet[valCellAddress].v );
-                                
-                                // Prüfen ob value existiert (bei MfSplit === "" ist mfWorksheet[valCellAddress] undefined, aber kein Fehler!) 
+
+                                // Prüfen ob value existiert (bei MfSplit === "" ist mfWorksheet[valCellAddress] undefined, aber kein Fehler!)
                                 var value = mfWorksheet[valCellAddress] ? mfWorksheet[valCellAddress].v : "";
                                 var numberValue = that.checkForNumber(value);
-    
+
                                 if(!numberValue){
                                     mietflaeche[mfWorksheet[keyCellAddress].v] = value;
                                 }else{
@@ -110,33 +110,45 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                         } else {
                             break;
                         }
-                    }                    
+                    }
 
                     // Datum-Strings übersetzen
 
+                    var splitString;
+
                     // Mietbeginn
-                    var dateString = vermietungsaktivitaet.Mietbeginn;
-                    var splitString = dateString.split(".");
-                    vermietungsaktivitaet.Mietbeginn = new Date(splitString[2],splitString[1]-1,splitString[0]);
+                    if(vermietungsaktivitaet.Mietbeginn){
+                        splitString = vermietungsaktivitaet.Mietbeginn.split(".");
+                        vermietungsaktivitaet.Mietbeginn = new Date(splitString[2], splitString[1]-1, splitString[0]);
+                    } else {
+                        vermietungsaktivitaet.Mietbeginn = null;
+                    }
 
                     // Erster Monat mietfrei
-                    dateString = vermietungsaktivitaet.MzErsterMonat;
-                    splitString = dateString.split(".");
-                    if(splitString.length > 2){
-                        vermietungsaktivitaet.MzErsterMonat = new Date(splitString[2],splitString[1]-1,splitString[0]);
-                    }else{
-                        vermietungsaktivitaet.MzErsterMonat = new Date(splitString[1]-1,splitString[0]);
+                    if(vermietungsaktivitaet.MzErsterMonat){
+                        splitString = vermietungsaktivitaet.MzErsterMonat.split(".");
+                        if(splitString.length > 2){
+                            vermietungsaktivitaet.MzErsterMonat = new Date(splitString[2], splitString[1]-1, splitString[0]);
+                        }else{
+                            vermietungsaktivitaet.MzErsterMonat = new Date(splitString[1]-1, splitString[0]);
+                        }
+                    } else {
+                        vermietungsaktivitaet.MzErsterMonat = null;
                     }
 
+
                     // 1. Monat der Verteilung der Ausbaukosten
-                    dateString = vermietungsaktivitaet.AkErsterMonat;
-                    splitString = dateString.split(".");
-                    if(splitString.length > 2){
-                        vermietungsaktivitaet.AkErsterMonat = new Date(splitString[2],splitString[1]-1,splitString[0]);
-                    }else{
-                        vermietungsaktivitaet.AkErsterMonat = new Date(splitString[1]-1,splitString[0]);
+                    if(vermietungsaktivitaet.AkErsterMonat){
+                        splitString = dateString.split(".");
+                        if(splitString.length > 2){
+                            vermietungsaktivitaet.AkErsterMonat = new Date(splitString[2], splitString[1]-1, splitString[0]);
+                        }else{
+                            vermietungsaktivitaet.AkErsterMonat = new Date(splitString[1]-1, splitString[0]);
+                        }
+                    } else {
+                        vermietungsaktivitaet.AkErsterMonat = null;
                     }
-                    
+
                     resolve(vermietungsaktivitaet);
                 };
 
@@ -153,9 +165,9 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                             decimals: 2,
                             minIntegerDigits: 2
                 });
-                
+
                 var parsedNumber = oNumberFormat.parse(value);
-                
+
                 if(isNaN(parsedNumber)){
                     return false;
                 }else{
@@ -165,10 +177,10 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                     }else{
                         return parsedNumber.toString();
                     }
-                }  
+                }
             }else{
                 return value;
-            }            
+            }
         },
 
         checkForDate: function(value){

@@ -1,39 +1,39 @@
 /*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:44:08 
+ * @Author: Christian Hoff (best practice consulting AG)
+ * @Date: 2017-04-05 21:44:08
  * @Last Modified by: Christian Hoff (best practice consulting AG)
  * @Last Modified time: 2017-06-22 18:00:30
  */
 sap.ui.define([
-	"sap/ui/core/mvc/Controller", 
-	"sap/ui/model/Filter", 
-	"sap/m/MessageToast", 
+	"sap/ui/core/mvc/Controller",
+	"sap/ui/model/Filter",
+	"sap/m/MessageToast",
 	"ag/bpc/Deka/util/ExcelImportUtil",
 	"ag/bpc/Deka/util/NavigationPayloadUtil",
 	"ag/bpc/Deka/util/DataProvider",
 	"ag/bpc/Deka/util/StaticData",
 	"ag/bpc/Deka/util/ErrorMessageUtil",
 	"ag/bpc/Deka/util/TranslationUtil"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
-	
+
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
-		onInit: function(evt){		
+		onInit: function(evt){
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
 			this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
 
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("vermietungsaktivitaetSelektion").attachPatternMatched(this.onPatternMatched, this);
-		}, 
-		
+		},
+
 		onPatternMatched: function(oEvent){
-			var _this = this;			
-			
+			var _this = this;
+
 			StaticData.USER.then(function(user){
 				_this.getView().byId('idVaAnlagePanel').setVisible(user.BtnAm);
 				return DataProvider.readVermSelSetAsync();
 			})
 			.then(function(vermietungsaktivitaeten){
-				
+
 				var favoritValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Favorit; }));
 				var buchungskreisValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Bukrs; }));
 				var wirtschaftseinheitValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.WeId; }));
@@ -58,7 +58,7 @@ sap.ui.define([
 						Ersteller: _.map(erstellerValues, function(Ersteller){ return {key: Ersteller}; })
 					}
 				};
-							
+
 				var jsonModel = new sap.ui.model.json.JSONModel(jsonData);
 				_this.getView().setModel(jsonModel, "vermSel");
 				_this.applyFilters();
@@ -72,7 +72,7 @@ sap.ui.define([
 		onBack: function(evt){
 			this.getOwnerComponent().getRouter().navTo("startseite", null, true);
 		},
-				
+
 		// Auswahl der anzuzeigenden VAs
 		onComboBoxChange : function(evt) {
 			this.applyFilters();
@@ -80,7 +80,7 @@ sap.ui.define([
 
 		onAnlegenPress : function (oEvent) {
 			var _this = this;
-						
+
 			// Holt über die ElementID die Radio Button Group
 			var oRBG = this.getView().byId("RBG_Anlage");
 			var idx = oRBG.getSelectedIndex();
@@ -119,16 +119,16 @@ sap.ui.define([
 				var formData = {
 					konditioneneinigungen: konditioneneinigungen
 				};
-				
+
 				_this._selectDialogRegelvermietung.setModel(new sap.ui.model.json.JSONModel(formData), "form");
-				
+
 				// clear the old search filter
 				_this._selectDialogRegelvermietung.getBinding("items").filter([]);
 				_this._selectDialogRegelvermietung.open();
 			})
             .catch(function(oError){
                 console.log(oError);
-				console.log("catchblock");	
+				console.log("catchblock");
 
 				if (! _this._selectDialogRegelvermietung) {
 					_this._selectDialogRegelvermietung = sap.ui.xmlfragment("ag.bpc.Deka.view.VermietungsaktivitaetSelektionDialogRegelvermietung", _this);
@@ -137,9 +137,9 @@ sap.ui.define([
 				var formData = {
 					konditioneneinigungen: []
 				};
-				
+
 				_this._selectDialogRegelvermietung.setModel(new sap.ui.model.json.JSONModel(formData), "form");
-				
+
 				// clear the old search filter
 				_this._selectDialogRegelvermietung.getBinding("items").filter([]);
 				_this._selectDialogRegelvermietung.open();
@@ -163,9 +163,9 @@ sap.ui.define([
 					var formData = {
 						wirtschaftseinheiten: oData.results
 					};
-					
+
 					_this._selectDialogKleinvermietung.setModel(new sap.ui.model.json.JSONModel(formData), "form");
-					
+
 					// clear the old search filter
 					_this._selectDialogKleinvermietung.getBinding("items").filter([]);
 					_this._selectDialogKleinvermietung.open();
@@ -189,9 +189,9 @@ sap.ui.define([
 					var formData = {
 						wirtschaftseinheiten: oData.results
 					};
-					
+
 					_this._selectDialogExterneVermietung.setModel(new sap.ui.model.json.JSONModel(formData), "form");
-					
+
 					// clear the old search filter
 					_this._selectDialogExterneVermietung.getBinding("items").filter([]);
 					_this._selectDialogExterneVermietung.open();
@@ -205,7 +205,6 @@ sap.ui.define([
 			}
 
 			var jsonData = {
-				data: null,
 				valid: false
 			};
 
@@ -220,19 +219,19 @@ sap.ui.define([
 
 			ExcelImportUtil.importVermietungsaktivitaetFromFile(files[0]).then(function(vermietungsaktivitaet){
 				console.log(vermietungsaktivitaet);
-				
-				// Validierung
-				_this._excelImportDialog.getModel("excelImportModel").setProperty("/valid", true);
-				_this._excelImportDialog.getModel("excelImportModel").setProperty("/data", {});
-
 				NavigationPayloadUtil.putPayload(vermietungsaktivitaet);
-				_this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenImport");
+				_this._excelImportDialog.getModel("excelImportModel").setProperty("/valid", true);
 			})
 			.catch(function(error){
 				console.log(error);
+				_this._excelImportDialog.getModel("excelImportModel").setProperty("/valid", false);
 			})
 			.done();
 
+		},
+
+		onExcelImportDialogAnlegenButtonPress: function(oEvent){
+			_this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenImport");
 		},
 
 		onExcelImportDialogAbbrechenButtonPress: function(oEvent){
@@ -243,8 +242,8 @@ sap.ui.define([
 			this._excelImportDialog.destroy();
 			delete this._excelImportDialog;
 		},
-	
-		onRegelvermietungSelectDialogConfirm: function(oEvent) {	
+
+		onRegelvermietungSelectDialogConfirm: function(oEvent) {
 
 			var selectedItems = oEvent.getParameter("selectedItems");
 
@@ -262,7 +261,7 @@ sap.ui.define([
 			}
 		},
 
-		onRegelvermietungSelectDialogSearch : function(oEvent) {	
+		onRegelvermietungSelectDialogSearch : function(oEvent) {
 			var sValue = oEvent.getParameter("value");
 
 			var combinedOrFilter = new Filter([
@@ -331,24 +330,24 @@ sap.ui.define([
 			oBinding.filter([combinedOrFilter]);
 		},
 
-		
+
 		// Klick auf eine Zeile in der Tabelle
 		onItemPress : function(oEvent) {
-			
+
 			var vermietungsaktivitaet = oEvent.getParameter("listItem").getBindingContext('vermSel').getObject();
-			
+
 			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetDetails", {
 				VaId: vermietungsaktivitaet.VaId,
 				Bukrs: vermietungsaktivitaet.Bukrs
 			});
 
 		},
-		
-		
+
+
 		onFacetFilterReset: function(oEvent) {
-						
+
 			var lists = oEvent.getSource().getLists();
-								
+
 			lists.forEach(function(list){
 				list.setSelectedKeys();
 			});
@@ -356,39 +355,39 @@ sap.ui.define([
 			this.applyFilters();
 		},
 
-		
+
 		onFacetFilterListClose: function(oEvent){
 			this.applyFilters();
 		},
 
-		
+
 		applyFilters: function(){
-			
+
 			var table = this.getView().byId("idVermSelTable");
-			
+
 			var filtersToApply = [];
-			
+
 			var facetFilterLists = this.getView().byId("idFacetFilter").getLists();
-																
+
 			facetFilterLists.forEach(function(list){
-				
+
 				if(list.getSelectedItems().length > 0){
-					
+
 					var itemFilters = [];
-																
+
 					list.getSelectedItems().forEach(function(item){
-						
+
 						switch(list.getTitle())
 						{
 							case TranslationUtil.translate("VERM_SEL_COL_FAVORIT"):
 								var boolValue = (item.getKey() === "true") ? true : false;
 								itemFilters.push( new Filter("Favorit", sap.ui.model.FilterOperator.EQ, boolValue) );
 							break;
-							
+
 							case TranslationUtil.translate("VERM_SEL_COL_BUCHUNGSKREIS"):
 								itemFilters.push( new Filter("Bukrs", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
-							
+
 							case TranslationUtil.translate("VERM_SEL_COL_WIRTSCHAFTSEINHEIT"):
 								itemFilters.push( new Filter("WeId", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
@@ -404,7 +403,7 @@ sap.ui.define([
 							case TranslationUtil.translate("VERM_SEL_COL_DIENSTLEISTER"):
 								itemFilters.push( new Filter("Dienstleister", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
-						
+
 							case TranslationUtil.translate("VERM_SEL_COL_VERMIETUNGSART"):
 								itemFilters.push( new Filter("Vermietungsart", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
@@ -420,17 +419,17 @@ sap.ui.define([
 							default:
 							break;
 						}
-						
+
 					});
-					
+
 					var listFilter = new Filter(itemFilters, false);
 					filtersToApply.push(listFilter);
 				}
-				
+
 			});
-			
+
 			console.log("filtersToApply.length = " + filtersToApply.length);
-			
+
 			if(filtersToApply.length > 0)
 			{
 				// Alle Filter mit AND verknüpfen
@@ -442,7 +441,7 @@ sap.ui.define([
 				table.getBinding("items").filter([]);
 			}
 
-		}		
-		        
+		}
+
 	});
 });
