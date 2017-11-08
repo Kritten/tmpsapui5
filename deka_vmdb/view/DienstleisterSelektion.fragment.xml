@@ -2,14 +2,14 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:f="sap.ui.layout.form">
-    
+
     <TableSelectDialog
         title="{i18n>DIENSTLEISTER_SEL_TITLE}"
         noDataText="{i18n>KEINE_DATEN_VORHANDEN}"
         search="onDienstleisterSelektionSearch"
         confirm="onDienstleisterSelektionConfirm"
         items="{form>/dienstleister}">
-            
+
         <columns>
             <Column minScreenWidth="Tablet" demandPopin="true">
                 <Text text="{i18n>DIENSTLEISTER_SEL_COL_NAME}" />
@@ -21,15 +21,15 @@
                 <Text text="{i18n>DIENSTLEISTER_SEL_COL_KOSTENGRENZE}" />
             </Column>
         </columns>
-            
+
 		<ColumnListItem>
 			<cells>
                 <Text text="{form>Name}" />
-                <Text text="{form>Ertragsgrenze}" />
-                <Text text="{form>Kostengrenze}" />
+                <Text text="{path: 'form>Ertragsgrenze', type: 'model.CustomNumberType'}" />
+                <Text text="{path: 'form>Kostengrenze', type: 'model.CustomNumberType'}" />
 			</cells>
 		</ColumnListItem>
 
     </TableSelectDialog>
-    
+
 </core:FragmentDefinition>

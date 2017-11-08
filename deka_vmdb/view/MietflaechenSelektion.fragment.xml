@@ -2,7 +2,7 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:f="sap.ui.layout.form">
-    
+
     <TableSelectDialog
         title="{i18n>MIETFLAECHE_HINZUFUEGEN}"
         noDataText="{i18n>KEINE_DATEN_VORHANDEN}"
@@ -10,7 +10,7 @@
         search="onMietflaechenSelektionDialogSearch"
         confirm="onMietflaechenSelektionDialogConfirm"
         contentWidth="80%"
-        cancel="onMietflaechenSelektionDialogCancel" 
+        cancel="onMietflaechenSelektionDialogCancel"
         items="{/mietflaechen}">
 
         <columns>
@@ -39,7 +39,7 @@
                 <Text text="{i18n>FLAECHENGROESSE} / {i18n>STUECK}" />
             </Column>
         </columns>
-            
+
 		<ColumnListItem>
 			<cells>
 				<Text text="{Bukrs}/{WeId}/{MoId}" />
@@ -49,11 +49,11 @@
                 <Text text="{Mietername}" />
                 <Text text="{VtMiete}" />
                 <Text text="{= ${text>/stockwerk}[${Dmgeschos}] }" />
-                <Text text="{Hnfl} {HnflUnit}" />
+                <Text text="{path: 'Hnfl', type: 'model.CustomNumberType'} {HnflUnit}" />
 			</cells>
 		</ColumnListItem>
 
     </TableSelectDialog>
-    
-    
+
+
 </core:FragmentDefinition>
