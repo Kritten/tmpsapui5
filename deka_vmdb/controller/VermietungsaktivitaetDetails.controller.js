@@ -990,6 +990,10 @@ sap.ui.define([
                 Anmerkung: va.Anmerkung,
                 Bemerkung: va.Bemerkung,
 
+                Steuerschaden: va.Steuerschaden ? va.Steuerschaden.toString() : null,
+                MwstkErtrag: va.MwstkErtrag ? va.MwstkErtrag.toString() : null,
+                Einmalertrag: va.Einmalertrag ? va.Einmalertrag.toString() : null,
+
                 MonatJahr: va.MonatJahr,
                 Currency: va.Currency,
                 Unit: va.Unit,
@@ -1099,6 +1103,10 @@ sap.ui.define([
                 IdxWeitergabe: va.IdxWeitergabe ? va.IdxWeitergabe.toString() : null,
                 PLRelevant: va.PLRelevant,
                 Steuerschlg: va.Steuerschlg,
+
+                Steuerschaden: va.Steuerschaden ? va.Steuerschaden.toString() : null,
+                MwstkErtrag: va.MwstkErtrag ? va.MwstkErtrag.toString() : null,
+                Einmalertrag: va.Einmalertrag ? va.Einmalertrag.toString() : null,
 
                 Status: va.Status,
                 Anmerkung: va.Anmerkung,
