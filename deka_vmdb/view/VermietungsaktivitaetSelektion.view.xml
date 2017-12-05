@@ -1,13 +1,13 @@
-<core:View 
-	xmlns:core="sap.ui.core" 
-	xmlns:mvc="sap.ui.core.mvc" 
+<core:View
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	controllerName="ag.bpc.Deka.controller.VermietungsaktivitaetSelektion" >
-	
+
 	<Page title="{i18n>VERM_SEL_TITLE}"  showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
 		<content>
-				
+
 			<Panel id="idVaAnlagePanel" visible="false">
 				<headerToolbar>
 					<Toolbar>
@@ -55,7 +55,7 @@
 						<Title level="H3" text="{i18n>VERM_SEL_PANEL_TITLE_AUS}" />
 					</Toolbar>
 				</headerToolbar>
-				
+
 				<FacetFilter id="idFacetFilter" reset="onFacetFilterReset" type="Simple" >
 					<lists>
 						<FacetFilterList title="{i18n>VERM_SEL_COL_FAVORIT}" items="{path: 'vermSel>/facetfilterValues/Favorit', templateShareable: true }" listClose="onFacetFilterListClose" >
@@ -114,7 +114,7 @@
 					</lists>
 				</FacetFilter>
 
-				<Table id="idVermSelTable" inset="false" itemPress="onItemPress" items="{vermSel>/data}">
+				<Table id="idVermSelTable" inset="false" itemPress="onItemPress" items="{vermSel>/data}" growing="true" growingThreshold="100">
 					<headerToolbar>
 						<Toolbar>
 							<Title text="{i18n>VERMIETUNGSAKTIVITAETEN}" level="H4" />
@@ -182,47 +182,47 @@
 										path: 'vermSel>Hnfl',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
-											minIntegerDigits : 2, 
-											minFractionDigits : 2, 
-											groupingEnabled : true, 
-											groupingSeparator : '.', 
-											decimalSeparator : ',' 
+											minIntegerDigits : 2,
+											minFractionDigits : 2,
+											groupingEnabled : true,
+											groupingSeparator : '.',
+											decimalSeparator : ','
 										}
 								} {vermSel>Unit}" />
 								<Text text="{
 										path: 'vermSel>AnMiete',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
-											minIntegerDigits : 2, 
-											minFractionDigits : 2, 
-											groupingEnabled : true, 
-											groupingSeparator : '.', 
-											decimalSeparator : ',' 
+											minIntegerDigits : 2,
+											minFractionDigits : 2,
+											groupingEnabled : true,
+											groupingSeparator : '.',
+											decimalSeparator : ','
 										}
 								} {vermSel>Currency}" />
 								<Text text="{
 										path: 'vermSel>GaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
-											minIntegerDigits : 2, 
-											minFractionDigits : 2, 
-											groupingEnabled : true, 
-											groupingSeparator : '.', 
-											decimalSeparator : ',' 
+											minIntegerDigits : 2,
+											minFractionDigits : 2,
+											groupingEnabled : true,
+											groupingSeparator : '.',
+											decimalSeparator : ','
 										}
 								} {vermSel>Currency}" />
 								<Text text="{
 										path: 'vermSel>MaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
-											minIntegerDigits : 2, 
-											minFractionDigits : 2, 
-											groupingEnabled : true, 
-											groupingSeparator : '.', 
-											decimalSeparator : ',' 
+											minIntegerDigits : 2,
+											minFractionDigits : 2,
+											groupingEnabled : true,
+											groupingSeparator : '.',
+											decimalSeparator : ','
 										}
 								} {vermSel>Currency}" />
-								
+
 							</cells>
 						</ColumnListItem>
 					</items>
@@ -230,8 +230,8 @@
 
 			</Panel>
 
-		
-		
+
+
 		</content>
 	</Page>
 </core:View>

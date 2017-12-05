@@ -1,10 +1,10 @@
-<core:View 
-	xmlns:core="sap.ui.core" 
+<core:View
+	xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	controllerName="ag.bpc.Deka.controller.KonditioneneinigungSelektion">
-	
+
 	<Page title="{i18n>KOND_SEL_TITLE}" showNavButton="true" navButtonPress="onBack" class="sapUiFioriObjectPage">
 		<content>
 
@@ -17,7 +17,7 @@
 
 				<FlexBox>
 					<items>
-					
+
 						<FlexBox justifyContent="Start">
 							<items>
 								<RadioButtonGroup id="RBG_Anlage" columns="3">
@@ -91,7 +91,7 @@
 				</FacetFilter>
 
 
-				<Table id="idKondSelTable" inset="false" itemPress="onItemPress" items="{kondSel>/data}">
+				<Table id="idKondSelTable" inset="false" itemPress="onItemPress" items="{kondSel>/data}" growing="true" growingThreshold="100">
 					<headerToolbar>
 						<Toolbar>
 							<Title text="{i18n>KONDITIONENEINIGUNGEN}" level="H4" />
@@ -169,47 +169,47 @@
 										path: 'kondSel>Hnfl',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
-											minIntegerDigits : 2, 
-											minFractionDigits : 2, 
-											groupingEnabled : true, 
-											groupingSeparator : '.', 
-											decimalSeparator : ',' 
+											minIntegerDigits : 2,
+											minFractionDigits : 2,
+											groupingEnabled : true,
+											groupingSeparator : '.',
+											decimalSeparator : ','
 										}
 								} {kondSel>Unit}" />
 								<Text text="{
 										path: 'kondSel>AnMiete',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
-											minIntegerDigits : 2, 
-											minFractionDigits : 2, 
-											groupingEnabled : true, 
-											groupingSeparator : '.', 
-											decimalSeparator : ',' 
+											minIntegerDigits : 2,
+											minFractionDigits : 2,
+											groupingEnabled : true,
+											groupingSeparator : '.',
+											decimalSeparator : ','
 										}
 								} {kondSel>Currency}" />
 								<Text text="{
 										path: 'kondSel>GaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
-											minIntegerDigits : 2, 
-											minFractionDigits : 2, 
-											groupingEnabled : true, 
-											groupingSeparator : '.', 
-											decimalSeparator : ',' 
+											minIntegerDigits : 2,
+											minFractionDigits : 2,
+											groupingEnabled : true,
+											groupingSeparator : '.',
+											decimalSeparator : ','
 										}
 								} {kondSel>Currency}" />
 								<Text text="{
 										path: 'kondSel>MaKosten',
 										type: 'sap.ui.model.type.Float',
 										formatOptions: {
-											minIntegerDigits : 2, 
-											minFractionDigits : 2, 
-											groupingEnabled : true, 
-											groupingSeparator : '.', 
-											decimalSeparator : ',' 
+											minIntegerDigits : 2,
+											minFractionDigits : 2,
+											groupingEnabled : true,
+											groupingSeparator : '.',
+											decimalSeparator : ','
 										}
 								} {kondSel>Currency}" />
-								
+
 							</cells>
 						</ColumnListItem>
 					</items>
