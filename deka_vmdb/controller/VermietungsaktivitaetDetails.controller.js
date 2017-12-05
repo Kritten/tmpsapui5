@@ -1231,7 +1231,7 @@ sap.ui.define([
                 validationResult = false;
             }
 
-            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
 
             var idMietflaechenangabenErrorBox = this.getView().byId("idMietflaechenangabenErrorBox");
