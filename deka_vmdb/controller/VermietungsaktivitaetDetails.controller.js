@@ -1231,11 +1231,11 @@ sap.ui.define([
                 validationResult = false;
             }
 
-            var vatoob = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
+            var va = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/VaToOb");
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
 
             var idMietflaechenangabenErrorBox = this.getView().byId("idMietflaechenangabenErrorBox");
-            if(mietflaechenangabenTable.getItems().length < 1){
+            if((mietflaechenangabenTable.getItems().length < 1) && (va.Status !== StaticData.STATUS.VA.ABGEBROCHEN)){
                 idMietflaechenangabenErrorBox.setText("Bitte fügen Sie mindestens eine Mietfläche hinzu");
                 idMietflaechenangabenErrorBox.setVisible(true);
                 validationResult = false;
@@ -1251,8 +1251,8 @@ sap.ui.define([
                 // TODO: dynamisch machen (spaltenindex aus "Columns" aggregation der table berechnen)
                 var mfAltCell = cells[6];
                 // var mfAltValue = mfAltCell.getProperty("value");
-                var mfAltValue = vatoob[i].HnflAlt;
-                var hnflValue = vatoob[i].Hnfl;
+                var mfAltValue = va.VaToOb[i].HnflAlt;
+                var hnflValue = va.VaToOb[i].Hnfl;
 
                 if(!isNaN(mfAltValue) && !isNaN(hnflValue) && (mfAltValue > (hnflValue*1.2))) {
                     mfAltCell.setValueState(sap.ui.core.ValueState.Error);
