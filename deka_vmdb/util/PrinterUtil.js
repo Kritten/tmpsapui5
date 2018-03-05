@@ -34,7 +34,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     cache: false
                 });
 
-                var locale = _this.getLocale();
+                var locale = _this.getLocale().toLowerCase();
                 console.log(locale, "= Anmeldesprache");
 
                 if(locale.indexOf("de") !== -1){

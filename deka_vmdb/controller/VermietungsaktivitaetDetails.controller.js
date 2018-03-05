@@ -971,7 +971,7 @@ sap.ui.define([
                 MkAbsolut: va.MkAbsolut ? va.MkAbsolut.toString() : null,
 
                 BkMonate: va.BkMonate ? va.BkMonate.toString() : null,
-                BkAbsolut: va.BkAbsolu ? va.BkAbsolut.toString() : null,
+                BkAbsolut: va.BkAbsolut ? va.BkAbsolut.toString() : null,
 
                 ArtKosten: va.ArtKosten,
                 SonstK: va.SonstK ? va.SonstK.toString() : null,
