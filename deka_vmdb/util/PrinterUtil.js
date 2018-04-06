@@ -98,6 +98,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@AkErsterMonat@@", akErsterMonat.toLocaleDateString());
                     }
 
+                    var freigabeDatum = vermietungsaktivitaet.FreigabeDatum;
+                    if (freigabeDatum) {
+                        result = result.replace("@@FreigabeDatum@@", freigabeDatum.toLocaleDateString());
+                    }
+
                     var bdgstp = vermietungsaktivitaet.Budgetstp;
                     if(locale.indexOf("de") !== -1){
                         // standardsprache
@@ -382,6 +387,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     var mietbeginn = konditioneneinigung.Mietbeginn;
                     if (mietbeginn) {
                         result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
+                    }
+
+                    var freigabeDatum = konditioneneinigung.FreigabeDatum;
+                    if (freigabeDatum) {
+                        result = result.replace("@@FreigabeDatum@@", freigabeDatum.toLocaleDateString());
                     }
 
                     var bdgstp = konditioneneinigung.Budgetstp;
