@@ -5,12 +5,12 @@
     xmlns:l="sap.ui.layout"
     xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc">
-    
-	<Page 
+
+	<Page
         id="idKonditioneneinigungDetails"
-        title="{= ((${form>/modus} === 'show') ? ${i18n>KOND_DET_TITLE_SHOW} : false) || ((${form>/modus} === 'edit') ? ${i18n>KOND_DET_TITLE_EDIT} : false) || ((${form>/modus} === 'new') ? ${i18n>KOND_DET_TITLE_NEW} : '') }" 
-        class="sapUiFioriObjectPage" 
-        showNavButton="true" 
+        title="{= ((${form>/modus} === 'show') ? ${i18n>KOND_DET_TITLE_SHOW} : false) || ((${form>/modus} === 'edit') ? ${i18n>KOND_DET_TITLE_EDIT} : false) || ((${form>/modus} === 'new') ? ${i18n>KOND_DET_TITLE_NEW} : '') }"
+        class="sapUiFioriObjectPage"
+        showNavButton="true"
         navButtonPress="onBack">
 
         <headerContent>
@@ -18,7 +18,7 @@
 		</headerContent>
 
 		<content>
-                
+
             <FlexBox>
                 <items>
                     <FlexBox>
@@ -35,16 +35,16 @@
 							<FlexItemData growFactor="1" />
 						</layoutData>
                     </FlexBox>
-                    
+
                     <FlexBox justifyContent="End">
                         <items>
                             <List items="{form>/konditioneneinigung/KeToMap}" growing="true" growingThreshold="3" class="sapUiContentPadding" backgroundDesign="Transparent" showSeparators="None" noDataText=" " >
-                                <StandardListItem 
+                                <StandardListItem
                                     type="Active"
                                     title="{form>VaId}"
                                     icon="{= ${form>Aktiv} ? 'sap-icon://accept' : 'sap-icon://decline' }"
                                     iconDensityAware="false"
-                                    iconInset="false" 
+                                    iconInset="false"
                                     valueState="{= ${form>Aktiv} ? 'Success' : 'None' }"
                                     press="onMappingPressed">
                                 </StandardListItem>
@@ -54,12 +54,12 @@
 							<FlexItemData growFactor="1" />
 						</layoutData>
                     </FlexBox>
-                
+
                 </items>
             </FlexBox>
 
             <Table id="mietflaechenangabenTable" mode="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') ? 'Delete' : 'None' }" items="{form>/konditioneneinigung/KeToOb}" delete="onMietflaechenAngabenLoeschenButtonPress">
-                
+
                 <headerToolbar>
                     <Toolbar>
                         <Title text="{i18n>MIETFLAECHENANGABEN}" level="H2"/>
@@ -70,7 +70,7 @@
                         <Button text="{i18n>MIETFLAECHE_HINZUFUEGEN}" icon="sap-icon://sys-add" iconFirst="false" press="onMietflaechenAngabeHinzufuegenButtonPress" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     </Toolbar>
                 </headerToolbar>
-                
+
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true" id="idColMietflaeche">
                         <Text text="{i18n>MIETFLAECHE}" />
@@ -103,7 +103,7 @@
                         <Text text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
                     </Column>
                 </columns>
-                
+
                 <items>
                     <ColumnListItem vAlign="Middle">
                         <cells>
@@ -113,11 +113,11 @@
                             <Text text="{ parts:
                                                 [
                                                 {path: 'form>Hnfl'},
-                                                {path: 'form>HnflUnit'},                                                
+                                                {path: 'form>HnflUnit'},
                                                 {path: 'form>/viewsettings/flaecheneinheitSelected/Multiplikator'},
                                                 {path: 'form>/viewsettings/flaecheneinheitSelected/Nach'}
                                                 ],
-                                          formatter: 'myFormatter.formatHnfl'}" />                            
+                                          formatter: 'myFormatter.formatHnfl'}" />
                             <Input value="{path: 'form>HnflAlt' , type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <CheckBox selected="{form>MfSplit}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{ parts:
@@ -126,18 +126,18 @@
                                                 {path: 'form>/viewsettings/waehrungSelected/Multiplikator'}
                                                 ],
                                             formatter: 'myFormatter.formatBetrag'}"
-                                    editable="false" />                              
+                                    editable="false" />
                             <Input value="{path: 'form>AnMiete', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                             <Input value="{path: 'form>GaKosten', type: 'model.CustomNumberType'}" editable="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) &amp;&amp; (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
                             <Input value="{path: 'form>MaKosten', type: 'model.CustomNumberType'}" editable="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) &amp;&amp; (${form>Nutzart} !== '0700') &amp;&amp; (${form>Nutzart} !== '0750') }" />
                         </cells>
                     </ColumnListItem>
-                    
+
                 </items>
             </Table>
 
             <MessageStrip id="idMietflaechenangabenErrorBox" type="Error" class="sapUiSmallMargin" visible="false" />
-                    
+
             <f:SimpleForm
                 title="{i18n>GEMEINSAME_ANGABEN}"
                 minWidth="1024"
@@ -152,7 +152,7 @@
                 columnsM="1" >
 
                 <f:content>
-                    
+
                     <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <DatePicker id="idGueltigkKe" dateValue="{form>/konditioneneinigung/GueltigkKe}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>
@@ -292,14 +292,14 @@
 
                 <f:content>
                     <!-- <core:Title text="" /> -->
-                    
+
                     <Label text="{i18n>STATUS}" />
                     <Input value="{= ${text>/status}[${form>/konditioneneinigung/Status}] }" editable="false">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
                     </Input>
-                    
+
                     <Label text="{i18n>ANMERKUNG}" />
                     <Input value="{= ${text>/anmerkung}[${form>/konditioneneinigung/Anmerkung}] }" editable="false">
                         <layoutData>
@@ -308,12 +308,12 @@
                     </Input>
 
                     <Label text="{i18n>BEMERKUNG}" />
-                    <TextArea value="{form>/konditioneneinigung/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                    <TextArea id="idBemerkung" value="{form>/konditioneneinigung/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" liveChange="onBemerkungLiveChange" maxLength="3000">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
                     </TextArea>
-                    
+
                     <Label text="{i18n>BUDGET_STOPP}" />
 					<CheckBox id="idBudgetstp" text="" selected="{form>/konditioneneinigung/Budgetstp}" editable="false">
                         <layoutData>
@@ -331,25 +331,25 @@
                         <Title text="{i18n>MIETE_UND_KOSTEN}" level="H2"/>
                     </Toolbar>
                 </headerToolbar>
-                
+
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>BEZEICHNUNG}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Left">
                         <Text text="{i18n>KONDITIONENEINIGUNG}" />
-                    </Column>    
+                    </Column>
                     <Column minScreenWidth="Tablet" demandPopin="false" hAlign="Left">
                         <Text text=" " />
-                    </Column>          
+                    </Column>
                     <Column minScreenWidth="Tablet" demandPopin="false" hAlign="Left">
                         <Text text=" " />
-                    </Column>     
+                    </Column>
                     <Column minScreenWidth="Tablet" demandPopin="false" hAlign="Left">
                         <Text text=" " />
-                    </Column>           
+                    </Column>
                 </columns>
-                
+
                 <items>
                     <ColumnListItem>
                         <cells>
@@ -360,11 +360,11 @@
                             <Text text=" " />
                         </cells>
                     </ColumnListItem>
-                    
+
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>KOSTEN_GESAMT}" />
-                            <Text text="{ path: 'form>/konditioneneinigung/GesKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />                            
+                            <Text text="{ path: 'form>/konditioneneinigung/GesKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text=" " />
                             <Text text=" " />
                             <Text text=" " />
@@ -372,13 +372,13 @@
                     </ColumnListItem>
                     <ColumnListItem>
                         <cells>
-                            <Text text="{i18n>ERTRAEGE_GESAMT}" />                            
+                            <Text text="{i18n>ERTRAEGE_GESAMT}" />
                             <Text text="{ path: 'form>/konditioneneinigung/GesErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text=" " />
                             <Text text=" " />
                             <Text text=" " />
                         </cells>
-                    </ColumnListItem>  
+                    </ColumnListItem>
                 </items>
             </Table>
 
@@ -388,26 +388,26 @@
                         <Title text="{i18n>BERECHNETE_KENNZAHLEN}" level="H2"/>
                     </Toolbar>
                 </headerToolbar>
-                
+
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>BEZEICHNUNG}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>WERT}" />
-                    </Column>    
+                    </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text=" " />
-                    </Column>  
+                    </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text=" " />
-                    </Column>                  
+                    </Column>
                 </columns>
-                
+
                 <items>
                     <ColumnListItem>
                         <cells>
-                            <Text text="{i18n>INCENTIVEQUOTE}" />                            
+                            <Text text="{i18n>INCENTIVEQUOTE}" />
                             <Text text="{ path: 'form>/konditioneneinigung/Incentivequote', type: 'model.CustomNumberType'} %" />
                             <Text text= " " />
                             <Text text= " " />
@@ -420,33 +420,33 @@
                             <Text text=" " />
                             <Text text=" " />
                         </cells>
-                    </ColumnListItem>                    
+                    </ColumnListItem>
                     <ColumnListItem>
                         <cells>
-                            <Text text="{i18n>VERHGEMM}" />                            
+                            <Text text="{i18n>VERHGEMM}" />
                             <Text text="{ path: 'form>/konditioneneinigung/VerhGeMm', type: 'model.CustomNumberType'} %" />
                             <Text text= " " />
                             <Text text= " " />
                         </cells>
-                    </ColumnListItem>              
+                    </ColumnListItem>
                 </items>
             </Table>
 
 		</content>
-        
+
         <footer>
 			<OverflowToolbar>
 
                 <ToolbarSpacer/>
 
-				<Button icon="{= ${form>/konditioneneinigung/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }" 
+				<Button icon="{= ${form>/konditioneneinigung/Favorit} ? 'sap-icon://favorite' : 'sap-icon://unfavorite' }"
                         press="onFavoritButtonPress"
                         visible="{= (${form>/modus} === 'show') }" />
 
 				<Button text="{i18n>ZUR_GENEHMIGUNG_VORLEGEN}"
                         press="onZurGenehmigungVorlegenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnVorlegen} }" />
-				
+
                 <Button text="{i18n>GENEHMIGEN}"
                         press="onGenehmigenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
@@ -454,17 +454,17 @@
 				<Button text="{i18n>NICHTGENEHMIGEN}"
                         press="onNichtGenehmigenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGpAr} }" />
-        
+
 				<Button text="{i18n>REAKTIVIEREN}"
                         press="onReaktivierenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnReaktiv} }" />
 
                 <Button text="{i18n>GENEHMIGUNG_ZURUECKZIEHEN}"
-                        press="onGenehmigungZurueckziehenButtonPress" 
+                        press="onGenehmigungZurueckziehenButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnZurueck} }" />
 
                 <Button text="{i18n>GENEHMIGUNGSPROZESS}"
-                        press="onGenehmigungsprozessButtonPress" 
+                        press="onGenehmigungsprozessButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; (${form>/konditioneneinigung/BtnGp} || ${form>/konditioneneinigung/BtnGpAr}) }" />
 
                 <Button text="{i18n>DRUCKEN}"
@@ -480,32 +480,32 @@
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnGf}}" />
 
                 <!--
-                <Button text="{i18n>GUELTIGKEIT_VERLAENGERN}" 
-                        icon="sap-icon://fob-watch" 
-                        press="onGueltigkeitVerlaengernButtonPress" 
+                <Button text="{i18n>GUELTIGKEIT_VERLAENGERN}"
+                        icon="sap-icon://fob-watch"
+                        press="onGueltigkeitVerlaengernButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/Editable} }" />
                  -->
 
                 <Button text="{i18n>REEDIT}"
-                        press="onReeditButtonPress" 
+                        press="onReeditButtonPress"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnReedit} }" />
 
                 <Button text="{i18n>LOESCHEN}"
                         press="onLoeschenButtonPress"
                         type="Reject"
                         visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/konditioneneinigung/BtnLoeschen} }" />
-                
+
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                
+
                 <Button text="{i18n>SPEICHERN}"
-                        type="Emphasized" 
+                        type="Emphasized"
                         press="onSpeichernButtonPress"
                         visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
-                
+
                 <Button text="{i18n>ABBRECHEN}"
-                        press="onAbbrechenButtonPress" 
+                        press="onAbbrechenButtonPress"
                         visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                     <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
                 </Button>
@@ -513,8 +513,8 @@
 			</OverflowToolbar>
 		</footer>
 
-        
+
 	</Page>
-            
+
 </mvc:View>
 

@@ -1063,7 +1063,7 @@ sap.ui.define([
                     }
                 }
                 return result;
-            }else{
+            } else {
                 return false;
             }
         },
@@ -1078,6 +1078,19 @@ sap.ui.define([
                     view.setValueStateText(TranslationUtil.translate("ERR_NAN"));
                     result = false;
                 }
+            }
+
+            return result;
+        },
+
+        checkMzMonateLimit: function(viewRef) {
+            var mzMonate = this.getView().getModel("form").getProperty("/konditioneneinigung/MzMonate");
+            var result = true;
+
+            if(mzMonate && mzMonate > 1000) {
+                viewRef.setValueState(sap.ui.core.ValueState.Error);
+                viewRef.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_ZU_GROSS"));
+                result = false;
             }
 
             return result;
@@ -1122,13 +1135,13 @@ sap.ui.define([
             }
 
             var idMzMonate = this.getView().byId("idMzMonate");
-            if(idMzMonate.getValue() === ""){
+            if(idMzMonate.getValue() === "") {
                 idMzMonate.setValueState(sap.ui.core.ValueState.Error);
                 idMzMonate.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             }
-            else{
-                validationResult = this.checkNotNegative(idMzMonate) && validationResult;
+            else {
+                validationResult = this.checkNotNegative(idMzMonate) && this.checkMzMonateLimit(idMzMonate) && validationResult;
             }
 
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
@@ -2023,6 +2036,17 @@ sap.ui.define([
                 VaId: oEvent.getSource().getBindingContext("form").getObject().VaId,
                 Bukrs: this.getView().getModel("form").getProperty("/konditioneneinigung/Bukrs")
             }, true);
+        },
+
+        onBemerkungLiveChange: function(oEvent){
+            var textArea = oEvent.getSource();
+            var text = textArea.getValue();
+            if(text && text.length > 2800) {
+                textArea.setValueState(sap.ui.core.ValueState.Warning);
+                textArea.setValueStateText(TranslationUtil.translate("ERR_BERMERKUNG_ZU_LANG"));
+            } else {
+                textArea.setValueState(sap.ui.core.ValueState.None);
+            }
         }
 
 	});

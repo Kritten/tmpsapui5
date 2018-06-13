@@ -423,7 +423,7 @@
                     </Select>
 
                     <Label text="{i18n>BEMERKUNG}" />
-                    <TextArea value="{form>/vermietungsaktivitaet/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                    <TextArea id="idBemerkung" value="{form>/vermietungsaktivitaet/Bemerkung}" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" liveChange="onBemerkungLiveChange" maxLength="3000">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>

@@ -1200,10 +1200,13 @@ sap.ui.define([
             }
 
             var idMzMonate = this.getView().byId("idMzMonate");
-            if(parseFloat(idMzMonate.getValue()) < 0){
+            if(idMzMonate.getValue() === "") {
                 idMzMonate.setValueState(sap.ui.core.ValueState.Error);
-                idMzMonate.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_NEGATIV"));
+                idMzMonate.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
+            }
+            else {
+                validationResult = this.checkNotNegative(idMzMonate) && this.checkMzMonateLimit(idMzMonate) && validationResult;
             }
 
             var idMietbeginn = this.getView().byId("idMietbeginn");
@@ -1373,6 +1376,19 @@ sap.ui.define([
             }else{
                 return false;
             }
+        },
+
+        checkMzMonateLimit: function(viewRef) {
+            var mzMonate = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/MzMonate");
+            var result = true;
+
+            if(mzMonate && mzMonate > 1000) {
+                viewRef.setValueState(sap.ui.core.ValueState.Error);
+                viewRef.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_ZU_GROSS"));
+                result = false;
+            }
+
+            return result;
         },
 
 		initializeValidationState: function(){
@@ -2089,6 +2105,17 @@ sap.ui.define([
                 KeId: oEvent.getSource().getBindingContext("form").getObject().KeId,
                 Bukrs: this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Bukrs")
             }, true);
+        },
+
+        onBemerkungLiveChange: function(oEvent){
+            var textArea = oEvent.getSource();
+            var text = textArea.getValue();
+            if(text && text.length > 2800) {
+                textArea.setValueState(sap.ui.core.ValueState.Warning);
+                textArea.setValueStateText(TranslationUtil.translate("ERR_BERMERKUNG_ZU_LANG"));
+            } else {
+                textArea.setValueState(sap.ui.core.ValueState.None);
+            }
         }
 
 	});
