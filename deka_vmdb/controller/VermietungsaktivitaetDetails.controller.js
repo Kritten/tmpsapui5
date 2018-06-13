@@ -1200,12 +1200,7 @@ sap.ui.define([
             }
 
             var idMzMonate = this.getView().byId("idMzMonate");
-            if(idMzMonate.getValue() === "") {
-                idMzMonate.setValueState(sap.ui.core.ValueState.Error);
-                idMzMonate.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
-                validationResult = false;
-            }
-            else {
+            if(idMzMonate.getValue()) {
                 validationResult = this.checkNotNegative(idMzMonate) && this.checkMzMonateLimit(idMzMonate) && validationResult;
             }
 
