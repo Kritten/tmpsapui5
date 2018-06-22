@@ -252,6 +252,8 @@ sap.ui.define([
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "show");
 
+            sap.ui.core.BusyIndicator.show();
+
             DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
             .then(function(konditioneneinigung){
                 _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
@@ -277,9 +279,11 @@ sap.ui.define([
                 return Q.when(StaticData.ANMERKUNGEN);
             })
             .then(function(anmerkungen){
+                sap.ui.core.BusyIndicator.hide();
                 _this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
             })
             .catch(function(oError){
+                sap.ui.core.BusyIndicator.hide();
                 console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
@@ -822,14 +826,16 @@ sap.ui.define([
 
                 Confirmation: ke.Confirmation ? ke.Confirmation : false
             };
-            console.log(payload, "payload");
+
+            sap.ui.core.BusyIndicator.show();
 
             DataProvider.createKonditioneneinigungAsync(payload).then(function(oData){
-               // _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
+                sap.ui.core.BusyIndicator.hide();
                _this.konditioneneinigungAnzeigen(oData.KeId, oData.Bukrs);
-
             })
             .catch(function(oError){
+                sap.ui.core.BusyIndicator.hide();
+
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
                 if(error.type === 'WARNING'){
@@ -919,14 +925,19 @@ sap.ui.define([
 
                 Confirmation: ke.Confirmation
             };
-            console.log(payload, "payload");
+
+            sap.ui.core.BusyIndicator.show();
+
             DataProvider.createKonditioneneinigungAsync(payload).then(function(){
                 return DataProvider.deleteSperreAsync(ke.KeId, '');
             })
             .then(function(){
+                sap.ui.core.BusyIndicator.hide();
                 _this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
             })
             .catch(function(oError){
+                sap.ui.core.BusyIndicator.hide();
+
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
                 if(error.type === 'WARNING'){

@@ -194,6 +194,8 @@ sap.ui.define([
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "show");
 
+            sap.ui.core.BusyIndicator.show();
+
             DataProvider.readVermietungsaktivitaetAsync(Bukrs, VaId)
             .then(function(vermietungsaktivitaet){
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
@@ -233,9 +235,11 @@ sap.ui.define([
                 return Q.when(StaticData.KOSTENARTEN);
             })
             .then(function(kostenarten){
+                sap.ui.core.BusyIndicator.hide();
                 _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
             })
             .catch(function(oError){
+                sap.ui.core.BusyIndicator.hide();
                 console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
@@ -1011,11 +1015,15 @@ sap.ui.define([
                 Confirmation: va.Confirmation ? va.Confirmation : false
             };
 
+            sap.ui.core.BusyIndicator.show();
+
             DataProvider.createVermietungsaktivitaetAsync(payload).then(function(KeUnit){
-                // _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
+                sap.ui.core.BusyIndicator.hide();
                 _this.vermietungsaktivitaetAnzeigen(KeUnit.VaId, KeUnit.Bukrs);
             })
             .catch(function(oError){
+                sap.ui.core.BusyIndicator.hide();
+
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
                 if(error.type === 'WARNING'){
@@ -1129,12 +1137,17 @@ sap.ui.define([
                 Confirmation: va.Confirmation
             };
 
+            sap.ui.core.BusyIndicator.show();
+
             DataProvider.createVermietungsaktivitaetAsync(payload).then(function(){
                 return DataProvider.deleteSperreAsync('', va.VaId);
             }).then(function(){
+                sap.ui.core.BusyIndicator.hide();
                 _this.vermietungsaktivitaetAnzeigen(va.VaId, va.Bukrs);
             })
             .catch(function(oError){
+                sap.ui.core.BusyIndicator.hide();
+
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
                 if(error.type === 'WARNING'){
@@ -1150,7 +1163,7 @@ sap.ui.define([
             .done();
         },
 
-        showConfirmationDialog: function(oError, onProceed, onAbort){
+        showConfirmationDialog: function(oError, onProceed){
             var _this = this;
 
             var dialog = new sap.m.Dialog({
@@ -1169,15 +1182,6 @@ sap.ui.define([
                         }
                     }
                 }),
-				endButton: new sap.m.Button({
-                    text: TranslationUtil.translate("ABBRECHEN"),
-					press: function () {
-						dialog.close();
-                        if(typeof onAbort === 'function'){
-                            onAbort();
-                        }
-					}
-				}),
                 afterClose: function() {
                     dialog.destroy();
                 }
