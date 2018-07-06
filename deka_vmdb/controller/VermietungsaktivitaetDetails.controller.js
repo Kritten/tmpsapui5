@@ -1031,6 +1031,9 @@ sap.ui.define([
                         _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Confirmation", true);
                         _this.speichern();
                     });
+                } else if(error.type === 'INFORMATION') {
+                    ErrorMessageUtil.showInformation(error);
+                    _this.vermietungsaktivitaetAnzeigen(KeUnit.VaId, KeUnit.Bukrs);
                 }
                 else {
                     ErrorMessageUtil.show(error);
@@ -1155,6 +1158,9 @@ sap.ui.define([
                         _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Confirmation", true);
                         _this.speichern();
                     });
+                } else if(error.type === 'INFORMATION') {
+                    ErrorMessageUtil.showInformation(error);
+                    _this.vermietungsaktivitaetAnzeigen(KeUnit.VaId, KeUnit.Bukrs);
                 }
                 else {
                     ErrorMessageUtil.show(error);

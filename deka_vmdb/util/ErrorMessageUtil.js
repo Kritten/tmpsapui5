@@ -49,11 +49,13 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
             MessageBox.error(error.text);
         },
 
-
         show: function(error){
             MessageBox.error(error.text);
         },
 
+        showInformation(error) {
+            MessageBox.information(error.text);
+        },
 
         parseErrorMessage: function(oError){
             var error = {
@@ -73,8 +75,12 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
                             error.msgid = matches[1];
                             error.msgno = matches[2];
 
-                            if(error.msgid === 'ZCL_ZIP_VMDB_MESSAGE'){
-                                error.type = 'WARNING';
+                            if(error.msgid === 'ZCL_ZIP_VMDB_MESSAGE') {
+                                if(error.msgno === '130'){
+                                    error.type = 'INFORMATION';
+                                } else {
+                                    error.type = 'WARNING';
+                                }
                             }
                         }
 
