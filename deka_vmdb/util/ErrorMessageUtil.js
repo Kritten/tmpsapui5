@@ -53,7 +53,7 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
             MessageBox.error(error.text);
         },
 
-        showInformation(error) {
+        showInformation: function(error) {
             MessageBox.information(error.text);
         },
 
