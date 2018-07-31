@@ -257,8 +257,6 @@ sap.ui.define([
             DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
             .then(function(konditioneneinigung){
                 _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
-               // DataProvider.deleteSperreAsync(KeId, '');
-               console.log("DeleteSperre");
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
             .then(function(){
@@ -284,7 +282,6 @@ sap.ui.define([
             })
             .catch(function(oError){
                 sap.ui.core.BusyIndicator.hide();
-                console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
             .done();
@@ -342,7 +339,6 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
             })
             .catch(function(oError){
-                console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
             .done();
@@ -428,7 +424,6 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
             })
             .catch(function(oError){
-                console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
             .done();
@@ -519,7 +514,6 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/anmerkungen", anmerkungen);
             })
             .catch(function(oError){
-                console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
             .done();
@@ -727,14 +721,11 @@ sap.ui.define([
         },
 
         onSpeichernButtonPress: function(oEvent){
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
-            console.log(ke, "ke");
-
             var validationSuccess = this.validateForm();
 
-            if(validationSuccess){
+            if(validationSuccess) {
                 this.speichern();
-            }else {
+            } else {
                  MessageBox.error("Validierung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
             }
         },
@@ -1094,6 +1085,19 @@ sap.ui.define([
             return result;
         },
 
+        checkLzFirstbreakLimit: function(viewRef) {
+            var lzFirstbreak = this.getView().getModel("form").getProperty("/konditioneneinigung/LzFirstbreak");
+            var result = true;
+
+            if(lzFirstbreak && lzFirstbreak > 120) {
+                viewRef.setValueState(sap.ui.core.ValueState.Error);
+                viewRef.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_ZU_GROSS"));
+                result = false;
+            }
+
+            return result;
+        },
+
         checkMzMonateLimit: function(viewRef) {
             var mzMonate = this.getView().getModel("form").getProperty("/konditioneneinigung/MzMonate");
             var result = true;
@@ -1140,9 +1144,8 @@ sap.ui.define([
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
                 idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
-            }
-            else{
-                validationResult = this.checkNotNegative(idLzFirstbreak) && validationResult;
+            } else {
+                validationResult = this.checkNotNegative(idLzFirstbreak) && this.checkLzFirstbreakLimit(idLzFirstbreak) && validationResult;
             }
 
             var idMzMonate = this.getView().byId("idMzMonate");
@@ -1150,8 +1153,7 @@ sap.ui.define([
                 idMzMonate.setValueState(sap.ui.core.ValueState.Error);
                 idMzMonate.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
-            }
-            else {
+            } else {
                 validationResult = this.checkNotNegative(idMzMonate) && this.checkMzMonateLimit(idMzMonate) && validationResult;
             }
 

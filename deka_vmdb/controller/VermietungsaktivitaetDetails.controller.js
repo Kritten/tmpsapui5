@@ -240,7 +240,6 @@ sap.ui.define([
             })
             .catch(function(oError){
                 sap.ui.core.BusyIndicator.hide();
-                console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
             .done();
@@ -379,7 +378,6 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
             })
             .catch(function(oError){
-                console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
             .done();
@@ -453,7 +451,6 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
             })
             .catch(function(oError){
-                console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
             .done();
@@ -527,7 +524,6 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
             })
             .catch(function(oError){
-                console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
             .done();
@@ -592,7 +588,6 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/kostenarten", kostenarten);
             })
             .catch(function(oError){
-                console.log(oError);
                 ErrorMessageUtil.showError(oError);
             })
             .done();
@@ -1192,6 +1187,19 @@ sap.ui.define([
             dialog.open();
         },
 
+        checkLzFirstbreakLimit: function(viewRef) {
+            var lzFirstbreak = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/LzFirstbreak");
+            var result = true;
+
+            if(lzFirstbreak && lzFirstbreak > 120) {
+                viewRef.setValueState(sap.ui.core.ValueState.Error);
+                viewRef.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_ZU_GROSS"));
+                result = false;
+            }
+
+            return result;
+        },
+
         validateForm: function(){
             var that = this;
             this.initializeValidationState();
@@ -1301,9 +1309,8 @@ sap.ui.define([
                 idLzFirstbreak.setValueState(sap.ui.core.ValueState.Error);
                 idLzFirstbreak.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
-            }
-            else{
-                validationResult = this.checkNotNegative(idLzFirstbreak) && validationResult;
+            } else {
+                validationResult = this.checkNotNegative(idLzFirstbreak) && this.checkLzFirstbreakLimit(idLzFirstbreak) && validationResult;
             }
 
             var idIdxWeitergabe = this.getView().byId("idIdxWeitergabe");
@@ -1776,9 +1783,7 @@ sap.ui.define([
                 _this._konditioneneinigungHinzufuegenDialog.open();
             })
             .catch(function(oError){
-                console.log(oError);
                 var jsonModel = new sap.ui.model.json.JSONModel({konditioneneinigungen:[]});
-
                 _this._konditioneneinigungHinzufuegenDialog.setModel(jsonModel);
                 _this._konditioneneinigungHinzufuegenDialog.open();
             })
@@ -1854,10 +1859,10 @@ sap.ui.define([
                             }
                         });
                     });
-                    console.log(vorhandeneNutzungsarten, "vhNutzarten");
-                    if(vorhandeneNutzungsarten.length === 0){
+
+                    if(vorhandeneNutzungsarten.length === 0) {
                         MessageBox.information(TranslationUtil.translate("ERR_KEINE_GUELTIGEN_NUTZUNGSARTEN"));
-                    }else{
+                    } else {
                         var dialogModel = new sap.ui.model.json.JSONModel({
                             nutzungsarten: vorhandeneNutzungsarten,
                             nutzungsart: vorhandeneNutzungsarten[0].NaId,
@@ -1937,7 +1942,6 @@ sap.ui.define([
 
         onDruckenButtonPress: function(oEvent){
             var vermietungsaktivitaet = this.getView().getModel("form").getProperty("/vermietungsaktivitaet");
-            console.log(vermietungsaktivitaet, "va");
             var kostenarten = this.getView().getModel("form").getProperty("/kostenarten");
             var ertragsarten = this.getView().getModel("form").getProperty("/ertragsarten");
 
@@ -1990,7 +1994,7 @@ sap.ui.define([
                 _this._debitorSelektionDialog.open();
             })
             .catch(function(oError){
-                console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
 
@@ -2014,7 +2018,7 @@ sap.ui.define([
                 _this._dienstleisterSelektionDialog.open();
             })
             .catch(function(oError){
-                console.log(oError);
+                ErrorMessageUtil.showError(oError);
             })
             .done();
         },
