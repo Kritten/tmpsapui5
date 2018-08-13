@@ -36,6 +36,7 @@ sap.ui.define([
 				var favoritValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Favorit; }));
 				var buchungskreisValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Bukrs; }));
 				var wirtschaftseinheitValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.WeId; }));
+				var regionalbueroValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Regionalbuero; }));
 				var anmerkungValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Anmerkung; }));
 				var erstellerValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Ersteller; }));
 
@@ -45,6 +46,7 @@ sap.ui.define([
 						Favorit: _.map(favoritValues, function(Favorit){ return {key: Favorit, text: Favorit ? TranslationUtil.translate("JA") : TranslationUtil.translate("NEIN")}; }),
 						Bukrs: _.map(buchungskreisValues, function(Bukrs){ return {key: Bukrs}; }),
 						WeId: _.map(wirtschaftseinheitValues, function(WeId){ return {key: WeId}; }),
+						Regionalbuero: _.map(regionalbueroValues, function(Regionalbuero){ return {key: Regionalbuero}; }),
 						Anmerkung: _.map(anmerkungValues, function(Anmerkung){ return {key: Anmerkung}; }),
 						Ersteller: _.map(erstellerValues, function(Ersteller){ return {key: Ersteller}; })
 					}
@@ -269,10 +271,14 @@ sap.ui.define([
 								itemFilters.push( new Filter("WeId", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 							
+							case TranslationUtil.translate("KOND_SEL_COL_REGIONALBUERO"):
+								itemFilters.push( new Filter("Regionalbuero", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+
 							case TranslationUtil.translate("KOND_SEL_COL_ANMERKUNG"):
 								itemFilters.push( new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
-					
+												
 							case TranslationUtil.translate("KOND_SEL_COL_ERSTELLER"):
 								itemFilters.push( new Filter("Ersteller", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;

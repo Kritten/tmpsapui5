@@ -37,6 +37,7 @@ sap.ui.define([
 				var favoritValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Favorit; }));
 				var buchungskreisValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Bukrs; }));
 				var wirtschaftseinheitValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.WeId; }));
+				var regionalbueroValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Regionalbuero; }));
 				var anmerkungValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Anmerkung; }));
 				var statusValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Status; }));
 				var dienstleisterValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Dienstleister; }));
@@ -50,6 +51,7 @@ sap.ui.define([
 						Favorit: _.map(favoritValues, function(Favorit){ return {key: Favorit, text: Favorit ? TranslationUtil.translate("JA") : TranslationUtil.translate("NEIN")}; }),
 						Bukrs: _.map(buchungskreisValues, function(Bukrs){ return {key: Bukrs}; }),
 						WeId: _.map(wirtschaftseinheitValues, function(WeId){ return {key: WeId}; }),
+						Regionalbuero: _.map(regionalbueroValues, function(Regionalbuero){ return {key: Regionalbuero}; }),
 						Anmerkung: _.map(anmerkungValues, function(Anmerkung){ return {key: Anmerkung}; }),
 						Status: _.map(statusValues, function(Status){ return {key: Status}; }),
 						Dienstleister: _.map(dienstleisterValues, function(Dienstleister){ return {key: Dienstleister}; }),
@@ -390,6 +392,10 @@ sap.ui.define([
 
 							case TranslationUtil.translate("VERM_SEL_COL_WIRTSCHAFTSEINHEIT"):
 								itemFilters.push( new Filter("WeId", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+
+							case TranslationUtil.translate("VERM_SEL_COL_REGIONALBUERO"):
+								itemFilters.push( new Filter("Regionalbuero", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 
 							case TranslationUtil.translate("VERM_SEL_COL_ANMERKUNG"):

@@ -76,6 +76,12 @@
 							</items>
 						</FacetFilterList>
 
+						<FacetFilterList title="{i18n>KOND_SEL_COL_REGIONALBUERO}" items="{path: 'kondSel>/facetfilterValues/Regionalbuero', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
+							</items>
+						</FacetFilterList>
+
 						<FacetFilterList title="{i18n>KOND_SEL_COL_ANMERKUNG}" items="{path: 'kondSel>/facetfilterValues/Anmerkung', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{kondSel>key}" text="{= ${text>/anmerkung}[${kondSel>key}] }" />
