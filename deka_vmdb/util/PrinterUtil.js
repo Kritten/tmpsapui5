@@ -78,6 +78,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@VaId2@@", vaid);
                     }
 
+                    var fondsbez = vermietungsaktivitaet.Fondsbez;
+                    if (fondsbez) {
+                        result = result.replace("@@Fonds@@", fondsbez);
+                    }
+
                     var mietbeginn = vermietungsaktivitaet.Mietbeginn;
                     if (mietbeginn) {
                         result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
@@ -374,6 +379,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         result = result.replace("@@KeId2@@", keId);
                     }
 
+                    var fondsbez = konditioneneinigung.Fondsbez;
+                    if (fondsbez) {
+                        result = result.replace("@@Fonds@@", fondsbez);
+                    }
+
                     if(konditioneneinigung.Bemerkung){
                         var bemerkung = konditioneneinigung.Bemerkung.replace(/\n/g, "<br>");
                         result = result.replace("@@Bemerkung@@", bemerkung);
@@ -593,6 +603,11 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         var cont = result.indexOf("@@KeId@@");
                         result = result.replace("@@KeId@@", keId);
                         result = result.replace("@@KeId2@@", keId);
+                    }
+
+                    var fondsbez = konditioneneinigung.Fondsbez;
+                    if (fondsbez) {
+                        result = result.replace("@@Fonds@@", fondsbez);
                     }
 
                     var bezeichnung = konditioneneinigung.KeToWe.Plz + "/" + konditioneneinigung.KeToWe.Ort + "/" + konditioneneinigung.KeToWe.StrHnum;
