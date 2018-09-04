@@ -1089,7 +1089,7 @@ sap.ui.define([
             var lzFirstbreak = this.getView().getModel("form").getProperty("/konditioneneinigung/LzFirstbreak");
             var result = true;
 
-            if(lzFirstbreak && lzFirstbreak > 120) {
+            if(lzFirstbreak && lzFirstbreak > 500) {
                 viewRef.setValueState(sap.ui.core.ValueState.Error);
                 viewRef.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_ZU_GROSS"));
                 result = false;
