@@ -1,0 +1,94 @@
+<mvc:View
+    controllerName="ag.bpc.Deka.controller.KonditioneneinigungGenehmigung"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc">
+    
+	<Page 
+        id="idKonditioneneinigungGenehmigung"
+        title="{i18n>KOND_GENEHM_TITLE}" 
+        class="sapUiFioriObjectPage" 
+        showNavButton="{= ${form>/modus} === 'show' }"
+        navButtonPress="onBack">
+
+        <headerContent>
+			<Button icon="sap-icon://edit" text="{i18n>BEARBEITEN}" press="onBearbeitenButtonPress" visible="{= ${form>/modus} === 'show' }" />
+		</headerContent>
+
+        <content>
+
+            <List id="stufenList" items="{ path: 'form>/stufen', templateShareable: true }" backgroundDesign="Transparent" showSeparators="None">
+                <CustomListItem>
+
+                    <Table items="{ path: 'form>genehmigungen', templateShareable: true }" inset="true">
+
+                        <headerToolbar>
+                            <Toolbar>
+                                <Title text="{= (${form>Stufe} === 'SB') ? ${i18n>SB} : 
+                                                (${form>Stufe} === 'GL') ? ${i18n>GL} :
+                                                (${form>Stufe} === 'AL') ? ${i18n>AL} :
+                                                (${form>Stufe} === 'GS') ? ${i18n>GS} :
+                                                (${form>Stufe} === 'BL') ? ${i18n>BL} :
+                                                (${form>Stufe} === 'GF') ? ${i18n>GF} : 
+                                                ${form>Stufe}}" />
+                            </Toolbar>
+                        </headerToolbar>
+
+                        <columns>
+                            <Column autoAdjustWidth="true">
+                                <Text text="{i18n>GENEHMIGER}" />
+                            </Column>    
+                            <Column width="30%" visible="{= (${form>/modus} === 'edit')}">
+                                <Text text="{i18n>NEUER_GENEHMIGER}" visible="{= (${form>/modus} === 'edit')}"/>
+                            </Column>                        
+                            <Column width="50%">
+                                <Text text="{i18n>STATUS}" />
+                            </Column>                            
+                        </columns>
+
+                        <items>
+                            <ColumnListItem vAlign="Middle"> 
+                                <Text text="{form>Genehmiger} - {form>Name}">
+                                    <layoutData>
+                                        <l:GridData span="L8 M8 S12" />
+                                    </layoutData>
+                                </Text>                     
+                                <Select items="{ path: 'form>available', templateShareable: true }" forceSelection="false" selectedKey="{path: 'form>newKey'}" enabled="{= (${form>/modus} === 'edit') &amp;&amp; (${form>Status} === '80')}" autoAdjustWidth="false" width="100%">
+                                    <core:Item key="{form>Moegliche_Genehmiger}" text="{form>Moegliche_Genehmiger} - {form>Name}" />
+                                    <layoutData>
+                                        <l:GridData span="L8 M8 S12" />
+                                    </layoutData>
+                                </Select>      
+                                <Text text="{= ${text>/status}[${form>Status}]}"/>                           
+                            </ColumnListItem>
+                        </items>
+
+                    </Table>
+
+                </CustomListItem>
+            </List>
+
+        </content>
+        
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button text="{i18n>SPEICHERN}" 
+                        type="Emphasized"
+                        press="onSpeichernButtonPress" 
+                        visible="{= ${form>/modus} === 'edit' }" >
+                    <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
+                </Button>
+                <Button text="{i18n>ABBRECHEN}" 
+                        press="onAbbrechenButtonPress" 
+                        visible="{= ${form>/modus} === 'edit' }" >
+                    <layoutData><OverflowToolbarLayoutData moveToOverflow="false" /></layoutData>
+                </Button>
+            </OverflowToolbar>
+        </footer>
+
+	</Page>
+            
+</mvc:View>

@@ -1,0 +1,59 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+
+    <TableSelectDialog
+        title="{i18n>MIETFLAECHE_HINZUFUEGEN}"
+        noDataText="{i18n>KEINE_DATEN_VORHANDEN}"
+        multiSelect="true"
+        search="onMietflaechenSelektionDialogSearch"
+        confirm="onMietflaechenSelektionDialogConfirm"
+        contentWidth="80%"
+        cancel="onMietflaechenSelektionDialogCancel"
+        items="{/mietflaechen}">
+
+        <columns>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>MIETFLAECHE}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>BEZEICHNUNG}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>NUTZUNGSART}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>LEERSTAND}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>MIETERNAME}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>VERTRAGSMIETE}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>GESCHOSS}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="{i18n>FLAECHENGROESSE} / {i18n>STUECK}" />
+            </Column>
+        </columns>
+
+		<ColumnListItem>
+			<cells>
+				<Text text="{Bukrs}/{WeId}/{MoId}" />
+                <Text text="{Bezei}" />
+                <Text text="{= ${text>/nutzungsart}[${Nutzart}] }" />
+                <CheckBox selected="{Leerstand}" editable="false" />
+                <Text text="{Mietername}" />
+                <Text text="{VtMiete}" />
+                <Text text="{= ${text>/stockwerk}[${Dmgeschos}] }" />
+                <Text text="{path: 'Hnfl', type: 'model.CustomNumberType'} {HnflUnit}" />
+			</cells>
+		</ColumnListItem>
+
+    </TableSelectDialog>
+
+
+</core:FragmentDefinition>

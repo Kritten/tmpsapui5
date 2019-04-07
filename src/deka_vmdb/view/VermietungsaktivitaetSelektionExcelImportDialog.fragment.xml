@@ -1,0 +1,30 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+    xmlns:f="sap.ui.layout.form">
+    
+    <Dialog title="Excel Import" contentWidth="30%" afterClose="onExcelImportDialogAfterClose">
+    
+        <content>
+            
+            <FlexBox direction="Column" >
+                <items>
+                    <Label text="{i18n>DATEI_AUSWAEHLEN}" width="100%" />
+                    <u:FileUploader id="idFileUploader" change="onExcelImportDialogFileUploadChange" icon="sap-icon://upload" width="100%" />
+                </items>
+                <layoutData>
+                    <FlexItemData growFactor="1" />
+                </layoutData>
+            </FlexBox>
+
+        </content>
+        
+        <buttons>
+            <Button text="{i18n>ANLEGEN}" type="Accept" press="onExcelImportDialogAnlegenButtonPress" enabled="{excelImportModel>/valid}" />
+            <Button text="{i18n>ABBRECHEN}" type="Reject" press="onExcelImportDialogAbbrechenButtonPress"/>
+        </buttons>
+        
+    </Dialog>
+    
+</core:FragmentDefinition>

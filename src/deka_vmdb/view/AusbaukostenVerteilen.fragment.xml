@@ -1,0 +1,41 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    
+    <Dialog title="{i18n>AUSBAUKOSTEN_VERTEILEN}">
+    
+        <content>
+            
+            <f:SimpleForm>
+                <f:content>
+                    <Label text="{i18n>NUTZUNGSART}" />
+                    <Select selectedKey="{/nutzungsart}" items="{/nutzungsarten}">
+                        <items>
+                            <core:Item key="{NaId}" text="{TextSh}" />
+                        </items>
+                    </Select>
+                    <!-- <Label text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />-->
+                    <Label text="{i18n>GRUNDAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} ({i18n>GESAMT})" />
+                    <Input value="{/grundausbaukosten}" />
+                    <!--<Label text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />-->
+                    <Label text="{i18n>MIETERAUSBAUKOSTEN} in {form>/viewsettings/waehrungSelected/Nach} ({i18n>GESAMT})" />
+                    <Input value="{/mietausbaukosten}" />
+                </f:content>
+            </f:SimpleForm>
+            
+            
+        </content>
+        
+        <buttons>
+            <Button 
+                text="{i18n>ABBRECHEN}" 
+                press="onAusbaukostenVerteilenFragmentAbbrechenButtonPress"/>
+            <Button 
+                text="{i18n>VERTEILEN}" 
+                press="onAusbaukostenVerteilenFragmentAkzeptierenButtonPress" />
+        </buttons>
+        
+    </Dialog>
+    
+</core:FragmentDefinition>
