@@ -1,0 +1,28 @@
+worker_processes            2;
+
+events {
+    worker_connections      1024;
+}
+
+http {
+    include                     mimetypes.nginx;
+    default_type                application/octet-stream;
+
+    server {
+        listen                  80;
+        autoindex               on;
+
+        set $project_dir        "C:/..";
+        set $ui_version         "1.62.0";
+
+        location / {
+            root "${project_dir}/src";
+        }
+
+        location /sap/public/bc/ui5_ui5/1/resources {
+            rewrite /sap/public/bc/ui5_ui5/1/resources/(.*) /$ui_version/resources/$1 break;
+            proxy_pass "https://sapui5.hana.ondemand.com";
+        }
+
+    }
+}
