@@ -1,0 +1,15 @@
+{
+  "name": "de.deka.vmdb",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "http://dev01.bpc.ag/scm/git/Deka-VMDB"
+  },
+  "author": "Christian Hoff",
+  "license": "ISC",
+  "devDependencies": {
+    "jshint": "^2.10.2"
+  }
+}
