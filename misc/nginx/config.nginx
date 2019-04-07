@@ -12,11 +12,10 @@ http {
         listen                  80;
         autoindex               on;
 
-        set $project_dir        "C:/..";
-        set $ui_version         "1.62.0";
+        include                 variables.nginx;
 
         location / {
-            root "${project_dir}/src";
+            root $project_dir/src;
         }
 
         location /sap/public/bc/ui5_ui5/1/resources {
