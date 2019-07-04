@@ -45,6 +45,7 @@
                                     icon="{= ${form>Aktiv} ? 'sap-icon://accept' : 'sap-icon://decline' }"
                                     iconDensityAware="false"
                                     iconInset="false"
+                                    valueState="{= ${form>Aktiv} ? 'Success' : 'None' }"
                                     press="onMappingPressed">
                                 </StandardListItem>
                             </List>

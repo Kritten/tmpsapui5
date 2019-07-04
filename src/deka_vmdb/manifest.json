@@ -38,114 +38,121 @@
 				"viewPath": "ag.bpc.Deka.view",
 				"clearTarget": false
 			},
-			"routes": [{
-				"pattern": "",
-				"name": "startseite",
-				"view": "Startseite",
-				"targetControl": "idAppControl",
-				"targetAggregation": "pages",
-				"subroutes" : [
+			"routes": [
 				{
-					"pattern": "KondSel",
-					"name" : "konditioneneinigungSelektion",
-					"view" : "KonditioneneinigungSelektion",
-					"targetAggregation" : "pages",
-					"subroutes" : [
-					{
-						"pattern": "KondSel/KeId/{KeId}/Bukrs/{Bukrs}",
-						"name" : "konditioneneinigungDetails",
-						"view" : "KonditioneneinigungDetails",
-						"targetAggregation" : "pages"
-					},
-					{
-						"pattern": "KondSel/KeId/{KeId}/Bukrs/{Bukrs}/Genehmigung",
-						"name" : "konditioneneinigungGenehmigung",
-						"view" : "KonditioneneinigungGenehmigung",
-						"targetAggregation" : "pages"
-					},
-					{
-						"pattern": "KondSel/new/WE",
-						"name" : "konditioneneinigungAnlegenWe",
-						"view" : "KonditioneneinigungDetails",
-						"targetAggregation" : "pages"
-					},
-					{
-						"pattern": "KondSel/new/MV",
-						"name" : "konditioneneinigungAnlegenMv",
-						"view" : "KonditioneneinigungDetails",
-						"targetAggregation" : "pages"
-					},
-					{
-						"pattern": "KondSel/new/KE",
-						"name" : "konditioneneinigungAnlegenKe",
-						"view" : "KonditioneneinigungDetails",
-						"targetAggregation" : "pages"
-					}]
-				},
-				{
-					"pattern": "VermSel",
-					"name" : "vermietungsaktivitaetSelektion",
-					"view" : "VermietungsaktivitaetSelektion",
-					"targetAggregation" : "pages",
-					"subroutes" : [
-					{
-						"pattern": "VermSel/VaId/{VaId}/Bukrs/{Bukrs}",
-						"name" : "vermietungsaktivitaetDetails",
-						"view" : "VermietungsaktivitaetDetails",
-						"targetAggregation" : "pages"
-						
-					},
-					{
-						"pattern": "VermSel/VaId/{VaId}/Bukrs/{Bukrs}/Genehmigung",
-						"name" : "vermietungsaktivitaetGenehmigung",
-						"view" : "VermietungsaktivitaetGenehmigung",
-						"targetAggregation" : "pages"
-					},
-					{
-						"pattern": "VermSel/new/KV",
-						"name" : "vermietungsaktivitaetAnlegenKV",
-						"view" : "VermietungsaktivitaetDetails",
-						"targetAggregation" : "pages"
-					},
-					{
-						"pattern": "VermSel/new/RV",
-						"name" : "vermietungsaktivitaetAnlegenRV",
-						"view" : "VermietungsaktivitaetDetails",
-						"targetAggregation" : "pages"
-					},
-					{
-						"pattern": "VermSel/new/EV",
-						"name" : "vermietungsaktivitaetAnlegenEV",
-						"view" : "VermietungsaktivitaetDetails",
-						"targetAggregation" : "pages"
-					},
-					{
-						"pattern": "VermSel/new/IMPORT",
-						"name" : "vermietungsaktivitaetAnlegenImport",
-						"view" : "VermietungsaktivitaetDetails",
-						"targetAggregation" : "pages"
-					}]
-				},
-				{
-					"pattern": "BudStopp",
-					"name" : "budgetstopp",
-					"view" : "Budgetstopp",
-					"targetAggregation" : "pages"
-				},
-				{
-					"pattern": "Sperren",
-					"name" : "sperren",
-					"view" : "Sperren",
-					"targetAggregation" : "pages"
-				},
-				{
-					"pattern": "{all*}",
-					"name" : "NotFound",
-					"view" : "NotFound",
-					"targetAggregation" : "pages"
+					"pattern": "",
+					"name": "startseite",
+					"view": "Startseite",
+					"targetControl": "idAppControl",
+					"targetAggregation": "pages",
+					"subroutes": [
+						{
+							"pattern": "KondSel",
+							"name": "konditioneneinigungSelektion",
+							"view": "KonditioneneinigungSelektion",
+							"targetAggregation": "pages",
+							"subroutes": [
+								{
+									"pattern": "KondSel/KeId/{KeId}/Bukrs/{Bukrs}",
+									"name": "konditioneneinigungDetails",
+									"view": "KonditioneneinigungDetails",
+									"targetAggregation": "pages"
+								},
+								{
+									"pattern": "KondSel/KeId/{KeId}/Bukrs/{Bukrs}/Genehmigung",
+									"name": "konditioneneinigungGenehmigung",
+									"view": "KonditioneneinigungGenehmigung",
+									"targetAggregation": "pages"
+								},
+								{
+									"pattern": "KondSel/new/WE",
+									"name": "konditioneneinigungAnlegenWe",
+									"view": "KonditioneneinigungDetails",
+									"targetAggregation": "pages"
+								},
+								{
+									"pattern": "KondSel/new/MV",
+									"name": "konditioneneinigungAnlegenMv",
+									"view": "KonditioneneinigungDetails",
+									"targetAggregation": "pages"
+								},
+								{
+									"pattern": "KondSel/new/KE",
+									"name": "konditioneneinigungAnlegenKe",
+									"view": "KonditioneneinigungDetails",
+									"targetAggregation": "pages"
+								}
+							]
+						},
+						{
+							"pattern": "VermSel",
+							"name": "vermietungsaktivitaetSelektion",
+							"view": "VermietungsaktivitaetSelektion",
+							"targetAggregation": "pages",
+							"subroutes": [
+								{
+									"pattern": "VermSel/VaId/{VaId}/Bukrs/{Bukrs}",
+									"name": "vermietungsaktivitaetDetails",
+									"view": "VermietungsaktivitaetDetails",
+									"targetAggregation": "pages"
+								},
+								{
+									"pattern": "VermSel/VaId/{VaId}/Bukrs/{Bukrs}/Genehmigung",
+									"name": "vermietungsaktivitaetGenehmigung",
+									"view": "VermietungsaktivitaetGenehmigung",
+									"targetAggregation": "pages"
+								},
+								{
+									"pattern": "VermSel/new/KV",
+									"name": "vermietungsaktivitaetAnlegenKV",
+									"view": "VermietungsaktivitaetDetails",
+									"targetAggregation": "pages"
+								},
+								{
+									"pattern": "VermSel/new/RV",
+									"name": "vermietungsaktivitaetAnlegenRV",
+									"view": "VermietungsaktivitaetDetails",
+									"targetAggregation": "pages"
+								},
+								{
+									"pattern": "VermSel/new/EV",
+									"name": "vermietungsaktivitaetAnlegenEV",
+									"view": "VermietungsaktivitaetDetails",
+									"targetAggregation": "pages"
+								},
+								{
+									"pattern": "VermSel/new/IMPORT",
+									"name": "vermietungsaktivitaetAnlegenImport",
+									"view": "VermietungsaktivitaetDetails",
+									"targetAggregation": "pages"
+								}
+							]
+						},
+						{
+							"pattern": "BudStopp",
+							"name": "budgetstopp",
+							"view": "Budgetstopp",
+							"targetAggregation": "pages"
+						},
+						{
+							"pattern": "Sperren",
+							"name": "sperren",
+							"view": "Sperren",
+							"targetAggregation": "pages"
+						},
+						{
+							"pattern": "{all*}",
+							"name": "NotFound",
+							"view": "NotFound",
+							"targetAggregation": "pages"
+						}
+					]
 				}
-				]
-			}]
-      	}
+			]
+		}
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zibw_vmdb/deka_vmdb",
+		"_version": "1.1.0"
 	}
 }
