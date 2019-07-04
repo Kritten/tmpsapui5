@@ -1,20 +1,13 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:43:54 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:43:54 
- */
 sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
-	
+
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetGenehmigung", {
 
-		onInit: function(oEvent){
+		onInit: function(){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.VermietungsaktivitaetGenehmigung .. onInit");
-            var _this = this;
 
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
-            
+
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("vermietungsaktivitaetGenehmigung").attachPatternMatched(this.onPatternMatched, this);
         },
@@ -31,12 +24,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
 
                 level: [
                     {
-                        title: "Genehmigungslevel 1",                        
+                        title: "Genehmigungslevel 1",
                         genehmiger: [{
                             selected: "00000001",
                             available: [
                                 {key: "00000001", text: "Max Mustermann"},
-                                {key: "00000002", text: "Gerd Hoffmann"}  
+                                {key: "00000002", text: "Gerd Hoffmann"}
                             ],
                             status: "genehmigt",
                             editable: false
@@ -44,19 +37,19 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
                             selected: "00000002",
                             available: [
                                 {key: "00000001", text: "Max Mustermann"},
-                                {key: "00000002", text: "Gerd Hoffmann"}  
+                                {key: "00000002", text: "Gerd Hoffmann"}
                             ],
                             status: "genehmigt",
                             editable: false
                         }]
                     },
                     {
-                        title: "Genehmigungslevel 2",  
+                        title: "Genehmigungslevel 2",
                         genehmiger: [{
                             selected: "00000001",
                             available: [
                                 {key: "00000001", text: "Anke Peters"},
-                                {key: "00000002", text: "Alexander Hofmann"}  
+                                {key: "00000002", text: "Alexander Hofmann"}
                             ],
                             status: "offen",
                             editable: true
@@ -64,7 +57,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
                             selected: "00000001",
                             available: [
                                 {key: "00000001", text: "Kerstin Fröhn"},
-                                {key: "00000002", text: "Hauke Thomsen"}  
+                                {key: "00000002", text: "Hauke Thomsen"}
                             ],
                             status: "offen",
                             editable: true
@@ -72,7 +65,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
                             selected: "00000001",
                             available: [
                                 {key: "00000001", text: "Arabella Rolando"},
-                                {key: "00000002", text: "Sabine Friedrichs"}  
+                                {key: "00000002", text: "Sabine Friedrichs"}
                             ],
                             status: "offen",
                             editable: true
@@ -84,7 +77,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
                             selected: "00000001",
                             available: [
                                 {key: "00000001", text: "Rita Gerke"},
-                                {key: "00000002", text: "Anja Rudde"}  
+                                {key: "00000002", text: "Anja Rudde"}
                             ],
                             status: "offen",
                             editable: true
@@ -92,7 +85,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
                             selected: "00000001",
                             available: [
                                 {key: "00000001", text: "Simone Holsten"},
-                                {key: "00000002", text: "Katja Rudolphsen"}  
+                                {key: "00000002", text: "Katja Rudolphsen"}
                             ],
                             status: "offen",
                             editable: true
@@ -100,26 +93,25 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
                     }
                 ]
             };
-            
+
             var formModel = new sap.ui.model.json.JSONModel(form);
-            
+
             this.getView().setModel(formModel, "form");
         },
 
-        onBearbeitenButtonPress: function(oEvent){
+        onBearbeitenButtonPress: function(){
             this.getView().getModel("form").setProperty("/modus", "edit");
         },
 
-        onSpeichernButtonPress: function(oEvent){
+        onSpeichernButtonPress: function(){
 
         },
 
-        onAbbrechenButtonPress: function(oEvent){
+        onAbbrechenButtonPress: function(){
             this.getView().getModel("form").setProperty("/modus", "show");
         },
 
-        onBack : function(oEvent) {
-
+        onBack : function() {
             this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetDetails", {
                 VaId: this._VaId,
                 Bukrs: this._Bukrs

@@ -1,27 +1,22 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:39:25 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:39:25 
- */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/m/MessageBox",
 	"ag/bpc/Deka/util/DataProvider",
 	"ag/bpc/Deka/util/ErrorMessageUtil",
 	"ag/bpc/Deka/util/StaticData",
-	"ag/bpc/Deka/util/TranslationUtil"], function (Controller, MessageBox, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil) {
-	
+	"ag/bpc/Deka/util/TranslationUtil"
+], function (Controller, MessageBox, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil) {
+
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.Budgetstopp", {
-		
-		onInit: function(oEvent){
+
+		onInit: function(){
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("budgetstopp").attachPatternMatched(this.onPatternMatched, this);
 		},
-		
-		onPatternMatched: function(oEvent){
+
+		onPatternMatched: function(){
 			var _this = this;
 
 			var formModel = new sap.ui.model.json.JSONModel({});
@@ -38,7 +33,7 @@ sap.ui.define([
 			})
 			.done();
 		},
-		
+
 		ladeKonditioneneinigungen: function(){
 			var _this = this;
 
@@ -58,14 +53,14 @@ sap.ui.define([
 			.done();
 		},
 
-		onFondSelektionChange: function(oEvent){
+		onFondSelektionChange: function(){
             this.ladeKonditioneneinigungen();
 		},
-		
-		onDruckenButtonPress: function(oEvent){
+
+		onDruckenButtonPress: function(){
 		},
-		
-		onGenehmigungZurueckziehenButtonPress: function(oEvent){
+
+		onGenehmigungZurueckziehenButtonPress: function(){
 			var _this = this;
 
 			var items = _this.getView().byId("konditioneneinigungenTable").getSelectedItems();
@@ -74,7 +69,7 @@ sap.ui.define([
 			var fond = fondItem.getBindingContext("form").getObject();
 			var dmFonds = fond.Dmfonds;
 
-			if(items.length > 0){				
+			if(items.length > 0){
 				var konditioneneinigungen = _.map(items, function(item){
 					return item.getBindingContext("form").getObject();
 				});
@@ -88,9 +83,9 @@ sap.ui.define([
 						new sap.m.Text({
 							text: TranslationUtil.translate("KE_GENEHMIGUNG_ZURUECKZIEHEN_GRUND")
 						}),
-						new sap.m.TextArea('idGenehmigungZurueckziehenBegruendungTextArea', {
+						new sap.m.TextArea("idGenehmigungZurueckziehenBegruendungTextArea", {
 							liveChange: function(oEvent) {
-								var sText = oEvent.getParameter('value');
+								var sText = oEvent.getParameter("value");
 								var parent = oEvent.getSource().getParent();
 								parent.getBeginButton().setEnabled(sText.length > 0);
 							},
@@ -103,13 +98,13 @@ sap.ui.define([
 						enabled: false,
 						press: function () {
 
-							var sText = sap.ui.getCore().byId('idGenehmigungZurueckziehenBegruendungTextArea').getValue();
-							
+							var sText = sap.ui.getCore().byId("idGenehmigungZurueckziehenBegruendungTextArea").getValue();
+
 							Q.all(_.map(konditioneneinigungen, function(ke){
-					
+
 								return DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
-									KeId: ke.KeId, 
-									Bukrs: ke.Bukrs, 
+									KeId: ke.KeId,
+									Bukrs: ke.Bukrs,
 									Anmerkung: StaticData.ANMERKUNG.KE.BUDGETSTOPP,
 									Bemerkung: sText,
 									FondsBgtstp: dmFonds
@@ -126,11 +121,11 @@ sap.ui.define([
 							})
 							.fin(function(){
 								dialog.close();
-								
-								_this.ladeKonditioneneinigungen();
-							});	                      
 
-							
+								_this.ladeKonditioneneinigungen();
+							});
+
+
 						}
 					}),
 					endButton: new sap.m.Button({
@@ -143,14 +138,14 @@ sap.ui.define([
 						dialog.destroy();
 					}
 				});
-	
-				dialog.open();	
-			}		
+
+				dialog.open();
+			}
 		},
 
-		onBack: function(evt){
+		onBack: function(){
 			this.getOwnerComponent().getRouter().navTo("startseite", null, true);
 		}
-        
+
 	});
 });

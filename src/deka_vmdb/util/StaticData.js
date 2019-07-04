@@ -1,11 +1,7 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG)
- * @Date: 2017-04-05 21:45:23
- * @Last Modified by:   Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-04-05 21:45:23
- */
-sap.ui.define(["ag/bpc/Deka/util/DataProvider",
-"ag/bpc/Deka/util/TranslationUtil"], function(DataProvider, TranslationUtil) {
+sap.ui.define([
+    "ag/bpc/Deka/util/DataProvider",
+    "ag/bpc/Deka/util/TranslationUtil"
+], function(DataProvider, TranslationUtil) {
 
     "use strict";
     return {
@@ -52,7 +48,8 @@ sap.ui.define(["ag/bpc/Deka/util/DataProvider",
                 GENEHMIGTES_MV_ECK_LIEGT_VOR: '74',
                 ABSCHLUSS_BINNEN_8_WOCHEN_ERWARTET: '75',
                 MIETVERTRAG_NOCH_NICHT_IN_SAP_ERFASST: '80',
-                MIETVERTRAG_IN_SAP_ERFASST: '81'
+                MIETVERTRAG_IN_SAP_ERFASST: '81',
+                GELOESCHT: '30'
             }
         },
 

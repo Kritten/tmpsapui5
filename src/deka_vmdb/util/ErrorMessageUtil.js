@@ -1,9 +1,3 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG)
- * @Date: 2017-04-05 21:44:59
- * @Last Modified by:   Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-04-05 21:44:59
- */
 sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
 
     "use strict";
@@ -59,7 +53,7 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
 
         parseErrorMessage: function(oError){
             var error = {
-                type: 'ERROR'
+                type: "ERROR"
             };
 
             if(oError.responseText){
@@ -75,11 +69,11 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
                             error.msgid = matches[1];
                             error.msgno = matches[2];
 
-                            if(error.msgid === 'ZCL_ZIP_VMDB_MESSAGE') {
-                                if(error.msgno === '130'){
-                                    error.type = 'INFORMATION';
+                            if(error.msgid === "ZCL_ZIP_VMDB_MESSAGE") {
+                                if(error.msgno === "130"){
+                                    error.type = "INFORMATION";
                                 } else {
-                                    error.type = 'WARNING';
+                                    error.type = "WARNING";
                                 }
                             }
                         }
@@ -88,7 +82,7 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
                             var messages = _.map(response.error.innererror.errordetails, function(errordetails){
                                 return errordetails.message;
                             });
-                            error.text = messages.join('\n');
+                            error.text = messages.join("\n");
                         }
                         else{
                             error.text = response.error.message.value;
@@ -99,11 +93,12 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
                 }
             }
             else {
-                error.text = (typeof oError === 'string') ? oError : JSON.stringify(oError);
+                error.text = (typeof oError === "string") ? oError : JSON.stringify(oError);
             }
 
             return error;
         }
 
     };
+
 });

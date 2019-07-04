@@ -1,11 +1,5 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:39:45 
- * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-06-22 17:53:30
- */
 sap.ui.define([
-	"sap/ui/core/mvc/Controller", 
+	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/Filter",
 	"ag/bpc/Deka/util/NavigationPayloadUtil",
 	"ag/bpc/Deka/util/DataProvider",
@@ -15,8 +9,8 @@ sap.ui.define([
 
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungSelektion", {
-				
-		onInit : function(evt) {			
+
+		onInit : function() {
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
 			this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
 
@@ -24,11 +18,11 @@ sap.ui.define([
 			oRouter.getRoute("konditioneneinigungSelektion").attachPatternMatched(this.onPatternMatched, this);
 		},
 
-		onPatternMatched: function(oEvent){
+		onPatternMatched: function(){
 			var _this = this;
 
 			StaticData.USER.then(function(user){
-				_this.getView().byId('idKeAnlagePanel').setVisible(user.BtnAm);
+				_this.getView().byId("idKeAnlagePanel").setVisible(user.BtnAm);
 				return DataProvider.readKondSelSetAsync();
 			})
 			.then(function(konditioneneinigungen){
@@ -62,12 +56,12 @@ sap.ui.define([
             .done();
 		},
 
-		onBack : function(oEvent) {
+		onBack : function() {
 			this.getOwnerComponent().getRouter().navTo("startseite");
 		},
-		
+
 		onItemPress : function(oEvent) {
-			var konditioneneinigung = oEvent.getParameter("listItem").getBindingContext('kondSel').getObject();
+			var konditioneneinigung = oEvent.getParameter("listItem").getBindingContext("kondSel").getObject();
 
 			this.getOwnerComponent().getRouter().navTo("konditioneneinigungDetails", {
 				KeId: konditioneneinigung.KeId,
@@ -75,11 +69,11 @@ sap.ui.define([
 			});
 		},
 
-		onAnlegenPress : function (oEvent) {
+		onAnlegenPress : function () {
 			var _this = this;
 
 			var radioButtonIndex = _this.getView().byId("RBG_Anlage").getSelectedIndex();
-			
+
 			switch(radioButtonIndex)
 			{
 				case 0:
@@ -90,9 +84,9 @@ sap.ui.define([
 						var formData = {
 							wirtschaftseinheiten: wirtschaftseinheiten
 						};
-						
+
 						_this._oDialog.setModel( new sap.ui.model.json.JSONModel(formData) , "form");
-						
+
 						// clear the old search filter
 						_this._oDialog.getBinding("items").filter([]);
 						_this._oDialog.open();
@@ -106,13 +100,13 @@ sap.ui.define([
 				case 1:
 					DataProvider.readMietvertragSetAsync().then(function(mietvertraege){
 						_this._oDialog = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungSelektionAnlageMietvertrag", _this);
-						
+
 						var formData = {
 							mietvertraege: mietvertraege
 						};
-						
+
 						_this._oDialog.setModel(new sap.ui.model.json.JSONModel(formData), "form");
-						
+
 						// clear the old search filter
 						_this._oDialog.getBinding("items").filter([]);
 						_this._oDialog.open();
@@ -131,9 +125,9 @@ sap.ui.define([
 						var formData = {
 							konditioneneinigungen: konditioneneinigungen
 						};
-						
+
 						_this._oDialog.setModel( new sap.ui.model.json.JSONModel(formData) , "form");
-						
+
 						// clear the old search filter
 						_this._oDialog.getBinding("items").filter([]);
 						_this._oDialog.open();
@@ -227,50 +221,50 @@ sap.ui.define([
 
 
 		onFacetFilterReset: function(oEvent) {
-						
+
 			var lists = oEvent.getSource().getLists();
-								
+
 			lists.forEach(function(list){
 				list.setSelectedKeys();
 			});
 
 			this.applyFilters();
 		},
-		
-		onFacetFilterListClose: function(oEvent){	
+
+		onFacetFilterListClose: function(){
 			this.applyFilters();
 		},
-		
+
 		applyFilters: function(){
 			var table = this.getView().byId("idKondSelTable");
-			
+
 			var filtersToApply = [];
-			
+
 			var facetFilterLists = this.getView().byId("idFacetFilter").getLists();
-																
+
 			facetFilterLists.forEach(function(list){
-				
+
 				if(list.getSelectedItems().length > 0){
-					
+
 					var itemFilters = [];
-																
+
 					list.getSelectedItems().forEach(function(item){
-						
+
 						switch(list.getTitle())
 						{
 							case TranslationUtil.translate("KOND_SEL_COL_FAVORIT"):
 								var boolValue = (item.getKey() === "true") ? true : false;
 								itemFilters.push( new Filter("Favorit", sap.ui.model.FilterOperator.EQ, boolValue) );
 							break;
-							
+
 							case TranslationUtil.translate("KOND_SEL_COL_BUCHUNGSKREIS"):
 								itemFilters.push( new Filter("Bukrs", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
-							
+
 							case TranslationUtil.translate("KOND_SEL_COL_WIRTSCHAFTSEINHEIT"):
 								itemFilters.push( new Filter("WeId", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
-							
+
 							case TranslationUtil.translate("KOND_SEL_COL_REGIONALBUERO"):
 								itemFilters.push( new Filter("Regionalbuero", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
@@ -278,7 +272,7 @@ sap.ui.define([
 							case TranslationUtil.translate("KOND_SEL_COL_ANMERKUNG"):
 								itemFilters.push( new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
-												
+
 							case TranslationUtil.translate("KOND_SEL_COL_ERSTELLER"):
 								itemFilters.push( new Filter("Ersteller", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
@@ -286,17 +280,17 @@ sap.ui.define([
 							default:
 							break;
 						}
-						
+
 					});
-					
+
 					var listFilter = new Filter(itemFilters, false);
 					filtersToApply.push(listFilter);
 				}
-				
+
 			});
-			
+
 			console.log("filtersToApply.length = " + filtersToApply.length);
-			
+
 			if(filtersToApply.length > 0)
 			{
 				// Alle Filter mit AND verknüpfen

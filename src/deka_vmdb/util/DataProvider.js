@@ -1,9 +1,3 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:44:44 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:44:44 
- */
 sap.ui.define([], function() {
 
     "use strict";
@@ -19,7 +13,7 @@ sap.ui.define([], function() {
         readKonditioneneinigungAsync: function(Bukrs, KeId){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
 
                 _this.oDataModel.read("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", {
 
@@ -28,7 +22,7 @@ sap.ui.define([], function() {
                     },
 
                     success: function(oData){
-                        
+
                         oData.KeToMap = oData.KeToMap.results;
 
                         oData.KeToOb = _.map(oData.KeToOb.results, function(objekt){
@@ -37,7 +31,7 @@ sap.ui.define([], function() {
                             objekt.Hnfl = objekt.Hnfl.toString();
 
                             objekt.HnflAlt = objekt.HnflAlt.toString();
-                            objekt.HnflAlt = (objekt.HnflAlt === '0.000') ? '' : objekt.HnflAlt;
+                            objekt.HnflAlt = (objekt.HnflAlt === "0.000") ? "" : objekt.HnflAlt;
 
                             objekt.AnMiete = objekt.AnMiete.toString();
                             objekt.GaKosten = objekt.GaKosten.toString();
@@ -68,7 +62,7 @@ sap.ui.define([], function() {
         readVermietungsaktivitaetAsync: function(Bukrs, VaId){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
 
                 _this.oDataModel.read("/VermietungsaktivitaetSet(Bukrs='" + Bukrs + "',VaId='" + VaId + "')", {
 
@@ -85,8 +79,8 @@ sap.ui.define([], function() {
 
                             // Zahlen in Strings umwandeln, weil Input Felder die Eingaben sowieso als String speichern
                             objekt.HnflAlt = objekt.HnflAlt.toString();
-                            objekt.HnflAlt = (objekt.HnflAlt === '0.000') ? '' : objekt.HnflAlt;
-                            
+                            objekt.HnflAlt = (objekt.HnflAlt === "0.000") ? "" : objekt.HnflAlt;
+
                             objekt.AnMiete = objekt.AnMiete.toString();
                             objekt.GaKosten = objekt.GaKosten.toString();
                             objekt.MaKosten = objekt.MaKosten.toString();
@@ -114,7 +108,7 @@ sap.ui.define([], function() {
         readKondSelSetAsync: function(){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
 
                 _this.oDataModel.read("/KondSelSet", {
                     success: function(oData){
@@ -122,7 +116,7 @@ sap.ui.define([], function() {
                     },
                     error: function(oError){
                         reject(oError);
-                    } 
+                    }
                 });
 
             });
@@ -132,14 +126,14 @@ sap.ui.define([], function() {
         readVermSelSetAsync: function(){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.read("/VermSelSet", {
                     success: function(oData){
                         resolve(oData.results);
                     },
                     error: function(oError){
                         reject(oError);
-                    } 
+                    }
                 });
             });
         },
@@ -147,7 +141,7 @@ sap.ui.define([], function() {
         readWirtschaftseinheitAsync: function(Bukrs, WeId){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
 
                 _this.oDataModel.read("/WirtschaftseinheitenSet(Bukrs='" + Bukrs + "',WeId='" + WeId + "')", {
 
@@ -163,7 +157,7 @@ sap.ui.define([], function() {
                             objekt.Hnfl = objekt.Hnfl.toString();
 
                             objekt.HnflAlt = objekt.HnflAlt.toString();
-                            objekt.HnflAlt = (objekt.HnflAlt === '0.000') ? '' : objekt.HnflAlt;
+                            objekt.HnflAlt = (objekt.HnflAlt === "0.000") ? "" : objekt.HnflAlt;
 
                             objekt.AnMiete = objekt.AnMiete.toString();
                             objekt.GaKosten = objekt.GaKosten.toString();
@@ -188,7 +182,7 @@ sap.ui.define([], function() {
         readMietvertragAsync: function(WeId, Bukrs, MvId){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
 
                 _this.oDataModel.read("/MietvertragSet(WeId='"+WeId+"',Bukrs='" + Bukrs + "',MvId='" + MvId + "')", {
 
@@ -204,7 +198,7 @@ sap.ui.define([], function() {
                             objekt.Hnfl = objekt.Hnfl.toString();
 
                             objekt.HnflAlt = objekt.HnflAlt.toString();
-                            objekt.HnflAlt = (objekt.HnflAlt === '0.000') ? '' : objekt.HnflAlt;
+                            objekt.HnflAlt = (objekt.HnflAlt === "0.000") ? "" : objekt.HnflAlt;
 
                             objekt.AnMiete = objekt.AnMiete.toString();
                             objekt.GaKosten = objekt.GaKosten.toString();
@@ -230,7 +224,7 @@ sap.ui.define([], function() {
         readSperrenAsync: function(){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
 
                 _this.oDataModel.read("/SperreSet", {
                     success: function(oData){
@@ -248,7 +242,7 @@ sap.ui.define([], function() {
         readAnmerkungSetAsync: function(){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
 
                 _this.oDataModel.read("/AnmerkungSet", {
                     success: function(oData){
@@ -266,7 +260,7 @@ sap.ui.define([], function() {
         readNutzungsartSetAsync: function(){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
 
                 _this.oDataModel.read("/NutzungsartSet", {
                     success: function(oData){
@@ -283,8 +277,8 @@ sap.ui.define([], function() {
         readFlaecheSetAsync: function(ausgangseinheit){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
-                
+            return Q.Promise(function(resolve, reject){
+
                 _this.oDataModel.read("/FlaecheSet", {
 
                     urlParameters: {
@@ -306,8 +300,8 @@ sap.ui.define([], function() {
         readExchangeRateSetAsync: function(ausgangseinheit){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
-                
+            return Q.Promise(function(resolve, reject){
+
                 _this.oDataModel.read("/ExchangeRateSet", {
 
                     urlParameters: {
@@ -318,7 +312,7 @@ sap.ui.define([], function() {
                         console.log(oData.results);
                         resolve(oData.results);
                     },
-                    
+
                     error: function(oError){
                         reject(oError);
                     }
@@ -331,11 +325,7 @@ sap.ui.define([], function() {
         updateKonditioneneinigungAsync: function(KeId, Bukrs, payload){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
-                
-                // Warnmeldung Test
-                // reject({"responseText":"{\"error\":{\"code\":\"ZCL_ZIP_VMDB_MESSAGE/002\",\"message\":{\"lang\":\"de\",\"value\":\"MO: 01010002 bereits in KE_000000002 verwendet.//MO: 01010003 bereits in KE_000000002 verwendet.\"},\"innererror\":{\"application\":{\"component_id\":\"\",\"service_namespace\":\"/SAP/\",\"service_id\":\"ZIP_VMDB_SRV\",\"service_version\":\"0001\"},\"transactionid\":\"58C4C7E9E53A0FFDE10000000A44582D\",\"timestamp\":\"\",\"Error_Resolution\":{\"SAP_Transaction\":\"\",\"SAP_Note\":\"See SAP Note 1797736 for error analysis (https://service.sap.com/sap/support/notes/1797736)\"},\"errordetails\":[{\"code\":\"/IWBEP/CX_MGW_BUSI_EXCEPTION\",\"message\":\"MO: 01010002 bereits in KE_000000002 verwendet.//MO: 01010003 bereits in KE_000000002 verwendet.\",\"propertyref\":\"\",\"severity\":\"error\",\"target\":\"\"}]}}}"});
-
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.update("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", payload, {
                     success: function(){
                         resolve();
@@ -351,7 +341,7 @@ sap.ui.define([], function() {
         readFondsSetAsync: function(){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.read("/FondsSet", {
                     success: function(oData){
                         console.log(oData.results);
@@ -367,7 +357,7 @@ sap.ui.define([], function() {
         readFondAsync: function(Dmfonds){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.read("/FondsSet('" + Dmfonds + "')", {
                     urlParameters: {
                         "$expand": "FoToKo"
@@ -387,7 +377,7 @@ sap.ui.define([], function() {
         readStatusSetAsync: function(){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.read("/StatusSet", {
                     success: function(oData){
                         console.log(oData.results);
@@ -403,7 +393,7 @@ sap.ui.define([], function() {
         createSperreAsync: function(sperrePayload){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.create("/SperreSet", sperrePayload, {
                     success: function(oData){
                         console.log(oData);
@@ -420,7 +410,7 @@ sap.ui.define([], function() {
         deleteSperreAsync: function(KeId, VaId){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.remove("/SperreSet(KeId='" + KeId + "',VaId='" + VaId + "')", {
                     success: function(oData){
                         resolve(oData);
@@ -435,7 +425,7 @@ sap.ui.define([], function() {
         createKonditioneneinigungAsync: function(konditioneneinigungPayload){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.create("/KonditioneneinigungSet", konditioneneinigungPayload, {
                     success: function(oData){
                         console.log(oData);
@@ -452,7 +442,7 @@ sap.ui.define([], function() {
         createVermietungsaktivitaetAsync: function(vermietungsaktivitaetPayload){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.create("/VermietungsaktivitaetSet", vermietungsaktivitaetPayload, {
                     success: function(oData){
                         console.log(oData);
@@ -466,10 +456,25 @@ sap.ui.define([], function() {
             });
         },
 
+        updateVermietungsaktivitaetAsync: function (VaId, Bukrs, payload) {
+            var _this = this;
+
+            return Q.Promise(function (resolve, reject) {
+                _this.oDataModel.update("/VermietungsaktivitaetSet(Bukrs='" + Bukrs + "',VaId='" + VaId + "')", payload, {
+                    success: function () {
+                        resolve();
+                    },
+                    error: function (oError) {
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
         createFavoritAsync: function(favoritPayload){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.create("/FavoritSet", favoritPayload, {
                     success: function(oData){
                         console.log(oData);
@@ -487,7 +492,7 @@ sap.ui.define([], function() {
         deleteFavoritAsync: function(KeId, VaId){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.remove("/FavoritSet(KeId='" + KeId + "',VaId='" + VaId + "')", {
                     success: function(oData){
                         resolve(oData);
@@ -504,8 +509,8 @@ sap.ui.define([], function() {
             var urlParamters = {};
 
             urlParamters.$filter = "Moegliche_Genehmiger eq '" + moeglicheGenehmiger + "' and Stufe eq '" + stufe + "'";
-            
-            return Q.Promise(function(resolve, reject, notify){
+
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.read("/GenehmigerSet", {
                     urlParameters: urlParamters,
                     success: function(oData){
@@ -521,7 +526,7 @@ sap.ui.define([], function() {
 
         readGenehmigungsprozessSetAsync: function(KeId, VaId){
             var _this = this;
-            
+
             var urlParameters = {};
 
             if(KeId) {
@@ -530,7 +535,7 @@ sap.ui.define([], function() {
                 urlParameters.$filter = "VaId eq '" + VaId + "'";
             }
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.read("/GenehmigungsprozessSet", {
                     urlParameters: urlParameters,
                     success: function(oData){
@@ -547,7 +552,7 @@ sap.ui.define([], function() {
         updateGenehmigungsprozessSetAsync: function(index, KeId, VaId, stufe, payload){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.update("/GenehmigungsprozessSet(Index='"+index+"',KeId='"+KeId+"',VaId='" + VaId + "',Stufe='"+stufe+"')", payload, {
                     success: function(){
                         resolve();
@@ -563,7 +568,7 @@ sap.ui.define([], function() {
         readKategorieSetAsync: function(){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 _this.oDataModel.read("/KategorieSet", {
                     success: function(oData){
                         console.log(oData.results);
@@ -578,8 +583,8 @@ sap.ui.define([], function() {
 
         readDebitorenSetAsync: function(){
             var _this = this;
-            
-            return Q.Promise(function(resolve, reject, notify) {
+
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/DebitorSet", {
                     success: function(oData){
                         console.log(oData.results);
@@ -594,8 +599,8 @@ sap.ui.define([], function() {
 
         readUserAsync: function(){
             var _this = this;
-            
-            return Q.Promise(function(resolve, reject, notify) {
+
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/UserSet", {
                     success: function(oData){
                         console.log(oData.results[0]);
@@ -610,8 +615,8 @@ sap.ui.define([], function() {
 
         readStockwerkSetAsync: function(){
             var _this = this;
-            
-            return Q.Promise(function(resolve, reject, notify) {
+
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/StockwerkSet", {
                     success: function(oData){
                         console.log(oData.results);
@@ -626,8 +631,8 @@ sap.ui.define([], function() {
 
         readVertragsArtSetAsync: function(){
             var _this = this;
-            
-            return Q.Promise(function(resolve, reject, notify) {
+
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/VertragsartSet", {
                     success: function(oData){
                         console.log(oData.results);
@@ -642,8 +647,8 @@ sap.ui.define([], function() {
 
         readDienstleisterSetAsync: function(){
             var _this = this;
-            
-            return Q.Promise(function(resolve, reject, notify) {
+
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/DienstleisterSet", {
                     success: function(oData){
                         console.log(oData.results);
@@ -658,12 +663,12 @@ sap.ui.define([], function() {
 
         readWirtschaftseinheitenSetAsync: function(expand, filter){
             var _this = this;
-            
+
             var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
                 return _.isUndefined(val) || _.isNull(val);
             });
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/WirtschaftseinheitenSet", {
                     urlParameters: urlParameters,
                     success: function(oData){
@@ -679,12 +684,12 @@ sap.ui.define([], function() {
 
         readMietvertragSetAsync: function(expand, filter){
             var _this = this;
-            
+
             var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
                 return _.isUndefined(val) || _.isNull(val);
             });
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/MietvertragSet", {
                     urlParameters: urlParameters,
                     success: function(oData){
@@ -700,12 +705,12 @@ sap.ui.define([], function() {
 
         readMietobjektSetAsync: function(expand, filter){
             var _this = this;
-            
+
             var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
                 return _.isUndefined(val) || _.isNull(val);
             });
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/MietobjektSet", {
                     urlParameters: urlParameters,
                     success: function(oData){
@@ -721,12 +726,12 @@ sap.ui.define([], function() {
 
         readKonditioneneinigungSetAsync: function(expand, filter){
             var _this = this;
-            
+
             var urlParameters = _.omit({$expand: expand, $filter: filter}, function(val){
                 return _.isUndefined(val) || _.isNull(val);
             });
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/KonditioneneinigungSet", {
                     urlParameters: urlParameters,
                     success: function(oData){
@@ -743,7 +748,7 @@ sap.ui.define([], function() {
         readErtragsartSetAsync: function(){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/ErtragsartSet", {
                     success: function(oData){
                         console.log(oData.results);
@@ -759,7 +764,7 @@ sap.ui.define([], function() {
         readKostenartSetAsync: function(){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
                 _this.oDataModel.read("/KostenartSet", {
                     success: function(oData){
                         console.log(oData.results);

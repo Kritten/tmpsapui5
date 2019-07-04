@@ -1,12 +1,8 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG)
- * @Date: 2017-04-05 21:45:16
- * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-06-22 10:59:02
- */
-sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
+sap.ui.define([
+    "ag/bpc/Deka/util/PrinterUtil",
     "ag/bpc/Deka/util/DataProvider",
-    "ag/bpc/Deka/util/StaticData"], function (PrinterUtil, DataProvider, StaticData) {
+    "ag/bpc/Deka/util/ErrorMessageUtil"
+], function (PrinterUtil, DataProvider, ErrorMessageUtil) {
 
         "use strict";
         return {
@@ -234,7 +230,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     result = result.replace("@@Diff3@@", oNumberFormat.format(diff3));
 
                     // Restliche Keys ersetzen
-                    Object.keys(vermietungsaktivitaet).forEach(function (key, index) {
+                    Object.keys(vermietungsaktivitaet).forEach(function (key) {
                         var value = vermietungsaktivitaet[key];
 
                         if (value instanceof Date) {
@@ -242,7 +238,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                         } else {
                             if (value) {
                                 // Nur floats formattieren
-                                if (!isNaN(value) && value.toString().indexOf('.') != -1) {
+                                if (!isNaN(value) && value.toString().indexOf(".") != -1) {
                                     result = result.replace("@@" + key + "@@", "<span style=\"text-align: right\">" + oNumberFormat.format(value) + "</span>");
                                 } else {
                                     result = result.replace("@@" + key + "@@", value);
@@ -374,7 +370,6 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 jQuery.get(_this.getBasePath() + _this.druckvorlageKonditioneneinigung, function (result) {
                     var keId = konditioneneinigung.KeId;
                     if (keId) {
-                        var cont = result.indexOf("@@KeId@@");
                         result = result.replace("@@KeId@@", keId);
                         result = result.replace("@@KeId2@@", keId);
                     }
@@ -493,14 +488,14 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     result = result.replace("@@GesDiff@@", oNumberFormat.format(gesamtDifferenz));
 
                     // Restliche Keys ersetzen
-                    Object.keys(konditioneneinigung).forEach(function (key, index) {
+                    Object.keys(konditioneneinigung).forEach(function (key) {
                         var value = konditioneneinigung[key];
 
                         if (value instanceof Date) {
                             result = result.replace("@@" + key + "@@", value.toLocaleDateString());
                         } else {
                             if (value) {
-                                if (!isNaN(value) && value.toString().indexOf('.') != -1) {
+                                if (!isNaN(value) && value.toString().indexOf(".") != -1) {
                                     result = result.replace("@@" + key + "@@", oNumberFormat.format(value));
                                 } else {
                                     result = result.replace("@@" + key + "@@", value);
@@ -600,7 +595,6 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 jQuery.get(_this.getBasePath() + _this.druckvorlageBeschlussantrag, function (result) {
                     var keId = konditioneneinigung.KeId;
                     if (keId) {
-                        var cont = result.indexOf("@@KeId@@");
                         result = result.replace("@@KeId@@", keId);
                         result = result.replace("@@KeId2@@", keId);
                     }
@@ -705,14 +699,14 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
 
                     // Restliche Keys ersetzen
-                    Object.keys(konditioneneinigung).forEach(function (key, index) {
+                    Object.keys(konditioneneinigung).forEach(function (key) {
                         var value = konditioneneinigung[key];
 
                         if (value instanceof Date) {
                             result = result.replace("@@" + key + "@@", value.toLocaleDateString());
                         } else {
                             if (value) {
-                                if (!isNaN(value) && value.toString().indexOf('.') != -1) {
+                                if (!isNaN(value) && value.toString().indexOf(".") != -1) {
                                     result = result.replace("@@" + key + "@@", oNumberFormat.format(value));
                                 } else {
                                     result = result.replace("@@" + key + "@@", value);
@@ -725,7 +719,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
 
                     mietflaechenangabeHtml += "<tr>";
                     mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Lfd Nr<br>Split</b></td>";
-                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b</td>";
+                    mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b></td>";
                     mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart</b></td>";
                     mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br>HNF alternativ</b><br>FE</td>";
                     mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br>Angebotsmiete</b><br>WHG/FE</td>";
@@ -825,7 +819,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                 console.log(konditioneneinigung, "keToPrint");
 
                 var printableHtml = this.generatePrintableHtmlForKonditioneneinigung(konditioneneinigung, kostenarten, ertragsarten);
-                var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=1,status=0');
+                var printWindow = window.open("", "", "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=1,status=0");
                 printWindow.document.write(printableHtml);
                 printWindow.document.close();
                 printWindow.focus();
@@ -871,7 +865,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                             stufenListe = genehmigungen;
 
                             var printableHtml = _this.generatePrintableHtmlForBeschlussantrag(konditioneneinigung, kostenarten, ertragsarten, stufenListe);
-                            var printWindow = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=1,status=0');
+                            var printWindow = window.open("", "", "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=1,status=0");
                             printWindow.document.write(printableHtml);
                             printWindow.document.close();
                             printWindow.focus();
@@ -882,9 +876,7 @@ sap.ui.define(["ag/bpc/Deka/util/PrinterUtil",
                     .catch(function (oError) {
                         ErrorMessageUtil.showError(oError);
                     })
-                    .done(function(){
-
-                    });
+                    .done();
             }
         };
     });

@@ -1,45 +1,39 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG)
- * @Date: 2017-04-05 21:39:31
- * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-07-21 12:40:22
- */
 var formatter = sap.ui.core.format.NumberFormat.getFloatInstance({
-                style: 'Standard',
-                decimals: 2
-            });
+    style: "Standard",
+    decimals: 2
+});
 
 var myFormatter = {
-        formatDifferenz: function(a,b,unit) {
-            var oNumber = (a * 100 - b * 100) / 100;
+    formatDifferenz: function (a, b, unit) {
+        var oNumber = (a * 100 - b * 100) / 100;
 
-            var res = formatter.format(oNumber);
-            if(unit){
-                res = res + " " + unit;
-            }
-
-            return res;
-        },
-
-        formatHnfl: function(hnfl, hnflUnit, flMultiplikator, flSelected) {
-            var res;
-            if(hnflUnit === "ST"){
-                res = formatter.format(hnfl) + " " + hnflUnit;
-            }else{
-                var hnflConv = (hnfl * flMultiplikator * 100) / 100;
-
-                res = formatter.format(hnflConv) + " " + flSelected;
-            }
-
-            return res;
-        },
-
-        formatBetrag: function(betrag, waehrungsMultiplikator){
-            var res;
-            res = (betrag * waehrungsMultiplikator * 100) / 100;
-            res = formatter.format(res);
-            return res;
+        var res = formatter.format(oNumber);
+        if (unit) {
+            res = res + " " + unit;
         }
+
+        return res;
+    },
+
+    formatHnfl: function (hnfl, hnflUnit, flMultiplikator, flSelected) {
+        var res;
+        if (hnflUnit === "ST") {
+            res = formatter.format(hnfl) + " " + hnflUnit;
+        } else {
+            var hnflConv = (hnfl * flMultiplikator * 100) / 100;
+
+            res = formatter.format(hnflConv) + " " + flSelected;
+        }
+
+        return res;
+    },
+
+    formatBetrag: function (betrag, waehrungsMultiplikator) {
+        var res;
+        res = (betrag * waehrungsMultiplikator * 100) / 100;
+        res = formatter.format(res);
+        return res;
+    }
 };
 
 sap.ui.define([
@@ -52,12 +46,13 @@ sap.ui.define([
     "ag/bpc/Deka/util/ErrorMessageUtil",
     "ag/bpc/Deka/util/StaticData",
     "ag/bpc/Deka/util/TranslationUtil",
-    "ag/bpc/Deka/model/CustomNumberType"], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil) {
+    "ag/bpc/Deka/model/CustomNumberType"
+], function (Controller, MessageBox, PrinterUtil, Filter, NavigationPayloadUtil, DataProvider, ErrorMessageUtil, StaticData, TranslationUtil) {
 
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.KonditioneneinigungDetails", {
 
-        onInit: function(oEvent){
+        onInit: function(){
             var _this = this;
 
             this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
@@ -65,7 +60,7 @@ sap.ui.define([
 
             // View nach oben Scrollen, da die Scrollposition von vorherigen Anzeigen übernommen wird
             this.getView().addEventDelegate({
-                onAfterShow: function(oEvent) {
+                onAfterShow: function() {
                     _this.getView().byId("idKonditioneneinigungDetails").scrollTo(0, 0);
                 }
             });
@@ -109,7 +104,7 @@ sap.ui.define([
         initializeViewsettingsAsync: function(konditioneneinigung){
             var _this = this;
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve, reject) {
 
                 var viewsettings = {};
 
@@ -264,7 +259,7 @@ sap.ui.define([
             })
             .then(function(statuswerte){
                 _this.getView().getModel("form").setProperty("/statuswerte", _.filter(statuswerte, function(statuswert){
-                    return statuswert.FlgKeVa === 'KE';
+                    return statuswert.FlgKeVa === "KE";
                 }));
                 return Q.when(StaticData.ERTRAGSARTEN);
             })
@@ -287,7 +282,7 @@ sap.ui.define([
             .done();
         },
 
-        onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(oEvent){
+        onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(){
             var _this = this;
 
             var payload = NavigationPayloadUtil.takePayload();
@@ -323,7 +318,7 @@ sap.ui.define([
             })
             .then(function(statuswerte){
                 _this.getView().getModel("form").setProperty("/statuswerte", _.filter(statuswerte, function(statuswert){
-                    return statuswert.FlgKeVa === 'KE';
+                    return statuswert.FlgKeVa === "KE";
                 }));
                 return Q.when(StaticData.ERTRAGSARTEN);
             })
@@ -345,7 +340,7 @@ sap.ui.define([
 
         },
 
-        onKonditioneneinigungAnlegenAufBasisEinesMietvertrags: function(oEvent){
+        onKonditioneneinigungAnlegenAufBasisEinesMietvertrags: function(){
             var _this = this;
 
             var payload = NavigationPayloadUtil.takePayload();
@@ -408,7 +403,7 @@ sap.ui.define([
             })
             .then(function(statuswerte){
                 _this.getView().getModel("form").setProperty("/statuswerte", _.filter(statuswerte, function(statuswert){
-                    return statuswert.FlgKeVa === 'KE';
+                    return statuswert.FlgKeVa === "KE";
                 }));
                 return Q.when(StaticData.ERTRAGSARTEN);
             })
@@ -430,7 +425,7 @@ sap.ui.define([
 
         },
 
-        onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung: function(oEvent){
+        onKonditioneneinigungAnlegenAufBasisEinerKonditioneneinigung: function(){
             var _this = this;
 
             var payload = NavigationPayloadUtil.takePayload();
@@ -498,7 +493,7 @@ sap.ui.define([
             })
             .then(function(statuswerte){
                 _this.getView().getModel("form").setProperty("/statuswerte", _.filter(statuswerte, function(statuswert){
-                    return statuswert.FlgKeVa === 'KE';
+                    return statuswert.FlgKeVa === "KE";
                 }));
                 return Q.when(StaticData.ERTRAGSARTEN);
             })
@@ -573,7 +568,6 @@ sap.ui.define([
             var zeitspanne = item.getBindingContext("form").getObject();
             this.getView().getModel("form").setProperty("/viewsettings/zeitspanneSelected", zeitspanne);
 
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             _.map(KeToOb, function(object){
                 if(zeitspanne.Id === "J"){
@@ -594,7 +588,6 @@ sap.ui.define([
             var _this = this;
             var viewsettings = this.getView().getModel("form").getProperty("/viewsettings");
 
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             _.map(KeToOb, function(object){
                 var neueMiete = object.NhMiete * waehrung.Multiplikator;
@@ -620,7 +613,7 @@ sap.ui.define([
                 _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
 
             })
-            .catch(function(oError){
+            .catch(function(){
             })
             .done();
         },
@@ -632,7 +625,6 @@ sap.ui.define([
             var viewsettings = this.getView().getModel("form").getProperty("/viewsettings");
             var _this = this;
 
-            var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var KeToOb = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
             _.map(KeToOb, function(object){
                 if(object.HnflUnit !== StaticData.UNIT.STUECK){
@@ -665,26 +657,24 @@ sap.ui.define([
 
                     _this.getView().getModel("form").setProperty("/viewsettings", viewsettings);
                 })
-                .catch(function(oError){
+                .catch(function(){
                 })
                 .done();
 
         },
 
-        onBack: function(oEvent) {
+        onBack: function() {
             var modus = this.getView().getModel("form").getProperty("/modus");
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
             if(modus === "edit") {
-                DataProvider.deleteSperreAsync(ke.KeId, '');
+                DataProvider.deleteSperreAsync(ke.KeId, "");
             }
 
             this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
         },
 
         handleTableSettingsButton: function(oEvent){
-            var _this = this;
-
             // create popover
 			if (! this._tableViewSettingsPopover) {
 				this._tableViewSettingsPopover = sap.ui.xmlfragment("ag.bpc.Deka.view.KonditioneneinigungUnitsPopover", this);
@@ -699,10 +689,9 @@ sap.ui.define([
             jQuery.sap.delayedCall(0, this, function () {
                 this._tableViewSettingsPopover.openBy(oButton);
             });
-
         },
 
-        onBearbeitenButtonPress: function(oEvent){
+        onBearbeitenButtonPress: function(){
             var _this = this;
 
             var konditioneneinigung = _this.getView().getModel("form").getProperty("/konditioneneinigung");
@@ -720,7 +709,7 @@ sap.ui.define([
             .done();
         },
 
-        onSpeichernButtonPress: function(oEvent){
+        onSpeichernButtonPress: function(){
             var validationSuccess = this.validateForm();
 
             if(validationSuccess) {
@@ -770,7 +759,7 @@ sap.ui.define([
             }
 
             var payload = {
-                Action: 'CRE',
+                Action: "CRE",
 
                 Bukrs: ke.Bukrs,
                 WeId: ke.WeId,
@@ -829,7 +818,7 @@ sap.ui.define([
 
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
-                if(error.type === 'WARNING'){
+                if(error.type === "WARNING"){
                     _this.showConfirmationDialog(error, function(){
                         _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
                         _this.speichern();
@@ -864,7 +853,7 @@ sap.ui.define([
             }
 
             var payload = {
-                Action: 'UPD',
+                Action: "UPD",
 
                 KeId: ke.KeId,
                 Bukrs: ke.Bukrs,
@@ -920,7 +909,7 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
 
             DataProvider.createKonditioneneinigungAsync(payload).then(function(){
-                return DataProvider.deleteSperreAsync(ke.KeId, '');
+                return DataProvider.deleteSperreAsync(ke.KeId, "");
             })
             .then(function(){
                 sap.ui.core.BusyIndicator.hide();
@@ -931,7 +920,7 @@ sap.ui.define([
 
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
-                if(error.type === 'WARNING'){
+                if(error.type === "WARNING"){
                     _this.showConfirmationDialog(error, function(){
                         _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
                         _this.speichern();
@@ -945,7 +934,6 @@ sap.ui.define([
         },
 
         showConfirmationDialog: function(oError, onProceed, onAbort){
-            var _this = this;
 
             var dialog = new sap.m.Dialog({
 				title: TranslationUtil.translate("WARNUNG"),
@@ -958,7 +946,7 @@ sap.ui.define([
                     text: TranslationUtil.translate("FORTFAHREN"),
                     press: function () {
                         dialog.close();
-                        if(typeof onProceed === 'function'){
+                        if(typeof onProceed === "function"){
                             onProceed();
                         }
                     }
@@ -967,7 +955,7 @@ sap.ui.define([
                     text: TranslationUtil.translate("ABBRECHEN"),
 					press: function () {
 						dialog.close();
-                        if(typeof onAbort === 'function'){
+                        if(typeof onAbort === "function"){
                             onAbort();
                         }
 					}
@@ -981,7 +969,6 @@ sap.ui.define([
         },
 
         showDeleteConfirmationDialog: function(onProceed, onAbort){
-            var _this = this;
 
             var dialog = new sap.m.Dialog({
 				title: TranslationUtil.translate("HINWEIS"),
@@ -994,7 +981,7 @@ sap.ui.define([
                     text: TranslationUtil.translate("JA"),
                     press: function () {
                         dialog.close();
-                        if(typeof onProceed === 'function'){
+                        if(typeof onProceed === "function"){
                             onProceed();
                         }
                     }
@@ -1003,7 +990,7 @@ sap.ui.define([
                     text: TranslationUtil.translate("NEIN"),
 					press: function () {
 						dialog.close();
-                        if(typeof onAbort === 'function'){
+                        if(typeof onAbort === "function"){
                             onAbort();
                         }
 					}
@@ -1017,7 +1004,6 @@ sap.ui.define([
         },
 
         showReeditConfirmationDialog: function(onProceed, onAbort){
-            var _this = this;
 
             var dialog = new sap.m.Dialog({
 				title: TranslationUtil.translate("HINWEIS"),
@@ -1030,7 +1016,7 @@ sap.ui.define([
                     text: TranslationUtil.translate("JA"),
                     press: function () {
                         dialog.close();
-                        if(typeof onProceed === 'function'){
+                        if(typeof onProceed === "function"){
                             onProceed();
                         }
                     }
@@ -1039,7 +1025,7 @@ sap.ui.define([
                     text: TranslationUtil.translate("NEIN"),
 					press: function () {
 						dialog.close();
-                        if(typeof onAbort === 'function'){
+                        if(typeof onAbort === "function"){
                             onAbort();
                         }
 					}
@@ -1237,7 +1223,7 @@ sap.ui.define([
             return validationResult;
         },
 
-        onGueltigkeitVerlaengernButtonPress: function(oEvent){
+        onGueltigkeitVerlaengernButtonPress: function(){
             var _this = this;
 
 			var dialog = new sap.m.Dialog({
@@ -1248,10 +1234,10 @@ sap.ui.define([
 					new sap.m.Text({
                         text: "Bitte geben Sie das neue Gültigkeitsdatum der Konditioneneinigung an.",
                     }), //.addStyleClass("sapUiSmallMarginBottom")
-                    new sap.m.DatePicker('idGueltigkeitsDatumDatePicker', {
+                    new sap.m.DatePicker("idGueltigkeitsDatumDatePicker", {
                         placeholder: " ",
                         change: function(oEvent) {
-							var validDate = oEvent.getParameter('valid');
+							var validDate = oEvent.getParameter("valid");
                             var parent = oEvent.getSource().getParent();
 							parent.getBeginButton().setEnabled(validDate);
 						},
@@ -1261,7 +1247,7 @@ sap.ui.define([
                     text: TranslationUtil.translate("AKZEPTIEREN"),
                     enabled: false,
 					press: function () {
-                        var gueltigkeitsdatum = sap.ui.getCore().byId('idGueltigkeitsDatumDatePicker').getDateValue();
+                        var gueltigkeitsdatum = sap.ui.getCore().byId("idGueltigkeitsDatumDatePicker").getDateValue();
 
                         _this.getView().getModel("form").setProperty("/konditioneneinigung/GueltigkKe", gueltigkeitsdatum);
 
@@ -1282,7 +1268,7 @@ sap.ui.define([
 			dialog.open();
         },
 
-        onAbbrechenButtonPress: function(evt){
+        onAbbrechenButtonPress: function(){
             var _this = this;
 
             var modus =_this.getView().getModel("form").getProperty("/modus");
@@ -1300,7 +1286,7 @@ sap.ui.define([
                         if(modus === "new") {
                             window.history.go(-1);
                         } else if(modus === "edit") {
-                            DataProvider.deleteSperreAsync(ke.KeId, '')
+                            DataProvider.deleteSperreAsync(ke.KeId, "")
                             .then(function(){
                                 _this.getView().getModel("form").setData(_this._formDataBackup);
                                 _this.getView().getModel("form").setProperty("/modus", "show");
@@ -1318,7 +1304,7 @@ sap.ui.define([
 
         onMietflaechenAngabenLoeschenButtonPress: function(oEvent){
 
-            var mietflaechenangabenToDelete = oEvent.getParameter('listItem').getBindingContext("form").getObject();
+            var mietflaechenangabenToDelete = oEvent.getParameter("listItem").getBindingContext("form").getObject();
             var mietflaechenangaben = this.getView().getModel("form").getProperty("/konditioneneinigung/KeToOb");
 
             mietflaechenangaben = _.reject(mietflaechenangaben, function(mietflaechenangabe){
@@ -1331,7 +1317,7 @@ sap.ui.define([
             this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
         },
 
-        onMietflaechenAngabeHinzufuegenButtonPress: function(oEvent){
+        onMietflaechenAngabeHinzufuegenButtonPress: function(){
             var _this = this;
 
             if (! this._mietflaechenSelektionDialog) {
@@ -1400,13 +1386,14 @@ sap.ui.define([
                     var dialogModel = this._mietflaechenSelektionDialog.getModel();
                     var WeCurrency = dialogModel.getProperty("/WeCurrency");
                     var WeUnit = dialogModel.getProperty("/WeUnit");
+
                     if( WeCurrency !== KeWaehrung || WeUnit !== KeUnit) {
                         var _this = this;
 
                         var currenyMultiplicator = 1;
                         var unitMultiplicator    = 1;
 
-                        function resolveFunction() {
+                        var resolveFunction = function() {
                             selectedItems.forEach(function(item){
                                 var mietflaechenangabe = item.getBindingContext().getObject();
 
@@ -1447,7 +1434,8 @@ sap.ui.define([
                             // Verteilen Button rot hervorheben
                             _this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Reject);
                         }
-                        if( WeCurrency !== KeWaehrung && WeUnit !== KeUnit ) { //Beides umrechnen
+
+                        if( WeCurrency !== KeWaehrung && WeUnit !== KeUnit ) { // beides umrechnen
                             DataProvider.readExchangeRateSetAsync(WeCurrency).then(function(waehrungen){
                                 if(waehrungen.length > 0){
                                     var ausgangsWaehrung = _.find(waehrungen, function(waehrung){
@@ -1458,7 +1446,7 @@ sap.ui.define([
                                         currenyMultiplicator = ausgangsWaehrung.Multiplikator;
                                     }
                                 }
-                                return DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheitKey);
+                                return DataProvider.readFlaecheSetAsync(WeUnit);
                             })
                             .then(function(flaecheneinheiten){
                                 if(flaecheneinheiten.length > 0){
@@ -1472,7 +1460,7 @@ sap.ui.define([
                                 }
                                 resolveFunction();
                             })
-                            .catch(function(oError){
+                            .catch(function(){
                             })
                             .done();
                         }
@@ -1489,7 +1477,7 @@ sap.ui.define([
                                 }
                                 resolveFunction();
                             })
-                            .catch(function(oError){
+                            .catch(function(){
                             })
                             .done();
                         }
@@ -1506,7 +1494,7 @@ sap.ui.define([
                                 }
                                 resolveFunction();
                             })
-                            .catch(function(oError){
+                            .catch(function(){
                             })
                             .done();
                         }
@@ -1561,7 +1549,7 @@ sap.ui.define([
 			oBinding.filter([combinedOrFilter]);
         },
 
-        onAusbaukostenVerteilenButtonPress: function(oEvent){
+        onAusbaukostenVerteilenButtonPress: function(){
             var _this = this;
 
             if (!this._ausbaukostenVerteilenDialog) {
@@ -1606,7 +1594,7 @@ sap.ui.define([
             }
         },
 
-        onAusbaukostenVerteilenFragmentAkzeptierenButtonPress: function(oEvent){
+        onAusbaukostenVerteilenFragmentAkzeptierenButtonPress: function(){
 
             this._ausbaukostenVerteilenDialog.close();
 
@@ -1668,11 +1656,11 @@ sap.ui.define([
             this.getView().byId("idButtonAusbaukostenVerteilen").setType(sap.m.ButtonType.Default);
         },
 
-        onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(oEvent){
+        onAusbaukostenVerteilenFragmentAbbrechenButtonPress: function(){
             this._ausbaukostenVerteilenDialog.close();
         },
 
-        onDruckenButtonPress: function(oEvent){
+        onDruckenButtonPress: function(){
             var konditioneneinigung = this.getView().getModel("form").getProperty("/konditioneneinigung");
             var kostenarten = this.getView().getModel("form").getProperty("/kostenarten");
             var ertragsarten = this.getView().getModel("form").getProperty("/ertragsarten");
@@ -1680,15 +1668,12 @@ sap.ui.define([
             PrinterUtil.printKonditioneneinigung(konditioneneinigung, kostenarten, ertragsarten);
         },
 
-        onBeschlussantragButtonPress: function(oEvent){
+        onBeschlussantragButtonPress: function(){
             var konditioneneinigung = this.getView().getModel("form").getProperty("/konditioneneinigung");
-            var kostenarten = this.getView().getModel("form").getProperty("/kostenarten");
-            var ertragsarten = this.getView().getModel("form").getProperty("/ertragsarten");
-
             PrinterUtil.printBeschlussantrag(konditioneneinigung);
         },
 
-        onUebernehmenButtonPress: function(oEvent){
+        onUebernehmenButtonPress: function(){
             var _this = this;
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
@@ -1705,7 +1690,7 @@ sap.ui.define([
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
-                if(error.type === 'WARNING'){
+                if(error.type === "WARNING"){
                     _this.showConfirmationDialog(error, function(){
                         _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
                         _this.onZurGenehmigungVorlegenButtonPress();
@@ -1718,11 +1703,11 @@ sap.ui.define([
             .done();
         },
 
-        onFavoritButtonPress: function(oEvent){
+        onFavoritButtonPress: function(){
             var _this = this;
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
-            var promise = ke.Favorit ? DataProvider.deleteFavoritAsync(ke.KeId, '') : DataProvider.createFavoritAsync({KeId: ke.KeId});
+            var promise = ke.Favorit ? DataProvider.deleteFavoritAsync(ke.KeId, "") : DataProvider.createFavoritAsync({KeId: ke.KeId});
 
             promise.then(function(){
                 var message = ke.Favorit ? TranslationUtil.translate("KE_VON_FAVORITEN_ENTFERNT") : TranslationUtil.translate("KE_ZU_FAVORITEN_HINZUGEFUEGT");
@@ -1739,7 +1724,7 @@ sap.ui.define([
             .done();
         },
 
-        onZurGenehmigungVorlegenButtonPress: function(oEvent){
+        onZurGenehmigungVorlegenButtonPress: function(){
             var _this = this;
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
@@ -1761,7 +1746,7 @@ sap.ui.define([
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
-                if(error.type === 'WARNING'){
+                if(error.type === "WARNING"){
                     _this.showConfirmationDialog(error, function(){
                         _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
                         _this.onZurGenehmigungVorlegenButtonPress();
@@ -1774,7 +1759,7 @@ sap.ui.define([
             .done();
         },
 
-        onGenehmigungZurueckziehenButtonPress: function(oEvent){
+        onGenehmigungZurueckziehenButtonPress: function(){
             var _this = this;
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
@@ -1787,9 +1772,9 @@ sap.ui.define([
 					new sap.m.Text({
                         text: TranslationUtil.translate("KE_GENEHMIGUNG_ZURUECKZIEHEN_GRUND")
                     }),
-					new sap.m.TextArea('idGenehmigungZurueckziehenBegruendungTextArea', {
+					new sap.m.TextArea("idGenehmigungZurueckziehenBegruendungTextArea", {
 						liveChange: function(oEvent) {
-							var sText = oEvent.getParameter('value');
+							var sText = oEvent.getParameter("value");
 							var parent = oEvent.getSource().getParent();
 							parent.getBeginButton().setEnabled(sText.length > 0);
 						},
@@ -1802,7 +1787,7 @@ sap.ui.define([
 					enabled: false,
 					press: function () {
 
-                        var sText = sap.ui.getCore().byId('idGenehmigungZurueckziehenBegruendungTextArea').getValue();
+                        var sText = sap.ui.getCore().byId("idGenehmigungZurueckziehenBegruendungTextArea").getValue();
 
                         DataProvider.updateKonditioneneinigungAsync(ke.KeId, ke.Bukrs, {
                             KeId: ke.KeId,
@@ -1823,7 +1808,7 @@ sap.ui.define([
                         .catch(function(oError){
                             var error = ErrorMessageUtil.parseErrorMessage(oError);
 
-                            if(error.type === 'WARNING'){
+                            if(error.type === "WARNING"){
                                 _this.showConfirmationDialog(error, function(){
                                     _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
                                     _this.onGenehmigungZurueckziehenButtonPress();
@@ -1851,7 +1836,7 @@ sap.ui.define([
 			dialog.open();
         },
 
-        onGenehmigungsprozessButtonPress: function(oEvent){
+        onGenehmigungsprozessButtonPress: function(){
 
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
@@ -1861,7 +1846,7 @@ sap.ui.define([
             }, true);
         },
 
-        onNichtGenehmigenButtonPress: function(oEvent){
+        onNichtGenehmigenButtonPress: function(){
             var _this = this;
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
@@ -1875,10 +1860,9 @@ sap.ui.define([
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_NICHT_GENEHMIGT_SUCCESS"), {
                     title: TranslationUtil.translate("HINWEIS"),
-                    onClose: function(oAction){
+                    onClose: function(){
                         _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
                     }
-
                 });
 
                 //_this.konditioneneinigungAnzeigen(ke.KeId, ke.Bukrs);
@@ -1886,7 +1870,7 @@ sap.ui.define([
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
-                if(error.type === 'WARNING'){
+                if(error.type === "WARNING"){
                     _this.showConfirmationDialog(error, function(){
                         _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
                         _this.onNichtGenehmigenButtonPress();
@@ -1899,7 +1883,7 @@ sap.ui.define([
             .done();
         },
 
-        onGenehmigenButtonPress: function(oEvent){
+        onGenehmigenButtonPress: function(){
             var _this = this;
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
@@ -1913,7 +1897,7 @@ sap.ui.define([
             .then(function(){
                 MessageBox.information(TranslationUtil.translate("KE_GENEHMIGT_SUCCESS"), {
                     title: TranslationUtil.translate("HINWEIS"),
-                    onClose: function(oAction){
+                    onClose: function(){
                         _this.getOwnerComponent().getRouter().navTo("konditioneneinigungSelektion", null, true);
                     }
                 });
@@ -1924,7 +1908,7 @@ sap.ui.define([
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
-                if(error.type === 'WARNING'){
+                if(error.type === "WARNING"){
                     _this.showConfirmationDialog(error, function(){
                         _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
                         _this.onGenehmigenButtonPress();
@@ -1937,7 +1921,7 @@ sap.ui.define([
             .done();
         },
 
-        onReeditButtonPress: function(oEvent){
+        onReeditButtonPress: function(){
             var _this = this;
             this.showReeditConfirmationDialog(function(){
                 var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");
@@ -1959,7 +1943,7 @@ sap.ui.define([
                 .catch(function(oError){
                     var error = ErrorMessageUtil.parseErrorMessage(oError);
 
-                    if(error.type === 'WARNING'){
+                    if(error.type === "WARNING"){
                         _this.showConfirmationDialog(error, function(){
                             _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
                             _this.onReeditButtonPress();
@@ -1973,7 +1957,7 @@ sap.ui.define([
             });
         },
 
-        onReaktivierenButtonPress: function(oEvent){
+        onReaktivierenButtonPress: function(){
             var _this = this;
             var ke = this.getView().getModel("form").getProperty("/konditioneneinigung");
 
@@ -1994,7 +1978,7 @@ sap.ui.define([
             .catch(function(oError){
                 var error = ErrorMessageUtil.parseErrorMessage(oError);
 
-                if(error.type === 'WARNING'){
+                if(error.type === "WARNING"){
                     _this.showConfirmationDialog(error, function(){
                         _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
                         _this.onReaktivierenButtonPress();
@@ -2008,7 +1992,7 @@ sap.ui.define([
         },
 
 
-        onLoeschenButtonPress: function(oEvent){
+        onLoeschenButtonPress: function(){
             var _this = this;
             this.showDeleteConfirmationDialog(function(){
                 var ke = _this.getView().getModel("form").getProperty("/konditioneneinigung");
@@ -2030,7 +2014,7 @@ sap.ui.define([
                 .catch(function(oError){
                     var error = ErrorMessageUtil.parseErrorMessage(oError);
 
-                    if(error.type === 'WARNING'){
+                    if(error.type === "WARNING"){
                         _this.showConfirmationDialog(error, function(){
                             _this.getView().getModel("form").setProperty("/konditioneneinigung/Confirmation", true);
                             _this.onLoeschenButtonPress();

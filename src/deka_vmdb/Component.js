@@ -1,9 +1,3 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG)
- * @Date: 2017-04-05 21:45:36
- * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-06-22 18:05:52
- */
 sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/model/resource/ResourceModel",
@@ -11,10 +5,11 @@ sap.ui.define([
 	"ag/bpc/Deka/util/DataProvider",
 	"ag/bpc/Deka/util/AppInitHelper",
 	"ag/bpc/Deka/util/StaticData",
-
+	/* ... */
 	"ag/bpc/Deka/ext/js/q",
 	"ag/bpc/Deka/ext/js/underscore-min",
-	"ag/bpc/Deka/ext/js/SheetJS/xlsx.core.min"], function (UIComponent, ResourceModel, MockServer, DataProvider, AppInitHelper, StaticData) {
+	"ag/bpc/Deka/ext/js/SheetJS/xlsx.core.min"
+], function (UIComponent, ResourceModel, MockServer, DataProvider, AppInitHelper, StaticData) {
 
 	"use strict";
 	return UIComponent.extend("ag.bpc.Deka.Component", {
@@ -33,7 +28,7 @@ sap.ui.define([
 			_this.initNavigationModel();
 
 			_this.initDataProvider({
-				useMockServer: (document.location.hostname === 'localhost')
+				useMockServer: (document.location.hostname === "localhost")
 			});
 
 			StaticData.init();
@@ -99,12 +94,8 @@ sap.ui.define([
 		},
 
 		initI18nModel: function(){
-			// Mehrsprachigkeit
-			var sLocale = sap.ui.getCore().getConfiguration().getLanguage(); // Anmeldesprache ermitteln
-
 			var oi18nModel = new ResourceModel({
 				bundleName: "ag.bpc.Deka.i18n.translation"
-				//,bundleLocale : "en-US"  // zum Test "de" oder "en" eintragen
 			});
 			sap.ui.getCore().setModel(oi18nModel, "i18n");
 		},
@@ -178,4 +169,5 @@ sap.ui.define([
 		}
 
 	});
+
 });

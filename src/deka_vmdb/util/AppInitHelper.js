@@ -1,10 +1,3 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:44:36 
- * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-05-04 21:13:35
- */
-
 /* Deprecated */
 sap.ui.define([], function() {
 
@@ -14,12 +7,12 @@ sap.ui.define([], function() {
         loadExternalFiles: function(appBasePath, fnSuccess, fnError){
             var _this = this;
 
-            jQuery.sap.includeScript(appBasePath + '/ext/js/q.js', null, function(){
+            jQuery.sap.includeScript(appBasePath + "/ext/js/q.js", null, function(){
 
                 Q.all([
-                    _this.loadExternalLibraryAsync(appBasePath + '/ext/js/underscore-min.js'),
-                    _this.loadExternalLibraryAsync(appBasePath + '/ext/js/SheetJS/xlsx.core.min.js'),
-                    _this.loadExternalStylesheetAsync(appBasePath + '/ext/css/style.css')
+                    _this.loadExternalLibraryAsync(appBasePath + "/ext/js/underscore-min.js"),
+                    _this.loadExternalLibraryAsync(appBasePath + "/ext/js/SheetJS/xlsx.core.min.js"),
+                    _this.loadExternalStylesheetAsync(appBasePath + "/ext/css/style.css")
                 ])
                 .then(fnSuccess)
                 .catch(fnError)
@@ -32,16 +25,17 @@ sap.ui.define([], function() {
          * Daher voerst auskommentiert:  _this.loadExternalStylesheetAsync('./css/style.css')
          */
         loadExternalStylesheetAsync: function(path){
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 jQuery.sap.includeStyleSheet(path, null, resolve, reject);
             });
         },
 
         loadExternalLibraryAsync: function(path){
-            return Q.Promise(function(resolve, reject, notify){
+            return Q.Promise(function(resolve, reject){
                 jQuery.sap.includeScript(path, null, resolve, reject);
             });
         }
 
     };
+
 });

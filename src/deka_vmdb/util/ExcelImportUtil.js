@@ -1,25 +1,12 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG)
- * @Date: 2017-04-05 21:45:06
- * @Last Modified by:   Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-04-05 21:45:06
- */
-sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
+sap.ui.define([], function () {
 
     "use strict";
 	return {
 
-        /*
-        oParams = {
-            file: ..
-            success: ..
-            error: ..
-        }
-        */
         importVermietungsaktivitaetFromFile: function(file){
             var that = this;
 
-            return Q.Promise(function(resolve, reject, notify) {
+            return Q.Promise(function(resolve) {
 
                 var reader = new FileReader();
 
@@ -35,7 +22,7 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
 
                     // Chrome/Firefox
                     // var data = e.target.result;
-                    var workbook = XLSX.read(data, {type: 'binary'});
+                    var workbook = XLSX.read(data, {type: "binary"});
 
                     var vaWorksheet = workbook.Sheets.va_daten;
                     var mfWorksheet = workbook.Sheets.mo_daten;
@@ -74,7 +61,7 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
                     for(row=2; row<100; row++) {
                         var mietflaeche_ca = XLSX.utils.encode_cell({c:0, r:row});
 
-                        if(mfWorksheet[mietflaeche_ca] !== undefined && mfWorksheet[mietflaeche_ca].v !== ''){
+                        if(mfWorksheet[mietflaeche_ca] !== undefined && mfWorksheet[mietflaeche_ca].v !== ""){
                             var mietflaeche = {};
 
                             for(col=0; col<100; col++) {
@@ -161,9 +148,9 @@ sap.ui.define(["ag/bpc/Deka/util/ExcelImportUtil"], function (ExcelImportUtil) {
         checkForNumber: function(value){
             if(!this.checkForDate(value)){
                 var oNumberFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
-                            style: 'Standard',
-                            decimals: 2,
-                            minIntegerDigits: 2
+                    style: "Standard",
+                    decimals: 2,
+                    minIntegerDigits: 2
                 });
 
                 var parsedNumber = oNumberFormat.parse(value);

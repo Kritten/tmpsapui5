@@ -1,31 +1,26 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG) 
- * @Date: 2017-04-05 21:43:36 
- * @Last Modified by:   Christian Hoff (best practice consulting AG) 
- * @Last Modified time: 2017-04-05 21:43:36 
- */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"ag/bpc/Deka/util/DataProvider",
-	"ag/bpc/Deka/util/ErrorMessageUtil"], function (Controller, DataProvider, ErrorMessageUtil) {
-	
+	"ag/bpc/Deka/util/ErrorMessageUtil"
+], function (Controller, DataProvider, ErrorMessageUtil) {
+
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.Sperren", {
 
-		onInit: function(evt){
+		onInit: function(){
             jQuery.sap.log.info(".. ag.bpc.Deka.controller.Sperren .. onInit");
-            
-            this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");          
-            
+
+            this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
+
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("sperren").attachPatternMatched(this.onPatternMatched, this);
 		},
-		
-		onBack: function(oEvent){
+
+		onBack: function(){
 			this.getOwnerComponent().getRouter().navTo("startseite", null, true);
 		},
-		
-		onPatternMatched: function(oEvent){
+
+		onPatternMatched: function(){
 			var formModel = new sap.ui.model.json.JSONModel({
 				sperren: []
 			});
@@ -33,8 +28,8 @@ sap.ui.define([
 
 			this.ladeSperren();
 		},
-		
-		onSperreAufhebenButtonPress: function(oEvent){
+
+		onSperreAufhebenButtonPress: function(){
 			var _this = this;
 
 			var items = _this.getView().byId("sperrenTable").getSelectedItems();
@@ -71,6 +66,6 @@ sap.ui.define([
 			})
 			.done();
 		}
-        
+
 	});
 });

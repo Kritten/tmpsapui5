@@ -1,9 +1,3 @@
-/*
- * @Author: Christian Hoff (best practice consulting AG)
- * @Date: 2017-04-05 21:44:08
- * @Last Modified by: Christian Hoff (best practice consulting AG)
- * @Last Modified time: 2017-06-22 18:00:30
- */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/Filter",
@@ -13,11 +7,13 @@ sap.ui.define([
 	"ag/bpc/Deka/util/DataProvider",
 	"ag/bpc/Deka/util/StaticData",
 	"ag/bpc/Deka/util/ErrorMessageUtil",
-	"ag/bpc/Deka/util/TranslationUtil"], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
+	"ag/bpc/Deka/util/TranslationUtil"
+], function (Controller, Filter, MessageToast, ExcelImportUtil, NavigationPayloadUtil, DataProvider, StaticData, ErrorMessageUtil, TranslationUtil) {
 
 	"use strict";
 	return Controller.extend("ag.bpc.Deka.controller.VermietungsaktivitaetSelektion", {
-		onInit: function(evt){
+
+		onInit: function(){
 			this.getView().setModel(sap.ui.getCore().getModel("i18n"), "i18n");
 			this.getView().setModel(sap.ui.getCore().getModel("text"), "text");
 
@@ -25,11 +21,11 @@ sap.ui.define([
 			oRouter.getRoute("vermietungsaktivitaetSelektion").attachPatternMatched(this.onPatternMatched, this);
 		},
 
-		onPatternMatched: function(oEvent){
+		onPatternMatched: function(){
 			var _this = this;
 
 			StaticData.USER.then(function(user){
-				_this.getView().byId('idVaAnlagePanel').setVisible(user.BtnAm);
+				_this.getView().byId("idVaAnlagePanel").setVisible(user.BtnAm);
 				return DataProvider.readVermSelSetAsync();
 			})
 			.then(function(vermietungsaktivitaeten){
@@ -71,18 +67,16 @@ sap.ui.define([
             .done();
 		},
 
-		onBack: function(evt){
+		onBack: function(){
 			this.getOwnerComponent().getRouter().navTo("startseite", null, true);
 		},
 
 		// Auswahl der anzuzeigenden VAs
-		onComboBoxChange : function(evt) {
+		onComboBoxChange : function() {
 			this.applyFilters();
 		},
 
-		onAnlegenPress : function (oEvent) {
-			var _this = this;
-
+		onAnlegenPress : function () {
 			// Holt über die ElementID die Radio Button Group
 			var oRBG = this.getView().byId("RBG_Anlage");
 			var idx = oRBG.getSelectedIndex();
@@ -232,15 +226,15 @@ sap.ui.define([
 
 		},
 
-		onExcelImportDialogAnlegenButtonPress: function(oEvent){
+		onExcelImportDialogAnlegenButtonPress: function(){
 			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenImport");
 		},
 
-		onExcelImportDialogAbbrechenButtonPress: function(oEvent){
+		onExcelImportDialogAbbrechenButtonPress: function(){
 			this._excelImportDialog.close();
 		},
 
-		onExcelImportDialogAfterClose: function(oEvent){
+		onExcelImportDialogAfterClose: function(){
 			this._excelImportDialog.destroy();
 			delete this._excelImportDialog;
 		},
@@ -336,7 +330,7 @@ sap.ui.define([
 		// Klick auf eine Zeile in der Tabelle
 		onItemPress : function(oEvent) {
 
-			var vermietungsaktivitaet = oEvent.getParameter("listItem").getBindingContext('vermSel').getObject();
+			var vermietungsaktivitaet = oEvent.getParameter("listItem").getBindingContext("vermSel").getObject();
 
 			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetDetails", {
 				VaId: vermietungsaktivitaet.VaId,
@@ -358,7 +352,7 @@ sap.ui.define([
 		},
 
 
-		onFacetFilterListClose: function(oEvent){
+		onFacetFilterListClose: function(){
 			this.applyFilters();
 		},
 
