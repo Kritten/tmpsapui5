@@ -1620,7 +1620,7 @@ sap.ui.define([
                                     currenyMultiplicator = ausgangsWaehrung.Multiplikator;
                                 }
                             }
-                            return DataProvider.readFlaecheSetAsync(ausgangsFlaecheneinheitKey);
+                            return DataProvider.readFlaecheSetAsync(WeUnit);
                         })
                         .then(function(flaecheneinheiten){
                             if(flaecheneinheiten.length > 0){
