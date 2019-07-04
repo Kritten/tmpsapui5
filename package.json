@@ -10,6 +10,6 @@
   "author": "Christian Hoff",
   "license": "ISC",
   "devDependencies": {
-    "jshint": "^2.10.2"
+    "eslint": "^6.0.1"
   }
 }

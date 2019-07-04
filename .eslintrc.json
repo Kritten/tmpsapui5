@@ -1,0 +1,20 @@
+{
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "sap": "readonly",
+    "Q": "readonly",
+    "_": "readonly",
+    "jQuery": "readonly",
+    "Uint8Array": "readonly",
+    "XLSX": "readonly"
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "rules": {
+    "no-console": 0,
+    "quotes": ["error", "double"]
+  }
+}
