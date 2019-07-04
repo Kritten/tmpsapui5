@@ -603,10 +603,10 @@
                         press="onDruckenButtonPress"
                         visible="{= (${form>/modus} === 'show') }" />
 
-                <Button text="{i18n>LOESCHEN}"
+                <Button text="{i18n>VA_DEAKTIVIEREN}"
                         press="onLoeschenButtonPress"
                         type="Reject"
-                        visible="{= (${form>/modus} === 'show') }" />
+                        visible="{= (${form>/modus} === 'show') &amp;&amp; ${form>/vermietungsaktivitaet/BtnDeak} }" />
 
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
