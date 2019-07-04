@@ -603,6 +603,11 @@
                         press="onDruckenButtonPress"
                         visible="{= (${form>/modus} === 'show') }" />
 
+                <Button text="{i18n>LOESCHEN}"
+                        press="onLoeschenButtonPress"
+                        type="Reject"
+                        visible="{= (${form>/modus} === 'show') }" />
+
                 <ToolbarSpacer visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
 
                 <Button text="{i18n>SPEICHERN}"
