@@ -112,8 +112,7 @@ sap.ui.define([
                 var ausgangsWaehrungKey = konditioneneinigung.Currency;
                 var ausgangsFlaecheneinheitKey = konditioneneinigung.Unit;
 
-                Q.when(StaticData.ZEITSPANNEN)
-                .then(function(zeitspannen){
+                Q.when(StaticData.ZEITSPANNEN).then(function(zeitspannen){
 
                     viewsettings.zeitspannen = zeitspannen;
 
@@ -249,8 +248,7 @@ sap.ui.define([
 
             sap.ui.core.BusyIndicator.show();
 
-            DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
-            .then(function(konditioneneinigung){
+            DataProvider.readKonditioneneinigungAsync(Bukrs, KeId).then(function(konditioneneinigung){
                 _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
                 return _this.initializeViewsettingsAsync(konditioneneinigung);
             })
@@ -299,8 +297,7 @@ sap.ui.define([
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
 
-            DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId)
-            .then(function(wirtschaftseinheit){
+            DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId).then(function(wirtschaftseinheit){
 
                 var konditioneneinigung = _this.newKonditioneneinigung();
 
@@ -358,8 +355,7 @@ sap.ui.define([
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
 
-            DataProvider.readMietvertragAsync(WeId, Bukrs, MvId)
-            .then(function(mietvertrag){
+            DataProvider.readMietvertragAsync(WeId, Bukrs, MvId).then(function(mietvertrag){
 
                 var konditioneneinigung = _this.newKonditioneneinigung();
                 _this.getView().getModel("form").setProperty("/konditioneneinigung", konditioneneinigung);
@@ -442,8 +438,7 @@ sap.ui.define([
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
 
-            DataProvider.readKonditioneneinigungAsync(Bukrs, KeId)
-            .then(function(basisKe){
+            DataProvider.readKonditioneneinigungAsync(Bukrs, KeId).then(function(basisKe){
 
                 var ke = _this.newKonditioneneinigung();
 
@@ -696,8 +691,7 @@ sap.ui.define([
 
             var konditioneneinigung = _this.getView().getModel("form").getProperty("/konditioneneinigung");
 
-            DataProvider.createSperreAsync({KeId: konditioneneinigung.KeId})
-            .then(function(){
+            DataProvider.createSperreAsync({KeId: konditioneneinigung.KeId}).then(function(){
                 // Alten Zustand sichern für eventuelle Wiederherstellung
                 var formData = _this.getView().getModel("form").getData();
                 _this._formDataBackup = jQuery.extend(true, {}, formData);
@@ -1286,8 +1280,7 @@ sap.ui.define([
                         if(modus === "new") {
                             window.history.go(-1);
                         } else if(modus === "edit") {
-                            DataProvider.deleteSperreAsync(ke.KeId, "")
-                            .then(function(){
+                            DataProvider.deleteSperreAsync(ke.KeId, "").then(function(){
                                 _this.getView().getModel("form").setData(_this._formDataBackup);
                                 _this.getView().getModel("form").setProperty("/modus", "show");
                             })
