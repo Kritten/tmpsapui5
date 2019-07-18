@@ -96,8 +96,8 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
                 error.text = (typeof oError === "string") ? oError : JSON.stringify(oError);
             }
 
-            // Newlines Werden neuerdings vom Gateway escaped. Daher unescapen
-            error.text = error.text.replace("\\n", "\n");
+            // Newlines Werden neuerdings vom Gateway escaped. Daher unescapen. Auf komische Weise
+            error.text = error.text.split("\\n").join("\n");
 
             return error;
         }
