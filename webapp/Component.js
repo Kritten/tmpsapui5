@@ -28,8 +28,8 @@ sap.ui.define([
 			that.initNavigationModel();
 
 			that.initDataProvider({
-				// useMockServer: true
-				useMockServer: (document.location.hostname === "localhost")
+				useMockServer: true
+				// useMockServer: (document.location.hostname === "localhost")
 			});
 
 			StaticData.init();
@@ -51,8 +51,8 @@ sap.ui.define([
 					rootUri: serviceURL
 				});
 
-				mockserver.simulate(sPath + "/model/service.xml", {
-					sMockdataBaseUrl: sPath + "/model/mockdata",
+				mockserver.simulate(sPath + "/localService/metadata.xml", {
+					sMockdataBaseUrl: sPath + "/localService/mockdata",
 					bGenerateMissingMockData: true
 				});
 				

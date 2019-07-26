@@ -1,17 +1,16 @@
 {
-	"_version": "1.1.0",
+	"_version": "1.12.0",
 	"sap.app": {
-		"_version": "1.1.0",
 		"id": "ag.bpc.Deka",
 		"type": "application",
-		"title": "Deka",
+		"title": "{{appTitle}}",
 		"applicationVersion": {
 			"version": "1.2.0"
 		},
-		"ach": "CA-UI5-DOC"
+		"ach": "CA-UI5-DOC",
+		"i18n": "i18n/translation.properties"
 	},
 	"sap.ui": {
-		"_version": "1.1.0",
 		"technology": "UI5",
 		"deviceTypes": {
 			"desktop": true,
@@ -23,7 +22,10 @@
 		]
 	},
 	"sap.ui5": {
-		"_version": "1.1.0",
+		"contentDensities": {
+			"cozy": false,
+			"compact": false
+		},
 		"rootView": "ag.bpc.Deka.view.App",
 		"dependencies": {
 			"minUI5Version": "1.34",
@@ -152,7 +154,7 @@
 		}
 	},
 	"sap.platform.abap": {
-		"uri": "/sap/bc/ui5_ui5/sap/zibw_vmdb/deka_vmdb",
+		"uri": "/sap/bc/ui5_ui5/sap/zibw_vmdb/webapp",
 		"_version": "1.1.0"
 	}
 }
