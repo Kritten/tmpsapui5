@@ -26,10 +26,9 @@ sap.ui.define([
 			that.initI18nModel();
 
 			that.initNavigationModel();
-
+			
 			that.initDataProvider({
-				useMockServer: true
-				// useMockServer: (document.location.hostname === "localhost")
+				useMockServer: document.location.hostname.indexOf('hana.ondemand.com') !== -1
 			});
 
 			StaticData.init();
@@ -45,6 +44,7 @@ sap.ui.define([
 			var sPath = jQuery.sap.getModulePath("ag.bpc.Deka");
 
 			if (options.useMockServer) {
+				console.warn('USING MOCKDATA!')
 				serviceURL = "http://mockserver/ZIP_VMDB_SRV/";
 
 				var mockserver = new MockServer({
