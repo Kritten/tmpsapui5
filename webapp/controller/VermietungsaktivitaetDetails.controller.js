@@ -1164,6 +1164,15 @@ sap.ui.define([
                         }
                     }
                 }),
+				endButton: new sap.m.Button({
+                    text: TranslationUtil.translate("ABBRECHEN"),
+					press: function () {
+						dialog.close();
+                        if(typeof onAbort === "function"){
+                            onAbort();
+                        }
+					}
+				}),
                 afterClose: function() {
                     dialog.destroy();
                 }
@@ -2115,7 +2124,9 @@ sap.ui.define([
                 VaId: va.VaId,
                 Bukrs: va.Bukrs,
                 WeId: va.WeId,
-                Anmerkung: StaticData.ANMERKUNG.VA.GELOESCHT
+                Anmerkung: StaticData.ANMERKUNG.VA.GELOESCHT,
+                
+                Confirmation: va.Confirmation ? va.Confirmation : false
             };
 
             DataProvider.updateVermietungsaktivitaetAsync(payload.VaId, payload.Bukrs, payload).then(function () {
@@ -2124,7 +2135,18 @@ sap.ui.define([
                 });
                 _this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetSelektion", null, true);
             }).catch(function (oError) {
-                ErrorMessageUtil.showError(oError);
+                //ErrorMessageUtil.showError(oError);
+
+                var error = ErrorMessageUtil.parseErrorMessage(oError);
+
+                if(error.type === "WARNING"){
+                    _this.showConfirmationDialog(error, function(){
+                        _this.getView().getModel("form").setProperty("/vermietungsaktivitaet/Confirmation", true);
+                        _this.onLoeschenButtonPress();
+                    });
+                } else {
+                    ErrorMessageUtil.show(error);
+                }
             }).done();
         }
 
