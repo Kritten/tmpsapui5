@@ -758,6 +758,7 @@ sap.ui.define([
                 Bukrs: ke.Bukrs,
                 WeId: ke.WeId,
 
+                IndBez: ke.IndBez,
                 GueltigkKe: ke.GueltigkKe,
                 Mietbeginn: ke.Mietbeginn,
                 LzFirstbreak:  ke.LzFirstbreak.toString(),
@@ -853,6 +854,7 @@ sap.ui.define([
                 Bukrs: ke.Bukrs,
                 WeId: ke.WeId,
 
+                IndBez: ke.IndBez,
                 GueltigkKe: ke.GueltigkKe,
                 Mietbeginn: ke.Mietbeginn,
                 LzFirstbreak: ke.LzFirstbreak.toString(),

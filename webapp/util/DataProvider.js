@@ -22,7 +22,7 @@ sap.ui.define([], function() {
                     },
 
                     success: function(oData){
-
+						console.log("/KonditioneneinigungSet(Bukrs='"+Bukrs+"',KeId='"+KeId+"')", oData);
                         oData.KeToMap = oData.KeToMap.results;
 
                         oData.KeToOb = _.map(oData.KeToOb.results, function(objekt){
@@ -109,9 +109,9 @@ sap.ui.define([], function() {
             var _this = this;
 
             return Q.Promise(function(resolve, reject){
-
                 _this.oDataModel.read("/KondSelSet", {
                     success: function(oData){
+						console.log('/KondSelSet', oData);
                         resolve(oData.results);
                     },
                     error: function(oError){

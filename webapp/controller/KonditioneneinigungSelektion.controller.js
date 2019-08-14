@@ -31,6 +31,7 @@ sap.ui.define([
 				var buchungskreisValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Bukrs; }));
 				var wirtschaftseinheitValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.WeId; }));
 				var regionalbueroValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Regionalbuero; }));
+				var indBezValues= _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.IndBez; }));
 				var anmerkungValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Anmerkung; }));
 				var erstellerValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Ersteller; }));
 
@@ -41,6 +42,7 @@ sap.ui.define([
 						Bukrs: _.map(buchungskreisValues, function(Bukrs){ return {key: Bukrs}; }),
 						WeId: _.map(wirtschaftseinheitValues, function(WeId){ return {key: WeId}; }),
 						Regionalbuero: _.map(regionalbueroValues, function(Regionalbuero){ return {key: Regionalbuero}; }),
+						IndBez: _.map(indBezValues, function(IndBez){ return {key: IndBez}; }),
 						Anmerkung: _.map(anmerkungValues, function(Anmerkung){ return {key: Anmerkung}; }),
 						Ersteller: _.map(erstellerValues, function(Ersteller){ return {key: Ersteller}; })
 					}

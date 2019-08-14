@@ -82,6 +82,12 @@
 							</items>
 						</FacetFilterList>
 
+						<FacetFilterList title="{i18n>KOND_SEL_COL_INDBEZ}" items="{path: 'kondSel>/facetfilterValues/IndBez', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
+							</items>
+						</FacetFilterList>
+
 						<FacetFilterList title="{i18n>KOND_SEL_COL_ANMERKUNG}" items="{path: 'kondSel>/facetfilterValues/Anmerkung', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{kondSel>key}" text="{= ${text>/anmerkung}[${kondSel>key}] }" />
@@ -117,6 +123,9 @@
 							<Text text="{i18n>KOND_SEL_COL_ID}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>KOND_SEL_COL_INDBEZ}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>KOND_SEL_COL_REGIONALBUERO}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
@@ -149,6 +158,7 @@
 								<Text text="{kondSel>Bukrs}" />
 								<Text text="{kondSel>WeId}" />
 								<Text text="{kondSel>KeId}" />
+								<Text text="{kondSel>IndBez}" />
 								<Text text="{kondSel>Regionalbuero}" />
 								<Text text="{
 										path: 'kondSel>Mietbeginn',
