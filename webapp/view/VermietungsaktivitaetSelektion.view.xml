@@ -88,7 +88,7 @@
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="{i18n>VERM_SEL_COL_STATUS}" items="{path: 'vermSel>/facetfilterValues/Status', templateShareable: true, sorter : {path : 'vermSel>key'} }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>VERM_SEL_COL_STATUS}" items="{path: 'vermSel>/facetfilterValues/Status', templateShareable: true, sorter : {path : 'key'} }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{= ${text>/status}[${vermSel>key}] }" />
 							</items>
