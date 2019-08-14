@@ -245,6 +245,11 @@ sap.ui.define([
             _this.initializeValidationState();
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "show");
+            
+            try {
+				_this.byId('InputSonstigeKostenNewEdit').destroy();
+				_this.byId('InputSonstigeErtraegeNewEdit').destroy();
+            } catch(e) {}
 
             sap.ui.core.BusyIndicator.show();
 
@@ -283,6 +288,7 @@ sap.ui.define([
         onKonditioneneinigungAnlegenAufBasisEinerWirtschaftseinheit: function(){
             var _this = this;
 
+            _this.initializeEmptyModel();
             var payload = NavigationPayloadUtil.takePayload();
 
             if(!payload){
@@ -294,9 +300,14 @@ sap.ui.define([
             var Bukrs = payload.Bukrs;
 
             _this.initializeValidationState();
-            _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
 
+            
+            try {
+				_this.byId('InputSonstigeKostenShow').destroy();
+				_this.byId('InputSonstigeErtraegeShow').destroy();
+            } catch(e) {}
+			
             DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId).then(function(wirtschaftseinheit){
 
                 var konditioneneinigung = _this.newKonditioneneinigung();
@@ -354,6 +365,11 @@ sap.ui.define([
             _this.initializeValidationState();
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
+
+			try {
+				_this.byId('InputSonstigeKostenShow').destroy();
+				_this.byId('InputSonstigeErtraegeShow').destroy();
+			} catch(e) {}
 
             DataProvider.readMietvertragAsync(WeId, Bukrs, MvId).then(function(mietvertrag){
 
@@ -437,6 +453,11 @@ sap.ui.define([
             _this.initializeValidationState();
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
+
+			try {
+				_this.byId('InputSonstigeKostenShow').destroy();
+				_this.byId('InputSonstigeErtraegeShow').destroy();
+			} catch(e) {}
 
             DataProvider.readKonditioneneinigungAsync(Bukrs, KeId).then(function(basisKe){
 

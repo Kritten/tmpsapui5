@@ -218,12 +218,12 @@
 
                     <!-- Sonstige Kosten -->
                     <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Input value="{= ${text>/kostenart}[${form>/konditioneneinigung/ArtKosten}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
+                    <Input id="InputSonstigeKostenShow" value="{= ${text>/kostenart}[${form>/konditioneneinigung/ArtKosten}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
-                    <Select visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtKosten}" items="{form>/kostenarten}" >
+                    <Select id="InputSonstigeKostenNewEdit" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtKosten}" items="{form>/kostenarten}" >
                         <items>
                             <core:Item key="{form>KoId}" text="{form>Txtmd}" />
                         </items>
@@ -239,12 +239,12 @@
 
                     <!-- Sonstige Erträge  -->
                     <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" />
-                    <Input value="{= ${text>/ertragsart}[${form>/konditioneneinigung/ArtErtrag}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
+                    <Input id="InputSonstigeErtraegeShow" value="{= ${text>/ertragsart}[${form>/konditioneneinigung/ArtErtrag}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
-                    <Select visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtErtrag}" items="{form>/ertragsarten}" >
+                    <Select id="InputSonstigeErtraegeNewEdit" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/konditioneneinigung/ArtErtrag}" items="{form>/ertragsarten}" >
                         <items>
                             <core:Item key="{form>ErId}" text="{form>Txtmd}" />
                         </items>
