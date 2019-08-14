@@ -74,6 +74,10 @@ sap.ui.define([
                         result = result.replace("@@Embargo@@", embargo);
                     }
 
+                    result = result.replace("@@VtrLfz@@", vermietungsaktivitaet.VtrLfz);
+                    result = result.replace("@@VerlOpt@@", vermietungsaktivitaet.VerlOpt);
+                    result = result.replace("@@VerlOptWdh@@", vermietungsaktivitaet.VerlOptWdh);
+
                     var vaid = vermietungsaktivitaet.VaId;
                     if (vaid) {
                         result = result.replace("@@VaId2@@", vaid);
@@ -398,6 +402,10 @@ sap.ui.define([
                     if (indBez) {
                         result = result.replace("@@IndBez@@", indBez);
                     }
+                    
+                    result = result.replace("@@VtrLfz@@", konditioneneinigung.VtrLfz);
+                    result = result.replace("@@VerlOpt@@", konditioneneinigung.VerlOpt);
+                    result = result.replace("@@VerlOptWdh@@", konditioneneinigung.VerlOptWdh);
 
                     var mietbeginn = konditioneneinigung.Mietbeginn;
                     if (mietbeginn) {

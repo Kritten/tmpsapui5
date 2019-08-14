@@ -232,6 +232,27 @@
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
+                    </Input> 
+                    
+                    <Label text="{i18n>VERTRAGSLAUFZEIT} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="idVtrLfz" value="{ path: 'form>/vermietungsaktivitaet/VtrLfz', type: 'model.CustomNumberType'}"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+                            <l:GridData span="L3 M3 S12" />
+                        </layoutData>
+                    </Input>
+
+                    <Label text="{i18n>VERLAENGERUNGS_OPTION} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="idVerlOpt" value="{ path: 'form>/vermietungsaktivitaet/VerlOpt', type: 'model.CustomNumberType'}"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+                            <l:GridData span="L3 M3 S12" />
+                        </layoutData>
+                    </Input>
+
+                    <Label text="{i18n>ANZAHL_WIEDERHOLUNGEN_VERLAENGUNERGS_OPTION}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="idVerlOptWdh" value="{ path: 'form>/vermietungsaktivitaet/VerlOptWdh', type: 'model.CustomNumberType'}"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
+                        <layoutData>
+                            <l:GridData span="L3 M3 S12" />
+                        </layoutData>
                     </Input>
 
                     <Label text="{i18n>ERSTER_MONAT_MIETFREI}" />

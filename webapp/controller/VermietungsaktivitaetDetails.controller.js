@@ -976,6 +976,10 @@ sap.ui.define([
                 Debitorname: va.Debitorname,
                 
                 EmbargoNr: va.EmbargoNr,
+                
+                VtrLfz: va.VtrLfz,
+                VerlOpt: va.VerlOpt,
+                VerlOptWdh: va.VerlOptWdh,
 
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak.toString(),
@@ -1099,6 +1103,10 @@ sap.ui.define([
                 Debitorname: va.Debitorname,
                 
                 EmbargoNr: va.EmbargoNr,
+                
+                VtrLfz: va.VtrLfz,
+                VerlOpt: va.VerlOpt,
+                VerlOptWdh: va.VerlOptWdh,
 
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak.toString(),
