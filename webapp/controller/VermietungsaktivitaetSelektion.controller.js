@@ -264,6 +264,7 @@ sap.ui.define([
 				new Filter("Bukrs", sap.ui.model.FilterOperator.Contains, sValue),
 				new Filter("WeId", sap.ui.model.FilterOperator.Contains, sValue),
 				new Filter("KeId", sap.ui.model.FilterOperator.Contains, sValue),
+				new Filter("IndBez", sap.ui.model.FilterOperator.Contains, sValue),
 			], false);
 
 			var oBinding = oEvent.getSource().getBinding("items");

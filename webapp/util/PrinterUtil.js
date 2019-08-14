@@ -389,6 +389,11 @@ sap.ui.define([
                         result = result.replace("@@KeBezeichnung@@", bezeichnung);
                     }
 
+                    var indBez = konditioneneinigung.IndBez;
+                    if (indBez) {
+                        result = result.replace("@@IndBez@@", indBez);
+                    }
+
                     var mietbeginn = konditioneneinigung.Mietbeginn;
                     if (mietbeginn) {
                         result = result.replace("@@Mietbeginn@@", mietbeginn.toLocaleDateString());
