@@ -269,6 +269,13 @@
 						</layoutData>
                     </Input>
 
+                    <Label text="{i18n>MAKLERNAME}" />
+                    <Input value="{ path: 'form>/vermietungsaktivitaet/MaklerName' }" maxLength="60" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    
                     <Label text="{i18n>MAKLERKOSTEN} {i18n>IN_MONATSMIETEN}" />
                     <Input id="idMkMonate" value="{ path: 'form>/vermietungsaktivitaet/MkMonate', type: 'model.CustomNumberType'}"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>

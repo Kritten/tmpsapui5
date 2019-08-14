@@ -74,9 +74,25 @@ sap.ui.define([
                         result = result.replace("@@Embargo@@", embargo);
                     }
 
-                    result = result.replace("@@VtrLfz@@", vermietungsaktivitaet.VtrLfz);
-                    result = result.replace("@@VerlOpt@@", vermietungsaktivitaet.VerlOpt);
-                    result = result.replace("@@VerlOptWdh@@", vermietungsaktivitaet.VerlOptWdh);
+                    var vtrLfz = vermietungsaktivitaet.VtrLfz;
+                    if (vtrLfz) {
+                        result = result.replace("@@VtrLfz@@", vtrLfz);
+                    }
+
+                    var verlOpt = vermietungsaktivitaet.VerlOpt;
+                    if (verlOpt) {
+                        result = result.replace("@@VerlOpt@@", verlOpt);
+                    }
+
+                    var verlOptWdh = vermietungsaktivitaet.VerlOptWdh;
+                    if (verlOptWdh) {
+                        result = result.replace("@@VerlOptWdh@@", verlOptWdh);
+                    }
+
+                    var maklerName = vermietungsaktivitaet.MaklerName;
+                    if (maklerName) {
+                        result = result.replace("@@MaklerName@@", maklerName);
+                    }
 
                     var vaid = vermietungsaktivitaet.VaId;
                     if (vaid) {
@@ -402,10 +418,21 @@ sap.ui.define([
                     if (indBez) {
                         result = result.replace("@@IndBez@@", indBez);
                     }
-                    
-                    result = result.replace("@@VtrLfz@@", konditioneneinigung.VtrLfz);
-                    result = result.replace("@@VerlOpt@@", konditioneneinigung.VerlOpt);
-                    result = result.replace("@@VerlOptWdh@@", konditioneneinigung.VerlOptWdh);
+
+                    var vtrLfz = konditioneneinigung.VtrLfz;
+                    if (vtrLfz) {
+                        result = result.replace("@@VtrLfz@@", vtrLfz);
+                    }
+
+                    var verlOpt = konditioneneinigung.VerlOpt;
+                    if (verlOpt) {
+                        result = result.replace("@@VerlOpt@@", verlOpt);
+                    }
+
+                    var verlOptWdh = konditioneneinigung.VerlOptWdh;
+                    if (verlOptWdh) {
+                        result = result.replace("@@VerlOptWdh@@", verlOptWdh);
+                    }
 
                     var mietbeginn = konditioneneinigung.Mietbeginn;
                     if (mietbeginn) {

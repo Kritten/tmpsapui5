@@ -976,6 +976,7 @@ sap.ui.define([
                 Debitorname: va.Debitorname,
                 
                 EmbargoNr: va.EmbargoNr,
+                MaklerName: va.MaklerName,
                 
                 VtrLfz: va.VtrLfz,
                 VerlOpt: va.VerlOpt,
@@ -1103,6 +1104,7 @@ sap.ui.define([
                 Debitorname: va.Debitorname,
                 
                 EmbargoNr: va.EmbargoNr,
+                MaklerName: va.MaklerName,
                 
                 VtrLfz: va.VtrLfz,
                 VerlOpt: va.VerlOpt,
