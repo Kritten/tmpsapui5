@@ -69,6 +69,11 @@ sap.ui.define([
                         result = result.replace("@@Bemerkung@@", bemerkung);
                     }
 
+                    var embargo = vermietungsaktivitaet.EmbargoNr;
+                    if (embargo) {
+                        result = result.replace("@@Embargo@@", embargo);
+                    }
+
                     var vaid = vermietungsaktivitaet.VaId;
                     if (vaid) {
                         result = result.replace("@@VaId2@@", vaid);

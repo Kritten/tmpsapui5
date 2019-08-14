@@ -974,6 +974,8 @@ sap.ui.define([
 
                 Debitor: va.Debitor ? va.Debitor : null,
                 Debitorname: va.Debitorname,
+                
+                EmbargoNr: va.EmbargoNr,
 
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak.toString(),
@@ -1095,6 +1097,8 @@ sap.ui.define([
 
                 Debitor: va.Debitor ? va.Debitor : null,
                 Debitorname: va.Debitorname,
+                
+                EmbargoNr: va.EmbargoNr,
 
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak.toString(),

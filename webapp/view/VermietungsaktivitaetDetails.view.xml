@@ -206,6 +206,13 @@
 						</layoutData>
                     </Input>
 
+                    <Label text="{i18n>EMBARGO}" />
+                    <Input id="idEmbargo" maxLength="14" value="{form>/vermietungsaktivitaet/EmbargoNr}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
+                        <layoutData>
+							<l:GridData span="L6 M6 S12" />
+						</layoutData>
+                    </Input>
+
                     <Label text="{i18n>MIETBEGINN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <DatePicker id="idMietbeginn" dateValue="{form>/vermietungsaktivitaet/Mietbeginn}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>
