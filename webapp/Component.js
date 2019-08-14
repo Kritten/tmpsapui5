@@ -11,6 +11,8 @@ sap.ui.define([
 	"ag/bpc/Deka/ext/js/SheetJS/xlsx.core.min"
 ], function (UIComponent, ResourceModel, MockServer, DataProvider, AppInitHelper, StaticData) {
 
+	// jQuery.sap.registerModulePath("AddDebitor", "../zibw_add_deb/");
+	// jQuery.sap.require("AddDebitor.Component");
 	"use strict";
 	return UIComponent.extend("ag.bpc.Deka.Component", {
 
