@@ -185,6 +185,13 @@ sap.ui.define([
 
             _this.initializeValidationState();
             _this.initializeEmptyModel();
+            
+            try {
+				_this.byId('vermietungsart').destroy();
+				_this.byId('InputSonstigeKostenNewEdit').destroy();
+				_this.byId('InputSonstigeErtraegeNewEdit').destroy();
+            } catch(e) {}
+            
             _this.getView().getModel("form").setProperty("/modus", "show");
 
             sap.ui.core.BusyIndicator.show();
@@ -242,6 +249,7 @@ sap.ui.define([
             var _this = this;
 
             var keKeys = NavigationPayloadUtil.takePayload();
+            _this.initializeEmptyModel();
 
             if(!keKeys){
                 this.onBack(null);
@@ -249,8 +257,13 @@ sap.ui.define([
             }
 
             _this.initializeValidationState();
-            _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
+            
+            try {
+				_this.byId('InputVermietungsartShow').destroy();
+				_this.byId('InputSonstigeKostenShow').destroy();
+				_this.byId('InputSonstigeErtraegeShow').destroy();
+            } catch(e) {}
 
             // Einzelnen Konditioneneinigungen laden
             var promises = _.map(keKeys, function(keKey){
@@ -380,6 +393,7 @@ sap.ui.define([
             var _this = this;
 
             var weKey = NavigationPayloadUtil.takePayload();
+            _this.initializeEmptyModel();
 
             if(!weKey){
                 _this.onBack(null);
@@ -387,8 +401,13 @@ sap.ui.define([
             }
 
             _this.initializeValidationState();
-            _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
+            
+            try {
+				_this.byId('InputVermietungsartShow').destroy();
+				_this.byId('InputSonstigeKostenShow').destroy();
+				_this.byId('InputSonstigeErtraegeShow').destroy();
+            } catch(e) {}
 
             DataProvider.readWirtschaftseinheitAsync(weKey.Bukrs, weKey.WeId)
             .then(function(wirtschaftseinheit){
@@ -453,6 +472,7 @@ sap.ui.define([
             var _this = this;
 
             var weKey = NavigationPayloadUtil.takePayload();
+            _this.initializeEmptyModel();
 
             if(!weKey){
                 _this.onBack(null);
@@ -460,8 +480,13 @@ sap.ui.define([
             }
 
             _this.initializeValidationState();
-            _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
+            
+            try {
+				_this.byId('InputVermietungsartShow').destroy();
+				_this.byId('InputSonstigeKostenShow').destroy();
+				_this.byId('InputSonstigeErtraegeShow').destroy();
+            } catch(e) {}
 
             DataProvider.readWirtschaftseinheitAsync(weKey.Bukrs, weKey.WeId)
             .then(function(wirtschaftseinheit){
@@ -526,15 +551,21 @@ sap.ui.define([
             var _this = this;
 
             var vermietungsaktivitaet = NavigationPayloadUtil.takePayload();
+            _this.initializeEmptyModel();
 
             if(!vermietungsaktivitaet){
                 this.onBack(null);
                 return;
             }
 
-            _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
             _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
+            
+            try {
+				_this.byId('InputVermietungsartShow').destroy();
+				_this.byId('InputSonstigeKostenShow').destroy();
+				_this.byId('InputSonstigeErtraegeShow').destroy();
+            } catch(e) {}
 
             DataProvider.readWirtschaftseinheitAsync(vermietungsaktivitaet.Bukrs, vermietungsaktivitaet.WeId)
             .then(function(wirtschaftseinheit){
