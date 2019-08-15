@@ -156,6 +156,17 @@ sap.ui.define([
                         result = result.replace("@@PLRelevant@@", plrString);
                      }
 
+                    var VmlRel = vermietungsaktivitaet.VmlRel;
+                    var VmlRelString;
+                    if(locale.indexOf("de") !== -1){
+                        // standardsprache
+                        VmlRelString = VmlRel ? "Ja" : "Nein";
+                        result = result.replace("@@VmlRel@@", VmlRelString);
+                     }else{
+                        VmlRelString = VmlRel ? "Yes" : "No";
+                        result = result.replace("@@VmlRel@@", VmlRelString);
+                     }
+
                     var stsl = vermietungsaktivitaet.Steuerschlg;
                     var stslString;
                     if(locale.indexOf("de") !== -1){

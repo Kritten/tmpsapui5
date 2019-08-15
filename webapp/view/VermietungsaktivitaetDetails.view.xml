@@ -408,6 +408,13 @@
 							<l:GridData span="L1 M1 S12" />
 						</layoutData>
                     </CheckBox>
+
+                    <Label required="true" text="{i18n>VERMIETUNGSLEISTUNGSRELEVANZ}" />
+                    <CheckBox id="idVmlRel" selected="{form>/vermietungsaktivitaet/VmlRel}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+							<l:GridData span="L1 M1 S12" />
+						</layoutData>
+                    </CheckBox>
                 </f:content>
 
 			</f:SimpleForm>

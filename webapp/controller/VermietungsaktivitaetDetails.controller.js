@@ -977,6 +977,7 @@ sap.ui.define([
                 
                 EmbargoNr: va.EmbargoNr,
                 MaklerName: va.MaklerName,
+                VmlRel: va.VmlRel ? true : false,
                 
                 VtrLfz: va.VtrLfz,
                 VerlOpt: va.VerlOpt,
@@ -1105,6 +1106,7 @@ sap.ui.define([
                 
                 EmbargoNr: va.EmbargoNr,
                 MaklerName: va.MaklerName,
+                VmlRel: va.VmlRel ? true : false,
                 
                 VtrLfz: va.VtrLfz,
                 VerlOpt: va.VerlOpt,
@@ -2126,6 +2128,7 @@ sap.ui.define([
                 Poenale: "",
                 IdxWeitergabe: "",
                 PLRelevant: false,
+                VmlRel: false,
                 Steuerschlg: false,
 
                 Status: StaticData.STATUS.VA.AUSBAUPLANUNG,
