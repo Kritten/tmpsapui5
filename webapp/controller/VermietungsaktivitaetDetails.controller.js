@@ -1264,6 +1264,33 @@ sap.ui.define([
                 idMietbeginn.setValueStateText(TranslationUtil.translate("ERR_FEHLENDES_DATUM"));
                 validationResult = false;
             }
+
+            var inputVtrLfz = this.getView().byId("idVtrLfz");
+            if(inputVtrLfz.getValue() === "") {
+                inputVtrLfz.setValueState(sap.ui.core.ValueState.Error);
+                inputVtrLfz.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                validationResult = false;
+            } else {
+                validationResult = this.checkNotNegative(inputVtrLfz) && this.checkMzMonateLimit(inputVtrLfz) && validationResult;
+            }
+
+            var inputVerlOpt = this.getView().byId("idVerlOpt");
+            if(inputVerlOpt.getValue() === "") {
+                inputVerlOpt.setValueState(sap.ui.core.ValueState.Error);
+                inputVerlOpt.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                validationResult = false;
+            } else {
+                validationResult = this.checkNotNegative(inputVerlOpt) && this.checkMzMonateLimit(inputVerlOpt) && validationResult;
+            }
+
+            var inputVerlOptWdh = this.getView().byId("idVerlOptWdh");
+            if(inputVerlOptWdh.getValue() === "") {
+                inputVerlOptWdh.setValueState(sap.ui.core.ValueState.Error);
+                inputVerlOptWdh.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                validationResult = false;
+            } else {
+                validationResult = this.checkNotNegative(inputVerlOptWdh) && this.checkMzMonateLimit(inputVerlOptWdh) && validationResult;
+            }
             // else if(idMietbeginn.getDateValue() < Date.now())
             // {
             //     idMietbeginn.setValueState(sap.ui.core.ValueState.Error);
@@ -1445,6 +1472,9 @@ sap.ui.define([
             this.getView().byId("idLzFirstbreak").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idIdxWeitergabe").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMzMonate").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idVtrLfz").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idVerlOpt").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idVerlOptWdh").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMzAnzahlJ").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMkAbsolut").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMkMonate").setValueState(sap.ui.core.ValueState.None);
@@ -2112,6 +2142,10 @@ sap.ui.define([
 
                 MkMonate: "",
                 MkAbsolut: "",
+                
+                VtrLfz: "",
+                VerlOpt: "",
+                VerlOptWdh: "",
 
                 BkMonate: "",
                 BkAbsolut: "",

@@ -184,6 +184,9 @@ sap.ui.define([
             this.getView().byId("idMietbeginn").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idLzFirstbreak").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMzMonate").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idVtrLfz").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idVerlOpt").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idVerlOptWdh").setValueState(sap.ui.core.ValueState.None);
             var mkMonate = this.getView().byId("maklerkostenInMonatsmieten");
             mkMonate.setValueState(sap.ui.core.ValueState.None);
 
@@ -470,6 +473,10 @@ sap.ui.define([
                 ke.Mietbeginn = basisKe.Mietbeginn;
                 ke.LzFirstbreak = basisKe.LzFirstbreak;
                 ke.MzMonate = basisKe.MzMonate;
+                
+                ke.VtrLfz = basisKe.VtrLfz;
+                ke.VerlOpt = basisKe.VerlOpt;
+                ke.VerlOptWdh = basisKe.VerlOptWdh;
 
                 ke.MkMonate = basisKe.MkMonate;
                 ke.MkAbsolut = basisKe.MkAbsolut;
@@ -545,6 +552,10 @@ sap.ui.define([
                 Mietbeginn: null,
                 LzFirstbreak: "",
                 MzMonate: "",
+                
+                VtrLfz: "",
+                VerlOpt: "",
+                VerlOptWdh: "",
 
                 MkMonate: "",
                 MkAbsolut: "",
@@ -1166,6 +1177,33 @@ sap.ui.define([
                 validationResult = false;
             } else {
                 validationResult = this.checkNotNegative(idMzMonate) && this.checkMzMonateLimit(idMzMonate) && validationResult;
+            }
+
+            var inputVtrLfz = this.getView().byId("idVtrLfz");
+            if(inputVtrLfz.getValue() === "") {
+                inputVtrLfz.setValueState(sap.ui.core.ValueState.Error);
+                inputVtrLfz.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                validationResult = false;
+            } else {
+                validationResult = this.checkNotNegative(inputVtrLfz) && this.checkMzMonateLimit(inputVtrLfz) && validationResult;
+            }
+
+            var inputVerlOpt = this.getView().byId("idVerlOpt");
+            if(inputVerlOpt.getValue() === "") {
+                inputVerlOpt.setValueState(sap.ui.core.ValueState.Error);
+                inputVerlOpt.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                validationResult = false;
+            } else {
+                validationResult = this.checkNotNegative(inputVerlOpt) && this.checkMzMonateLimit(inputVerlOpt) && validationResult;
+            }
+
+            var inputVerlOptWdh = this.getView().byId("idVerlOptWdh");
+            if(inputVerlOptWdh.getValue() === "") {
+                inputVerlOptWdh.setValueState(sap.ui.core.ValueState.Error);
+                inputVerlOptWdh.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+                validationResult = false;
+            } else {
+                validationResult = this.checkNotNegative(inputVerlOptWdh) && this.checkMzMonateLimit(inputVerlOptWdh) && validationResult;
             }
 
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
