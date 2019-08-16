@@ -465,6 +465,14 @@
                             <Text text= " " />
                         </cells>
                     </ColumnListItem>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{i18n>AMORTISATION}" />
+                            <Text text="{ path: 'form>/konditioneneinigung/Amortisation', type: 'model.CustomNumberType'}" />
+                            <Text text= " " />
+                            <Text text= " " />
+                        </cells>
+                    </ColumnListItem>
                 </items>
             </Table>
 
