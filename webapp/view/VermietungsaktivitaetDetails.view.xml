@@ -305,12 +305,19 @@
                     </Input>
 
                     <!-- Sonstige Kosten -->
-                    <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" />
+                    <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" visible="{= ${form>/modus} === 'show' }" />
                     <Input id="InputSonstigeKostenShow" value="{= ${text>/kostenart}[${form>/vermietungsaktivitaet/ArtKosten}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
+                    <Input id="idSonstKShow" value="{ path: 'form>/vermietungsaktivitaet/SonstK', type: 'model.CustomNumberType' }" visible="{= ${form>/modus} === 'show' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    <!-- REDUNDANT -->
+                    <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Select id="InputSonstigeKostenNewEdit" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtKosten}" items="{form>/kostenarten}">
                         <items>
                             <core:Item key="{form>KoId}" text="{form>Txtmd}" />
@@ -319,19 +326,26 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="idSonstK" value="{ path: 'form>/vermietungsaktivitaet/SonstK', type: 'model.CustomNumberType' }"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                    <Input id="idSonstKNewEdit" value="{ path: 'form>/vermietungsaktivitaet/SonstK', type: 'model.CustomNumberType' }" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
 
                     <!-- Sonstige Erträge  -->
-                    <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" />
+                    <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" visible="{= ${form>/modus} === 'show' }" />
                     <Input id="InputSonstigeErtraegeShow" value="{= ${text>/ertragsart}[${form>/vermietungsaktivitaet/ArtErtrag}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
+                    <Input id="idSonstEShow" value="{ path: 'form>/vermietungsaktivitaet/SonstE', type: 'model.CustomNumberType' }" visible="{= ${form>/modus} === 'show' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    <!-- REDUNDANT -->
+                    <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Select id="InputSonstigeErtraegeNewEdit" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtErtrag}" items="{form>/ertragsarten}">
                         <items>
                             <core:Item key="{form>ErId}" text="{form>Txtmd}" />
@@ -340,7 +354,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Select>
-                    <Input id="idSonstE" value="{ path: 'form>/vermietungsaktivitaet/SonstE', type: 'model.CustomNumberType' }"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
+                    <Input id="idSonstENewEdit" value="{ path: 'form>/vermietungsaktivitaet/SonstE', type: 'model.CustomNumberType' }" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>

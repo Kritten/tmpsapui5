@@ -199,10 +199,10 @@ sap.ui.define([
             var bkAbsolut = this.getView().byId("beratungskostenAbsolut");
             bkAbsolut.setValueState(sap.ui.core.ValueState.None);
 
-            var sonstK = this.getView().byId("idSonstK");
-            sonstK.setValueState(sap.ui.core.ValueState.None);
+            var sonstE = this.getView().byId("idSonstKNewEdit");
+            sonstE.setValueState(sap.ui.core.ValueState.None);
 
-            var sonstE = this.getView().byId("idSonstE");
+            var sonstE = this.getView().byId("idSonstENewEdit");
             sonstE.setValueState(sap.ui.core.ValueState.None);
 
             var steuerschaden = this.getView().byId("idSteuerschaden");
@@ -248,11 +248,6 @@ sap.ui.define([
             _this.initializeValidationState();
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "show");
-            
-            try {
-				_this.byId('InputSonstigeKostenNewEdit').destroy();
-				_this.byId('InputSonstigeErtraegeNewEdit').destroy();
-            } catch(e) {}
 
             sap.ui.core.BusyIndicator.show();
 
@@ -304,12 +299,6 @@ sap.ui.define([
 
             _this.initializeValidationState();
             _this.getView().getModel("form").setProperty("/modus", "new");
-
-            
-            try {
-				_this.byId('InputSonstigeKostenShow').destroy();
-				_this.byId('InputSonstigeErtraegeShow').destroy();
-            } catch(e) {}
 			
             DataProvider.readWirtschaftseinheitAsync(Bukrs, WeId).then(function(wirtschaftseinheit){
 
@@ -368,11 +357,6 @@ sap.ui.define([
             _this.initializeValidationState();
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
-
-			try {
-				_this.byId('InputSonstigeKostenShow').destroy();
-				_this.byId('InputSonstigeErtraegeShow').destroy();
-			} catch(e) {}
 
             DataProvider.readMietvertragAsync(WeId, Bukrs, MvId).then(function(mietvertrag){
 
@@ -456,11 +440,6 @@ sap.ui.define([
             _this.initializeValidationState();
             _this.initializeEmptyModel();
             _this.getView().getModel("form").setProperty("/modus", "new");
-
-			try {
-				_this.byId('InputSonstigeKostenShow').destroy();
-				_this.byId('InputSonstigeErtraegeShow').destroy();
-			} catch(e) {}
 
             DataProvider.readKonditioneneinigungAsync(Bukrs, KeId).then(function(basisKe){
 
@@ -1267,11 +1246,11 @@ sap.ui.define([
 
             var bkAbsolut = this.getView().byId("beratungskostenAbsolut");
             validationResult = this.checkNotNegative(bkAbsolut) && validationResult;
-
-            var sonstK = this.getView().byId("idSonstK");
+            
+            var sonstK = this.getView().byId("idSonstKNewEdit");
             validationResult = this.checkNotNegative(sonstK) && validationResult;
 
-            var sonstE = this.getView().byId("idSonstE");
+            var sonstE = this.getView().byId("idSonstENewEdit");
             validationResult = this.checkNotNegative(sonstE) && validationResult;
 
             var steuerschaden = this.getView().byId("idSteuerschaden");

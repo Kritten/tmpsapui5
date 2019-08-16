@@ -1405,10 +1405,10 @@ sap.ui.define([
             var idBkAbsolut = this.getView().byId("idBkAbsolut");
             validationResult = this.checkNotNegative(idBkAbsolut) && validationResult;
 
-            var idSonstK = this.getView().byId("idSonstK");
+            var idSonstK = this.getView().byId("idSonstKNewEdit");
             validationResult = this.checkNotNegative(idSonstK) && validationResult;
 
-            var idSonstE = this.getView().byId("idSonstE");
+            var idSonstE = this.getView().byId("idSonstENewEdit");
             validationResult = this.checkNotNegative(idSonstE) && validationResult;
 
             var idAkAnzahlM = this.getView().byId("idAkAnzahlM");
@@ -1480,8 +1480,8 @@ sap.ui.define([
             this.getView().byId("idMkMonate").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idBkMonate").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idBkAbsolut").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("idSonstK").setValueState(sap.ui.core.ValueState.None);
-            this.getView().byId("idSonstE").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idSonstKNewEdit").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idSonstENewEdit").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idAkAnzahlM").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idPoenale").setValueState(sap.ui.core.ValueState.None);
 
