@@ -796,9 +796,9 @@ sap.ui.define([
                 LzFirstbreak:  ke.LzFirstbreak.toString(),
                 MzMonate:  ke.MzMonate.toString(),
                 
-                VtrLfzM: ke.VtrLfzM,
-                VerlOptM: ke.VerlOptM,
-                VerlOptWdh: ke.VerlOptWdh,
+                VtrLfzM: ke.VtrLfzM.toString(),
+                VerlOptM: ke.VerlOptM.toString(),
+                VerlOptWdh: ke.VerlOptWdh.toString(),
 
                 MkMonate: ke.MkMonate ?  ke.MkMonate.toString() : null,
                 MkAbsolut: ke.MkAbsolut ?  ke.MkAbsolut.toString() : null,
@@ -896,9 +896,9 @@ sap.ui.define([
                 LzFirstbreak: ke.LzFirstbreak.toString(),
                 MzMonate: ke.MzMonate.toString(),
                 
-                VtrLfzM: ke.VtrLfzM,
-                VerlOptM: ke.VerlOptM,
-                VerlOptWdh: ke.VerlOptWdh,
+                VtrLfzM: ke.VtrLfzM.toString(),
+                VerlOptM: ke.VerlOptM.toString(),
+                VerlOptWdh: ke.VerlOptWdh.toString(),
 
                 MkMonate: ke.MkMonate ? ke.MkMonate.toString() : null,
                 MkAbsolut: ke.MkAbsolut ? ke.MkAbsolut.toString() : null,

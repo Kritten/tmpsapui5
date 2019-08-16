@@ -979,9 +979,9 @@ sap.ui.define([
                 MaklerName: va.MaklerName,
                 VmlRel: va.VmlRel ? true : false,
                 
-                VtrLfzM: va.VtrLfzM,
-                VerlOptM: va.VerlOptM,
-                VerlOptWdh: va.VerlOptWdh,
+                VtrLfzM: va.VtrLfzM ? va.VtrLfzM.toString() : null,
+                VerlOptM: va.VerlOptM ? va.VerlOptM.toString() : null,
+                VerlOptWdh: va.VerlOptWdh ? va.VerlOptWdh.toString() : null,
 
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak.toString(),
@@ -1108,9 +1108,9 @@ sap.ui.define([
                 MaklerName: va.MaklerName,
                 VmlRel: va.VmlRel ? true : false,
                 
-                VtrLfzM: va.VtrLfzM,
-                VerlOptM: va.VerlOptM,
-                VerlOptWdh: va.VerlOptWdh,
+                VtrLfzM: va.VtrLfzM ? va.VtrLfzM.toString() : null,
+                VerlOptM: va.VerlOptM ? va.VerlOptM.toString() : null,
+                VerlOptWdh: va.VerlOptWdh ? va.VerlOptWdh.toString() : null,
 
                 Mietbeginn: va.Mietbeginn,
                 LzFirstbreak: va.LzFirstbreak.toString(),
