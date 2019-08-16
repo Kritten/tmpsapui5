@@ -979,8 +979,8 @@ sap.ui.define([
                 MaklerName: va.MaklerName,
                 VmlRel: va.VmlRel ? true : false,
                 
-                VtrLfz: va.VtrLfz,
-                VerlOpt: va.VerlOpt,
+                VtrLfzM: va.VtrLfzM,
+                VerlOptM: va.VerlOptM,
                 VerlOptWdh: va.VerlOptWdh,
 
                 Mietbeginn: va.Mietbeginn,
@@ -1108,8 +1108,8 @@ sap.ui.define([
                 MaklerName: va.MaklerName,
                 VmlRel: va.VmlRel ? true : false,
                 
-                VtrLfz: va.VtrLfz,
-                VerlOpt: va.VerlOpt,
+                VtrLfzM: va.VtrLfzM,
+                VerlOptM: va.VerlOptM,
                 VerlOptWdh: va.VerlOptWdh,
 
                 Mietbeginn: va.Mietbeginn,
@@ -1265,22 +1265,22 @@ sap.ui.define([
                 validationResult = false;
             }
 
-            var inputVtrLfz = this.getView().byId("idVtrLfz");
-            if(inputVtrLfz.getValue() === "") {
-                inputVtrLfz.setValueState(sap.ui.core.ValueState.Error);
-                inputVtrLfz.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+            var inputVtrLfzM = this.getView().byId("idVtrLfz");
+            if(inputVtrLfzM.getValue() === "") {
+                inputVtrLfzM.setValueState(sap.ui.core.ValueState.Error);
+                inputVtrLfzM.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             } else {
-                validationResult = this.checkNotNegative(inputVtrLfz) && this.checkMzMonateLimit(inputVtrLfz) && validationResult;
+                validationResult = this.checkNotNegative(inputVtrLfzM) && this.checkMzMonateLimit(inputVtrLfzM) && validationResult;
             }
 
-            var inputVerlOpt = this.getView().byId("idVerlOpt");
-            if(inputVerlOpt.getValue() === "") {
-                inputVerlOpt.setValueState(sap.ui.core.ValueState.Error);
-                inputVerlOpt.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+            var inputVerlOptM = this.getView().byId("idVerlOpt");
+            if(inputVerlOptM.getValue() === "") {
+                inputVerlOptM.setValueState(sap.ui.core.ValueState.Error);
+                inputVerlOptM.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
                 validationResult = false;
             } else {
-                validationResult = this.checkNotNegative(inputVerlOpt) && this.checkMzMonateLimit(inputVerlOpt) && validationResult;
+                validationResult = this.checkNotNegative(inputVerlOptM) && this.checkMzMonateLimit(inputVerlOptM) && validationResult;
             }
 
             var inputVerlOptWdh = this.getView().byId("idVerlOptWdh");
@@ -2143,8 +2143,8 @@ sap.ui.define([
                 MkMonate: "",
                 MkAbsolut: "",
                 
-                VtrLfz: "",
-                VerlOpt: "",
+                VtrLfzM: "",
+                VerlOptM: "",
                 VerlOptWdh: "",
 
                 BkMonate: "",
