@@ -451,6 +451,14 @@
                     </ColumnListItem>
                     <ColumnListItem>
                         <cells>
+                            <Text text="{i18n>EFFEKTIVMIETE_OHNE_GRUNDAUSBAUKOSTEN}" />
+                            <Text text="{ path: 'form>/konditioneneinigung/EffektivmOGabk', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach} / {form>/viewsettings/flaecheneinheitSelected/Nach}" />
+                            <Text text=" " />
+                            <Text text=" " />
+                        </cells>
+                    </ColumnListItem>
+                    <ColumnListItem>
+                        <cells>
                             <Text text="{i18n>VERHGEMM}" />
                             <Text text="{ path: 'form>/konditioneneinigung/VerhGeMm', type: 'model.CustomNumberType'} %" />
                             <Text text= " " />
