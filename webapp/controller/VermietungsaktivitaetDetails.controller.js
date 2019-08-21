@@ -198,6 +198,8 @@ sap.ui.define([
 
             DataProvider.readVermietungsaktivitaetAsync(Bukrs, VaId)
             .then(function(vermietungsaktivitaet){
+            	vermietungsaktivitaet.VmlRel = vermietungsaktivitaet.VmlRel === true ? 0: 1;    
+            	
                 _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
                 return _this.initializeViewsettingsAsync(vermietungsaktivitaet);
             })
@@ -977,7 +979,7 @@ sap.ui.define([
                 
                 EmbargoNr: va.EmbargoNr,
                 MaklerName: va.MaklerName,
-                VmlRel: va.VmlRel ? true : false,
+                VmlRel: va.VmlRel === 0 ? true : false,
                 
                 VtrLfzM: va.VtrLfzM ? va.VtrLfzM.toString() : null,
                 VerlOptM: va.VerlOptM ? va.VerlOptM.toString() : null,
@@ -1106,7 +1108,7 @@ sap.ui.define([
                 
                 EmbargoNr: va.EmbargoNr,
                 MaklerName: va.MaklerName,
-                VmlRel: va.VmlRel ? true : false,
+                VmlRel: va.VmlRel === 0 ? true : false,
                 
                 VtrLfzM: va.VtrLfzM ? va.VtrLfzM.toString() : null,
                 VerlOptM: va.VerlOptM ? va.VerlOptM.toString() : null,
@@ -1417,6 +1419,12 @@ sap.ui.define([
             var idPoenale = this.getView().byId("idPoenale");
             validationResult = this.checkNotNegative(idPoenale) && validationResult;
 
+            var idVmlRel = this.getView().byId("idVmlRel");
+            if(idVmlRel.getSelectedIndex() === -1){
+                idVmlRel.setValueState(sap.ui.core.ValueState.Error);
+                validationResult = false;
+            }
+            
             return validationResult;
         },
 
@@ -1484,6 +1492,7 @@ sap.ui.define([
             this.getView().byId("idSonstENewEdit").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idAkAnzahlM").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idPoenale").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idVmlRel").setValueState(sap.ui.core.ValueState.None);
 
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             _.map(mietflaechenangabenTable.getItems(), function(item){
@@ -2162,7 +2171,7 @@ sap.ui.define([
                 Poenale: "",
                 IdxWeitergabe: "",
                 PLRelevant: false,
-                VmlRel: false,
+                VmlRel: -1,
                 Steuerschlg: false,
 
                 Status: StaticData.STATUS.VA.AUSBAUPLANUNG,

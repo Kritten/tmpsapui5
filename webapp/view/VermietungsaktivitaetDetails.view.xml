@@ -423,12 +423,13 @@
 						</layoutData>
                     </CheckBox>
 
-                    <Label text="{i18n>VERMIETUNGSLEISTUNGSRELEVANZ}" />
-                    <CheckBox id="idVmlRel" selected="{form>/vermietungsaktivitaet/VmlRel}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
-                        <layoutData>
-							<l:GridData span="L1 M1 S12" />
-						</layoutData>
-                    </CheckBox>
+                    <Label required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" text="{i18n>VERMIETUNGSLEISTUNGSRELEVANZ}" />
+					<RadioButtonGroup id="idVmlRel" columns="2" selectedIndex="{form>/vermietungsaktivitaet/VmlRel}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+						<buttons>
+							<RadioButton id="idVmlRelJa" text="{i18n>JA}"/>
+							<RadioButton id="idVmlRelNein" text="{i18n>NEIN}"/>
+						</buttons>
+					</RadioButtonGroup>
                 </f:content>
 
 			</f:SimpleForm>
