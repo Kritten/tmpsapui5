@@ -7,7 +7,7 @@ sap.ui.define([
 	"ag/bpc/Deka/util/StaticData",
 	/* ... */
 	"ag/bpc/Deka/ext/js/q",
-	"ag/bpc/Deka/ext/js/underscore-min",
+	"ag/bpc/Deka/ext/js/underscore",
 	"ag/bpc/Deka/ext/js/SheetJS/xlsx.core.min"
 ], function (UIComponent, ResourceModel, MockServer, DataProvider, AppInitHelper, StaticData) {
 

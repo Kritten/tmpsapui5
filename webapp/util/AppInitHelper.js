@@ -10,7 +10,7 @@ sap.ui.define([], function() {
             jQuery.sap.includeScript(appBasePath + "/ext/js/q.js", null, function(){
 
                 Q.all([
-                    _this.loadExternalLibraryAsync(appBasePath + "/ext/js/underscore-min.js"),
+                    _this.loadExternalLibraryAsync(appBasePath + "/ext/js/underscore.js"),
                     _this.loadExternalLibraryAsync(appBasePath + "/ext/js/SheetJS/xlsx.core.min.js"),
                     _this.loadExternalStylesheetAsync(appBasePath + "/ext/css/style.css")
                 ])
