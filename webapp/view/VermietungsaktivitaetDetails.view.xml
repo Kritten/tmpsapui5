@@ -654,7 +654,7 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="{i18n>AMORTISATION}" />
-                            <Text text="{ path: 'form>/konditioneneinigung/Amortisation', type: 'model.CustomNumberType'}" />
+                            <Text text="{ path: 'form>/vermietungsaktivitaet/Amortisation', type: 'model.CustomNumberType'}" />
                             <Text text= " " />
                             <Text text= " " />
                         </cells>
