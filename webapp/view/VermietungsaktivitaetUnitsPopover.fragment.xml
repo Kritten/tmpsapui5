@@ -28,7 +28,7 @@
             width="100%">
             <items>
                 <Label text="{i18n>WAEHRUNG}:" />
-                <Select selectedKey="{form>/vermietungsaktivitaet/Currency}" items="{form>/viewsettings/waehrungen}" change="onPopoverWaehrungSelect">
+                <Select selectedKey="{form>/vermietungsaktivitaet/Currency}" items="{ path: 'form>/viewsettings/waehrungen', sorter: { path: 'Nach' } }" change="onPopoverWaehrungSelect">
                     <core:Item key="{form>Nach}" text="{form>Nach}" />
                 </Select>
             </items>
