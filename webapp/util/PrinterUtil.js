@@ -74,12 +74,12 @@ sap.ui.define([
                         result = result.replace("@@Embargo@@", embargo);
                     }
 
-                    var vtrLfz = vermietungsaktivitaet.VtrLfz;
+					var vtrLfz = vermietungsaktivitaet.VtrLfzM;
                     if (vtrLfz) {
                         result = result.replace("@@VtrLfz@@", vtrLfz);
                     }
 
-                    var verlOpt = vermietungsaktivitaet.VerlOpt;
+                    var verlOpt = vermietungsaktivitaet.VerlOptM;
                     if (verlOpt) {
                         result = result.replace("@@VerlOpt@@", verlOpt);
                     }
@@ -430,12 +430,12 @@ sap.ui.define([
                         result = result.replace("@@IndBez@@", indBez);
                     }
 
-                    var vtrLfz = konditioneneinigung.VtrLfz;
+                    var vtrLfz = konditioneneinigung.VtrLfzM;
                     if (vtrLfz) {
                         result = result.replace("@@VtrLfz@@", vtrLfz);
                     }
 
-                    var verlOpt = konditioneneinigung.VerlOpt;
+                    var verlOpt = konditioneneinigung.VerlOptM;
                     if (verlOpt) {
                         result = result.replace("@@VerlOpt@@", verlOpt);
                     }
