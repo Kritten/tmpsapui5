@@ -64,7 +64,6 @@
                 font-size: 12px;
                 font-family: Arial, Helvetica, sans-serif;
                 text-align: left;
-                width: 60%;
         }
         .auto-style8 {
                 background-color: #888888 !important;
@@ -85,6 +84,10 @@
         .fonds {
                 font-size: 12px;
                 font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        #mainTable td {
+        	width: 25%;
         }
 }
 
@@ -220,185 +223,131 @@
         </tr>
 </table>
 <hr />
-<table style="width: 100%">
-        <tr>
-                <td style="width: 50%">
-                        <table style="width: 100%">
-                                <tr>
-                                        <td class="data-bez">Kategorie:</td>
-                                        <td class="auto-style6">@@VaTyp@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Vermietungsart:</td>
-                                        <td class="auto-style6">@@VaArt@@</td>
-                                </tr>
-                        </table>
-                </td>
-                <td style="vertical-align:top">
-                        <table style="width: 100%">
-                                <tr>
-                                        <td class="data-bez">Budgetstop:</td>
-                                        <td class="auto-style6">@@Budgetstp@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                </tr>
-                        </table>
-                </td>
-        </tr>
-        <tr>
-                <td style="width: 100%" colspan="2">
-                         <table style="width: 100%">
-                                 <tr>@@KEMapping@@</tr>
-                        </table>
-                </td>
-        </tr>
-</table>
+<table style="width: 100%; vertical-align: top" id="mainTable">
+    <tr>
+            <td class="data-bez">Kategorie:</td>
+            <td class="auto-style6">@@VaTyp@@</td>
+            
+            <td class="data-bez">Budgetstop:</td>
+            <td class="auto-style6">@@Budgetstp@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Vermietungsart:</td>
+            <td class="auto-style6">@@VaArt@@</td>
+    </tr>
+    <tr>
+		@@KEMapping@@
+    </tr>
 
-<table style="width: 100%">
-        <tr>
-                <td style="width: 50%; vertical-align: top">
-                        <table style="width: 100%">
-                                <tr>
-                                        <td class="data-bez">Mietername:</td>
-                                        <td class="auto-style6">@@Debitorname@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Mietbeginn:</td>
-                                        <td class="auto-style6">@@Mietbeginn@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Indexweitergabe in %:</td>
-                                        <td class="auto-style6">@@IdxWeitergabe@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Mietfreie Zeiten in Monaten:</td>
-                                        <td class="auto-style6">@@MzMonate@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Erster Monat der mietfreien Zeit:</td>
-                                        <td class="auto-style6">@@MzErsterMonat@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Anzahl Wiederholungen (Jahre):</td>
-                                        <td class="auto-style6">@@MzAnzahlJ@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Maklername:</td>
-                                        <td class="auto-style6">@@MaklerName@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Maklerkosten:<br>
-                                         <span class="style6_padding">@@MkMonate@@</span> Monatsmieten =</td>
-                                        <td class="auto-style6">@@MkMAbs@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Maklerkosten Absolutwert =</td>
-                                        <td class="auto-style6">@@MkAbsolut@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez" style="text-align: right">Maklerkosten gesamt =</td>
-                                        <td class="auto-style6">@@MkGesamt@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Embargo:</td>
-                                        <td class="auto-style6">@@Embargo@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Verl. Option in Monaten:</td>
-                                        <td class="auto-style6">@@VerlOptM@@</td>
-                                </tr>
-                        </table>
-                </td>
-                <td style="width: 50%; vertical-align: top">
-                        <table style="width: 100%">
-                                <tr>
-                                        <td class="data-bez">Debitor:</td>
-                                        <td class="auto-style6">@@Debitor@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Laufzeit bis 1st break (Monate):</td>
-                                        <td class="auto-style6">@@LzFirstbreak@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">P&ouml;nale:</td>
-                                        <td class="auto-style6">@@Poenale@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Einmalertrag:</td>
-                                        <td class="auto-style6">@@Einmalertrag@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Ausbaukosten-Verteilung ab:</td>
-                                        <td class="auto-style6">@@AkErsterMonat@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Verteilung &uuml;ber Monate:</td>
-                                        <td class="auto-style6">@@AkAnzahlM@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Beratungskosten: <br>
-                                         <span class="style6_padding">@@BkMonate@@</span> Monatsmieten =</td>
-                                        <td class="auto-style6">@@BkMAbs@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Beratungskosten Absolutwert =</td>
-                                        <td class="auto-style6">@@BkAbsolut@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez" style="text-align: right">Beratungskosten gesamt =</td>
-                                        <td class="auto-style6">@@BkGesamt@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Vertragslaufzeit in Monaten:</td>
-                                        <td class="auto-style6">@@VtrLfzM@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Anzahl der Wiederholungen (Verl. Opt.):</td>
-                                        <td class="auto-style6">@@VerlOptWdh@@</td>
-                                </tr>
-                        </table>
-                </td>
-        </tr>
-        <tr>
-                <td style="width: 50%; vertical-align: top">
-                        <table style="width: 100%">
-                                <tr>
-                                        <td class="data-bez">Sonstige Ertragsart:</td>
-                                        <td class="auto-style6">@@ArtE@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Sonstige Ertr&auml;ge:</td>
-                                        <td class="auto-style6">@@SonstE@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Steuersch&auml;dling:</td>
-                                        <td class="auto-style6">@@Steuerschlg@@</td>
-                                </tr>
-                                <tr>
-                                        <td class="data-bez">Kosten Steuerschaden:</td>
-                                        <td class="auto-style6">@@Steuerschaden@@</td>
-                                </tr>
-                        </table>
-                </td>
-                <td style="width: 50%; vertical-align: top">
-                        <table style="width: 100%">
-                             <tr>
-                                     <td class="data-bez">Sonstige Kostenart:</td>
-                                     <td class="auto-style6">@@ArtK@@</td>
-                             </tr>
-                             <tr>
-                                     <td class="data-bez">Sonstige Kosten:</td>
-                                     <td class="auto-style6">@@SonstK@@</td>
-                             </tr>
-                             <tr>
-                                     <td class="data-bez">Ertrag aus MwSt-Kompensation:</td>
-                                     <td class="auto-style6">@@MwstkErtrag@@</td>
-                             </tr>
-                     </table>
-                </td>
-        </tr>
+    <tr>
+            <td class="data-bez">Mietername:</td>
+            <td class="auto-style6">@@Debitorname@@</td>
+
+            <td class="data-bez">Debitor:</td>
+            <td class="auto-style6">@@Debitor@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Mietbeginn:</td>
+            <td class="auto-style6">@@Mietbeginn@@</td>
+        
+            <td class="data-bez">Laufzeit bis 1st break (Monate):</td>
+            <td class="auto-style6">@@LzFirstbreak@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Indexweitergabe in %:</td>
+            <td class="auto-style6">@@IdxWeitergabe@@</td>
+            
+            <td class="data-bez">P&ouml;nale:</td>
+            <td class="auto-style6">@@Poenale@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Mietfreie Zeiten in Monaten:</td>
+            <td class="auto-style6">@@MzMonate@@</td>
+            
+            <td class="data-bez">Einmalertrag:</td>
+            <td class="auto-style6">@@Einmalertrag@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Erster Monat der mietfreien Zeit:</td>
+            <td class="auto-style6">@@MzErsterMonat@@</td>
+            
+            <td class="data-bez">Ausbaukosten-Verteilung ab:</td>
+            <td class="auto-style6">@@AkErsterMonat@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Anzahl Wiederholungen (Jahre):</td>
+            <td class="auto-style6">@@MzAnzahlJ@@</td>
+            
+            <td class="data-bez">Verteilung &uuml;ber Monate:</td>
+            <td class="auto-style6">@@AkAnzahlM@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Maklername:</td>
+            <td class="auto-style6">@@MaklerName@@</td>
+            
+            <td class="data-bez">Beratungskosten: <br>
+             <span class="style6_padding">@@BkMonate@@</span> Monatsmieten =</td>
+            <td class="auto-style6">@@BkMAbs@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Maklerkosten:<br>
+             <span class="style6_padding">@@MkMonate@@</span> Monatsmieten =</td>
+            <td class="auto-style6">@@MkMAbs@@</td>
+            
+            <td class="data-bez">Beratungskosten Absolutwert =</td>
+            <td class="auto-style6">@@BkAbsolut@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Maklerkosten Absolutwert =</td>
+            <td class="auto-style6">@@MkAbsolut@@</td>
+            
+            <td class="data-bez" style="text-align: right">Beratungskosten gesamt =</td>
+            <td class="auto-style6">@@BkGesamt@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez" style="text-align: right">Maklerkosten gesamt =</td>
+            <td class="auto-style6">@@MkGesamt@@</td>
+            
+            <td class="data-bez">Vertragslaufzeit in Monaten:</td>
+            <td class="auto-style6">@@VtrLfzM@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Embargo:</td>
+            <td class="auto-style6">@@Embargo@@</td>
+            
+            <td class="data-bez">Anzahl der Wiederholungen (Verl. Opt.):</td>
+            <td class="auto-style6">@@VerlOptWdh@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Verl. Option in Monaten:</td>
+            <td class="auto-style6">@@VerlOptM@@</td>
+    </tr>
+	<tr style="height:10px"><td colspan="4"></td></tr>
+    <tr>
+            <td class="data-bez">Sonstige Ertragsart:</td>
+            <td class="auto-style6">@@ArtE@@</td>
+            
+			<td class="data-bez">Sonstige Kostenart:</td>
+			<td class="auto-style6">@@ArtK@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Sonstige Ertr&auml;ge:</td>
+            <td class="auto-style6">@@SonstE@@</td>
+            
+			<td class="data-bez">Sonstige Kosten:</td>
+			<td class="auto-style6">@@SonstK@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Steuersch&auml;dling:</td>
+            <td class="auto-style6">@@Steuerschlg@@</td>
+            
+			<td class="data-bez">Ertrag aus MwSt-Kompensation:</td>
+			<td class="auto-style6">@@MwstkErtrag@@</td>
+    </tr>
+    <tr>
+            <td class="data-bez">Kosten Steuerschaden:</td>
+            <td class="auto-style6">@@Steuerschaden@@</td>
+    </tr>
 </table>
 <hr />
 <p class="auto-style9">@@Mietflaechenangaben@@</p>

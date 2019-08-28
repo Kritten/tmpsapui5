@@ -335,12 +335,12 @@ sap.ui.define([
                     if (vermietungsaktivitaet.Kategorie === "01") {
                         if(locale.indexOf("de") !== -1){
                             // standardsprache
-                            keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Zugrundeliegende KE:</td>";
+                            keMappingHtml = "<td class=\"auto-style7\">Zugrundeliegende KE:</td>";
                         }else{
-                            keMappingHtml = "<td class=\"auto-style7\" style=\"width: 35%;\">Underlying TaC:</td>";
+                            keMappingHtml = "<td class=\"auto-style7\">Underlying TaC:</td>";
                         }
 
-                        keMappingHtml += "<td class=\"auto-style6\">";
+                        keMappingHtml += "<td colspan=\"3\" class=\"auto-style6\">";
 
                         keMappingHtml += _.map(_.filter(vermietungsaktivitaet.VaToMap, function(ke){return ke.Aktiv;}), function(ke){return ke.KeId;}).join(", ");
 
