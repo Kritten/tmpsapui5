@@ -74,21 +74,6 @@ sap.ui.define([
                         result = result.replace("@@Embargo@@", embargo);
                     }
 
-					var vtrLfz = vermietungsaktivitaet.VtrLfzM;
-                    if (vtrLfz) {
-                        result = result.replace("@@VtrLfz@@", vtrLfz);
-                    }
-
-                    var verlOpt = vermietungsaktivitaet.VerlOptM;
-                    if (verlOpt) {
-                        result = result.replace("@@VerlOpt@@", verlOpt);
-                    }
-
-                    var verlOptWdh = vermietungsaktivitaet.VerlOptWdh;
-                    if (verlOptWdh) {
-                        result = result.replace("@@VerlOptWdh@@", verlOptWdh);
-                    }
-
                     var maklerName = vermietungsaktivitaet.MaklerName;
                     if (maklerName) {
                         result = result.replace("@@MaklerName@@", maklerName);
@@ -428,21 +413,6 @@ sap.ui.define([
                     var indBez = konditioneneinigung.IndBez;
                     if (indBez) {
                         result = result.replace("@@IndBez@@", indBez);
-                    }
-
-                    var vtrLfz = konditioneneinigung.VtrLfzM;
-                    if (vtrLfz) {
-                        result = result.replace("@@VtrLfz@@", vtrLfz);
-                    }
-
-                    var verlOpt = konditioneneinigung.VerlOptM;
-                    if (verlOpt) {
-                        result = result.replace("@@VerlOpt@@", verlOpt);
-                    }
-
-                    var verlOptWdh = konditioneneinigung.VerlOptWdh;
-                    if (verlOptWdh) {
-                        result = result.replace("@@VerlOptWdh@@", verlOptWdh);
                     }
 
                     var mietbeginn = konditioneneinigung.Mietbeginn;
