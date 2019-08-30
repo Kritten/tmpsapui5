@@ -44,12 +44,20 @@ sap.ui.define([], function () {
                         if(vaWorksheet[keyCellAddress] === undefined){
                             break;
                         }
-
+                        
                         if(vaWorksheet[valCellAddress] === undefined){
-                            vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = "";
+                        	if (vaWorksheet[keyCellAddress].v === 'Steuerschlg' || vaWorksheet[keyCellAddress].v === 'PLRelevant') {
+                        		vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = false;
+                        	} else {
+                            	vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = "";
+                        	}
                         }else {
                             var number = that.checkForNumber(vaWorksheet[valCellAddress].v);
                             if(!number){
+	                        	if (vaWorksheet[keyCellAddress].v === 'Steuerschlg' || vaWorksheet[keyCellAddress].v === 'PLRelevant') {
+		                    		vaWorksheet[valCellAddress].v = vaWorksheet[valCellAddress].v === 'X' ? true : false;
+		                    	}
+	                    	
                                 vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = vaWorksheet[valCellAddress].v;
                             }else{
                                 vermietungsaktivitaet[vaWorksheet[keyCellAddress].v] = number;
@@ -84,9 +92,13 @@ sap.ui.define([], function () {
 
                                 // Prüfen ob value existiert (bei MfSplit === "" ist mfWorksheet[valCellAddress] undefined, aber kein Fehler!)
                                 var value = mfWorksheet[valCellAddress] ? mfWorksheet[valCellAddress].v : "";
+                                
                                 var numberValue = that.checkForNumber(value);
 
                                 if(!numberValue){
+                                	if (mfWorksheet[keyCellAddress].v === 'MfSplit') {
+                                		value = value === '' ? false : true;
+                                	}
                                     mietflaeche[mfWorksheet[keyCellAddress].v] = value;
                                 }else{
                                     mietflaeche[mfWorksheet[keyCellAddress].v] = numberValue;
