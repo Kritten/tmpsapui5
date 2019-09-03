@@ -145,10 +145,10 @@ sap.ui.define([
                     var VmlRelString;
                     if(locale.indexOf("de") !== -1){
                         // standardsprache
-                        VmlRelString = VmlRel ? "Ja" : "Nein";
+                        VmlRelString = VmlRel === 0 ? "Ja" : "Nein";
                         result = result.replace("@@VmlRel@@", VmlRelString);
                      }else{
-                        VmlRelString = VmlRel ? "Yes" : "No";
+                        VmlRelString = VmlRel === 0 ? "Yes" : "No";
                         result = result.replace("@@VmlRel@@", VmlRelString);
                      }
 

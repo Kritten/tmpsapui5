@@ -156,9 +156,14 @@
                     <Label text="{i18n>INDIVIDUELLE_BEZEICHNUNG}" />
                     <Input id="indBez" value="{ path: 'form>/konditioneneinigung/IndBez' }" maxLength="30" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
                         <layoutData>
-							<l:GridData span="L3 M3 S12" />
+							<l:GridData span="L3 M3 S8" />
 						</layoutData>
                     </Input>
+                    <Text text="{i18n>INDIVIDUELLE_BEZEICHNUNG_HINT}">
+                        <layoutData>
+							<l:GridData span="L3 M3 S4" />
+						</layoutData>
+                    </Text>
 
                     <Label text="{i18n>GUELTIGKEIT_KONDITIONENEINIGUNG}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <DatePicker id="idGueltigkKe" dateValue="{form>/konditioneneinigung/GueltigkKe}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">

@@ -26,6 +26,7 @@ sap.ui.define([
 
 			StaticData.USER.then(function(user){
 				_this.getView().byId("idVaAnlagePanel").setVisible(user.BtnAm);
+				// _this.getView().byId("idVaAnlagePanel").setVisible(true);
 				return DataProvider.readVermSelSetAsync();
 			})
 			.then(function(vermietungsaktivitaeten){
@@ -227,6 +228,7 @@ sap.ui.define([
 		},
 
 		onExcelImportDialogAnlegenButtonPress: function(){
+			console.warn(123123);
 			this.getOwnerComponent().getRouter().navTo("vermietungsaktivitaetAnlegenImport");
 		},
 

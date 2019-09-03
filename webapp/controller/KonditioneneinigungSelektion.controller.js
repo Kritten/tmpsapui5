@@ -271,6 +271,10 @@ sap.ui.define([
 								itemFilters.push( new Filter("Regionalbuero", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 
+							case TranslationUtil.translate("KOND_SEL_COL_INDBEZ"):
+								itemFilters.push( new Filter("IndBez", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+
 							case TranslationUtil.translate("KOND_SEL_COL_ANMERKUNG"):
 								itemFilters.push( new Filter("Anmerkung", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
