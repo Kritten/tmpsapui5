@@ -231,13 +231,6 @@
                             <l:GridData span="L3 M3 S12" />
                         </layoutData>
                     </Input>
-
-                    <Label text="{i18n>MIETFREIE_ZEIT} {i18n>IN_MONATEN}" />
-                    <Input id="idMzMonate" value="{ path: 'form>/vermietungsaktivitaet/MzMonate', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
-                        <layoutData>
-							<l:GridData span="L3 M3 S12" />
-						</layoutData>
-                    </Input> 
                     
                     <Label text="{i18n>VERTRAGSLAUFZEIT} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Input id="idVtrLfz" value="{ path: 'form>/vermietungsaktivitaet/VtrLfzM', type: 'model.CustomNumberType'}"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
@@ -259,6 +252,13 @@
                             <l:GridData span="L3 M3 S12" />
                         </layoutData>
                     </Input>
+                    
+                    <Label text="{i18n>MIETFREIE_ZEIT} {i18n>IN_MONATEN}" />
+                    <Input id="idMzMonate" value="{ path: 'form>/vermietungsaktivitaet/MzMonate', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input> 
 
                     <Label text="{i18n>ERSTER_MONAT_MIETFREI}" />
                     <DatePicker id="idMzErsterMonat" dateValue="{form>/vermietungsaktivitaet/MzErsterMonat}" placeholder=" " displayFormat="MM/yyyy" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">

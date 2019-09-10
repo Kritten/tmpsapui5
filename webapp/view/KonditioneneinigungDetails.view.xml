@@ -185,13 +185,6 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
-
-                    <Label text="{i18n>MIETFREIE_ZEIT} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Input id="idMzMonate" value="{ path: 'form>/konditioneneinigung/MzMonate', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
-                        <layoutData>
-							<l:GridData span="L3 M3 S12" />
-						</layoutData>
-                    </Input>
                     
                     <Label text="{i18n>VERTRAGSLAUFZEIT} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Input id="idVtrLfz" value="{ path: 'form>/konditioneneinigung/VtrLfzM', type: 'model.CustomNumberType'}"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
@@ -212,6 +205,13 @@
                         <layoutData>
                             <l:GridData span="L3 M3 S12" />
                         </layoutData>
+                    </Input>
+
+                    <Label text="{i18n>MIETFREIE_ZEIT} {i18n>IN_MONATEN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="idMzMonate" value="{ path: 'form>/konditioneneinigung/MzMonate', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom" >
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
                     </Input>
 
                     <Label text="{i18n>MAKLERKOSTEN} {i18n>IN_MONATSMIETEN}"  />
