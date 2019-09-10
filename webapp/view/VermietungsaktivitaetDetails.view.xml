@@ -209,9 +209,14 @@
                     <Label text="{i18n>EMBARGO}" />
                     <Input id="idEmbargo" maxLength="14" value="{form>/vermietungsaktivitaet/EmbargoNr}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
                         <layoutData>
-							<l:GridData span="L6 M6 S12" />
+							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
+                    <Link text="{i18n>EMBARGO_ABFRAGE}" emphasized="true" target="_blank" href="https://tcmdeka.dekager.dekabank.intern:13443/smaragd.tcm.webclient/check">
+                        <layoutData>
+							<l:GridData span="L3 M3 S4" />
+						</layoutData>
+					</Link>
 
                     <Label text="{i18n>MIETBEGINN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <DatePicker id="idMietbeginn" dateValue="{form>/vermietungsaktivitaet/Mietbeginn}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
