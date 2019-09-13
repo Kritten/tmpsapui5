@@ -218,6 +218,13 @@
 						</layoutData>
 					</Link>
 
+                    <Label text="{i18n>INTENSIVANALYSE}" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' || ${form>/vermietungsaktivitaet/Kategorie} === '03' }" />
+                    <CheckBox id="idIntensivAnalyse" selected="{form>/vermietungsaktivitaet/IntAnalyDone}" visible="{= ${form>/vermietungsaktivitaet/Kategorie} === '01' || ${form>/vermietungsaktivitaet/Kategorie} === '03' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }"  class="sapUiSmallMarginBottom">
+                        <layoutData>
+							<l:GridData span="L1 M1 S12" />
+						</layoutData>
+                    </CheckBox>
+
                     <Label text="{i18n>MIETBEGINN}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <DatePicker id="idMietbeginn" dateValue="{form>/vermietungsaktivitaet/Mietbeginn}" placeholder=" " displayFormat="short" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>

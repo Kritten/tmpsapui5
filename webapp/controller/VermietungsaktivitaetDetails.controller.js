@@ -978,6 +978,9 @@ sap.ui.define([
                 Debitorname: va.Debitorname,
                 
                 EmbargoNr: va.EmbargoNr,
+                
+                IntAnalyDone: va.IntAnalyDone ? true : false,
+                
                 MaklerName: va.MaklerName,
                 VmlRel: va.VmlRel === 0 ? true : false,
                 
@@ -1107,6 +1110,9 @@ sap.ui.define([
                 Debitorname: va.Debitorname,
                 
                 EmbargoNr: va.EmbargoNr,
+                
+                IntAnalyDone: va.IntAnalyDone ? true : false,
+                
                 MaklerName: va.MaklerName,
                 VmlRel: va.VmlRel === 0 ? true : false,
                 
