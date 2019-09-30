@@ -427,6 +427,34 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
+                    
+                    <Label text="{i18n>UEBLICHE_INDIZIERUNG}" />
+                    <CheckBox id="idUeblicheIndizierung" selected="{form>/vermietungsaktivitaet/MauebIndex}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" select="onSelectMauebIndex">
+                        <layoutData>
+							<l:GridData span="L1 M1 S12" />
+						</layoutData>
+                    </CheckBox>
+                    
+                    <Label text="{i18n>MAX_LAUFZEIT_IN_MONATEN}" visible="{= ${form>/vermietungsaktivitaet/MauebIndex} !== true }" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Input id="idMaxLaufzeitInMonaten" value="{ path: 'form>/vermietungsaktivitaet/MaxLfz', type: 'model.CustomNumberType'}" visible="{= ${form>/vermietungsaktivitaet/MauebIndex} !== true }"  editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
+                    
+                    <Label text="{i18n>UEBLICHE_MIETSICHERHEIT}" />
+                    <CheckBox id="idUeblicheMietsicherheit" selected="{form>/vermietungsaktivitaet/MauebMietsich}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+							<l:GridData span="L1 M1 S12" />
+						</layoutData>
+                    </CheckBox>
+                    
+                    <Label text="{i18n>MIETSICHERHEIT_ABSOLUT}" required="{= ((${form>/modus} === 'new') || (${form>/modus} === 'edit')) &amp;&amp; (${form>/vermietungsaktivitaet/MauebMietsich} !== true) }" />
+                    <Input id="idMietsicherheitAbsolut" value="{ path: 'form>/vermietungsaktivitaet/MietsichAbs', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
+                        <layoutData>
+							<l:GridData span="L3 M3 S12" />
+						</layoutData>
+                    </Input>
 
                     <Label text="{i18n>PLANUNGSRELEVANZ}" />
                     <CheckBox id="idPLRelevant" selected="{form>/vermietungsaktivitaet/PLRelevant}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >

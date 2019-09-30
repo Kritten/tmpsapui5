@@ -981,6 +981,11 @@ sap.ui.define([
                 
                 IntAnalyDone: va.IntAnalyDone ? true : false,
                 
+                MauebIndex: va.MauebIndex ? true: false,
+                MaxLfz: va.MaxLfz ? va.MaxLfz.toString() : null,
+                MauebMietsich: va.MauebMietsich ? true: false,
+                MietsichAbs: va.MietsichAbs ? va.MietsichAbs.toString() : null,
+                
                 MaklerName: va.MaklerName,
                 VmlRel: va.VmlRel === 0 ? true : false,
                 
@@ -1112,6 +1117,11 @@ sap.ui.define([
                 EmbargoNr: va.EmbargoNr,
                 
                 IntAnalyDone: va.IntAnalyDone ? true : false,
+                
+                MauebIndex: va.MauebIndex ? true: false,
+                MaxLfz: va.MaxLfz ? va.MaxLfz.toString() : null,
+                MauebMietsich: va.MauebMietsich ? true: false,
+                MietsichAbs: va.MietsichAbs ? va.MietsichAbs.toString() : null,
                 
                 MaklerName: va.MaklerName,
                 VmlRel: va.VmlRel === 0 ? true : false,
@@ -1261,6 +1271,26 @@ sap.ui.define([
                 validationResult = false;
             }
 
+            var idUeblicheIndizierung = this.getView().byId("idUeblicheIndizierung");
+            if(idUeblicheIndizierung.getSelected() === false){
+            	var idMaxLaufzeitInMonaten = this.getView().byId("idMaxLaufzeitInMonaten");
+            	if(idMaxLaufzeitInMonaten.getValue() === ""){
+	                idMaxLaufzeitInMonaten.setValueState(sap.ui.core.ValueState.Error);
+	                idMaxLaufzeitInMonaten.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+	                validationResult = false;
+            	}
+            }
+            
+            var idUeblicheMietsicherheit = this.getView().byId("idUeblicheMietsicherheit");
+            if(idUeblicheMietsicherheit.getSelected() === false){
+            	var idMietsicherheitAbsolut = this.getView().byId("idMietsicherheitAbsolut");
+            	if(idMietsicherheitAbsolut.getValue() === ""){
+	                idMietsicherheitAbsolut.setValueState(sap.ui.core.ValueState.Error);
+	                idMietsicherheitAbsolut.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+	                validationResult = false;
+            	}
+            }
+            
             var idMzMonate = this.getView().byId("idMzMonate");
             if(idMzMonate.getValue()) {
                 validationResult = this.checkNotNegative(idMzMonate) && this.checkMzMonateLimit(idMzMonate) && validationResult;
@@ -1499,6 +1529,10 @@ sap.ui.define([
             this.getView().byId("idAkAnzahlM").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idPoenale").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idVmlRel").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idMaxLaufzeitInMonaten").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idUeblicheIndizierung").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idUeblicheMietsicherheit").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idMietsicherheitAbsolut").setValueState(sap.ui.core.ValueState.None);
 
             var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             _.map(mietflaechenangabenTable.getItems(), function(item){
@@ -2245,6 +2279,12 @@ sap.ui.define([
                     ErrorMessageUtil.show(error);
                 }
             }).done();
+        },
+        
+        onSelectMauebIndex: function(oEvent) {
+        	if (oEvent.getParameter('selected') === true) {
+            	var ke = this.getView().getModel("form").setProperty("/vermietungsaktivitaet/MaxLfz", null);
+        	}
         }
 
 	});

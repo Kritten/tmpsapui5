@@ -187,6 +187,10 @@ sap.ui.define([
             this.getView().byId("idVtrLfz").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idVerlOpt").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idVerlOptWdh").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idMaxLaufzeitInMonaten").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idUeblicheIndizierung").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idUeblicheMietsicherheit").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idMietsicherheitAbsolut").setValueState(sap.ui.core.ValueState.None);
             var mkMonate = this.getView().byId("maklerkostenInMonatsmieten");
             mkMonate.setValueState(sap.ui.core.ValueState.None);
 
@@ -789,6 +793,11 @@ sap.ui.define([
                 SonstK: ke.SonstK ?  ke.SonstK.toString() : null,
                 ArtErtrag: ke.ArtErtrag,
                 SonstE: ke.SonstE ?  ke.SonstE.toString() : null,
+                
+                MauebIndex: ke.MauebIndex ? true: false,
+                MaxLfz: ke.MaxLfz ? ke.MaxLfz.toString() : null,
+                MauebMietsich: ke.MauebMietsich ? true: false,
+                MietsichAbs: ke.MietsichAbs ? ke.MietsichAbs.toString() : null,
 
                 Steuerschaden: ke.Steuerschaden ?  ke.Steuerschaden.toString() : null,
                 MwstkErtrag: ke.MwstkErtrag ?  ke.MwstkErtrag.toString() : null,
@@ -889,6 +898,11 @@ sap.ui.define([
                 SonstK: ke.SonstK ? ke.SonstK.toString() : null,
                 ArtErtrag: ke.ArtErtrag,
                 SonstE: ke.SonstE ? ke.SonstE.toString() : null,
+                
+                MauebIndex: ke.MauebIndex ? true: false,
+                MaxLfz: ke.MaxLfz ? ke.MaxLfz.toString() : null,
+                MauebMietsich: ke.MauebMietsich ? true: false,
+                MietsichAbs: ke.MietsichAbs ? ke.MietsichAbs.toString() : null,
 
                 Steuerschaden: ke.Steuerschaden ? ke.Steuerschaden.toString() : null,
                 MwstkErtrag: ke.MwstkErtrag ? ke.MwstkErtrag.toString() : null,
@@ -1129,6 +1143,26 @@ sap.ui.define([
                 idGueltigkKe.setValueState(sap.ui.core.ValueState.Error);
                 idGueltigkKe.setValueStateText(TranslationUtil.translate("ERR_UNGUELTIGES_DATUM"));
                 validationResult = false;
+            }
+
+            var idUeblicheIndizierung = this.getView().byId("idUeblicheIndizierung");
+            if(idUeblicheIndizierung.getSelected() === false){
+            	var idMaxLaufzeitInMonaten = this.getView().byId("idMaxLaufzeitInMonaten");
+            	if(idMaxLaufzeitInMonaten.getValue() === ""){
+	                idMaxLaufzeitInMonaten.setValueState(sap.ui.core.ValueState.Error);
+	                idMaxLaufzeitInMonaten.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+	                validationResult = false;
+            	}
+            }
+            
+            var idUeblicheMietsicherheit = this.getView().byId("idUeblicheMietsicherheit");
+            if(idUeblicheMietsicherheit.getSelected() === false){
+            	var idMietsicherheitAbsolut = this.getView().byId("idMietsicherheitAbsolut");
+            	if(idMietsicherheitAbsolut.getValue() === ""){
+	                idMietsicherheitAbsolut.setValueState(sap.ui.core.ValueState.Error);
+	                idMietsicherheitAbsolut.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+	                validationResult = false;
+            	}
             }
 
 
@@ -2085,6 +2119,12 @@ sap.ui.define([
             } else {
                 textArea.setValueState(sap.ui.core.ValueState.None);
             }
+        },
+        
+        onSelectMauebIndex: function(oEvent) {
+        	if (oEvent.getParameter('selected') === true) {
+            	var ke = this.getView().getModel("form").setProperty("/konditioneneinigung/MaxLfz", null);
+        	}
         }
 
 	});
