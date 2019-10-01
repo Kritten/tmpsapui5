@@ -127,8 +127,8 @@
 						</Toolbar>
 					</headerToolbar>
 					<columns>
-						<Column minScreenWidth="Tablet" width="6%">
-							<Text text="{i18n>VERM_SEL_COL_FAVORIT}" />
+						<Column minScreenWidth="Tablet" width="1rem">
+							<core:Icon src="sap-icon://favorite" />
 						</Column>
 						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>VERM_SEL_COL_BUCHUNGSKREIS}" />
@@ -141,6 +141,9 @@
 						</Column>
 						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>VERM_SEL_COL_REGIONALBUERO}" />
+						</Column>
+						<Column minScreenWidth="Tablet">
+							<Text text="{i18n>VERM_SEL_COL_MIETERNAME}" />
 						</Column>
 						<Column minScreenWidth="Tablet">
 							<Text text="{i18n>VERM_SEL_COL_MIETBEGINN}" />
@@ -170,6 +173,7 @@
 								<Text text="{vermSel>WeId}" />
 								<Text text="{vermSel>VaId}" />
 								<Text text="{vermSel>Regionalbuero}" />
+								<Text text="{vermSel>Debitorname}" />
 								<Text text="{
 										path: 'vermSel>Mietbeginn',
 										type: 'sap.ui.model.type.Date',
