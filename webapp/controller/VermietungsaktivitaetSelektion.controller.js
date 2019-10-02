@@ -35,6 +35,7 @@ sap.ui.define([
 				var buchungskreisValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Bukrs; }));
 				var wirtschaftseinheitValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.WeId; }));
 				var regionalbueroValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Regionalbuero; }));
+				var vaIdValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.VaId; }));
 				var anmerkungValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Anmerkung; }));
 				var statusValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Status; }));
 				var dienstleisterValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Dienstleister; }));
@@ -49,6 +50,7 @@ sap.ui.define([
 						Bukrs: _.map(buchungskreisValues, function(Bukrs){ return {key: Bukrs}; }),
 						WeId: _.map(wirtschaftseinheitValues, function(WeId){ return {key: WeId}; }),
 						Regionalbuero: _.map(regionalbueroValues, function(Regionalbuero){ return {key: Regionalbuero}; }),
+						VaId: _.map(vaIdValues, function(vaId){ return {key: vaId}; }),
 						Anmerkung: _.map(anmerkungValues, function(Anmerkung){ return {key: Anmerkung}; }),
 						Status: _.map(statusValues, function(Status){ return {key: Status}; }),
 						Dienstleister: _.map(dienstleisterValues, function(Dienstleister){ return {key: Dienstleister}; }),
@@ -393,6 +395,10 @@ sap.ui.define([
 
 							case TranslationUtil.translate("VERM_SEL_COL_REGIONALBUERO"):
 								itemFilters.push( new Filter("Regionalbuero", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+
+							case TranslationUtil.translate("VERM_SEL_COL_ID"):
+								itemFilters.push( new Filter("VaId", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 
 							case TranslationUtil.translate("VERM_SEL_COL_ANMERKUNG"):
