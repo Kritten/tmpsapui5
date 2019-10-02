@@ -551,10 +551,10 @@
                     <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
                         <Text text="{i18n>VERMIETUNGSAKTIVITAET}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+                    <Column visible="{= (${form>/vermietungsaktivitaet/Kategorie} === '01') }" minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
                         <Text text="{i18n>KONDITIONENEINIGUNG}" />
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+                    <Column visible="{= (${form>/vermietungsaktivitaet/Kategorie} === '01') }" minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
                         <Text text="{i18n>DIFFERENZ}" />
                     </Column>
                 </columns>
@@ -566,7 +566,7 @@
                             <Text text=" " />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtragPa', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{ parts:
+                            <Text visible="{= (${form>/vermietungsaktivitaet/Kategorie} === '01') }" text="{ parts:
                                                 [
                                                 {path:'form>/vermietungsaktivitaet/GesErtragPa'},
                                                 {path:'form>/vermietungsaktivitaet/GesKeErtrag'},
@@ -587,7 +587,7 @@
                             <Text text=" " />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeKosten', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{ parts:
+                            <Text visible="{= (${form>/vermietungsaktivitaet/Kategorie} === '01') }" text="{ parts:
                                                 [
                                                 {path:'form>/vermietungsaktivitaet/GesKosten'},
                                                 {path:'form>/vermietungsaktivitaet/GesKeKosten'},
@@ -614,7 +614,7 @@
                             }" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesVaErtragLz', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesKeErtragLz', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
-                            <Text text="{ parts: [
+                            <Text visible="{= (${form>/vermietungsaktivitaet/Kategorie} === '01') }" text="{ parts: [
                                                     {path:'form>/vermietungsaktivitaet/GesVaErtragLz'},
                                                     {path:'form>/vermietungsaktivitaet/GesKeErtragLz'},
                                                     {path:'form>/viewsettings/waehrungSelected/Nach'}
@@ -634,7 +634,7 @@
                             }" />
                             <Text text="{ path: 'form>/vermietungsaktivitaet/GesErtrag', type: 'model.CustomNumberType'} {form>/viewsettings/waehrungSelected/Nach}" />
                             <Text text=" " />
-                            <Text text=" " />
+                            <Text visible="{= (${form>/vermietungsaktivitaet/Kategorie} === '01') }" text=" " />
                         </cells>
                     </ColumnListItem>
                 </items>
