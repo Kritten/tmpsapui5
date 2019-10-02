@@ -1534,24 +1534,16 @@ sap.ui.define([
             this.getView().byId("idUeblicheMietsicherheit").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMietsicherheitAbsolut").setValueState(sap.ui.core.ValueState.None);
 
-            var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
+			var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             _.map(mietflaechenangabenTable.getItems(), function(item){
                 var cells = item.getCells();
-
-                var anMieteCell = cells[9];
-                anMieteCell.setValueState(sap.ui.core.ValueState.None);
-
-                var hnflAltCell = cells[6];
-                hnflAltCell.setValueState(sap.ui.core.ValueState.None);
-
-                var nhMieteCell = cells[8];
-                nhMieteCell.setValueState(sap.ui.core.ValueState.None);
-
-                var gaKostenCell = cells[10];
-                gaKostenCell.setValueState(sap.ui.core.ValueState.None);
-
-                var maKostenCell = cells[11];
-                maKostenCell.setValueState(sap.ui.core.ValueState.None);
+            	_.map(cells, function(cell){
+            		try {
+						cell.setValueState(sap.ui.core.ValueState.None);
+	                } catch(e) {
+	                	console.warn('catched for ', cell);
+	                }
+            	});
             });
 
             this.getView().byId("idMietflaechenangabenErrorBox").setVisible(false);
