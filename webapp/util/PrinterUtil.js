@@ -277,7 +277,7 @@ sap.ui.define([
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart<br>NA alternativ</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br>HNF alternativ</b><br>FE</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br>Angebotsmiete</b><br>WHG/FE</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br>Vertragsmiete</b><br>WHG/FE</td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten<br>Mieterausbaukosten</b><br>WHG/FE</td>";
                         mietflaechenangabeHtml += "</tr>";
                      }else{
