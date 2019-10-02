@@ -76,13 +76,19 @@
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="{i18n>KOND_SEL_COL_REGIONALBUERO}" items="{path: 'kondSel>/facetfilterValues/Regionalbuero', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList title="{i18n>KOND_SEL_COL_ID}" items="{path: 'kondSel>/facetfilterValues/KeId', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
 							</items>
 						</FacetFilterList>
 
 						<FacetFilterList title="{i18n>KOND_SEL_COL_INDBEZ}" items="{path: 'kondSel>/facetfilterValues/IndBez', templateShareable: true }" listClose="onFacetFilterListClose" >
+							<items>
+								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
+							</items>
+						</FacetFilterList>
+
+						<FacetFilterList title="{i18n>KOND_SEL_COL_REGIONALBUERO}" items="{path: 'kondSel>/facetfilterValues/Regionalbuero', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{kondSel>key}" text="{kondSel>key}" />
 							</items>

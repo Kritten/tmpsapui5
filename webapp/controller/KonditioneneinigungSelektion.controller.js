@@ -31,6 +31,7 @@ sap.ui.define([
 				var buchungskreisValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Bukrs; }));
 				var wirtschaftseinheitValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.WeId; }));
 				var regionalbueroValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Regionalbuero; }));
+				var keIdValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.KeId; }));
 				var indBezValues= _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.IndBez; }));
 				var anmerkungValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Anmerkung; }));
 				var erstellerValues = _.uniq(_.map(konditioneneinigungen, function(ke){ return ke.Ersteller; }));
@@ -42,6 +43,7 @@ sap.ui.define([
 						Bukrs: _.map(buchungskreisValues, function(Bukrs){ return {key: Bukrs}; }),
 						WeId: _.map(wirtschaftseinheitValues, function(WeId){ return {key: WeId}; }),
 						Regionalbuero: _.map(regionalbueroValues, function(Regionalbuero){ return {key: Regionalbuero}; }),
+						KeId: _.map(keIdValues, function(KeId){ return {key: KeId}; }),
 						IndBez: _.map(indBezValues, function(IndBez){ return {key: IndBez}; }),
 						Anmerkung: _.map(anmerkungValues, function(Anmerkung){ return {key: Anmerkung}; }),
 						Ersteller: _.map(erstellerValues, function(Ersteller){ return {key: Ersteller}; })
@@ -269,6 +271,10 @@ sap.ui.define([
 
 							case TranslationUtil.translate("KOND_SEL_COL_REGIONALBUERO"):
 								itemFilters.push( new Filter("Regionalbuero", sap.ui.model.FilterOperator.EQ, item.getKey()) );
+							break;
+
+							case TranslationUtil.translate("KOND_SEL_COL_ID"):
+								itemFilters.push( new Filter("KeId", sap.ui.model.FilterOperator.EQ, item.getKey()) );
 							break;
 
 							case TranslationUtil.translate("KOND_SEL_COL_INDBEZ"):
