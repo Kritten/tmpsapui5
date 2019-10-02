@@ -349,7 +349,7 @@
                     </Input>
 
                     <!-- Sonstige Erträge  -->
-                    <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" visible="{= ${form>/modus} === 'show' }" />
+                    <Label text="{i18n>SONSTIGE_ERTRAEGE} ({= ${form>/vermietungsaktivitaet/MonatJahr} ==='M' ? ${i18n>PRO_MONAT} : ${i18n>PRO_JAHR_LANG} }) in {form>/viewsettings/waehrungSelected/Nach}" visible="{= ${form>/modus} === 'show' }" />
                     <Input id="InputSonstigeErtraegeShow" value="{= ${text>/ertragsart}[${form>/vermietungsaktivitaet/ArtErtrag}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
@@ -361,7 +361,7 @@
 						</layoutData>
                     </Input>
                     <!-- REDUNDANT -->
-                    <Label text="{i18n>SONSTIGE_ERTRAEGE} in {form>/viewsettings/waehrungSelected/Nach}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Label text="{i18n>SONSTIGE_ERTRAEGE} ({= ${form>/vermietungsaktivitaet/MonatJahr} ==='M' ? ${i18n>PRO_MONAT} : ${i18n>PRO_JAHR_LANG} }) in {form>/viewsettings/waehrungSelected/Nach}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
                     <Select id="InputSonstigeErtraegeNewEdit" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtErtrag}" items="{form>/ertragsarten}">
                         <items>
                             <core:Item key="{form>ErId}" text="{form>Txtmd}" />
@@ -404,7 +404,7 @@
 						</layoutData>
                     </Input>
 
-                    <Label text="{i18n>ERTRAG_AUS_MWST} in {form>/viewsettings/waehrungSelected/Nach}" />
+                    <Label text="{i18n>ERTRAG_AUS_MWST} ({= ${form>/vermietungsaktivitaet/MonatJahr} ==='M' ? ${i18n>PRO_MONAT} : ${i18n>PRO_JAHR_LANG} }) in {form>/viewsettings/waehrungSelected/Nach}" />
                     <Input id="idMwstkErtrag" value="{ path: 'form>/vermietungsaktivitaet/MwstkErtrag', type: 'model.CustomNumberType'}" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
