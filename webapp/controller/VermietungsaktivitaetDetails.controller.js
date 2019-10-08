@@ -1274,7 +1274,7 @@ sap.ui.define([
             var idUeblicheIndizierung = this.getView().byId("idUeblicheIndizierung");
             if(idUeblicheIndizierung.getSelected() === false){
             	var idMaxLaufzeitInMonaten = this.getView().byId("idMaxLaufzeitInMonaten");
-            	if(idMaxLaufzeitInMonaten.getValue() === ""){
+            	if(idMaxLaufzeitInMonaten.getValue() === "" || idMaxLaufzeitInMonaten.getValue() === "0,00"){
 	                idMaxLaufzeitInMonaten.setValueState(sap.ui.core.ValueState.Error);
 	                idMaxLaufzeitInMonaten.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
 	                validationResult = false;
