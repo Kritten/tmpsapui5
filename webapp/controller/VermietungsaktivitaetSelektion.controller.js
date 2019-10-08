@@ -43,8 +43,11 @@ sap.ui.define([
 				var kategorieValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Kategorie; }));
 				var erstellerValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Ersteller; }));
 
+				var aPartitions = _.partition(vermietungsaktivitaeten, { Anmerkung: '81' });
+				console.log('aPartitions', aPartitions);
 				var jsonData = {
-					data: vermietungsaktivitaeten,
+					data: aPartitions[1],
+					dataStale: aPartitions[0],
 					facetfilterValues: {
 						Favorit: _.map(favoritValues, function(Favorit){ return {key: Favorit, text: Favorit ? TranslationUtil.translate("JA") : TranslationUtil.translate("NEIN")}; }),
 						Bukrs: _.map(buchungskreisValues, function(Bukrs){ return {key: Bukrs}; }),
@@ -365,6 +368,8 @@ sap.ui.define([
 		applyFilters: function(){
 
 			var table = this.getView().byId("idVermSelTable");
+			
+			table.setNoDataText(null);
 
 			var filtersToApply = [];
 
@@ -444,11 +449,30 @@ sap.ui.define([
 				// Alle Filter mit AND verknüpfen
 				var combinedFilter = new Filter(filtersToApply, true);
 				table.getBinding("items").filter(combinedFilter);
+				
+				if (table.getItems().length === 0) {
+					console.log('CHECKING FOR 81');
+					var facetFilterId = this.getView().byId("idFacetFilterId");
+					if (facetFilterId.getSelectedItems().length === 1) {
+						console.log('POSSIBLE 81');
+						var idVa = facetFilterId.getSelectedItems()[0].getKey();
+
+						if (_.any(this.getView().getModel("vermSel").getProperty('/dataStale'), { VaId:  idVa})) {
+							console.log('found');
+					         var oBundle = this.getView().getModel("i18n").getResourceBundle();
+					         var sMsg = oBundle.getText("VA_VERKNUEPFT");
+							table.setNoDataText(sMsg);
+							
+						}
+					}
+				}
 			}
 			else
 			{
 				table.getBinding("items").filter([]);
 			}
+			console.warn(table.getItems());
+			console.log(table.getItems().length);
 
 		}
 

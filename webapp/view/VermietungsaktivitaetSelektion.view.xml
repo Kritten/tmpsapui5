@@ -82,7 +82,7 @@
 							</items>
 						</FacetFilterList>
 
-						<FacetFilterList title="{i18n>VERM_SEL_COL_ID}" items="{path: 'vermSel>/facetfilterValues/VaId', templateShareable: true }" listClose="onFacetFilterListClose" >
+						<FacetFilterList id="idFacetFilterId" title="{i18n>VERM_SEL_COL_ID}" items="{path: 'vermSel>/facetfilterValues/VaId', templateShareable: true }" listClose="onFacetFilterListClose" >
 							<items>
 								<FacetFilterItem key="{vermSel>key}" text="{vermSel>key}" />
 							</items>
