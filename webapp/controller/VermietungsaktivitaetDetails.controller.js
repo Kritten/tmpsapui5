@@ -1380,7 +1380,7 @@ sap.ui.define([
 
             _.each(mietflaechenangabenTable.getItems(), function(item){
                 var cells = item.getCells();
-                var anMieteCell = cells[9];
+                var anMieteCell = cells[10];
 
                 if(anMieteCell.getValue() === ""){
                     anMieteCell.setValueState(sap.ui.core.ValueState.Error);
@@ -1393,18 +1393,18 @@ sap.ui.define([
                     validationResult = false;
                 }
 
-                var hnflAltCell = cells[6];
+                var hnflAltCell = cells[7];
                 validationResult = that.checkNotNegative(hnflAltCell) && validationResult;
 
-                var nhMieteCell = cells[8];
+                var nhMieteCell = cells[9];
                 validationResult = that.checkNotNegative(nhMieteCell) && validationResult;
 
                 validationResult = that.checkNotNegative(anMieteCell) && validationResult;
 
-                var gaKostenCell = cells[10];
+                var gaKostenCell = cells[11];
                 validationResult = that.checkNotNegative(gaKostenCell) && validationResult;
 
-                var maKostenCell = cells[11];
+                var maKostenCell = cells[12];
                 validationResult = that.checkNotNegative(maKostenCell) && validationResult;
             });
             // <<< CHO .. TODO: Code aufräumen
