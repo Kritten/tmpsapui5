@@ -36,7 +36,9 @@ sap.ui.define([
 				var wirtschaftseinheitValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.WeId; }));
 				var regionalbueroValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Regionalbuero; }));
 				var vaIdValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.VaId; }));
-				var anmerkungValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Anmerkung; }));
+				var anmerkungValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Anmerkung; })).filter(function(anmerkung ) {
+					return anmerkung !== '81';
+				});
 				var statusValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Status; }));
 				var dienstleisterValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Dienstleister; }));
 				var vermietungsartValues = _.uniq(_.map(vermietungsaktivitaeten, function(va){ return va.Vermietungsart; }));
