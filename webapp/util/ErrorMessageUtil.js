@@ -59,7 +59,6 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
             if(oError.responseText){
                 try {
                     var response = JSON.parse(oError.responseText);
-
                     if(response.error && response.error.code){
 
                         // SAP Nachrichtenklasse und Nummer holen
@@ -82,7 +81,19 @@ sap.ui.define(["sap/m/MessageBox"], function(MessageBox) {
                             var messages = _.map(response.error.innererror.errordetails, function(errordetails){
                                 return errordetails.message;
                             });
-                            error.text = messages.join("\n");
+                            error.text = _.map(messages, function(msg) {
+                            	var msgCopy = msg;
+                            	var aResult = [];
+                            	
+                            	do {
+                            		aResult.push(msgCopy.substring(0, 255));
+                            		msgCopy = msgCopy.substring(256);
+                            	} while (msgCopy.length > 0);
+                            	
+                            	console.log('aErrorResult', aResult);
+                            	
+                            	return aResult.join('');
+                            }).join("\n");
                         }
                         else{
                             error.text = response.error.message.value;
