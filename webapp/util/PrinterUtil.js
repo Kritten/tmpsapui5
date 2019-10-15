@@ -394,6 +394,12 @@ sap.ui.define([
                         result = result.replace("@@KeId@@", keId);
                         result = result.replace("@@KeId2@@", keId);
                     }
+                    
+                    if (konditioneneinigung.Anmerkung === '03') {
+                        result = result.replace("@@Beschluss@@", '');
+                    } else {
+                        result = result.replace("@@Beschluss@@", 'display: none;');
+                    }
 
                     var fondsbez = konditioneneinigung.Fondsbez;
                     if (fondsbez) {
