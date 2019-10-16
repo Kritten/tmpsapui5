@@ -524,7 +524,7 @@
                     </Select>
 
                     <Label text="{i18n>BEMERKUNG}" />
-                    <TextArea id="idBemerkung" value="{form>/vermietungsaktivitaet/Bemerkung}" growing="true" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" liveChange="onBemerkungLiveChange" maxLength="3000">
+                    <TextArea id="idBemerkung" value="{form>/vermietungsaktivitaet/Bemerkung}" growing="true" growingMaxLines="15" rows="4" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" liveChange="onBemerkungLiveChange" maxLength="3000">
                         <layoutData>
 							<l:GridData span="L6 M6 S12" />
 						</layoutData>
