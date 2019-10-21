@@ -277,7 +277,7 @@ sap.ui.define([
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart<br>NA alternativ</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br>HNF alternativ</b><br>FE</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br>Vertragsmiete</b><br>WHG/FE</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete GA<br>Vertragsmiete</b><br>WHG/FE</td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten<br>Mieterausbaukosten</b><br>WHG/FE</td>";
                         mietflaechenangabeHtml += "</tr>";
                      }else{
@@ -286,7 +286,7 @@ sap.ui.define([
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>RO<br>Identification</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Type of use<br>(alternative)</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MLA<br>(MLA alternative)</b><br>Meas. Amt.</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Meas. Amt.</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent VU<br>Asking rent</b><br>Currency/Meas. Amt.</td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Meas. Amt.</td>";
                         mietflaechenangabeHtml += "</tr>";
                      }
@@ -545,7 +545,7 @@ sap.ui.define([
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MO<br>Bezeichnung</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Nutzungsart</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Hauptnutzfläche<br>HNF alternativ</b><br>FE</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete<br>Angebotsmiete</b><br>WHG/FE</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Marktübliche Miete GA<br>Angebotsmiete</b><br>WHG/FE</td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Grundausbaukosten<br>Mieterausbaukosten</b><br>WHG/FE</td>";
                         mietflaechenangabeHtml += "</tr>";
                      }else{
@@ -554,7 +554,7 @@ sap.ui.define([
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>RO<br>Identification</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Type of use</b></td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>MLA<br>(MLA alternative)</b><br>Meas. Amt.</td>";
-                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent<br>Asking rent</b><br>Currency/Meas. Amt.</td>";
+                        mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Sustainable rent VU<br>Asking rent</b><br>Currency/Meas. Amt.</td>";
                         mietflaechenangabeHtml += "<td class=\"auto-style7\"><b>Basic fit out<br>Tenant fit out</b><br>Currency/Meas. Amt.</td>";
                         mietflaechenangabeHtml += "</tr>";
                      }
