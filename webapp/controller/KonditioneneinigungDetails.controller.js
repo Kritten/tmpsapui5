@@ -191,6 +191,8 @@ sap.ui.define([
             this.getView().byId("idUeblicheIndizierung").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idUeblicheMietsicherheit").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMietsicherheitAbsolut").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("idSonstKNewEdit").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("InputCashIntensives").setValueState(sap.ui.core.ValueState.None);
             var mkMonate = this.getView().byId("maklerkostenInMonatsmieten");
             mkMonate.setValueState(sap.ui.core.ValueState.None);
 
@@ -791,6 +793,7 @@ sap.ui.define([
 
                 ArtKosten: ke.ArtKosten,
                 SonstK: ke.SonstK ?  ke.SonstK.toString() : null,
+                Cashinc: ke.Cashinc ?  ke.Cashinc.toString() : null,
                 ArtErtrag: ke.ArtErtrag,
                 SonstE: ke.SonstE ?  ke.SonstE.toString() : null,
                 
@@ -896,6 +899,7 @@ sap.ui.define([
 
                 ArtKosten: ke.ArtKosten,
                 SonstK: ke.SonstK ? ke.SonstK.toString() : null,
+                Cashinc: ke.Cashinc ?  ke.Cashinc.toString() : null,
                 ArtErtrag: ke.ArtErtrag,
                 SonstE: ke.SonstE ? ke.SonstE.toString() : null,
                 
@@ -1165,7 +1169,25 @@ sap.ui.define([
 	                validationResult = false;
             	}
             }
-
+            
+            /**
+             * Cash-Intensives
+             */
+            var idSonstKNewEdit = this.getView().byId("idSonstKNewEdit");
+            var InputCashIntensives = this.getView().byId("InputCashIntensives");
+            var nSonstK = TranslationUtil.parseFloatLocale(idSonstKNewEdit.getValue());
+            var nCashinc = TranslationUtil.parseFloatLocale(InputCashIntensives.getValue());
+            if(isNaN(nCashinc) === false){
+            	if(isNaN(nSonstK) === true) {
+	                idSonstKNewEdit.setValueState(sap.ui.core.ValueState.Error);
+	                idSonstKNewEdit.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+	                validationResult = false;
+            	} else if(nSonstK < nCashinc) {
+	                InputCashIntensives.setValueState(sap.ui.core.ValueState.Error);
+	                InputCashIntensives.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_ZU_GROSS"));
+	                validationResult = false;
+            	}
+            } 
 
             var idMietbeginn = this.getView().byId("idMietbeginn");
             if(idMietbeginn.getDateValue() === null){

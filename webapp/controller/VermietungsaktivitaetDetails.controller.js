@@ -1008,6 +1008,7 @@ sap.ui.define([
 
                 ArtKosten: va.ArtKosten,
                 SonstK: va.SonstK ? va.SonstK.toString() : null,
+                Cashinc: va.Cashinc ?  va.Cashinc.toString() : null,
                 ArtErtrag: va.ArtErtrag,
                 SonstE: va.SonstE ? va.SonstE.toString() : null,
 
@@ -1145,6 +1146,7 @@ sap.ui.define([
 
                 ArtKosten: va.ArtKosten,
                 SonstK: va.SonstK ? va.SonstK.toString() : null,
+                Cashinc: va.Cashinc ?  va.Cashinc.toString() : null,
                 ArtErtrag: va.ArtErtrag,
                 SonstE: va.SonstE ? va.SonstE.toString() : null,
 
@@ -1311,6 +1313,25 @@ sap.ui.define([
             } else {
                 validationResult = this.checkNotNegative(inputVtrLfzM) && this.checkMzMonateLimit(inputVtrLfzM) && validationResult;
             }
+            
+            /**
+             * Cash-Intensives
+             */
+            var idSonstKNewEdit = this.getView().byId("idSonstKNewEdit");
+            var InputCashIntensives = this.getView().byId("InputCashIntensives");
+            var nSonstK = TranslationUtil.parseFloatLocale(idSonstKNewEdit.getValue());
+            var nCashinc = TranslationUtil.parseFloatLocale(InputCashIntensives.getValue());
+            if(isNaN(nCashinc) === false){
+            	if(isNaN(nSonstK) === true) {
+	                idSonstKNewEdit.setValueState(sap.ui.core.ValueState.Error);
+	                idSonstKNewEdit.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+	                validationResult = false;
+            	} else if(nSonstK < nCashinc) {
+	                InputCashIntensives.setValueState(sap.ui.core.ValueState.Error);
+	                InputCashIntensives.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_ZU_GROSS"));
+	                validationResult = false;
+            	}
+            } 
 
             var inputVerlOptM = this.getView().byId("idVerlOpt");
             if(inputVerlOptM.getValue() === "") {
@@ -1533,6 +1554,7 @@ sap.ui.define([
             this.getView().byId("idUeblicheIndizierung").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idUeblicheMietsicherheit").setValueState(sap.ui.core.ValueState.None);
             this.getView().byId("idMietsicherheitAbsolut").setValueState(sap.ui.core.ValueState.None);
+            this.getView().byId("InputCashIntensives").setValueState(sap.ui.core.ValueState.None);
 
 			var mietflaechenangabenTable = this.getView().byId("mietflaechenangabenTable");
             _.map(mietflaechenangabenTable.getItems(), function(item){

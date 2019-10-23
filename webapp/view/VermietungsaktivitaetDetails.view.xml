@@ -322,11 +322,11 @@
 
                     <!-- Sonstige Kosten -->
                     <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" visible="{= ${form>/modus} === 'show' }" />
-                    <Input id="InputSonstigeKostenShow" value="{= ${text>/kostenart}[${form>/vermietungsaktivitaet/ArtKosten}] }" visible="{= ${form>/modus} === 'show' }" editable="false">
-                        <layoutData>
-							<l:GridData span="L3 M3 S12" />
-						</layoutData>
-                    </Input>
+      <!--              <Input id="InputSonstigeKostenShow" value="{= ${text>/kostenart}[${form>/vermietungsaktivitaet/ArtKosten}] }" visible="{= ${form>/modus} === 'show' }" editable="false">-->
+      <!--                  <layoutData>-->
+						<!--	<l:GridData span="L3 M3 S12" />-->
+						<!--</layoutData>-->
+      <!--              </Input>-->
                     <Input id="idSonstKShow" value="{ path: 'form>/vermietungsaktivitaet/SonstK', type: 'model.CustomNumberType' }" visible="{= ${form>/modus} === 'show' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
@@ -334,15 +334,22 @@
                     </Input>
                     <!-- REDUNDANT -->
                     <Label text="{i18n>SONSTIGE_KOSTEN} in {form>/viewsettings/waehrungSelected/Nach}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
-                    <Select id="InputSonstigeKostenNewEdit" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtKosten}" items="{form>/kostenarten}">
-                        <items>
-                            <core:Item key="{form>KoId}" text="{form>Txtmd}" />
-                        </items>
+      <!--              <Select id="InputSonstigeKostenNewEdit" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" selectedKey="{form>/vermietungsaktivitaet/ArtKosten}" items="{form>/kostenarten}">-->
+      <!--                  <items>-->
+      <!--                      <core:Item key="{form>KoId}" text="{form>Txtmd}" />-->
+      <!--                  </items>-->
+      <!--                  <layoutData>-->
+						<!--	<l:GridData span="L3 M3 S12" />-->
+						<!--</layoutData>-->
+      <!--              </Select>-->
+                    <Input id="idSonstKNewEdit" value="{ path: 'form>/vermietungsaktivitaet/SonstK', type: 'model.CustomNumberType' }" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
-                    </Select>
-                    <Input id="idSonstKNewEdit" value="{ path: 'form>/vermietungsaktivitaet/SonstK', type: 'model.CustomNumberType' }" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }">
+                    </Input>
+                    
+                    <Label text="{i18n>CASH_INTENSIVES}"  />
+                    <Input id="InputCashIntensives" value="{ path: 'form>/vermietungsaktivitaet/Cashinc', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
