@@ -74,6 +74,13 @@ sap.ui.define([
                         result = result.replace("@@Embargo@@", embargo);
                     }
 
+                    var intensivAnalyse = vermietungsaktivitaet.IntAnalyDone;
+                	if(locale.indexOf("de") !== -1){
+                		result = result.replace("@@IntensivAnalyse@@", intensivAnalyse === true ? 'Ja' : 'Nein');
+                	} else {
+                    	result = result.replace("@@IntensivAnalyse@@", intensivAnalyse === true ? 'Yes' : 'No');
+                	}
+
                     var maklerName = vermietungsaktivitaet.MaklerName;
                     if (maklerName) {
                         result = result.replace("@@MaklerName@@", maklerName);
