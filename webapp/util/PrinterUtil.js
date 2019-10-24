@@ -402,7 +402,7 @@ sap.ui.define([
                         result = result.replace("@@KeId2@@", keId);
                     }
                     
-                    if (konditioneneinigung.Anmerkung === '03') {
+                    if (konditioneneinigung.PrintBsa === 'X') {
                         result = result.replace("@@Beschluss@@", '');
                     } else {
                         result = result.replace("@@Beschluss@@", 'display: none;');

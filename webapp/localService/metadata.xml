@@ -51,6 +51,7 @@
                <PropertyRef Name="Bukrs" />
                <PropertyRef Name="KeId" />
             </Key>
+            <Property Name="PrintBsa" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Beschlussnr und -datum im Druck anzeigen" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
             <Property Name="Action" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Aktionsfeld (CRE/UPD)" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
             <Property Name="Cashinc" Type="Edm.Decimal" Precision="21" Scale="3" sap:unicode="false" sap:unit="Currency" sap:label="Cash-Incentives" sap:sortable="false" sap:filterable="false" />
             <Property Name="Amortisation" Type="Edm.Decimal" Precision="14" Scale="3" sap:unicode="false" sap:label="Amortisation inkl. MfZ in Monaten" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" />
