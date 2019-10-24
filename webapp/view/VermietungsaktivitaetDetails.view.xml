@@ -348,7 +348,7 @@
 						</layoutData>
                     </Input>
                     
-                    <Label text="{i18n>CASH_INTENSIVES}"  />
+                    <Label text="{i18n>CASH_INTENSIVES} in {form>/viewsettings/waehrungSelected/Nach}" required="{= ${form>/vermietungsaktivitaet/SonstK} > 0 }" />
                     <Input id="InputCashIntensives" value="{ path: 'form>/vermietungsaktivitaet/Cashinc', type: 'model.CustomNumberType' }" editable="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" >
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />

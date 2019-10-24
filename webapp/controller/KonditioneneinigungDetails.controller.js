@@ -1187,7 +1187,13 @@ sap.ui.define([
 	                InputCashIntensives.setValueStateText(TranslationUtil.translate("ERR_WERT_IST_ZU_GROSS"));
 	                validationResult = false;
             	}
-            } 
+            } else {
+            	if (isNaN(nSonstK) === false) {
+	                InputCashIntensives.setValueState(sap.ui.core.ValueState.Error);
+	                InputCashIntensives.setValueStateText(TranslationUtil.translate("ERR_FEHLENDER_WERT"));
+	                validationResult = false;
+            	}
+            }
 
             var idMietbeginn = this.getView().byId("idMietbeginn");
             if(idMietbeginn.getDateValue() === null){
