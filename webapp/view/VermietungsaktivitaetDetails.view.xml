@@ -164,12 +164,14 @@
 
                 <f:content>
 
-                    <Label text="{i18n>VERMIETUNGSART}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" />
+                    <Label text="{i18n>VERMIETUNGSART}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" visible="{= ${form>/modus} === 'show' }" />
                     <Input id="InputVermietungsartShow" value="{= ${text>/vermietungsart}[${form>/vermietungsaktivitaet/Vermietungsart}] }" visible="{= ${form>/modus} === 'show' }" editable="false" class="sapUiSmallMarginBottom">
                         <layoutData>
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
+                    
+                    <Label text="{i18n>VERMIETUNGSART}" required="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" visible="{= ${form>/modus} !== 'show' }" />
                     <Select id="vermietungsart" selectedKey="{form>/vermietungsaktivitaet/Vermietungsart}" items="{form>/vermietungsarten}" visible="{= (${form>/modus} === 'new') || (${form>/modus} === 'edit') }" class="sapUiSmallMarginBottom">
                         <items>
                             <core:Item key="{form>key}" text="{form>text}" />
@@ -216,7 +218,7 @@
 							<l:GridData span="L3 M3 S12" />
 						</layoutData>
                     </Input>
-                    <Link text="{i18n>EMBARGO_ABFRAGE}" emphasized="true" target="_blank" href="https://tcmdeka.dekager.dekabank.intern:13443/smaragd.tcm.webclient/check">
+                    <Link text="{i18n>EMBARGO_ABFRAGE}" emphasized="true" target="_blank" href="https://tcmdekap01.dekager.dekabank.intern:23443/smaragd.tcm.webclient/check">
                         <layoutData>
 							<l:GridData span="L3 M3 S4" />
 						</layoutData>

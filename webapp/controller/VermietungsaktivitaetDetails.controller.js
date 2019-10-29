@@ -187,7 +187,7 @@ sap.ui.define([
             _this.initializeEmptyModel();
             
             try {
-				_this.byId('vermietungsart').destroy();
+				// _this.byId('vermietungsart').destroy();
 				_this.byId('InputSonstigeKostenNewEdit').destroy();
 				_this.byId('InputSonstigeErtraegeNewEdit').destroy();
             } catch(e) {}
@@ -262,7 +262,7 @@ sap.ui.define([
             _this.getView().getModel("form").setProperty("/modus", "new");
             
             try {
-				_this.byId('InputVermietungsartShow').destroy();
+				// _this.byId('InputVermietungsartShow').destroy();
 				_this.byId('InputSonstigeKostenShow').destroy();
 				_this.byId('InputSonstigeErtraegeShow').destroy();
             } catch(e) {}
@@ -406,7 +406,7 @@ sap.ui.define([
             _this.getView().getModel("form").setProperty("/modus", "new");
             
             try {
-				_this.byId('InputVermietungsartShow').destroy();
+				// _this.byId('InputVermietungsartShow').destroy();
 				_this.byId('InputSonstigeKostenShow').destroy();
 				_this.byId('InputSonstigeErtraegeShow').destroy();
             } catch(e) {}
@@ -485,7 +485,7 @@ sap.ui.define([
             _this.getView().getModel("form").setProperty("/modus", "new");
             
             try {
-				_this.byId('InputVermietungsartShow').destroy();
+				// _this.byId('InputVermietungsartShow').destroy();
 				_this.byId('InputSonstigeKostenShow').destroy();
 				_this.byId('InputSonstigeErtraegeShow').destroy();
             } catch(e) {}
@@ -564,7 +564,7 @@ sap.ui.define([
             _this.getView().getModel("form").setProperty("/vermietungsaktivitaet", vermietungsaktivitaet);
             
             try {
-				_this.byId('InputVermietungsartShow').destroy();
+				// _this.byId('InputVermietungsartShow').destroy();
 				_this.byId('InputSonstigeKostenShow').destroy();
 				_this.byId('InputSonstigeErtraegeShow').destroy();
             } catch(e) {}
