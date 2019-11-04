@@ -1265,6 +1265,8 @@ sap.ui.define([
             this.initializeValidationState();
 
             var validationResult = true;
+            
+            var kategorie = this.getView().getModel("form").getProperty("/vermietungsaktivitaet/Kategorie");
 
             var idMietername = this.getView().byId("idMietername");
             if(idMietername.getValue() === ""){
@@ -1338,6 +1340,30 @@ sap.ui.define([
 	                validationResult = false;
             	}
             } 
+            
+            
+            /**
+             * Martkübliche Indexierung
+             */
+             if(kategorie !== StaticData.KATEGORIE.VA.REGELVERMIETUNG) {
+             	var InputUeblicheIndexierung = this.getView().byId('idUeblicheIndizierung');
+             	if (InputUeblicheIndexierung.getSelected() === false) {
+	                InputUeblicheIndexierung.setValueState(sap.ui.core.ValueState.Error);
+	                validationResult = false;
+             	}
+             }
+            
+            /**
+             * Mietsicherheit
+             */
+             if(kategorie !== StaticData.KATEGORIE.VA.REGELVERMIETUNG) {
+             	var InputUeblicheMietsicherheit = this.getView().byId('idUeblicheMietsicherheit');
+             	if (InputUeblicheMietsicherheit.getSelected() === false) {
+	                InputUeblicheMietsicherheit.setValueState(sap.ui.core.ValueState.Error);
+	                validationResult = false;
+             	}
+             }
+             
 
             var inputVerlOptM = this.getView().byId("idVerlOpt");
             if(inputVerlOptM.getValue() === "") {
